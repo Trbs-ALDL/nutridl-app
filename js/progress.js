@@ -64,22 +64,16 @@ function renderTracker() {
         stat('Cambio (medias)', `<span class="${diff < 0 ? 'text-mint-400' : diff > 0 ? 'text-roseAccent-600' : ''}">${diff > 0 ? '+' : ''}${fmt(diff, 1)} kg</span>`, `en ${span} días`) +
         stat('Ritmo semanal', rate === null ? '—' : `${rate > 0 ? '+' : ''}${fmt(rate, 2)} kg`, rate === null ? 'necesita 14+ días' : `${fmt(rate / avgNow * 100, 1)} % del peso`);
 
-    // Gráfica
-    const W = 600, H = 180, pad = 32;
-    const ws = L.map(e => e.w); const mn = Math.min(...ws) - 0.5, mx = Math.max(...ws) + 0.5;
-    const X = dn => pad + (W - pad * 2) * (span ? (dn - d0) / span : 0.5);
-    const Y = v => 12 + (H - 44) * (1 - (v - mn) / (mx - mn));
-    const dots = L.map(e => `<circle cx="${X(dayNum(e.d)).toFixed(1)}" cy="${Y(e.w).toFixed(1)}" r="3.5" fill="#525252"><title>${e.d}: ${e.w} kg</title></circle>`).join('');
-    const avgLine = L.map(e => { const a = avgAround(dayNum(e.d), L); return `${X(dayNum(e.d)).toFixed(1)},${Y(a).toFixed(1)}`; }).join(' ');
+    // Gráfica (a ancho real: se lee bien en el móvil)
+    const dLabel = d => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
     const gw = num(state.goalWeight);
-    const goalLine = gw && gw > mn && gw < mx ? `<line x1="${pad}" x2="${W - pad}" y1="${Y(gw)}" y2="${Y(gw)}" stroke="#f59e0b" stroke-dasharray="5 4"/><text x="${pad + 4}" y="${Y(gw) - 5}" font-size="10" fill="#f59e0b" font-weight="700">Objetivo ${fmt(gw, 1)} kg</text>` : '';
-    $('trk-chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" class="w-full h-auto" role="img" aria-label="Gráfica de peso">
-        ${goalLine}${dots}
-        <polyline points="${avgLine}" fill="none" stroke="#c49a6c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
-        <text x="${pad}" y="${H - 8}" font-size="10" fill="#94a3b8">${new Date(first.d + 'T12:00:00').toLocaleDateString('es-ES')}</text>
-        <text x="${W - pad}" y="${H - 8}" font-size="10" fill="#94a3b8" text-anchor="end">${new Date(last.d + 'T12:00:00').toLocaleDateString('es-ES')}</text>
-        <text x="${pad}" y="10" font-size="10" fill="#c49a6c" font-weight="700">— media de 7 días   ● registros diarios</text>
-    </svg>`;
+    lineChart($('trk-chart'), {
+        aria: 'Gráfica de peso', legend: '— media de 7 días   ● registros', dotColor: '#737373',
+        points: L.map(e => ({ x: dayNum(e.d), y: e.w, tip: `${dLabel(e.d)}: ${fmt(e.w, 1)} kg` })),
+        line: L.map(e => ({ x: dayNum(e.d), y: avgAround(dayNum(e.d), L) })),
+        goal: gw ? { y: gw, label: `Objetivo ${fmt(gw, 1)} kg` } : null,
+        xLabels: [dLabel(first.d), dLabel(last.d)],
+    });
 
     $('trk-actions').innerHTML =
         `<span class="px-3 py-2.5 text-neutral-400"><i class="fa-solid fa-link text-mint-500"></i> Tu último registro (${fmt(last.w, 1)} kg) es tu peso actual en la calculadora.</span>`;

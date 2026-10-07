@@ -1,6 +1,6 @@
 // nutriDL · service worker (generado por tools/build-sw.js; no editar a mano)
 // Guarda la app en el dispositivo para que funcione sin conexión. Las consultas a Open Food Facts siempre van a internet.
-const CACHE = 'nutridl-b7c0c4a511';
+const CACHE = 'nutridl-866be731e5';
 const FILES = [
   "./css/app.css",
   "./css/fonts.css",

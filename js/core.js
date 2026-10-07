@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '2.1.0';
+const APP_VERSION = '2.1.1';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -19,7 +19,7 @@ let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 let calc = {};
 // Los errores se guardan solo en este dispositivo (últimos 30) para el «Informe de errores»
 function logErr(m) { try { const L = JSON.parse(localStorage.getItem(ERR_KEY) || '[]'); L.push({ t: new Date().toISOString(), m: String(m).slice(0, 300), v: APP_VERSION }); localStorage.setItem(ERR_KEY, JSON.stringify(L.slice(-30))); } catch (e) { } }
-window.addEventListener('error', e => logErr(`${e.message} @ ${String(e.filename || '').split('/').pop()}:${e.lineno || 0}`));
+window.addEventListener('error', e => /ResizeObserver loop/.test(e.message || '') || logErr(`${e.message} @ ${String(e.filename || '').split('/').pop()}:${e.lineno || 0}`));
 window.addEventListener('unhandledrejection', e => logErr('Promesa: ' + ((e.reason && e.reason.message) || e.reason)));
 let profiles = { current: null, list: {} }; // list[id] = { name, created, state }
 
@@ -134,3 +134,39 @@ const EMOJI = {
     cerveza: '🍺', vino: '🍷', cafeleche: '☕', colacao: '🥛', azucar: '🍬'
 };
 const emo = f => EMOJI[f.id] || f.em || '⭐';
+
+// =====================================================================
+//  GRÁFICA DE LÍNEAS (peso, progreso del gym)
+//  Se dibuja al ancho real del contenedor: en el móvil la letra y los puntos se ven a tamaño normal
+//  o = { points: [{ x, y, tip }], line: [{ x, y }], goal: { y, label }, xLabels: [izq, dcha], legend, dec, unit }
+// =====================================================================
+function lineChart(el, o) {
+    if (!el || !o.points.length) return;
+    const draw = () => {
+        const W = Math.max(260, Math.round(el.clientWidth || 600)), H = W < 480 ? 230 : 250;
+        const L = 46, R = 16, T = 34, B = 30, dec = o.dec ?? 1;
+        const ys = o.points.map(p => p.y).concat((o.line || []).map(p => p.y), o.goal ? [o.goal.y] : []);
+        let mn = Math.min(...ys), mx = Math.max(...ys);
+        const padY = Math.max((mx - mn) * 0.15, o.minPad ?? 0.5); mn -= padY; mx += padY;
+        const xs = o.points.map(p => p.x), x0 = Math.min(...xs), x1 = Math.max(...xs);
+        const X = x => L + (W - L - R) * (x1 > x0 ? (x - x0) / (x1 - x0) : 0.5);
+        const Y = y => T + (H - T - B) * (1 - (y - mn) / (mx - mn));
+        const grid = [0, 0.5, 1].map(f => { const v = mn + (mx - mn) * f, y = Y(v).toFixed(1); return `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="#2e2e2e"/><text x="${L - 8}" y="${(+y + 4).toFixed(1)}" font-size="12" fill="#a3a3a3" text-anchor="end">${fmt(v, dec)}</text>`; }).join('');
+        const line = o.line && o.line.length > 1 ? `<polyline points="${o.line.map(p => `${X(p.x).toFixed(1)},${Y(p.y).toFixed(1)}`).join(' ')}" fill="none" stroke="#c49a6c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>` : '';
+        const goal = o.goal && o.goal.y > mn && o.goal.y < mx ? `<line x1="${L}" x2="${W - R}" y1="${Y(o.goal.y).toFixed(1)}" y2="${Y(o.goal.y).toFixed(1)}" stroke="#f59e0b" stroke-dasharray="6 5"/><text x="${W - R}" y="${(Y(o.goal.y) - 6).toFixed(1)}" font-size="12" fill="#f59e0b" font-weight="700" text-anchor="end">${o.goal.label}</text>` : '';
+        const r = W < 480 ? 4.5 : 4;
+        const dots = o.points.map(p => `<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${r}" fill="${o.dotColor || '#dcc19c'}"><title>${p.tip || ''}</title></circle>`).join('');
+        el.innerHTML = `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria || 'Gráfica'}" style="display:block">
+            <text x="${L}" y="16" font-size="12" fill="#c49a6c" font-weight="700">${o.legend || ''}</text>
+            ${grid}${goal}${line}${dots}
+            <text x="${L}" y="${H - 8}" font-size="12" fill="#a3a3a3">${(o.xLabels || [])[0] || ''}</text>
+            <text x="${W - R}" y="${H - 8}" font-size="12" fill="#a3a3a3" text-anchor="end">${(o.xLabels || [])[1] || ''}</text>
+        </svg>`;
+    };
+    el._draw = draw; draw();
+    if (!el._ro && window.ResizeObserver) {
+        let w = el.clientWidth;
+        el._ro = new ResizeObserver(() => { if (Math.abs(el.clientWidth - w) > 8) { w = el.clientWidth; requestAnimationFrame(el._draw); } });
+        el._ro.observe(el);
+    }
+}

@@ -253,11 +253,7 @@ function openProgress(key) {
         pts.push({ d: w.d, kg: top.kg, reps: top.reps, name: e.name });
     }));
     if (!pts.length) return;
-    const name = pts[pts.length - 1].name, W = 600, H = 220, pad = 36;
-    const ks = pts.map(p => p.kg), mn = Math.min(...ks), mx = Math.max(...ks), rng = mx - mn || 1;
-    const X = i => pts.length === 1 ? W / 2 : pad + (W - pad * 2) * i / (pts.length - 1);
-    const Y = v => 20 + (H - 60) * (1 - (v - mn) / rng);
-    const line = pts.map((p, i) => `${X(i).toFixed(1)},${Y(p.kg).toFixed(1)}`).join(' ');
+    const name = pts[pts.length - 1].name;
     const first = pts[0], last = pts[pts.length - 1], diff = last.kg - first.kg;
     openSheet(`<i class="fa-solid fa-chart-line text-mint-400"></i> ${esc(name)}`, `
         <div class="space-y-4">
@@ -266,16 +262,16 @@ function openProgress(key) {
                 <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">Último</div><div class="text-lg font-extrabold">${kgTxt(last.kg)} kg</div></div>
                 <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">Cambio</div><div class="text-lg font-extrabold ${diff > 0 ? 'text-mint-300' : ''}">${diff > 0 ? '+' : ''}${kgTxt(diff)} kg</div></div>
             </div>
-            <svg viewBox="0 0 ${W} ${H}" class="w-full h-auto" role="img" aria-label="Progreso de ${esc(name)}">
-                <line x1="${pad}" x2="${W - pad}" y1="${H - 40}" y2="${H - 40}" stroke="#333"/>
-                ${pts.length > 1 ? `<polyline points="${line}" fill="none" stroke="#c49a6c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>` : ''}
-                ${pts.map((p, i) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(p.kg).toFixed(1)}" r="4.5" fill="#dcc19c"><title>${p.d}: ${p.kg} kg × ${p.reps}</title></circle>`).join('')}
-                <text x="${pad}" y="${H - 18}" font-size="11" fill="#a3a3a3">${new Date(first.d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</text>
-                <text x="${W - pad}" y="${H - 18}" font-size="11" fill="#a3a3a3" text-anchor="end">${new Date(last.d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</text>
-                <text x="${pad}" y="14" font-size="11" fill="#c49a6c" font-weight="700">Peso más alto de cada entreno</text>
-            </svg>
+            <div id="pg-chart"></div>
             <div class="divide-y divide-neutral-800 text-sm">${pts.slice().reverse().slice(0, 10).map(p => `<div class="flex justify-between py-2"><span class="text-neutral-400">${new Date(p.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })}</span><span class="font-bold">${kgTxt(p.kg)} kg × ${p.reps}</span></div>`).join('')}</div>
         </div>`);
+    const dl = d => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+    lineChart($('pg-chart'), {
+        aria: 'Progreso de ' + name, legend: 'Peso más alto de cada entreno (kg)', dec: 0, minPad: 2.5,
+        points: pts.map((p, i) => ({ x: i, y: p.kg, tip: `${dl(p.d)}: ${kgTxt(p.kg)} kg × ${p.reps}` })),
+        line: pts.map((p, i) => ({ x: i, y: p.kg })),
+        xLabels: [dl(first.d), pts.length > 1 ? dl(last.d) : ''],
+    });
 }
 // Temporizador de descanso (opcional)
 let restT = null;

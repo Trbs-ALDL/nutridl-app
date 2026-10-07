@@ -1,5 +1,14 @@
 # Cambios de nutriDL
 
+## 2.1.1 · 7 de octubre de 2026
+
+**Arreglado**
+- Diario: el botón «Hoy» ahora indica el día que ves; en otro día pasa a «Volver a hoy» y el resumen dice «Ayer», «Mañana» o la fecha.
+- Las gráficas de peso y de progreso del gym se dibujan al ancho real de la pantalla: en el móvil la letra se lee bien y tienen líneas de referencia con los kilos.
+
+**Por dentro**
+- Nueva herramienta tools/bundle.js para guardar la app en un solo archivo HTML.
+
 ## 2.1.0 · 7 de octubre de 2026
 
 **Nuevo**

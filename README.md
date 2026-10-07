@@ -42,6 +42,7 @@ npm install          # una vez: instala Tailwind, Font Awesome y subset-font
 npm start            # servidor local en http://localhost:8766 (sin caché)
 npm run build        # tras cambiar clases o iconos: regenera iconos, CSS y sw.js
 npm test             # pruebas automáticas (también se ejecutan en GitHub en cada cambio)
+node tools/bundle.js "C:/ruta/copia.html"   # copia de la app en un solo archivo (se abre sin internet)
 ```
 
 Antes de subir cambios: `npm run build` y `npm test`. Sube también la versión en `js/core.js` (`APP_VERSION`), `package.json` y [CHANGELOG.md](CHANGELOG.md).

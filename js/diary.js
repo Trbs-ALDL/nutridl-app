@@ -143,13 +143,21 @@ function renderDiary() {
     $('dia-date').value = diaryDate;
     const c = calc, t = diaryTotals(diaryDate), left = c.target - t.kcal;
     const isToday = diaryDate === todayISO();
+    // El botón dice qué día estás viendo: «Hoy» resaltado, o «Volver a hoy» si estás en otro día
+    const tb = $('dia-today');
+    if (tb) {
+        tb.innerHTML = isToday ? 'Hoy' : '<i class="fa-solid fa-rotate-left"></i> Volver a hoy';
+        tb.className = 'px-3 h-10 rounded-xl text-xs font-bold whitespace-nowrap ' + (isToday ? 'bg-mint-600 text-white' : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300');
+        tb.setAttribute('aria-pressed', isToday);
+    }
+    const dayRel = isToday ? 'Hoy' : diaryDate === shiftISO(todayISO(), -1) ? 'Ayer' : diaryDate === shiftISO(todayISO(), 1) ? 'Mañana' : '';
     $('diary-summary').innerHTML = !c.target ? `<div class="md:col-span-12 flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800">
             <div><div class="text-3xl font-extrabold text-neutral-100">${fmt(t.kcal)} <span class="text-sm text-neutral-400">kcal</span></div><div class="text-xs text-neutral-400">P ${fmt(t.p)} · G ${fmt(t.f)} · HC ${fmt(t.c)} g</div></div>
             <button onclick="showTab('calc')" class="px-4 py-2.5 rounded-xl bg-mint-600 text-white text-xs font-extrabold"><i class="fa-solid fa-calculator"></i> Calcular mi objetivo</button></div>` : `
         <div class="md:col-span-3 flex flex-col items-center gap-1">${ring(t.kcal, c.target, 120)}
             <div class="text-xs font-bold ${left >= 0 ? 'text-mint-400' : 'text-roseAccent-400'}">${left >= 0 ? `Quedan ${fmt(left)} kcal` : `+${fmt(-left)} kcal sobre tu objetivo`}</div></div>
         <div class="md:col-span-9 space-y-3">
-            <div class="text-xs text-neutral-400">${isToday ? 'Hoy' : new Date(diaryDate + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })} · objetivo ${fmt(c.target)} kcal · fibra ${fmt(t.fib)} / ${c.fiber} g</div>
+            <div class="text-xs text-neutral-400">${dayRel || new Date(diaryDate + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })} · objetivo ${fmt(c.target)} kcal · fibra ${fmt(t.fib)} / ${c.fiber} g</div>
             ${macroBar('Proteína', t.p, c.prot, '#a0714b')}${macroBar('Grasa', t.f, c.fat, '#f59e0b')}${macroBar('Hidratos', t.c, c.carbs, '#e6d3b3')}
         </div>`;
     // Todas las comidas siempre visibles, cada una con su «+ Añadir» (como FatSecret)

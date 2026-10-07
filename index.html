@@ -397,10 +397,10 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="diaryShift(-1)" class="w-10 h-10 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button onclick="diaryShift(-1)" class="w-10 h-10 shrink-0 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día anterior"><i class="fa-solid fa-chevron-left"></i></button>
                     <input id="dia-date" type="date" aria-label="Día del diario" onchange="diaryDate=this.value||todayISO();renderDiary()" class="p-2.5 bg-neutral-800 border border-neutral-700 rounded-xl text-sm font-bold">
-                    <button onclick="diaryShift(1)" class="w-10 h-10 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día siguiente"><i class="fa-solid fa-chevron-right"></i></button>
-                    <button onclick="diaryDate=todayISO();renderDiary()" class="px-3 h-10 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-xs font-bold text-neutral-300">Hoy</button>
+                    <button onclick="diaryShift(1)" class="w-10 h-10 shrink-0 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button id="dia-today" onclick="diaryDate=todayISO();renderDiary()" class="px-3 h-10 rounded-xl text-xs font-bold whitespace-nowrap">Hoy</button>
                 </div>
             </div>
 
