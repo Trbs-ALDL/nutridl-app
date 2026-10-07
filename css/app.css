@@ -290,3 +290,8 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 
 /* Menú de perfil: en móviles bajos se desplaza en vez de salirse de la pantalla */
 #profile-menu { max-height: calc(100dvh - 5.5rem); overflow-y: auto; overscroll-behavior: contain; }
+
+/* Cabecera en portátiles (1024-1279 px): sin iconos en las pestañas para que nada parta línea */
+#tabbar-top button { white-space: nowrap; }
+@media (max-width: 1279px) { #tabbar-top i { display: none; } }
+.nd-btn-ghost { white-space: nowrap; }

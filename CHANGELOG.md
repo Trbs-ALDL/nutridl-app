@@ -1,5 +1,10 @@
 # Cambios de nutriDL
 
+## 3.0.1 · 8 de octubre de 2026
+
+**Arreglado**
+- En portátiles (1024-1279 px) las pestañas, «Crear perfil» y los botones de la portada ya no se parten en dos líneas.
+
 ## 3.0.0 · 8 de octubre de 2026 · «Tu entrenador nutricional personal»
 
 **Nuevo**

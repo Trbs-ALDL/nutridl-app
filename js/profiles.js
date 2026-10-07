@@ -81,7 +81,7 @@ function renderProfileChip() {
     const box = $('profile-chip'); if (!box) return;
     const cur = profiles.list[profiles.current];
     if (!cur) {
-        box.innerHTML = `<div class="flex items-center gap-2"><button onclick="newProfile()" class="px-4 py-2 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-sm font-extrabold flex items-center gap-2"><i class="fa-solid fa-user-plus"></i><span>Crear perfil</span></button>
+        box.innerHTML = `<div class="flex items-center gap-2"><button onclick="newProfile()" class="px-4 py-2 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-sm font-extrabold flex items-center gap-2"><i class="fa-solid fa-user-plus"></i><span class="whitespace-nowrap">Crear perfil</span></button>
             <button onclick="importProfiles()" class="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 hover:border-mint-500/50" title="Cargar una copia de seguridad" aria-label="Cargar una copia de seguridad"><i class="fa-solid fa-upload"></i></button></div>`;
         return;
     }
