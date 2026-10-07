@@ -287,3 +287,6 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
     .nd-kbar > div, .nd-grow { transition: none; }
     [data-panel]:not(.hidden) { animation: none; }
 }
+
+/* Menú de perfil: en móviles bajos se desplaza en vez de salirse de la pantalla */
+#profile-menu { max-height: calc(100dvh - 5.5rem); overflow-y: auto; overscroll-behavior: contain; }

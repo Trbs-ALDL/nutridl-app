@@ -15,6 +15,10 @@
 - Diario: macros de cada alimento, duplicar en otra comida u otro día y «≈ estimado» en lo aproximado.
 - 10 platos típicos (cocido, fabada, salmorejo, churros…) y raciones habituales para café, cerveza, vino y refrescos.
 
+**Arreglado**
+- «Restablecer» en Mi plan pide confirmación y ya no borra medidas, comidas guardadas ni preferencias (solo los datos de la calculadora).
+- El menú del perfil se desplaza en móviles de pantalla baja.
+
 **Cambiado**
 - La calculadora pasa a llamarse «Mi plan» (con «Cómo se ha calculado» y tus preferencias de comida); la app abre en «Hoy».
 - Barra inferior de 5 secciones (Hoy, Diario, Coach, Progreso, Gym); en pantallas grandes, barra superior.

@@ -64,9 +64,12 @@ function clampPair(key) {
 function setField(k, v) { state[k] = v; update(); }
 function setGender(g) { state.gender = g; update(); }
 
-function resetInputs() {
+async function resetInputs() {
+    // Borra edad, peso, estatura y objetivo: se pide confirmación (antes se borraba al primer toque)
+    if (calcReady() && !(await askConfirm('¿Restablecer tus datos? Se borrarán edad, peso, estatura y objetivo (tu diario, pesos y entrenos se conservan).', 'Restablecer'))) return;
     $('calc-err') && $('calc-err').classList.add('hidden');
-    const keep = { weights: state.weights, tab: state.tab, gym: state.gym, workouts: state.workouts, diary: state.diary, customFoods: state.customFoods };
+    // Solo se restablece la calculadora: todo lo demás (diario, medidas, comidas guardadas, preferencias, logros…) se conserva
+    const { gender, age, weight, height, calcOk, activity, goal, goalType, goalAdj, stress, exp, strategy, ...keep } = state;
     state = { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...keep, calcOk: false };
     syncInputsFromState();
     update();
