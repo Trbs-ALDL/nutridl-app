@@ -1,7 +1,7 @@
 // nutriDL · service worker (generado por tools/build-sw.js; no editar a mano)
 // Con internet: siempre la versión más nueva (y se guarda una copia). Sin internet: la copia guardada.
 // Las consultas a Open Food Facts no pasan por aquí.
-const CACHE = 'nutridl-884a1eedff';
+const CACHE = 'nutridl-0f86f216ba';
 const FILES = [
   "./css/app.css",
   "./css/fonts.css",
@@ -21,16 +21,22 @@ const FILES = [
   "./icons/icon-maskable-512.png",
   "./icons/icon.svg",
   "./index.html",
+  "./js/analytics.js",
   "./js/app.js",
   "./js/calc.js",
+  "./js/coach.js",
   "./js/core.js",
   "./js/dashboard.js",
   "./js/data/exercises.js",
   "./js/data/foods.js",
   "./js/diary.js",
+  "./js/engine.js",
   "./js/gym.js",
+  "./js/insights.js",
   "./js/main.js",
+  "./js/parser.js",
   "./js/pdf.js",
+  "./js/plans.js",
   "./js/profiles.js",
   "./js/progress.js",
   "./js/wizard.js",

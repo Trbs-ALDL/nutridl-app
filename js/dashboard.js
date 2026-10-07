@@ -20,52 +20,88 @@ function macroBar(label, val, target, color) {
     return `<div class="space-y-1"><div class="flex justify-between text-[11px] font-bold"><span class="text-neutral-300">${label}</span><span class="text-neutral-400">${fmt(val)} / ${fmt(target)} g</span></div>
         <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:${color}"></div></div></div>`;
 }
+// «Hoy»: objetivo, lo que llevas y lo que te queda, qué hacer ahora, accesos rápidos y cómo vas
+const GOAL_LABEL = { lose: ['🔥', 'Perder grasa'], maintain: ['⚖️', 'Mantener peso'], gain: ['💪', 'Ganar músculo'] };
+function kcalBar(v, t) {
+    const pct = t > 0 ? Math.min(100, v / t * 100) : 0, over = v > t * 1.05;
+    return `<div class="nd-kbar" role="progressbar" aria-valuemin="0" aria-valuemax="${Math.round(t)}" aria-valuenow="${Math.round(v)}" aria-label="Calorías de hoy"><div style="width:${pct}%;${over ? 'background:#c2603f' : ''}"></div></div>`;
+}
+function macroRow(label, val, target, color) {
+    const pct = target > 0 ? Math.min(100, val / target * 100) : 0, ok = val >= target * .95;
+    return `<div class="space-y-1.5"><div class="flex items-baseline justify-between gap-2"><span class="text-sm font-bold text-neutral-200">${label}</span><span class="text-sm font-extrabold text-neutral-50">${fmt(val)}<span class="text-neutral-400 font-bold"> / ${fmt(target)} g</span>${ok ? ' <i class="fa-solid fa-circle-check text-mint-400"></i>' : ''}</span></div>
+        <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full nd-grow" style="width:${pct}%;background:${color}"></div></div></div>`;
+}
+// La acción más útil ahora mismo
+function nowAction() {
+    const c = calc, d = todayISO(), t = diaryTotals(d), R = { kcal: c.target - t.kcal, p: c.prot - t.p }, nm = nextMeal();
+    if (R.kcal < -100) return { ic: '🧘', title: `Hoy vas ${fmt(-R.kcal)} kcal por encima`, sub: 'No pasa nada por un día: lo que cuenta es tu media de la semana.', btn: ['Ver mi semana', "showTab('progress')"] };
+    if (nm && nm.slot && nm.tg.kcal >= 120) return { ic: '🍽️', kicker: 'Próxima comida', title: `${SLOT_NAME[nm.slot]} · ${fmt(nm.tg.kcal)} kcal`, sub: `Recomendado: unos ${fmt(nm.tg.p)} g de proteína`, btn: ['Ver opciones', `openWhatToEat('${nm.slot}')`], btn2: ['Apuntar', `openFoodSheet('${nm.slot}')`] };
+    if (R.p > 15) return { ic: '🥩', title: `Te faltan ${fmt(R.p)} g de proteína`, sub: `Y te quedan ${fmt(Math.max(0, R.kcal))} kcal. Un lácteo proteico o algo de pavo lo resuelve.`, btn: ['Ideas', "showTab('coach');coachSend('¿Cómo llego a mis proteínas?')"] };
+    if (t.kcal > 0) return { ic: '🔥', title: 'Día prácticamente completado', sub: 'Buen trabajo. Mañana, a por otro.', btn: ['Ver mi progreso', "showTab('progress')"] };
+    return { ic: '☀️', title: 'Empieza tu día', sub: 'Apunta tu primera comida.', btn: ['Apuntar', 'openFoodSheet()'] };
+}
 function renderDashboard() {
     const box = $('dashboard'); if (!box) return;
     const cur = profiles.list[profiles.current];
-    $('onboarding').classList.toggle('hidden', !!cur);
-    box.classList.toggle('hidden', !cur || !calc.target);
-    if (!cur || !calc.target) return;
-    const c = calc, t = diaryTotals(todayISO());
-    const left = c.target - t.kcal;
-    const W = state.weights, first = W[0];
-    const change = first ? state.weight - first.w : 0;
-    const today = dayNum(todayISO());
-    const trained = weekInfo().done, gd = gymDays();
-    const goalTxt = c.goal < 0 ? 'Perder grasa' : c.goal > 0 ? 'Ganar músculo' : 'Mantener';
-    const tile = (icon, l, v, sub) => `<div class="p-4 rounded-2xl bg-white/5 border border-white/10"><div class="text-[10px] font-bold uppercase text-neutral-400"><i class="fa-solid ${icon} text-mint-400 mr-1"></i>${l}</div><div class="text-xl font-extrabold text-white mt-1">${v}</div>${sub ? `<div class="text-[11px] text-neutral-400">${sub}</div>` : ''}</div>`;
-    const btn = (onclick, icon, l) => `<button onclick="${onclick}" class="px-4 py-3 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 text-sm font-bold text-white flex items-center justify-center gap-2"><i class="fa-solid ${icon} text-mint-400"></i>${l}</button>`;
-    box.innerHTML = `<div class="glass-card-dark rounded-3xl p-6 sm:p-8 space-y-6 text-white">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-            <div>
-                <div class="text-xs font-bold uppercase tracking-wider text-mint-400">${new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
-                <h1 class="text-2xl sm:text-3xl font-extrabold">Hola, ${esc(cur.name)} 👋</h1>
-                <p class="text-sm text-neutral-400">Objetivo: <strong class="text-neutral-200">${goalTxt}</strong></p>
-            </div>
-            <button onclick="openWizard('edit')" class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-xs font-bold"><i class="fa-solid fa-pen"></i> Editar perfil</button>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-            <div class="md:col-span-4 flex flex-col items-center gap-2">
-                ${ring(t.kcal, c.target)}
-                <div class="text-sm font-bold ${left >= 0 ? 'text-mint-400' : 'text-roseAccent-400'}">${left >= 0 ? `Te quedan ${fmt(left)} kcal hoy` : `Te has pasado ${fmt(-left)} kcal`}</div>
-            </div>
-            <div class="md:col-span-8 space-y-4">
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                    ${tile('fa-weight-scale', 'Peso actual', `${fmt(state.weight, 1)} kg`, first && Math.abs(change) >= 0.05 ? `${change > 0 ? '+' : ''}${fmt(change, 1)} kg desde el ${new Date(first.d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}` : (W.length ? `Último registro: ${new Date(W[W.length - 1].d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}` : 'Apúntalo en Mi progreso'))}
-                    ${tile('fa-bullseye', 'Objetivo diario', `${fmt(c.target)} kcal`, `P ${c.prot} · G ${c.fat} · HC ${c.carbs} g`)}
-                    ${tile('fa-heart-pulse', 'IMC', fmt(c.bmi, 1), c.bmiCat || '')}
-                    ${tile('fa-dumbbell', 'Entrenos esta semana', gd ? `${trained} / ${gd}` : `${trained}`, gd ? (trained >= gd ? 'Semana completada 🎉' : 'días entrenados') : 'elige tus días en Gym')}
+    if ($('landing')) $('landing').classList.toggle('hidden', !!cur);
+    box.classList.toggle('hidden', !cur);
+    if (!cur) { if (typeof renderLandingPro === 'function') renderLandingPro(); return; }
+    const dateTxt = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
+    const S = streakInfo();
+    const head = `<div class="flex items-start justify-between gap-3">
+            <div class="min-w-0"><div class="text-xs font-bold uppercase tracking-wider text-mint-400">${dateTxt}</div>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-50 truncate">Hola, ${esc(cur.name)} 👋</h1>
+                <p class="text-sm text-neutral-400">Vamos a por tus objetivos de hoy.</p></div>
+            <button onclick="showTab('progress')" class="nd-streak shrink-0" aria-label="Racha de ${S.cur} días">🔥 ${S.cur}</button>
+        </div>`;
+    if (!calc.target) {
+        box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
+            <div class="nd-card p-6 sm:p-8 space-y-4 text-center"><div class="text-4xl">🎯</div><h2 class="text-xl font-extrabold text-neutral-50">Termina tu plan para empezar</h2><p class="text-sm text-neutral-400">Necesitamos tu edad, peso y estatura para calcular tus calorías y macros.</p>
+            <button onclick="openWizard('edit')" class="nd-btn-primary mx-auto">Completar mi plan <i class="fa-solid fa-arrow-right"></i></button></div></div>`;
+        return;
+    }
+    const c = calc, t = diaryTotals(todayISO()), left = c.target - t.kcal;
+    const [gIc, gTxt] = GOAL_LABEL[goalTypeOf()] || GOAL_LABEL.maintain;
+    const A = nowAction();
+    const W = state.weights, T = weightTrend();
+    const wk = weekInfo(), gd = gymDays();
+    const ins = insightsList()[0];
+    const quick = (fn, ic, l) => `<button onclick="${fn}" class="nd-quick"><i class="fa-solid ${ic}"></i><span>${l}</span></button>`;
+    const tile = (onclick, l, v, sub) => `<button onclick="${onclick}" class="nd-tile text-left"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${l}</div><div class="text-xl font-extrabold text-neutral-50 mt-1">${v}</div>${sub ? `<div class="text-xs text-neutral-400 mt-0.5">${sub}</div>` : ''}</button>`;
+    const lastW = W.length ? W[W.length - 1] : null;
+    box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
+        <button onclick="showTab('calc')" class="nd-goal"><span>${gIc}</span> ${gTxt} <span class="text-neutral-500">·</span> <span class="text-neutral-300">${fmt(c.target)} kcal/día</span> <i class="fa-solid fa-chevron-right text-[10px] text-neutral-500"></i></button>
+        <div class="grid lg:grid-cols-5 gap-4">
+            <div class="lg:col-span-3 nd-card p-5 sm:p-6 space-y-5">
+                <div class="flex items-end justify-between gap-3">
+                    <div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Calorías</div>
+                        <div class="text-4xl font-extrabold text-neutral-50 leading-tight tabular-nums">${fmt(t.kcal)}<span class="text-base font-bold text-neutral-400"> / ${fmt(c.target)} kcal</span></div></div>
+                    <div class="text-right"><div class="text-2xl font-extrabold ${left >= 0 ? 'text-mint-300' : 'text-roseAccent-400'} tabular-nums">${fmt(Math.abs(left))}</div><div class="text-[11px] font-bold text-neutral-400">${left >= 0 ? 'quedan' : 'de más'}</div></div>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    ${macroBar('Proteína', t.p, c.prot, '#a0714b')}${macroBar('Grasa', t.f, c.fat, '#f59e0b')}${macroBar('Hidratos', t.c, c.carbs, '#e6d3b3')}
+                ${kcalBar(t.kcal, c.target)}
+                <div class="space-y-4">${macroRow('Proteína', t.p, c.prot, '#c49a6c')}${macroRow('Carbohidratos', t.c, c.carbs, '#e6d3b3')}${macroRow('Grasas', t.f, c.fat, '#f59e0b')}</div>
+            </div>
+            <div class="lg:col-span-2 space-y-4">
+                <div class="nd-now p-5 space-y-3">
+                    <div class="text-[11px] font-bold uppercase tracking-wider text-mint-300">¿Qué hago ahora?</div>
+                    <div class="flex items-start gap-3"><span class="text-3xl leading-none">${A.ic}</span><div class="min-w-0">${A.kicker ? `<div class="text-xs font-bold text-neutral-400">${A.kicker}</div>` : ''}<div class="text-lg font-extrabold text-neutral-50 leading-snug">${A.title}</div><div class="text-sm text-neutral-300">${A.sub}</div></div></div>
+                    <div class="grid ${A.btn2 ? 'grid-cols-2' : 'grid-cols-1'} gap-2"><button onclick="${A.btn[1]}" class="nd-mbtn nd-mbtn-main">${A.btn[0]}</button>${A.btn2 ? `<button onclick="${A.btn2[1]}" class="nd-mbtn">${A.btn2[0]}</button>` : ''}</div>
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                    ${quick('openVoiceLog()', 'fa-microphone', 'Voz')}${quick('openPhotoLog()', 'fa-camera', 'Foto')}${quick('openFoodSheet()', 'fa-magnifying-glass', 'Buscar')}${quick('openScanner()', 'fa-barcode', 'Escanear')}
                 </div>
             </div>
         </div>
+        ${ins ? `<button onclick="showTab('progress')" class="nd-insight w-full text-left"><span class="text-2xl leading-none">${ins.ic}</span><span class="min-w-0 flex-1 text-sm text-neutral-200">${esc(ins.t)}</span>${tagPill(ins.k === 'consejo' ? 'rec' : 'dato')}</button>` : ''}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-            ${btn("openFoodSheet()", 'fa-plus', 'Apuntar comida')}
-            ${btn("goTo('sec-progreso');setTimeout(()=>$('trk-w').focus(),500)", 'fa-weight-scale', 'Apuntar peso')}
-            ${btn("openScanner()", 'fa-barcode', 'Escanear producto')}
-            ${btn("showTab('gym')", 'fa-dumbbell', 'Entrenar')}
+            ${tile("showTab('progress');setTimeout(()=>{const w=$('trk-w');if(w)w.focus()},300)", 'Peso', `${fmt(state.weight, 1)} kg`, T && T.week != null && Math.abs(T.week) >= .05 ? `${T.week > 0 ? '+' : ''}${fmt(T.week, 1)} kg esta semana` : lastW ? `Último: ${new Date(lastW.d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}` : 'Toca para apuntarlo')}
+            ${tile("showTab('gym')", 'Entrenos', gd ? `${wk.done} / ${gd}` : `${wk.done}`, gd ? (wk.done >= gd ? 'Semana completada 🎉' : 'esta semana') : 'Elige tus días')}
+            ${tile("showTab('calc')", 'IMC', fmt(c.bmi, 1), c.bmiCat || '')}
+            ${tile("showTab('progress')", 'Mejor racha', `${S.best} día${S.best === 1 ? '' : 's'}`, `${Object.keys(state.ach || {}).length} logros`)}
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+            <button onclick="showTab('coach');coachView('menu')" class="nd-wide"><i class="fa-solid fa-calendar-day text-mint-400"></i> Menú del día</button>
+            <button onclick="showTab('coach');coachView('shop')" class="nd-wide"><i class="fa-solid fa-basket-shopping text-mint-400"></i> Lista de la compra</button>
         </div>
     </div>`;
 }

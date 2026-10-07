@@ -26,14 +26,19 @@ function init() {
         e.preventDefault();
         goTo(id);
     });
-    renderProfileChip(); renderDiary(); renderDashboard();
+    checkAchievements(true); // logros ya conseguidos con datos anteriores: se anotan sin celebrarlos
+    renderProfileChip(); renderDiary(); renderDashboard(); renderPrefs();
     document.addEventListener('click', e => { if (!e.target.closest('#profile-chip')) closeProfileMenu(); });
-    showTab(['calc', 'food', 'gym'].includes(state.tab) ? state.tab : 'calc', false);
-    // Accesos directos del icono de la app (mantener pulsado): ?accion=comida / ?accion=gym
+    // Sin perfil se abre la bienvenida; con perfil, la última pestaña usada (la calculadora antigua es «Mi plan»)
+    showTab(profiles.current ? (TABS.includes(state.tab) ? state.tab : 'home') : 'home', false);
+    // Accesos directos del icono de la app (mantener pulsado): ?accion=comida / gym / voz / coach
     const accion = new URLSearchParams(location.search).get('accion');
     if (accion === 'comida') { showTab('food'); openFoodSheet(); }
     else if (accion === 'gym') showTab('gym');
+    else if (accion === 'voz') { showTab('food'); openVoiceLog(); }
+    else if (accion === 'coach') showTab('coach');
     renderInstall();
+    track('visit');
 }
 
 // =====================================================================

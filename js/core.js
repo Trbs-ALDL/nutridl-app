@@ -7,13 +7,15 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '2.1.4';
+const APP_VERSION = '3.0.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
     gender: 'female', age: 0, weight: 0, height: 0, calcOk: false, activity: 1.375, goal: -0.20, strategy: 'highprotein',
-    goalWeight: '', customFoods: [], weights: [], measures: [], meals: [], tab: 'calc',
+    goalWeight: '', customFoods: [], weights: [], measures: [], meals: [], tab: 'home',
     gym: { level: 'beginner', days: 3, eq: 'gym' }, workouts: [], diary: {},
+    // 3.0: preferencias para «¿Qué como?», menú del día, lista de la compra, logros y conversación con el Coach
+    prefs: { diet: 'omni', allergies: [], dislikes: [], meals: 4, budget: 'normal', pantry: [] }, menu: null, shop: null, ach: {}, cel: {}, chat: [],
 };
 let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 let calc = {};

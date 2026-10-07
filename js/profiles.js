@@ -10,6 +10,10 @@ function mergeState(s) {
     const arr = v => Array.isArray(v) ? v : [];
     const m = { ...d, ...s, diet: { ...d.diet, ...(s.diet || {}) }, gym: { ...d.gym, ...(s.gym || {}) }, diary: (s.diary && typeof s.diary === 'object') ? s.diary : {},
         weights: arr(s.weights), workouts: arr(s.workouts), customFoods: arr(s.customFoods) };
+    if (!s.prefs) m.tab = 'home'; // perfiles de la 2.x: la app abre en «Hoy», no en la calculadora
+    m.prefs = { ...d.prefs, ...(s.prefs || {}) };
+    m.ach = (s.ach && typeof s.ach === 'object') ? s.ach : {}; m.cel = (s.cel && typeof s.cel === 'object') ? s.cel : {};
+    m.chat = arr(s.chat).slice(-40); m.measures = arr(s.measures); m.meals = arr(s.meals);
     m.gym.eq = 'gym'; // la rutina es solo de gimnasio
     if (s.calcOk === undefined) m.calcOk = PAIRS_OK(m);
     delete m.gym.style; // el método FST-7 se quitó: todas las rutinas son las basadas en evidencia
@@ -21,7 +25,9 @@ function refreshAll() {
     syncCustomFoods();
     diaryDate = null; diarySel = null; gymDay = 0;
     syncInputsFromState();
-    update(); renderTracker(); renderMeasures(); renderProfileChip(); renderDiary(); renderDashboard(); updateSticky();
+    update(); renderTracker(); renderMeasures(); renderProfileChip(); renderDiary(); renderDashboard(); updateSticky(); renderPrefs();
+    if (state.tab === 'coach') renderCoach();
+    if (state.tab === 'progress') renderProgress();
 }
 function newProfile() {
     closeProfileMenu();
@@ -50,7 +56,7 @@ function switchProfile(id, silent) {
     profiles.list[id].state = state;
     persistProfiles();
     closeProfileMenu();
-    refreshAll(); showTab('calc');
+    refreshAll(); showTab('home');
     if (!silent) toast(`Perfil de ${profiles.list[id].name}`);
 }
 async function deleteProfile(id) {
@@ -67,7 +73,7 @@ async function deleteProfile(id) {
         if (profiles.current) profiles.list[profiles.current].state = state;
     }
     persistProfiles(); save();
-    if (wasCurrent) { refreshAll(); showTab('calc'); } else renderProfileChip();
+    if (wasCurrent) { refreshAll(); showTab('home'); } else renderProfileChip();
     toast(`Perfil de ${target.name} borrado`);
 }
 const initial = n => { const m = String(n || '').match(/\p{L}|\p{N}/u); return esc(m ? m[0].toUpperCase() : '?'); };
@@ -100,6 +106,8 @@ function renderProfileChip() {
             <button onclick="importProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-upload w-7 text-center text-neutral-400"></i>Cargar una copia</button>
             <button onclick="deleteProfile(profiles.current)" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-trash w-7 text-center"></i>Borrar mi perfil</button>
             <div class="my-2 border-t border-neutral-800"></div>
+            <button onclick="openPro()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-crown w-7 text-center text-amber-300"></i>nutriDL PRO <span class="nd-pro-badge ml-auto">Beta</span></button>
+            <button onclick="openSync()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-rotate w-7 text-center text-neutral-400"></i>Móvil y ordenador</button>
             <button data-install onclick="installApp()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-mobile-screen-button w-7 text-center text-mint-400"></i>Instalar la app</button>
                 <button onclick="openReport()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-bug w-7 text-center text-neutral-400"></i>Informe de errores</button>
             <a href="privacidad.html" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-shield-halved w-7 text-center text-neutral-400"></i>Privacidad</a>
@@ -114,6 +122,18 @@ function toggleProfileMenu(e) {
     $('profile-btn').setAttribute('aria-expanded', String(!m.classList.contains('hidden')));
 }
 function closeProfileMenu() { const m = $('profile-menu'); if (m) m.classList.add('hidden'); }
+
+// ----- Usar nutriDL en varios dispositivos: hoy con copia de seguridad; la sincronización llegará con las cuentas -----
+function openSync() {
+    closeProfileMenu();
+    openSheet('<i class="fa-solid fa-rotate text-mint-400"></i> Móvil y ordenador', `<div class="space-y-4 text-sm text-neutral-300">
+        <p>Tus datos viven en este dispositivo. Para pasarlos a otro:</p>
+        <ol class="nd-steps"><li>Aquí: <b>Guardar copia de seguridad</b> (descarga un archivo).</li><li>Envíate ese archivo (correo, nube, WhatsApp…).</li><li>En el otro dispositivo: <b>Cargar una copia</b>.</li></ol>
+        <div class="grid grid-cols-2 gap-2"><button onclick="closeSheet();exportProfiles()" class="py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-download"></i> Guardar copia</button><button onclick="closeSheet();importProfiles()" class="py-3 rounded-xl border border-neutral-700 font-bold"><i class="fa-solid fa-upload"></i> Cargar copia</button></div>
+        <div class="p-3 rounded-xl bg-neutral-800/60 border border-neutral-800 text-xs text-neutral-400"><b class="text-neutral-200">Próximamente:</b> sincronización automática con una cuenta opcional (PRO). Seguirás pudiendo usar nutriDL sin cuenta.</div>
+    </div>`);
+    track('sync_open');
+}
 
 // ----- Copia de seguridad de los perfiles (para cambiar de móvil o pasar los datos a la app) -----
 function exportProfiles() {
@@ -153,7 +173,7 @@ function importProfiles() {
             if (!profiles.current || !profiles.list[profiles.current]) profiles.current = Object.keys(profiles.list)[0];
             state = mergeState(profiles.list[profiles.current].state);
             profiles.list[profiles.current].state = state;
-            persistProfiles(); refreshAll(); showTab('calc');
+            persistProfiles(); refreshAll(); showTab('home');
             toast(`Copia cargada: ${added} perfil${added === 1 ? '' : 'es'} nuevo${added === 1 ? '' : 's'}${updated ? `, ${updated} actualizado${updated === 1 ? '' : 's'}` : ''}`);
         };
         r.readAsText(file);

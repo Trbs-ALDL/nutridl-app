@@ -13,7 +13,7 @@ function addWeight() {
     if (d > todayISO()) { toast('La fecha no puede ser futura'); return; }
     state.weights = state.weights.filter(e => e.d !== d).concat([{ d, w }]).sort((a, b) => a.d.localeCompare(b.d));
     $('trk-w').value = '';
-    syncWeightFromLog();
+    syncWeightFromLog(); track('weight_logged'); checkAchievements(); if (state.tab === 'progress') renderProgress();
     toast('Registro guardado ✔ Tus calorías y macros se han actualizado');
 }
 // Confirmación propia: devuelve una promesa (true si el usuario acepta)
@@ -96,7 +96,7 @@ function addMeasures() {
     if (Object.keys(rec).length < 2) { toast('Apunta al menos una medida en cm'); return; }
     state.measures = (state.measures || []).filter(m => m.d !== d).concat([rec]).sort((a, b) => a.d.localeCompare(b.d));
     MEASURES.forEach(([k]) => $('ms-' + k).value = '');
-    save(); renderMeasures(); toast('Medidas guardadas');
+    save(); renderMeasures(); track('measures_logged'); checkAchievements(); toast('Medidas guardadas');
 }
 function delMeasures(d) {
     const before = state.measures.slice();
@@ -113,4 +113,60 @@ function renderMeasures() {
             <div class="flex flex-wrap gap-x-4 gap-y-1 text-sm">${MEASURES.filter(([k]) => m[k]).map(([k, l]) => { const dv = first && first[k] && first !== m ? m[k] - first[k] : null; return `<span><span class="text-neutral-400">${l}</span> <b>${fmt(m[k], m[k] % 1 ? 1 : 0)}</b>${dv ? ` <span class="text-xs ${dv < 0 ? 'text-mint-300' : 'text-neutral-400'}">(${dv > 0 ? '+' : ''}${fmt(dv, 1)})</span>` : ''}</span>`; }).join('')}</div></div>
         <button onclick="delMeasures('${m.d}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="Borrar medidas del ${m.d}"><i class="fa-solid fa-xmark"></i></button>
     </div>`).join('') : '';
+    renderMeasureChart();
+}
+
+// =====================================================================
+//  3.0: PESO OBJETIVO, GRÁFICA DE MEDIDAS, RESUMEN SEMANAL, TENDENCIAS Y LOGROS
+// =====================================================================
+function setGoalWeight(v) {
+    const g = num(v);
+    state.goalWeight = g && g >= 35 && g <= 250 ? round1(g) : '';
+    save(); renderTracker(); renderProgress();
+    toast(state.goalWeight ? `Peso objetivo: ${fmt(state.goalWeight, 1)} kg` : 'Peso objetivo quitado');
+}
+let msKey = 'waist';
+function renderMeasureChart() {
+    const box = $('ms-chart-box'); if (!box) return;
+    const have = MEASURES.filter(([k]) => (state.measures || []).some(m => m[k]));
+    if (!have.length) { box.innerHTML = ''; return; }
+    if (!have.some(([k]) => k === msKey)) msKey = have[0][0];
+    const pts = (state.measures || []).filter(m => m[msKey]);
+    const dLabel = d => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+    const diff = pts.length > 1 ? pts[pts.length - 1][msKey] - pts[0][msKey] : null;
+    box.innerHTML = `<div class="flex flex-wrap items-center gap-2">${have.map(([k, l]) => `<button type="button" onclick="msKey='${k}';renderMeasureChart()" class="px-3 py-1.5 rounded-xl border text-xs font-bold ${k === msKey ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-800'}">${l}</button>`).join('')}
+        ${diff != null ? `<span class="ml-auto text-xs font-bold ${diff < 0 ? 'text-mint-300' : 'text-neutral-400'}">${diff > 0 ? '+' : ''}${fmt(diff, 1)} cm desde el ${dLabel(pts[0].d)}</span>` : ''}</div>
+        <div id="ms-chart"></div>`;
+    if (pts.length > 1) lineChart($('ms-chart'), { aria: 'Gráfica de medidas', legend: (MEASURES.find(m => m[0] === msKey) || [, ''])[1] + ' (cm)', points: pts.map(m => ({ x: dayNum(m.d), y: m[msKey], tip: `${dLabel(m.d)}: ${fmt(m[msKey], 1)} cm` })), line: pts.map(m => ({ x: dayNum(m.d), y: m[msKey] })), xLabels: [dLabel(pts[0].d), dLabel(pts[pts.length - 1].d)], minPad: .5 });
+    else $('ms-chart').innerHTML = '<p class="text-xs text-neutral-400">Con dos registros verás aquí tu evolución.</p>';
+}
+function renderProgress() {
+    const box = $('prog-summary'); if (!box) return;
+    if ($('trk-goal')) $('trk-goal').value = state.goalWeight || '';
+    renderMeasureChart();
+    if (!profiles.current) { box.innerHTML = `<div class="nd-card p-6 text-center space-y-3"><p class="text-sm text-neutral-300">Crea tu perfil para ver tu progreso.</p><button onclick="newProfile()" class="nd-btn-primary mx-auto">Empezar gratis</button></div>`; $('prog-ach').innerHTML = ''; return; }
+    const S = streakInfo(), W = weekStats(), T = weightTrend(), L = insightsList();
+    const days = W.days.map(d => { const on = loggedOn(d), t = on ? diaryTotals(d) : null, ok = t && calc.prot && t.p >= calc.prot * .9; return `<div class="flex flex-col items-center gap-1 flex-1"><span class="text-[10px] font-bold text-neutral-500">${'DLMXJVS'[new Date(d + 'T12:00:00').getDay()]}</span><span class="w-8 h-8 rounded-full grid place-items-center text-xs ${on ? (ok ? 'bg-mint-500 text-neutral-950' : 'bg-mint-600/40 text-mint-200') : 'bg-neutral-800 text-neutral-600'}">${on ? (ok ? '<i class="fa-solid fa-check"></i>' : '•') : ''}</span></div>`; }).join('');
+    const stat = (l, v, s) => `<div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[11px] font-bold uppercase text-neutral-400">${l}</div><div class="text-lg font-extrabold text-neutral-50">${v}</div>${s ? `<div class="text-[11px] text-neutral-400">${s}</div>` : ''}</div>`;
+    const gw = num(state.goalWeight), toGoal = gw && T ? T.now - gw : null;
+    box.innerHTML = `<div class="grid lg:grid-cols-5 gap-4">
+        <div class="lg:col-span-3 nd-card p-5 sm:p-6 space-y-4">
+            <div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-50">Tu semana</h3>${tagPill('dato')}</div>
+            <div class="flex justify-between gap-1">${days}</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                ${stat('Días registrados', `${W.logged}/7`)}${stat('Proteína cumplida', calc.prot ? `${W.protOk}/7` : '—')}
+                ${stat('Media diaria', W.logged ? `${fmt(W.avgKcal)} kcal` : '—', calc.target ? `objetivo ${fmt(calc.target)}` : '')}${stat('Entrenos', W.workouts)}
+            </div>
+            <p class="text-[11px] text-neutral-500">Últimos 7 días completos. ● registrado · ✓ proteína cumplida.</p>
+        </div>
+        <div class="lg:col-span-2 space-y-3">
+            <div class="nd-card p-5 flex items-center gap-4"><span class="text-4xl leading-none">🔥</span><div><div class="text-2xl font-extrabold text-neutral-50">${S.cur} día${S.cur === 1 ? '' : 's'} seguido${S.cur === 1 ? '' : 's'}</div><div class="text-xs text-neutral-400">Mejor racha: ${S.best} · ${S.today ? 'hoy ya has apuntado ✓' : 'apunta algo hoy para mantenerla'}</div></div></div>
+            ${T ? `<div class="nd-card p-5 space-y-1"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Peso medio (7 días)</div><div class="text-2xl font-extrabold text-neutral-50">${fmt(T.now, 1)} kg</div><div class="text-xs text-neutral-400">${T.week != null ? `${T.week > 0 ? '+' : ''}${fmt(T.week, 1)} kg respecto a la semana anterior` : 'Con 2 semanas de registros verás la tendencia'}${toGoal != null ? ` · ${Math.abs(toGoal) < .3 ? '¡en tu objetivo!' : `${fmt(Math.abs(toGoal), 1)} kg para tu objetivo`}` : ''}</div></div>` : ''}
+        </div>
+    </div>
+    ${L.length ? `<div class="nd-card p-5 sm:p-6 space-y-3"><h3 class="text-lg font-extrabold text-neutral-50">Lo que dicen tus datos</h3>${L.slice(0, 5).map(x => `<div class="flex items-start gap-3"><span class="text-xl leading-none">${x.ic}</span><span class="flex-1 text-sm text-neutral-200">${esc(x.t)}</span>${tagPill(x.k === 'consejo' ? 'rec' : 'dato')}</div>`).join('')}<p class="text-[11px] text-neutral-500">Interpretación orientativa de tus registros. No es un diagnóstico.</p></div>` : ''}`;
+    checkAchievements(true);
+    const A = state.ach || {};
+    $('prog-ach').innerHTML = `<div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-50">Logros</h3><span class="text-xs font-bold text-neutral-400">${Object.keys(A).length}/${ACHIEVEMENTS.length}</span></div>
+        <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">${ACHIEVEMENTS.map(([id, ic, name, desc]) => `<div class="nd-ach ${A[id] ? 'on' : ''}" title="${esc(desc)}"><span class="text-2xl">${A[id] ? ic : '🔒'}</span><span class="text-xs font-extrabold text-neutral-100 leading-tight">${name}</span><span class="text-[10px] text-neutral-400 leading-tight">${A[id] ? new Date(A[id] + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) : esc(desc)}</span></div>`).join('')}</div>`;
 }

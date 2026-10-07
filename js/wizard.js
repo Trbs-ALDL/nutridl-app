@@ -4,7 +4,7 @@
 // =====================================================================
 //  AÑADIDO: ASISTENTE PASO A PASO
 // =====================================================================
-const WZ_STEPS = ['name', 'goal', 'gender', 'body', 'activity', 'loading', 'done'];
+const WZ_STEPS = ['name', 'goal', 'gender', 'body', 'activity', 'training', 'diet', 'meals', 'loading', 'done'];
 const WZ_Q = WZ_STEPS.indexOf('loading'); // nº de preguntas
 const wz = { i: 0, timers: [] };
 
@@ -19,6 +19,15 @@ function closeWizard() {
     if (wz.mode === 'create' && !wz.done && wz.prevProfile) { const prev = wz.prevProfile; wz.prevProfile = null; switchProfile(prev, true); }
 }
 function wzSet(k, v) { state[k] = v; wzNext(); }
+// Entrenamiento de fuerza: si aún no has elegido tus días de gym, se preparan con ese número
+function wzTraining(n) {
+    state.training = n;
+    if (n > 0 && !gymDays()) { const g = myGym(); g.myDays = n; while (g.plan.length < n) g.plan.push({ name: '', ex: [] }); }
+    if (!state.exp) state.exp = 'beginner';
+    wzNext();
+}
+function wzPref(k, v) { myPrefs()[k] = v; if (k === 'meals') return wzNext(); renderWz(); }
+function wzAllergy(k) { const p = myPrefs(); p.allergies = p.allergies.includes(k) ? p.allergies.filter(x => x !== k) : p.allergies.concat(k); renderWz(); }
 function wzGoal(t, adj) { state.goalType = t; state.goalAdj = adj; state.goal = t === 'lose' ? -0.15 : t === 'gain' ? 0.10 : 0; if (t === 'gain' && !state.exp) state.exp = state.gym.level || 'beginner'; wzNext(); }
 function wzNext() {
     const step = WZ_STEPS[wz.i];
@@ -52,7 +61,7 @@ function wzLoading() {
         }, 450 * (k + 1)));
     }
     wz.timers.push(setTimeout(() => {
-        finishProfileFromWizard();
+        finishProfileFromWizard(); track('onboarding_done');
         syncInputsFromState();
         update();
         renderTracker(); renderProfileChip(); renderDiary(); renderGym();
@@ -70,8 +79,10 @@ function renderWz() {
     $('wz-count').innerText = wz.i < WZ_Q ? `Paso ${wz.i + 1} de ${WZ_Q}` : step === 'loading' ? 'Creando tu plan…' : '¡Plan listo!';
     $('wz-back').style.visibility = wz.i > 0 && wz.i < WZ_Q ? 'visible' : 'hidden';
     const title = t => `<h2 id="wz-title" class="text-xl sm:text-2xl font-extrabold text-neutral-100 mb-5">${t}</h2>`; // sin subtítulos
-    const tile = (on, onclick, emoji, t, d) => `<button onclick="${onclick}" class="wz-tile w-full text-left p-4 rounded-2xl border-2 flex items-center gap-4 ${on ? 'border-mint-600 bg-mint-500/10' : 'border-neutral-800 hover:border-mint-400 bg-neutral-900'}"><span class="text-3xl">${emoji}</span><span><span class="block font-extrabold text-sm text-neutral-100">${t}</span>${d && step === 'activity' ? `<span class="block text-xs text-neutral-400">${d}</span>` : ''}</span></button>`;
+    const tile = (on, onclick, emoji, t, d) => `<button onclick="${onclick}" class="wz-tile w-full text-left p-4 rounded-2xl border-2 flex items-center gap-4 ${on ? 'border-mint-600 bg-mint-500/10' : 'border-neutral-800 hover:border-mint-400 bg-neutral-900'}"><span class="text-3xl">${emoji}</span><span class="min-w-0"><span class="block font-extrabold text-sm text-neutral-100">${t}</span>${d && step === 'activity' ? `<span class="block text-xs text-neutral-400">${d}</span>` : ''}</span></button>`;
     const next = (label, dis) => `<button onclick="wzNext()" ${dis ? 'disabled' : ''} class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-sm cta-glow flex items-center justify-center gap-2 ${dis ? 'opacity-50' : ''}">${label || 'Continuar'} <i class="fa-solid fa-arrow-right"></i></button>`;
+    // Opciones cortas en rejilla de 2: emoji arriba y texto debajo (cabe en móviles pequeños)
+    const tileV = (on, onclick, emoji, t) => `<button onclick="${onclick}" class="wz-tile w-full p-4 rounded-2xl border-2 flex flex-col items-center gap-2 text-center ${on ? 'border-mint-600 bg-mint-500/10' : 'border-neutral-800 hover:border-mint-400 bg-neutral-900'}"><span class="text-3xl">${emoji}</span><span class="font-extrabold text-sm text-neutral-100">${t}</span></button>`;
     let body = '', foot = '';
     switch (step) {
         case 'name':
@@ -107,28 +118,50 @@ function renderWz() {
                 tile(state.activity === 1.725, "wzSet('activity',1.725)", '🏋️', 'Alto', 'Más de 10.000 pasos y entreno 6-7 días') +
                 tile(state.activity === 1.9, "wzSet('activity',1.9)", '⛏️', 'Muy alto', 'Trabajo físico duro y entreno diario') + `</div>`;
             break;
+        case 'training':
+            body = title('¿Entrenas fuerza (pesas, máquinas)?') + `<div class="grid grid-cols-2 gap-3">` +
+                tileV(state.training === 0, 'wzTraining(0)', '🚶', 'No entreno', '') +
+                tileV(state.training === 2, 'wzTraining(2)', '🏋️', '1-2 días', '') +
+                tileV(state.training === 3, 'wzTraining(3)', '💪', '3 días', '') +
+                tileV(state.training === 4, 'wzTraining(4)', '🔥', '4 días o más', '') + `</div>`;
+            break;
+        case 'diet': {
+            const p = myPrefs();
+            const chip = (on, onclick, l) => `<button type="button" onclick="${onclick}" aria-pressed="${on}" class="px-3 py-2 rounded-xl border text-xs font-bold ${on ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-800'}">${l}</button>`;
+            body = title('¿Cómo comes?') + `<div class="grid grid-cols-2 gap-3">` +
+                tileV(p.diet === 'omni', "wzPref('diet','omni')", '🍗', 'De todo', '') + tileV(p.diet === 'pesc', "wzPref('diet','pesc')", '🐟', 'Pescetariana', '') +
+                tileV(p.diet === 'veg', "wzPref('diet','veg')", '🥚', 'Vegetariana', '') + tileV(p.diet === 'vegan', "wzPref('diet','vegan')", '🌱', 'Vegana', '') + `</div>
+                <div class="mt-5 space-y-2"><div class="text-xs font-bold text-neutral-400 uppercase">Alergias o intolerancias</div><div class="flex flex-wrap gap-2">${Object.entries(ALLERGENS).map(([k, [l]]) => chip(p.allergies.includes(k), `wzAllergy('${k}')`, l)).join('')}</div></div>`;
+            foot = next();
+            break;
+        }
+        case 'meals':
+            body = title('¿Cuántas comidas haces al día?') + `<div class="grid grid-cols-3 gap-3">` +
+                [3, 4, 5].map(n => tileV(myPrefs().meals === n, `wzPref('meals',${n})`, ['', '', '', '🍽️', '🥪', '🍎'][n], `${n} comidas`, '')).join('') + `</div>`;
+            break;
         case 'loading': {
-            const items = ['Calculando tu metabolismo basal (Mifflin-St Jeor)', 'Ajustando un déficit seguro para ti', 'Repartiendo proteína, grasa e hidratos', 'Preparando tu diario y tu gym'];
+            const items = ['Calculando tu metabolismo basal (Mifflin-St Jeor)', 'Ajustando tu objetivo de forma segura', 'Repartiendo proteína, grasa e hidratos', 'Preparando tu Coach, tu diario y tu gym'];
             body = `<div class="py-6 text-center space-y-6"><div class="text-5xl animate-bounce">🥗</div><h2 id="wz-title" class="text-xl font-extrabold">Creando tu plan personalizado…</h2>
                 <ul class="text-left max-w-sm mx-auto space-y-3 text-sm font-semibold">${items.map((t, k) => `<li data-load="${k}" class="flex items-center gap-3 text-neutral-500"><i class="fa-solid fa-circle-notch fa-spin text-mint-500"></i>${t}</li>`).join('')}</ul></div>`;
             break;
         }
         case 'done': {
             const c = calc, wk = c.weeklyKg;
-            body = `<div class="text-center space-y-1 mb-5"><div class="text-5xl">🎉</div><h2 id="wz-title" class="text-2xl font-extrabold">¡Tu plan está listo!</h2></div>
+            const mac = (l, v, col) => `<div class="p-3 rounded-2xl bg-neutral-900/70 border border-white/5 text-center"><div class="text-xl font-extrabold text-neutral-50">${v} g</div><div class="text-[11px] font-bold" style="color:${col}">${l}</div></div>`;
+            body = `<div class="text-center space-y-1 mb-5"><div class="text-5xl">🎯</div><h2 id="wz-title" class="text-2xl font-extrabold">Tu plan personal</h2></div>
                 <div class="space-y-3">
-                    <div class="p-5 rounded-2xl bg-mint-600 text-white text-center">
-                        <div class="text-xs font-bold uppercase text-mint-400">Tu objetivo diario</div>
-                        <div class="text-4xl font-extrabold"><span id="wz-kcal">0</span> <span class="text-base text-neutral-500">kcal</span></div>
-                        <div class="text-xs text-slate-300 mt-1">${Math.abs(wk) < 0.01 ? 'Para mantener tu peso' : `${wk < 0 ? 'Perderás' : 'Ganarás'} ≈ ${fmt(Math.abs(wk), 2)} kg por semana`}</div>
-                        <div class="flex flex-wrap justify-center gap-2 mt-3 text-[11px] font-bold">
-                            <span class="px-2 py-1 rounded-lg bg-white/10">Proteína ${c.prot} g</span><span class="px-2 py-1 rounded-lg bg-white/10">Grasa ${c.fat} g</span><span class="px-2 py-1 rounded-lg bg-white/10">Hidratos ${c.carbs} g</span>
-                        </div>
+                    <div class="p-5 rounded-2xl nd-now text-center">
+                        <div class="text-xs font-bold uppercase tracking-wider text-mint-300">Calorías al día</div>
+                        <div class="text-5xl font-extrabold text-neutral-50"><span id="wz-kcal">0</span> <span class="text-base text-neutral-400">kcal</span></div>
+                        <div class="text-xs text-neutral-300 mt-1">${Math.abs(wk) < 0.01 ? 'Para mantener tu peso' : `${wk < 0 ? 'Perderás' : 'Ganarás'} ≈ ${fmt(Math.abs(wk), 2)} kg por semana`}</div>
                     </div>
+                    <div class="grid grid-cols-3 gap-2">${mac('Proteína', c.prot, '#c49a6c')}${mac('Hidratos', c.carbs, '#e6d3b3')}${mac('Grasas', c.fat, '#f59e0b')}</div>
+                    <details class="rounded-2xl border border-neutral-800" open><summary class="p-3 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-circle-info text-mint-400"></i> Cómo lo hemos calculado</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+                        <div class="px-3 pb-3 space-y-1.5 text-xs text-neutral-300 leading-relaxed">${explainLines().map(l => `<p>${l}</p>`).join('')}</div></details>
                     ${c.alerts.filter(a => a.t !== 'info').map(a => `<div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs text-amber-200">${a.m}</div>`).join('')}
                 </div>`;
-            foot = `<button onclick="closeWizard();showTab('food')" class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-base cta-glow flex items-center justify-center gap-2">Ver mi menú del día <i class="fa-solid fa-arrow-right"></i></button>
-                <button onclick="closeWizard();showTab('calc')" class="w-full mt-2 py-2 text-xs font-bold text-neutral-400 hover:text-neutral-200">Ir a mi perfil</button>`;
+            foot = `<button onclick="closeWizard();showTab('home')" class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-base cta-glow flex items-center justify-center gap-2">Empezar <i class="fa-solid fa-arrow-right"></i></button>
+                <button onclick="closeWizard();showTab('calc')" class="w-full mt-2 py-2 text-xs font-bold text-neutral-400 hover:text-neutral-200">Ver mi plan completo</button>`;
             break;
         }
     }

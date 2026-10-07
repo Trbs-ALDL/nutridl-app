@@ -272,6 +272,18 @@ D('sandwichmixto', 'Sándwich mixto', 'platos', 13, 12, 26, 1.5, [120, 'sándwic
 D('arroz3', 'Arroz tres delicias', 'platos', 5, 5, 25, 1, [250, 'ración', 'raciones'], '🍚', 'M');
 D('calamaresrom', 'Calamares a la romana', 'platos', 12, 13, 15, 0.6, [150, 'ración', 'raciones'], '🦑', 'PG');
 D('bravas', 'Patatas bravas', 'platos', 2, 12, 20, 2, [200, 'ración', 'raciones'], '🥔', 'N');
+// 3.0: platos típicos de España (valores medios orientativos de la receta tradicional, calculados por ingredientes)
+D('cocido', 'Cocido madrileño (plato completo)', 'platos', 9, 7.5, 9, 3, [400, 'plato', 'platos'], '🍲', 'M');
+D('fabada', 'Fabada asturiana', 'platos', 8.5, 9, 9, 4, [350, 'plato', 'platos'], '🍲', 'M');
+D('salmorejo', 'Salmorejo', 'platos', 2, 7, 9, 1, [250, 'cuenco', 'cuencos'], '🍅', 'NG');
+D('churros', 'Churros', 'platos', 5, 20, 45, 1.5, [20, 'churro', 'churros'], '🥨', 'NG');
+D('albondigas', 'Albóndigas en salsa', 'platos', 12, 12, 6, 0.5, [200, 'ración', 'raciones'], '🧆', 'MG');
+D('polloajillo', 'Pollo al ajillo', 'platos', 22, 12, 1, 0, [250, 'ración', 'raciones'], '🍗', 'M');
+D('huevosrotos', 'Huevos rotos con jamón', 'platos', 8, 14, 15, 1.5, [300, 'plato', 'platos'], '🍳', 'M');
+D('merluzaromana', 'Merluza a la romana', 'platos', 13, 10, 9, 0.5, [180, 'ración', 'raciones'], '🐟', 'PG');
+D('bocadillojamon', 'Bocadillo de jamón serrano', 'platos', 15, 9, 40, 2, [150, 'bocadillo', 'bocadillos'], '🥖', 'MG');
+D('pantomate', 'Tostada con tomate y aceite', 'platos', 7, 9, 40, 3, [70, 'tostada', 'tostadas'], '🍅', 'NG', { alias: 'pantomate' });
+D('ensaladamixta', 'Ensalada mixta (con atún, huevo y aceitunas)', 'platos', 5, 6, 3, 1.5, [300, 'plato', 'platos'], '🥗', 'P');
 // Salsas y para untar
 D('ketchup', 'Kétchup', 'grasa', 1, 0.1, 25, 0.3, [15, 'cucharada', 'cucharadas'], '🍅');
 D('mostaza', 'Mostaza', 'grasa', 3.7, 3.3, 1.8, 4, [10, 'cucharadita', 'cucharaditas'], '🌭');
@@ -318,7 +330,7 @@ const SERV = {
     mantequilla: [10, 'cucharadita', 'cucharaditas'], cottage: [100, 'ración', 'raciones'], batido: [150, 'ración', 'raciones'], burgos: [60, 'ración', 'raciones'],
     curado: [20, 'taco', 'tacos'], mozzarella: [30, 'ración', 'raciones'], kefir: [200, 'vaso', 'vasos'],
     tortilla: [150, 'ración', 'raciones'], paella: [300, 'plato', 'platos'], pizza: [150, 'porción', 'porciones'], ensaladilla: [150, 'ración', 'raciones'],
-    lentguisadas: [300, 'plato', 'platos'], patatasfritas: [150, 'ración', 'raciones'], patatasbolsa: [30, 'puñado', 'puñados'], chorizo: [20, 'ración', 'raciones'],
+    lentguisadas: [300, 'plato', 'platos'], cafeleche: [200, 'taza', 'tazas'], cerveza: [330, 'lata', 'latas'], vino: [150, 'copa', 'copas'], cola: [330, 'lata', 'latas'], colazero: [330, 'lata', 'latas'], colacao: [15, 'cucharada', 'cucharadas'], azucar: [8, 'sobre', 'sobres'], patatasfritas: [150, 'ración', 'raciones'], patatasbolsa: [30, 'puñado', 'puñados'], chorizo: [20, 'ración', 'raciones'],
 };
 Object.entries(SERV).forEach(([id, s]) => { const f = FOODS.find(x => x.id === id); if (f && !f.u) f.serv = s; });
 

@@ -16,18 +16,25 @@ function stickyAction() {
 // =====================================================================
 //  AÑADIDO: PESTAÑAS DE LA APP (Calculadora · Comidas · Gym)
 // =====================================================================
+const TABS = ['home', 'food', 'coach', 'progress', 'gym', 'calc'];
 function showTab(t, scrollTop = true) {
+    if (!TABS.includes(t)) t = 'home';
     state.tab = t; track('tab_' + t);
     document.querySelectorAll('[data-panel]').forEach(p => p.classList.toggle('hidden', p.dataset.panel !== t));
     document.querySelectorAll('#tabbar-top [data-tab]').forEach(b => {
-        b.className = 'px-5 py-2.5 rounded-xl flex items-center gap-2 transition ' + (b.dataset.tab === t ? 'bg-mint-600 text-white shadow' : 'text-neutral-300 hover:text-white hover:bg-neutral-800');
+        b.className = 'px-3.5 lg:px-4 py-2 rounded-xl flex items-center gap-2 transition ' + (b.dataset.tab === t ? 'bg-mint-600 text-white shadow' : 'text-neutral-300 hover:text-white hover:bg-neutral-800');
         b.setAttribute('aria-current', b.dataset.tab === t ? 'page' : 'false');
     });
     document.querySelectorAll('#tabbar-bottom [data-tab]').forEach(b => {
-        b.className = 'py-2.5 flex flex-col items-center gap-1 transition ' + (b.dataset.tab === t ? 'text-mint-400' : 'text-neutral-500');
+        b.className = 'py-2.5 flex flex-col items-center gap-1 transition ' + (b.dataset.tab === t ? 'text-mint-400 is-on' : 'text-neutral-500');
         b.setAttribute('aria-current', b.dataset.tab === t ? 'page' : 'false');
     });
+    document.body.dataset.tab = t;
     if (t === 'gym') renderGym();
+    if (t === 'home') renderDashboard();
+    if (t === 'coach') renderCoach();
+    if (t === 'progress') renderProgress();
+    if (t === 'calc') renderPrefs();
     if (scrollTop) window.scrollTo({ top: 0 });
     save();
 }
@@ -57,11 +64,11 @@ function closeSheet() {
 // =====================================================================
 //  REGISTRO DE ERRORES Y USO (solo en este dispositivo; nada se envía)
 // =====================================================================
-function track(k) { try { const u = JSON.parse(localStorage.getItem(USAGE_KEY) || '{}'); u[k] = (u[k] || 0) + 1; localStorage.setItem(USAGE_KEY, JSON.stringify(u)); } catch (e) { } }
+function track(k) { try { const u = JSON.parse(localStorage.getItem(USAGE_KEY) || '{}'); u[k] = (u[k] || 0) + 1; localStorage.setItem(USAGE_KEY, JSON.stringify(u)); } catch (e) { } if (typeof ev === 'function') ev(k); }
 function reportText() {
     let errs = [], use = {};
     try { errs = JSON.parse(localStorage.getItem(ERR_KEY) || '[]'); use = JSON.parse(localStorage.getItem(USAGE_KEY) || '{}'); } catch (e) { }
-    return `nutriDL ${APP_VERSION} · ${new Date().toISOString().slice(0, 16)}\n${navigator.userAgent}\n\nErrores (${errs.length}):\n${errs.map(e => `- ${e.t.slice(0, 16)} [${e.v}] ${e.m}`).join('\n') || '- ninguno'}\n\nUso:\n${Object.entries(use).map(([k, v]) => `- ${k}: ${v}`).join('\n') || '- sin datos'}`;
+    return `nutriDL ${APP_VERSION} · ${new Date().toISOString().slice(0, 16)}\n${navigator.userAgent}\n\nUso en este dispositivo:\n${typeof evReport === 'function' ? evReport() : ''}\n\nErrores (${errs.length}):\n${errs.map(e => `- ${e.t.slice(0, 16)} [${e.v}] ${e.m}`).join('\n') || '- ninguno'}\n\nUso:\n${Object.entries(use).map(([k, v]) => `- ${k}: ${v}`).join('\n') || '- sin datos'}`;
 }
 function openReport() {
     closeProfileMenu();
@@ -80,6 +87,6 @@ async function wipeAll() {
     closeProfileMenu();
     if (!(await askConfirm('¿Borrar TODOS los datos de nutriDL en este dispositivo? Perfiles, diario, pesos, medidas y entrenos. No se puede deshacer: si quieres, guarda antes una copia de seguridad.', 'Continuar'))) return;
     if (!(await askConfirm('Última confirmación: se borrará todo.', 'Borrar todo'))) return;
-    try { [PROFILES_KEY, STORAGE_KEY, ERR_KEY, USAGE_KEY].forEach(k => localStorage.removeItem(k)); } catch (e) { }
+    try { [PROFILES_KEY, STORAGE_KEY, ERR_KEY, USAGE_KEY, 'nutridl_events', 'nutridl_consent'].forEach(k => localStorage.removeItem(k)); } catch (e) { }
     location.reload();
 }

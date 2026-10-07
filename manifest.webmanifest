@@ -1,7 +1,7 @@
 {
-  "name": "nutriDL · Calorías, comidas y gym",
+  "name": "nutriDL · Tu entrenador nutricional",
   "short_name": "nutriDL",
-  "description": "Calorías e IMC, diario de comidas con escáner y registro de entrenos.",
+  "description": "Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer.",
   "lang": "es",
   "dir": "ltr",
   "start_url": "./",
@@ -20,6 +20,8 @@
   ],
   "shortcuts": [
     { "name": "Apuntar comida", "url": "./?accion=comida", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Registrar por voz", "url": "./?accion=voz", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Coach", "url": "./?accion=coach", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] },
     { "name": "Entrenar", "url": "./?accion=gym", "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }] }
   ]
 }

@@ -1,5 +1,30 @@
 # Cambios de nutriDL
 
+## 3.0.0 · 8 de octubre de 2026 · «Tu entrenador nutricional personal»
+
+**Nuevo**
+- **Hoy**: tu objetivo, calorías y macros de un vistazo, «¿Qué hago ahora?» (próxima comida con calorías y proteína recomendadas), accesos rápidos (voz, foto, buscar, escanear), racha y el dato de tu semana.
+- **Coach**: pregúntale «¿Cuánto me queda?», «¿Qué ceno?», «Voy a cenar fuera», «Quiero un desayuno de 40 g de proteína» o dile lo que has comido y lo apunta (siempre con confirmación). Cada respuesta indica si es un dato tuyo, una estimación o una recomendación. Funciona en tu dispositivo.
+- **¿Qué como?**: platos con los gramos ajustados a lo que te queda, según tu dieta, alergias, lo que no te gusta, tu presupuesto y lo que tienes en casa. Con receta.
+- **Menú del día** (3, 4 o 5 comidas) con gramos exactos y **lista de la compra** para hoy, 3 días o la semana, agrupada y para compartir.
+- **Registro por voz** y **foto del plato** (estimación aproximada, editable).
+- **Mi progreso**: tu semana, racha, tendencia del peso medio, peso objetivo, gráfica de medidas, mensajes que interpretan tus datos y 12 logros.
+- Celebraciones discretas: proteína conseguida, día completado, rachas de 7 a 100 días.
+- Asistente más completo: entrenamiento, dieta, alergias y número de comidas, y «Tu plan personal» explicado.
+- Landing para quien llega por primera vez, pantalla nutriDL PRO (en beta todo es gratis) y recordatorio diario en el calendario.
+- Diario: macros de cada alimento, duplicar en otra comida u otro día y «≈ estimado» en lo aproximado.
+- 10 platos típicos (cocido, fabada, salmorejo, churros…) y raciones habituales para café, cerveza, vino y refrescos.
+
+**Cambiado**
+- La calculadora pasa a llamarse «Mi plan» (con «Cómo se ha calculado» y tus preferencias de comida); la app abre en «Hoy».
+- Barra inferior de 5 secciones (Hoy, Diario, Coach, Progreso, Gym); en pantallas grandes, barra superior.
+
+**Por dentro**
+- Nuevos módulos: engine, parser, insights, coach, plans y analytics (medición de uso solo en el dispositivo).
+- Política de seguridad de contenidos (CSP) y privacidad actualizada.
+- 7 pruebas automáticas nuevas (14 en total).
+- La copia en un solo archivo (tools/bundle.js) vuelve a funcionar con las marcas de versión.
+
 ## 2.1.4 · 7 de octubre de 2026
 
 **Arreglado**

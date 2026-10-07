@@ -261,5 +261,21 @@ function renderResults() {
     $('res-carbs-grams').innerText = `${c.carbs} g`; $('res-carbs-kcal').innerText = `${fmt(ck)} kcal`; $('pct-carbs').innerText = `${cp} %`; $('bar-carbs').style.width = cp + '%';
     $('res-fiber').innerText = `${c.fiber} g/día (${fmt(c.fiber * 2)} kcal)`;
     $('res-water').innerText = `≈ ${fmt(c.water, 1)} L/día + 0,5 L por hora de ejercicio`;
-
+    renderExplain();
+}
+// «Cómo se ha calculado»: los pasos del plan con tus números (también en el asistente)
+const ACT_NAME = { 1.2: 'sedentaria', 1.375: 'ligera', 1.55: 'moderada', 1.725: 'alta', 1.9: 'muy alta' };
+function explainLines() {
+    const c = calc;
+    return [
+        `<b>Gasto basal:</b> ${fmt(c.bmr)} kcal, con la ecuación de Mifflin-St Jeor (sexo, edad, peso y estatura).`,
+        `<b>Mantenimiento:</b> ${fmt(c.bmr)} × ${fmt(state.activity, 3).replace(/,?0+$/, '')} por tu actividad ${ACT_NAME[state.activity] || ''} = ${fmt(c.tdee)} kcal.`,
+        `<b>Objetivo:</b> ${c.goal === 0 ? 'mantenimiento' : `${c.goal < 0 ? 'déficit' : 'superávit'} del ${fmt(Math.abs(c.goal) * 100, 0)} %`} → <b>${fmt(c.target)} kcal/día</b>${c.goal < 0 ? `, sin bajar nunca de ${fmt(c.male ? 1500 : 1200)} kcal` : ''}.`,
+        `<b>Proteína:</b> ${fmt(c.gkg, 1)} g por kg de ${c.bmi >= 30 ? 'tu peso de referencia' : 'peso'} → ${c.prot} g. <b>Grasa:</b> ${c.fat} g (${Math.round(c.fat * 9 / c.target * 100)} % de las calorías). <b>Hidratos:</b> el resto, ${c.carbs} g.`,
+    ];
+}
+function renderExplain() {
+    const box = $('calc-explain'); if (!box || !calc.target) return;
+    box.innerHTML = `<details class="rounded-2xl border border-neutral-800"><summary class="p-3 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-circle-info text-mint-400"></i> Cómo se ha calculado</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+        <div class="px-3 pb-3 space-y-1.5 text-xs text-neutral-300 leading-relaxed">${explainLines().map(l => `<p>${l}</p>`).join('')}</div></details>`;
 }

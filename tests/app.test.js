@@ -16,7 +16,7 @@ function loadApp() {
         document: { getElementById: () => null, querySelector: () => null, querySelectorAll: () => [], addEventListener: noop, createElement: () => el, body: { style: {} } },
     };
     vm.createContext(ctx);
-    for (const f of ['core', 'data/foods', 'data/exercises', 'calc', 'progress', 'gym', 'diary', 'profiles']) {
+    for (const f of ['core', 'data/foods', 'data/exercises', 'calc', 'analytics', 'progress', 'engine', 'parser', 'insights', 'gym', 'diary', 'profiles']) {
         vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'js', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
     }
     const run = code => vm.runInContext(code, ctx);

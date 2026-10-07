@@ -1,15 +1,17 @@
 # nutriDL
 
-Calculadora de calorías e IMC, diario de comidas con escáner de código de barras y registro de entrenos de gimnasio. Se instala en el móvil como una app y funciona sin conexión.
+**Tu entrenador nutricional personal.** Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer. Se instala en el móvil como una app, funciona sin conexión y los datos se quedan en el dispositivo.
 
 **Web:** https://trbs-aldl.github.io/nutridl-app/
 
 ## Qué incluye
 
-- **Calculadora:** gasto basal (Mifflin-St Jeor), mantenimiento, calorías objetivo según tu caso, IMC con la clasificación de la OMS y macros.
-- **Comidas:** diario por comidas con buscador (unos 260 alimentos genéricos y 129 de marca), escáner de código de barras (Open Food Facts), comidas guardadas y alimentos propios.
+- **Hoy:** objetivo, calorías y macros del día, «¿Qué hago ahora?», accesos rápidos, racha y dato de la semana.
+- **Coach:** conversación con tus datos, «¿Qué como?», menú del día y lista de la compra; registro por voz y foto del plato.
+- **Mi plan (calculadora):** gasto basal (Mifflin-St Jeor), mantenimiento, calorías objetivo según tu caso, IMC con la clasificación de la OMS y macros.
+- **Comidas:** diario por comidas con buscador (unos 270 alimentos genéricos y 129 de marca), escáner de código de barras (Open Food Facts), comidas guardadas y alimentos propios.
 - **Gym:** tú eliges tus días y apuntas tus ejercicios y pesos; temporizador de descanso, entrenos guardados (editar / borrar), pesos más altos al completar la semana y gráfica de progreso por ejercicio.
-- **Progreso:** peso con media de 7 días y medidas corporales.
+- **Progreso:** tu semana, racha, peso medio con tendencia y objetivo, medidas con gráfica, mensajes que interpretan tus datos y logros.
 - **Perfiles** para varias personas, copias de seguridad, PDF para clientes, informe de errores local y borrado total de datos.
 
 Los datos se guardan solo en el dispositivo de cada persona (consulta [privacidad.html](privacidad.html)).
@@ -26,7 +28,10 @@ js/calc.js            calculadora           js/progress.js   peso y medidas
 js/diary.js           diario, escáner, comidas guardadas
 js/gym.js             gym                   js/pdf.js        PDF e impresión
 js/wizard.js          asistente de perfil   js/profiles.js   perfiles y copias
-js/dashboard.js       panel de inicio       js/app.js        pestañas, hojas, informe de errores
+js/dashboard.js       «Hoy»                 js/app.js        pestañas, hojas, informe de errores
+js/engine.js          motor de platos, menú y compra   js/parser.js   entender texto y voz
+js/insights.js        rachas, logros y tendencias      js/coach.js    Coach, ¿Qué como?, menú, compra, voz, foto
+js/plans.js           Gratis / PRO          js/analytics.js  medición de uso (solo en el dispositivo)
 js/main.js            arranque, instalación como app y modo sin conexión (se carga el último)
 sw.js                 service worker (generado)
 tests/                pruebas automáticas
@@ -52,6 +57,13 @@ En local el modo sin conexión está desactivado para no ver versiones antiguas;
 ### Productos de marca
 
 `tools/marcas/`: `off_fetch.js` → `off_fetch2.js` (descargan de Open Food Facts a `cache_off/`) → `off_build.js` (elige y **valida** cada producto) → `off_embed.js` (los mete en `js/data/foods.js`). Para añadir un producto, añade una línea `t(...)` en `off_build.js` y repite los dos últimos pasos.
+
+## Documentación
+
+- [docs/AUDITORIA-3.0.md](docs/AUDITORIA-3.0.md): análisis, cambios y pendientes de la 3.0.
+- [docs/IA.md](docs/IA.md): cómo funciona el Coach y cómo añadir un modelo de IA de forma segura.
+- [docs/NEGOCIO.md](docs/NEGOCIO.md): Gratis/PRO, métricas, presupuesto y primeros usuarios.
+- [docs/HOJA-DE-RUTA.md](docs/HOJA-DE-RUTA.md): cuentas, nube y modo entrenador.
 
 ## Datos y licencias
 

@@ -3,6 +3,9 @@
 ## Hecho en 2.1
 Instalable y sin conexión · escáner de código de barras · comidas guardadas · editar/borrar entrenos · progreso por ejercicio · temporizador de descanso · medidas corporales · privacidad y términos · informe de errores local · código dividido en partes con pruebas automáticas.
 
+## Hecho en 3.0
+Hoy, Coach (en el dispositivo), ¿Qué como?, menú del día, lista de la compra, voz, foto con estimación, progreso con tendencias, rachas y logros, onboarding completo, landing, Gratis/PRO en beta, medición local de retención. Detalle en [AUDITORIA-3.0.md](AUDITORIA-3.0.md).
+
 ## Siguiente: cuentas y nube (pendiente de elegir servicio)
 Recomendado: **Supabase** (inicio de sesión con email/Google y base de datos; sirve también para el modo entrenador).
 
@@ -17,6 +20,11 @@ Recomendado: **Supabase** (inicio de sesión con email/Google y base de datos; s
 - Rol «entrenador» que invita a clientes; el cliente acepta compartir su diario, peso y entrenos.
 - Panel del entrenador con sus clientes, y asignación de días de gym.
 - Requiere la nube y revisar de nuevo la privacidad (terceros con acceso a datos de salud).
+
+## Después de las cuentas
+- IA con modelo de lenguaje y foto con reconocimiento a través de un proxy seguro ([IA.md](IA.md)).
+- Pagos PRO ([NEGOCIO.md](NEGOCIO.md)).
+- Analítica sin cookies con consentimiento.
 
 ## Ideas
 - Tiendas de apps con Capacitor (Google Play / App Store).

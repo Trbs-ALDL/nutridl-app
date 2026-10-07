@@ -4,7 +4,7 @@ const fs = require('fs'), path = require('path');
 const root = path.join(__dirname, '..');
 const out = process.argv[2];
 if (!out) { console.log('Uso: node tools/bundle.js "C:/ruta/copia.html"'); process.exit(1); }
-const read = f => fs.readFileSync(path.join(root, f), 'utf8');
+const read = f => fs.readFileSync(path.join(root, f.split('?')[0]), 'utf8');
 // Fuentes e imágenes referenciadas desde el CSS → data: URI
 const inlineUrls = (css, base) => css.replace(/url\((\.\.\/[^)]+)\)/g, (m, rel) => {
     const file = path.join(root, base, rel);

@@ -9,24 +9,26 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="nutriDL">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>nutriDL · Calorías, macros, diario de comidas y rutina de gym</title>
-    <meta name="description" content="Calcula tus calorías con Mifflin-St Jeor y tu IMC según la OMS, apunta lo que comes con más de 380 alimentos y marcas, genera un menú con gramos exactos y registra tu rutina de gimnasio.">
+    <title>nutriDL · Tu entrenador nutricional personal</title>
+    <meta name="description" content="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Gratis y sin registro.">
+    <!-- Seguridad: solo se cargan archivos propios y solo se conecta con Open Food Facts (escáner) -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <!-- Añadido: SEO social, color de tema e icono -->
     <meta name="theme-color" content="#0a0a0a">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
-    <meta property="og:title" content="nutriDL · Calorías, comidas y gym en una app">
-    <meta property="og:description" content="Calorías y macros, diario de comidas con alimentos de marca, menú con gramos exactos y registro de entrenos. Gratis y sin registro.">
+    <meta property="og:title" content="nutriDL · Tu entrenador nutricional personal">
+    <meta property="og:description" content="Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer. Gratis y sin registro.">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="nutriDL · Calorías, comidas y gym en una app">
-    <meta name="twitter:description" content="Calorías y macros, diario de comidas, menú con gramos exactos y registro de entrenos.">
+    <meta name="twitter:title" content="nutriDL · Tu entrenador nutricional personal">
+    <meta name="twitter:description" content="Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer.">
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="css/fonts.css?v=990c47b567">
-    <link rel="stylesheet" href="css/icons.css?v=7512f9a489">
-    <link rel="stylesheet" href="css/tailwind.css?v=7a07447558">
-    <link rel="stylesheet" href="css/app.css?v=5b55efd7ae">
+    <link rel="stylesheet" href="css/icons.css?v=0e6a3e403f">
+    <link rel="stylesheet" href="css/tailwind.css?v=30eedc54a6">
+    <link rel="stylesheet" href="css/app.css?v=69bff0ffa2">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -35,7 +37,7 @@
       "applicationCategory": "HealthApplication",
       "operatingSystem": "Web",
       "inLanguage": "es",
-      "description": "Calculadora de calorías y macros (Mifflin-St Jeor), IMC según la OMS, diario de comidas, menú con gramos exactos y registro de entrenamientos de gimnasio.",
+      "description": "Entrenador nutricional personal: calorías y macros (Mifflin-St Jeor), diario de comidas con registro por voz, Coach que propone comidas, menú del día, lista de la compra, progreso y registro de entrenos.",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" }
     }
     </script>
@@ -46,16 +48,19 @@
 
     <header class="sticky top-0 z-50 bg-neutral-950/85 backdrop-blur-md border-b border-neutral-800 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-            <button onclick="showTab('calc')" class="flex items-center gap-2.5" aria-label="nutriDL, ir al inicio">
+            <button onclick="showTab('home')" class="flex items-center gap-2.5" aria-label="nutriDL, ir al inicio">
                 <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-mint-600 to-mint-400 flex items-center justify-center text-white shadow-md">
                     <i class="fa-solid fa-leaf text-lg"></i>
                 </div>
                 <span class="font-extrabold text-xl tracking-tight text-neutral-100">nutri<span class="text-mint-500">DL</span></span>
             </button>
-            <nav id="tabbar-top" class="hidden md:flex items-center gap-1 p-1 rounded-2xl bg-neutral-900 border border-neutral-800 text-sm font-extrabold" aria-label="Secciones">
-                <button data-tab="calc" onclick="showTab('calc')" class="px-5 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-calculator"></i> Calculadora</button>
-                <button data-tab="food" onclick="showTab('food')" class="px-5 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-utensils"></i> Comidas</button>
-                <button data-tab="gym" onclick="showTab('gym')" class="px-5 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-dumbbell"></i> Gym</button>
+            <nav id="tabbar-top" class="hidden lg:flex items-center gap-1 p-1 rounded-2xl bg-neutral-900 border border-neutral-800 text-sm font-extrabold" aria-label="Secciones">
+                <button data-tab="home" onclick="showTab('home')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-house"></i> Hoy</button>
+                <button data-tab="food" onclick="showTab('food')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-utensils"></i> Diario</button>
+                <button data-tab="coach" onclick="showTab('coach')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Coach</button>
+                <button data-tab="progress" onclick="showTab('progress')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-chart-line"></i> Progreso</button>
+                <button data-tab="gym" onclick="showTab('gym')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-dumbbell"></i> Gym</button>
+                <button data-tab="calc" onclick="showTab('calc')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-bullseye"></i> Mi plan</button>
             </nav>
             <div id="profile-chip" class="relative"></div>
         </div>
@@ -63,38 +68,94 @@
 
     <main id="contenido" tabindex="-1" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8 no-print">
 
-        <!-- ===== PESTAÑA 1: CALCULADORA ===== -->
-        <div id="tab-calc" data-panel="calc" class="space-y-8">
-
-        <!-- Perfil: resumen de la persona registrada -->
-        <section id="dashboard" class="hidden"></section>
-
-        <!-- Bienvenida (solo si aún no hay perfil) -->
-        <div id="onboarding" class="space-y-8">
-        <!-- HERO -->
-        <div class="relative overflow-hidden rounded-3xl p-6 sm:p-10 bg-gradient-to-r from-slateDark-900 via-slateDark-850 to-mint-900 text-white shadow-xl">
-            <div class="absolute -right-10 -bottom-10 w-72 h-72 bg-mint-500/10 rounded-full blur-3xl"></div>
-            <div class="absolute right-1/3 -top-10 w-60 h-60 bg-mint-400/10 rounded-full blur-3xl"></div>
-            <div class="relative z-10 max-w-3xl space-y-4">
-                <span class="px-3 py-1 rounded-full bg-mint-500/20 text-mint-400 text-xs font-bold border border-mint-500/30 uppercase tracking-wider inline-flex items-center gap-2">
-                    <i class="fa-solid fa-fire text-mint-400"></i> Calculadora metabólica + menú automático
-                </span>
-                <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight">Tus calorías, tus macros y tu <span class="text-mint-400">menú del día</span></h1>
-                <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                    <button onclick="newProfile()" class="cta-pulse px-7 py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-base transition cta-glow flex items-center justify-center gap-2">
-                        Crear mi perfil gratis <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </div>
-                <div class="flex flex-wrap gap-x-5 gap-y-2 text-xs font-semibold text-slate-300">
-                    <span><i class="fa-solid fa-check text-mint-400 mr-1"></i>100 % gratis</span>
-                    <span><i class="fa-solid fa-check text-mint-400 mr-1"></i>Sin contraseñas: tus datos se quedan en tu móvil</span>
-                    <span><i class="fa-solid fa-check text-mint-400 mr-1"></i>2 minutos</span>
-                    <span><i class="fa-solid fa-check text-mint-400 mr-1"></i>Diario de comidas y rutina de gym</span>
+        <!-- ===== HOY: bienvenida (sin perfil) o panel del día ===== -->
+        <div id="tab-home" data-panel="home" class="space-y-8">
+        <!-- Bienvenida (solo si aún no hay perfil): landing -->
+        <section id="landing" class="space-y-16 sm:space-y-24 pb-4">
+            <div class="nd-hero relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-12 sm:py-16">
+                <div class="relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
+                    <div class="space-y-6">
+                        <span class="nd-eyebrow"><i class="fa-solid fa-leaf"></i> Nutrición · Coach · Progreso</span>
+                        <h1 class="text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight text-neutral-50">Tu entrenador nutricional personal</h1>
+                        <p class="text-lg sm:text-xl text-neutral-300 max-w-xl">Controla tus calorías, macros, comidas y progreso en un solo lugar.</p>
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <button onclick="newProfile()" class="nd-btn-primary">Empezar gratis <i class="fa-solid fa-arrow-right"></i></button>
+                            <button onclick="importProfiles()" class="nd-btn-ghost"><i class="fa-solid fa-upload"></i> Ya tengo una copia</button>
+                        </div>
+                        <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-neutral-400">
+                            <li><i class="fa-solid fa-check text-mint-400"></i> Gratis</li>
+                            <li><i class="fa-solid fa-check text-mint-400"></i> Sin registro ni contraseñas</li>
+                            <li><i class="fa-solid fa-check text-mint-400"></i> Tus datos se quedan en tu móvil</li>
+                        </ul>
+                    </div>
+                    <div class="nd-phone mx-auto w-full max-w-[330px]" aria-hidden="true">
+                        <div class="nd-phone-inner space-y-3">
+                            <div class="flex items-center justify-between"><div><div class="text-[11px] font-bold text-mint-400 uppercase tracking-wider">Ejemplo</div><div class="text-lg font-extrabold text-neutral-50">Hola, Laura 👋</div></div><span class="nd-streak">🔥 12</span></div>
+                            <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-4 space-y-3">
+                                <div class="flex items-baseline justify-between"><span class="text-2xl font-extrabold text-neutral-50">1.640</span><span class="text-xs font-bold text-neutral-400">/ 2.100 kcal</span></div>
+                                <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-400" style="width:78%"></div></div>
+                                <div class="grid grid-cols-3 gap-2 text-[11px] font-bold text-neutral-400">
+                                    <div><div class="text-neutral-100">118/150 g</div>Proteína<div class="h-1 mt-1 rounded bg-neutral-800"><div class="h-1 rounded" style="width:79%;background:#c49a6c"></div></div></div>
+                                    <div><div class="text-neutral-100">170/220 g</div>Hidratos<div class="h-1 mt-1 rounded bg-neutral-800"><div class="h-1 rounded" style="width:77%;background:#e6d3b3"></div></div></div>
+                                    <div><div class="text-neutral-100">51/65 g</div>Grasas<div class="h-1 mt-1 rounded bg-neutral-800"><div class="h-1 rounded" style="width:78%;background:#f59e0b"></div></div></div>
+                                </div>
+                            </div>
+                            <div class="rounded-2xl bg-mint-600/15 border border-mint-500/30 p-4 space-y-1">
+                                <div class="text-[11px] font-bold uppercase tracking-wider text-mint-300">¿Qué hago ahora?</div>
+                                <div class="text-sm font-extrabold text-neutral-50">🍽️ Cena · 460 kcal y 32 g de proteína</div>
+                                <div class="text-xs text-neutral-300">Merluza con patata y judías verdes</div>
+                            </div>
+                            <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-3 text-xs text-neutral-300">🏆 Has cumplido tu proteína 6/7 días</div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <div class="space-y-8">
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-50 max-w-2xl">Todo lo que necesitas para llegar a tu objetivo</h2>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="nd-feature"><span class="nd-feature-ic">✨</span><h3>Un Coach que te responde</h3><p>«¿Qué ceno con 600 kcal?» Te propone platos con tus calorías y tu proteína, y te dice cuánto te queda.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic">🎙️</span><h3>Apuntar es rapidísimo</h3><p>Dilo en voz alta, escanea el código de barras o busca entre cientos de alimentos y marcas de España.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic">🍽️</span><h3>Menú y lista de la compra</h3><p>Un día completo con gramos exactos para ti y la lista de la compra agrupada, en un toque.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic">📈</span><h3>Progreso que se entiende</h3><p>Tendencia real de tu peso, medidas, rachas y logros. Sin números sueltos: te explica qué está pasando.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic">💪</span><h3>Tu gym incluido</h3><p>Apunta tus series y pesos, con descanso y tus mejores marcas por ejercicio.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic">🔒</span><h3>Privacidad de verdad</h3><p>Sin cuentas ni anuncios. Todo se guarda en tu dispositivo y puedes borrarlo cuando quieras.</p></div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-4">
+                <div class="nd-step"><span>1</span><div><h3>Cuéntanos tu objetivo</h3><p>Dos minutos: objetivo, datos, actividad y cómo comes.</p></div></div>
+                <div class="nd-step"><span>2</span><div><h3>Recibe tu plan</h3><p>Calorías y macros calculados con Mifflin-St Jeor, explicados.</p></div></div>
+                <div class="nd-step"><span>3</span><div><h3>Te acompañamos cada día</h3><p>Qué comer ahora, cuánto te queda y cómo vas.</p></div></div>
+            </div>
+
+            <div id="landing-pro"></div>
+
+            <div class="space-y-4 max-w-3xl">
+                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-50">Preguntas frecuentes</h2>
+                <details class="nd-faq"><summary>¿Es gratis?<i class="fa-solid fa-chevron-down chev"></i></summary><p>Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. Habrá un plan PRO opcional; mientras la app está en beta, todas sus funciones están abiertas.</p></details>
+                <details class="nd-faq"><summary>¿Dónde se guardan mis datos?<i class="fa-solid fa-chevron-down chev"></i></summary><p>En tu propio dispositivo. No hay cuentas ni servidores con tus datos. Puedes guardar una copia de seguridad o borrarlo todo cuando quieras.</p></details>
+                <details class="nd-faq"><summary>¿Cómo se calculan mis calorías?<i class="fa-solid fa-chevron-down chev"></i></summary><p>Con la ecuación de Mifflin-St Jeor (la más precisa en población general), tu nivel de actividad y un ajuste según tu objetivo, sin bajar nunca de un mínimo seguro.</p></details>
+                <details class="nd-faq"><summary>¿Sustituye a un nutricionista?<i class="fa-solid fa-chevron-down chev"></i></summary><p>No. nutriDL es orientativa y educativa. Si tienes alguna enfermedad, estás embarazada o en lactancia, o tienes antecedentes de trastornos de la conducta alimentaria, consulta a un profesional sanitario.</p></details>
+            </div>
+
+            <div class="nd-hero rounded-[2rem] p-8 sm:p-12 text-center space-y-5">
+                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-50">Empieza hoy. Tarda 2 minutos.</h2>
+                <button onclick="newProfile()" class="nd-btn-primary mx-auto">Empezar gratis <i class="fa-solid fa-arrow-right"></i></button>
+            </div>
+        </section>
+
+        <!-- Panel del día (lo dibuja js/dashboard.js) -->
+        <section id="dashboard" class="hidden"></section>
         </div>
 
+        <!-- ===== MI PLAN: la calculadora (datos, objetivo, IMC, macros) y preferencias ===== -->
+        <div id="tab-calc" data-panel="calc" class="space-y-8 hidden">
+        <div class="flex items-center justify-between gap-3">
+            <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight">Mi plan</h2>
+            <button onclick="openWizard('edit')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-wand-magic-sparkles text-mint-400"></i> Asistente</button>
         </div>
+
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
@@ -168,6 +229,9 @@
                         <div class="space-y-3" id="goal-list"></div>
                     </div>
                 </div>
+
+                <!-- Preferencias de comida (las usa el Coach: «¿Qué como?», menú y lista de la compra) -->
+                <div id="prefs-card" class="glass-card rounded-3xl p-6 sm:p-7 space-y-5 border border-neutral-800"></div>
 
             </div>
 
@@ -331,6 +395,7 @@
                         </div>
                     </div>
 
+                    <div id="calc-explain"></div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800 flex items-center gap-3">
                             <i class="fa-solid fa-seedling text-mint-600 text-lg w-6 text-center"></i>
@@ -346,42 +411,6 @@
             </div>
         </div>
 
-        <!-- ================= Añadido: MI PROGRESO ================= -->
-        <section id="sec-progreso" class="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-neutral-800 scroll-mt-24">
-            <div class="flex items-center gap-3 border-b border-neutral-800 pb-4">
-                <div class="w-10 h-10 rounded-2xl bg-mint-500/15 text-mint-400 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-line"></i></div>
-                <div>
-                    <h2 class="text-lg font-bold text-neutral-100">Mi progreso</h2>
-                </div>
-            </div>
-            <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end text-xs">
-                <div><label class="font-bold text-neutral-300" for="trk-date">Fecha</label><input id="trk-date" type="date" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                <div><label class="font-bold text-neutral-300" for="trk-w">Peso (kg)</label><input id="trk-w" type="number" inputmode="decimal" step="0.1" min="30" max="300" placeholder="Ej: 69,4" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                <button onclick="addWeight()" class="px-5 py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold cta-glow">+ Añadir registro</button>
-            </div>
-            <div id="trk-stats" class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs"></div>
-            <div id="trk-chart"></div>
-            <div id="trk-actions" class="flex flex-wrap gap-2 text-xs font-bold"></div>
-            <details class="rounded-2xl border border-neutral-800">
-                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span>Ver todos mis registros</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
-                <div id="trk-list" class="px-4 pb-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-xs"></div>
-            </details>
-            <details id="ms-box" class="rounded-2xl border border-neutral-800">
-                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-ruler text-mint-400"></i> Medidas corporales (cm)</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
-                <div class="px-4 pb-4 space-y-3">
-                    <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs items-end">
-                        <div class="col-span-2 sm:col-span-1"><label for="ms-date" class="font-bold text-neutral-300">Fecha</label><input id="ms-date" type="date" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                        <div><label for="ms-waist" class="font-bold text-neutral-300">Cintura</label><input id="ms-waist" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                        <div><label for="ms-hip" class="font-bold text-neutral-300">Cadera</label><input id="ms-hip" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                        <div><label for="ms-chest" class="font-bold text-neutral-300">Pecho</label><input id="ms-chest" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                        <div><label for="ms-arm" class="font-bold text-neutral-300">Brazo</label><input id="ms-arm" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                        <div><label for="ms-thigh" class="font-bold text-neutral-300">Muslo</label><input id="ms-thigh" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                    </div>
-                    <button onclick="addMeasures()" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-xs font-extrabold">+ Guardar medidas</button>
-                    <div id="ms-list" class="space-y-2"></div>
-                </div>
-            </details>
-        </section>
 
         </div>
 
@@ -394,7 +423,7 @@
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-2xl bg-mint-500/15 text-mint-400 flex items-center justify-center text-lg"><i class="fa-solid fa-book-open"></i></div>
                     <div>
-                        <h2 class="text-lg font-bold text-neutral-100">Mi diario de comidas</h2>
+                        <h2 class="text-lg font-bold text-neutral-100">Diario</h2>
                     </div>
                 </div>
                 <div class="flex items-center gap-2 w-full md:w-auto min-w-0">
@@ -415,10 +444,90 @@
             </button>
             <button type="button" onclick="openScanner()" class="w-14 shrink-0 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-mint-400 text-lg hover:border-mint-500/50" aria-label="Escanear código de barras"><i class="fa-solid fa-barcode"></i></button>
             </div>
+            <div class="grid grid-cols-2 gap-2">
+                <button type="button" onclick="openVoiceLog()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-microphone text-mint-400"></i> Registrar por voz</button>
+                <button type="button" onclick="openPhotoLog()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-camera text-mint-400"></i> Foto del plato</button>
+            </div>
 
             <div id="diary-meals" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
         </section>
 
+        </div>
+
+        <!-- ===== COACH: preguntas, «¿Qué como?», menú del día y lista de la compra ===== -->
+        <div id="tab-coach" data-panel="coach" class="hidden">
+        <section id="sec-coach" class="max-w-3xl mx-auto space-y-4">
+            <div class="flex items-center justify-between gap-3">
+                <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight flex items-center gap-2">Coach <span class="nd-pro-badge">Beta</span></h2>
+                <button onclick="openPrefs()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-sliders text-mint-400"></i> Preferencias</button>
+            </div>
+            <div id="coach-seg" class="nd-seg" role="tablist" aria-label="Vistas del Coach">
+                <button role="tab" data-cv="chat" onclick="coachView('chat')"><i class="fa-solid fa-comment-dots"></i> Coach</button>
+                <button role="tab" data-cv="menu" onclick="coachView('menu')"><i class="fa-solid fa-calendar-day"></i> Menú</button>
+                <button role="tab" data-cv="shop" onclick="coachView('shop')"><i class="fa-solid fa-basket-shopping"></i> Compra</button>
+            </div>
+            <div id="cv-chat" class="space-y-4">
+                <div id="coach-ctx"></div>
+                <div id="chat-log" class="space-y-3" aria-live="polite"></div>
+                <div id="chat-sugg" class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 nd-noscroll"></div>
+                <form id="chat-form" class="nd-composer" onsubmit="event.preventDefault(); coachSend()">
+                    <button type="button" id="chat-mic" onclick="coachMic()" class="w-11 h-11 shrink-0 rounded-full bg-neutral-800 text-mint-400 hover:bg-neutral-700" aria-label="Hablar"><i class="fa-solid fa-microphone"></i></button>
+                    <input id="chat-in" type="text" autocomplete="off" enterkeyhint="send" maxlength="300" placeholder="Pregunta o di lo que has comido…" class="flex-1 min-w-0 bg-transparent px-2 py-3 text-[15px] font-semibold outline-none" aria-label="Mensaje para el Coach">
+                    <button type="submit" class="w-11 h-11 shrink-0 rounded-full bg-mint-600 hover:bg-mint-700 text-white" aria-label="Enviar"><i class="fa-solid fa-arrow-up"></i></button>
+                </form>
+            </div>
+            <div id="cv-menu" class="hidden space-y-4"></div>
+            <div id="cv-shop" class="hidden space-y-4"></div>
+        </section>
+        </div>
+
+        <!-- ===== PROGRESO: resumen semanal, tendencias, peso, medidas y logros ===== -->
+        <div id="tab-progress" data-panel="progress" class="hidden space-y-6">
+        <div class="flex items-center justify-between gap-3">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-100 tracking-tight whitespace-nowrap">Mi progreso</h2>
+            <button onclick="openReminder()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-regular fa-bell text-mint-400"></i> Recordatorio</button>
+        </div>
+        <div id="prog-summary" class="space-y-4"></div>
+        <!-- Peso (registro, gráfica con media de 7 días y objetivo) y medidas -->
+        <section id="sec-progreso" class="glass-card rounded-3xl p-6 sm:p-8 space-y-5 border border-neutral-800 scroll-mt-24">
+            <div class="flex items-center gap-3 border-b border-neutral-800 pb-4">
+                <div class="w-10 h-10 rounded-2xl bg-mint-500/15 text-mint-400 flex items-center justify-center text-lg"><i class="fa-solid fa-chart-line"></i></div>
+                <div>
+                    <h2 class="text-lg font-bold text-neutral-100">Peso</h2>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end text-xs">
+                <div><label class="font-bold text-neutral-300" for="trk-date">Fecha</label><input id="trk-date" type="date" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                <div><label class="font-bold text-neutral-300" for="trk-w">Peso (kg)</label><input id="trk-w" type="number" inputmode="decimal" step="0.1" min="30" max="300" placeholder="Ej: 69,4" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                <button onclick="addWeight()" class="px-5 py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold cta-glow">+ Añadir registro</button>
+                <div class="sm:ml-auto"><label class="font-bold text-neutral-300" for="trk-goal">Peso objetivo</label><input id="trk-goal" type="number" inputmode="decimal" step="0.1" min="35" max="250" placeholder="Opcional" onchange="setGoalWeight(this.value)" class="w-full sm:w-32 p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+            </div>
+            <div id="trk-stats" class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs"></div>
+            <div id="trk-chart"></div>
+            <div id="trk-actions" class="flex flex-wrap gap-2 text-xs font-bold"></div>
+            <details class="rounded-2xl border border-neutral-800">
+                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span>Ver todos mis registros</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+                <div id="trk-list" class="px-4 pb-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-xs"></div>
+            </details>
+            <details id="ms-box" class="rounded-2xl border border-neutral-800">
+                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-ruler text-mint-400"></i> Medidas corporales (cm)</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+                <div class="px-4 pb-4 space-y-3">
+                    <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs items-end">
+                        <div class="col-span-2 sm:col-span-1"><label for="ms-date" class="font-bold text-neutral-300">Fecha</label><input id="ms-date" type="date" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                        <div><label for="ms-waist" class="font-bold text-neutral-300">Cintura</label><input id="ms-waist" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                        <div><label for="ms-hip" class="font-bold text-neutral-300">Cadera</label><input id="ms-hip" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                        <div><label for="ms-chest" class="font-bold text-neutral-300">Pecho</label><input id="ms-chest" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                        <div><label for="ms-arm" class="font-bold text-neutral-300">Brazo</label><input id="ms-arm" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                        <div><label for="ms-thigh" class="font-bold text-neutral-300">Muslo</label><input id="ms-thigh" type="number" inputmode="decimal" step="0.1" placeholder="0" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                    </div>
+                    <button onclick="addMeasures()" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-xs font-extrabold">+ Guardar medidas</button>
+                    <div id="ms-chart-box" class="space-y-3"></div>
+                    <div id="ms-list" class="space-y-2"></div>
+                </div>
+            </details>
+        </section>
+
+        <section id="prog-ach" class="glass-card rounded-3xl p-6 sm:p-8 space-y-4 border border-neutral-800"></section>
         </div>
 
         <!-- ===== PESTAÑA 3: GYM ===== -->
@@ -437,11 +546,12 @@
     <footer class="no-print border-t border-neutral-800 bg-neutral-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-[11px] text-neutral-400 leading-relaxed space-y-1">
             <p><strong>Aviso importante:</strong> nutriDL es una herramienta educativa y orientativa; no sustituye el consejo de un médico o dietista-nutricionista. No está indicada para embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria, diabetes con medicación, enfermedad renal u otras patologías: en esos casos consulta a un profesional sanitario.</p>
-            <p>Tus datos se guardan solo en tu navegador; no se envían a ningún servidor. Al escanear un producto solo se consulta su código de barras en Open Food Facts.</p>
-            <p class="flex flex-wrap gap-x-4 gap-y-1 pt-1"><button data-install onclick="installApp()" class="underline underline-offset-2 hover:text-neutral-200 font-bold text-mint-300"><i class="fa-solid fa-mobile-screen-button"></i> Instalar la app</button><a href="privacidad.html" class="underline underline-offset-2 hover:text-neutral-200">Privacidad</a><a href="terminos.html" class="underline underline-offset-2 hover:text-neutral-200">Términos de uso</a><button onclick="openReport()" class="underline underline-offset-2 hover:text-neutral-200">Informe de errores</button><button onclick="wipeAll()" class="underline underline-offset-2 hover:text-neutral-200">Borrar todos mis datos</button><span>nutriDL <span id="app-version"></span></span></p>
+            <p>Tus datos se guardan solo en tu navegador; no se envían a ningún servidor. Al escanear un producto solo se consulta su código de barras en Open Food Facts. Si usas la voz, tu navegador puede enviar el audio a su servicio de dictado (Google en Chrome, Apple en Safari) para convertirlo en texto. Las cantidades estimadas (foto, raciones por defecto) son aproximadas.</p>
+            <p class="flex flex-wrap gap-x-4 gap-y-1 pt-1"><button data-install onclick="installApp()" class="underline underline-offset-2 hover:text-neutral-200 font-bold text-mint-300"><i class="fa-solid fa-mobile-screen-button"></i> Instalar la app</button><a href="privacidad.html" class="underline underline-offset-2 hover:text-neutral-200">Privacidad</a><a href="terminos.html" class="underline underline-offset-2 hover:text-neutral-200">Términos de uso</a><button onclick="openReport()" class="underline underline-offset-2 hover:text-neutral-200">Informe de errores</button><button onclick="openPro()" class="underline underline-offset-2 hover:text-neutral-200">nutriDL PRO</button><button onclick="wipeAll()" class="underline underline-offset-2 hover:text-neutral-200">Borrar todos mis datos</button><span>nutriDL <span id="app-version"></span></span></p>
         </div>
     </footer>
 
+    <div id="nd-celebrate" role="status" aria-live="polite" class="no-print"></div>
     <div id="toast" role="status" aria-live="polite" class="toast no-print fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] px-4 py-3 rounded-2xl bg-mint-600 text-white text-xs font-bold shadow-xl opacity-0 pointer-events-none"></div>
 
     <div id="nd-sheet" class="no-print hidden fixed inset-0 z-[82] bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-6" role="dialog" aria-modal="true" aria-labelledby="nd-sheet-title" onclick="if(event.target===this) closeSheet()">
@@ -475,14 +585,16 @@
     <div id="printable-report" class="hidden"></div>
 
     <!-- Añadido: espacio para que la barra fija no tape el pie en móvil -->
-    <div class="h-20 md:hidden no-print"></div>
+    <div class="h-20 lg:hidden no-print"></div>
 
     <!-- Añadido: barra de acción fija (solo móvil) -->
-    <div id="sticky-cta" class="no-print md:hidden fixed bottom-0 inset-x-0 z-40 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 shadow-[0_-8px_20px_-10px_rgba(0,0,0,0.15)]" style="padding-bottom: env(safe-area-inset-bottom)">
+    <div id="sticky-cta" class="no-print lg:hidden fixed bottom-0 inset-x-0 z-40 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 shadow-[0_-8px_20px_-10px_rgba(0,0,0,0.15)]" style="padding-bottom: env(safe-area-inset-bottom)">
         <!-- Barra inferior tipo app: 3 pestañas -->
-        <nav id="tabbar-bottom" class="grid grid-cols-3 text-[11px] font-extrabold" aria-label="Secciones">
-            <button data-tab="calc" onclick="showTab('calc')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-calculator text-lg"></i>Calculadora</button>
-            <button data-tab="food" onclick="showTab('food')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-utensils text-lg"></i>Comidas</button>
+        <nav id="tabbar-bottom" class="grid grid-cols-5 text-[11px] font-extrabold" aria-label="Secciones">
+            <button data-tab="home" onclick="showTab('home')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-house text-lg"></i>Hoy</button>
+            <button data-tab="food" onclick="showTab('food')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-utensils text-lg"></i>Diario</button>
+            <button data-tab="coach" onclick="showTab('coach')" class="py-2.5 flex flex-col items-center gap-1"><span class="nd-coach-tab"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i></span>Coach</button>
+            <button data-tab="progress" onclick="showTab('progress')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-chart-line text-lg"></i>Progreso</button>
             <button data-tab="gym" onclick="showTab('gym')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-dumbbell text-lg"></i>Gym</button>
         </nav>
         <button id="sticky-cta-btn" onclick="stickyAction()" class="hidden"></button>
@@ -562,18 +674,24 @@
         </div>
     </div>
 
-    <script src="js/core.js?v=e7cfa21afa"></script>
-    <script src="js/data/foods.js?v=ac31b9372e"></script>
+    <script src="js/core.js?v=cc69b5464f"></script>
+    <script src="js/data/foods.js?v=1839c844f5"></script>
     <script src="js/data/exercises.js?v=8e845d8e16"></script>
-    <script src="js/calc.js?v=e8771fe0c2"></script>
-    <script src="js/progress.js?v=0349112431"></script>
+    <script src="js/calc.js?v=7bf18db7b7"></script>
+    <script src="js/analytics.js?v=1974b7351f"></script>
+    <script src="js/progress.js?v=93986c7f4c"></script>
+    <script src="js/engine.js?v=36a2d48d51"></script>
+    <script src="js/parser.js?v=5e8e6d516f"></script>
+    <script src="js/insights.js?v=2fc9071f50"></script>
     <script src="js/pdf.js?v=a36031981f"></script>
-    <script src="js/wizard.js?v=52c5d07d00"></script>
+    <script src="js/wizard.js?v=d7e299f3ec"></script>
     <script src="js/gym.js?v=9a22ada857"></script>
-    <script src="js/diary.js?v=825a499c81"></script>
-    <script src="js/profiles.js?v=b49f8f3dac"></script>
-    <script src="js/dashboard.js?v=9d67e694d2"></script>
-    <script src="js/app.js?v=cc03bbc0c7"></script>
-    <script src="js/main.js?v=8a568c4efd"></script>
+    <script src="js/diary.js?v=b1c1acf8ad"></script>
+    <script src="js/profiles.js?v=c99083c581"></script>
+    <script src="js/dashboard.js?v=9232bbbda4"></script>
+    <script src="js/coach.js?v=9769ef825e"></script>
+    <script src="js/plans.js?v=cb5f55cae1"></script>
+    <script src="js/app.js?v=29d2ffca1b"></script>
+    <script src="js/main.js?v=73e60cfdd3"></script>
 </body>
 </html>
