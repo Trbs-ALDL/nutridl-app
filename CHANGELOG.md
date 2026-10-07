@@ -1,5 +1,10 @@
 # Cambios de nutriDL
 
+## 2.1.3 · 7 de octubre de 2026
+
+**Cambiado**
+- Calculadora: tras pulsar «Aceptar», edad, peso y estatura quedan bloqueados para no moverlos sin querer al deslizar en el móvil. Para cambiarlos, «Editar datos» y después «Aceptar».
+
 ## 2.1.2 · 7 de octubre de 2026
 
 **Arreglado**

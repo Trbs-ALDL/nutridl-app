@@ -1,6 +1,6 @@
 {
   "name": "nutridl-app",
-  "version": "2.1.2",
+  "version": "2.1.3",
   "private": true,
   "description": "nutriDL: calorías, IMC, diario de comidas y registro de entrenos",
   "scripts": {

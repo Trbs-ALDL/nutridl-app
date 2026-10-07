@@ -17,6 +17,7 @@ function mergeState(s) {
 }
 function persistProfiles() { try { profiles.v = 1; localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles)); } catch (e) { } }
 function refreshAll() {
+    calcEditing = false;
     syncCustomFoods();
     diaryDate = null; diarySel = null; gymDay = 0;
     syncInputsFromState();

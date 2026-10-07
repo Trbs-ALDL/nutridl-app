@@ -9,6 +9,24 @@ const PAIR_NAME = { age: 'edad', weight: 'peso', height: 'estatura' };
 function PAIRS_OK(s) { return Object.entries(PAIRS).every(([k, [mn, mx]]) => s[k] >= mn && s[k] <= mx); }
 const calcReady = () => !!state.calcOk && PAIRS_OK(state);
 // Aceptar: con edad, peso y estatura válidos se calcula todo (IMC, kcal, macros…)
+// Con los datos aceptados, edad, peso y estatura quedan bloqueados para no cambiarlos sin querer
+// al deslizar la pantalla en el móvil. «Editar datos» los desbloquea; «Aceptar» los vuelve a bloquear.
+let calcEditing = false;
+function applyCalcLock() {
+    const locked = calcReady() && !calcEditing;
+    ['age', 'weight', 'height'].forEach(k => {
+        const r = $('r-' + k), n = $('n-' + k);
+        if (!r || !n) return;
+        r.disabled = locked; n.readOnly = locked;
+        r.closest('.space-y-2').classList.toggle('nd-locked', locked);
+    });
+    if ($('btn-edit')) $('btn-edit').classList.toggle('hidden', !locked);
+    if ($('btn-accept')) $('btn-accept').classList.toggle('hidden', locked);
+}
+function editData() {
+    calcEditing = true; applyCalcLock();
+    toast('Cambia tus datos y pulsa Aceptar');
+}
 function acceptData() {
     ['age', 'weight', 'height'].forEach(k => { const v = num($('n-' + k).value); state[k] = v || 0; });
     const bad = Object.keys(PAIRS).filter(k => !(state[k] >= PAIRS[k][0] && state[k] <= PAIRS[k][1]));
@@ -20,7 +38,7 @@ function acceptData() {
         return;
     }
     $('calc-err').classList.add('hidden');
-    state.calcOk = true;
+    state.calcOk = true; calcEditing = false;
     syncInputsFromState(); update();
     if (innerWidth < 1024) goTo('sec-resultados');
     toast('✅ Datos guardados: ya tienes tu IMC y tus calorías');

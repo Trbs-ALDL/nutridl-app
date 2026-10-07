@@ -114,6 +114,10 @@ body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-even
 .skip-link:focus { top: 12px; }
 main:focus { outline: none; }
 
+/* ===== Calculadora: datos bloqueados hasta pulsar «Editar datos» ===== */
+.nd-locked input[type="range"] { opacity: .45; pointer-events: none; }
+.nd-locked .num-input { background: transparent !important; border-color: transparent !important; pointer-events: none; }
+
 /* ===== Calculadora: estado sin datos ===== */
 .calc-pending > :not(#calc-empty) { display: none !important; }
 #sec-resultados:not(.calc-pending) > #calc-empty { display: none; }
