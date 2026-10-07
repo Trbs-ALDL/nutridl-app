@@ -1,5 +1,13 @@
 # Cambios de nutriDL
 
+## 2.1.2 · 7 de octubre de 2026
+
+**Arreglado**
+- Móvil: la fila de fechas del diario se salía de la pantalla al cambiar de día y el botón «Volver a hoy» quedaba cortado y difícil de pulsar. Ahora la fila siempre cabe (comprobado a 320 y 375 px).
+
+**Nuevo**
+- Aviso cuando hay una versión nueva de la app mientras la tienes abierta.
+
 ## 2.1.1 · 7 de octubre de 2026
 
 **Arreglado**

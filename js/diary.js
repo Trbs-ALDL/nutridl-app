@@ -146,9 +146,9 @@ function renderDiary() {
     // El botón dice qué día estás viendo: «Hoy» resaltado, o «Volver a hoy» si estás en otro día
     const tb = $('dia-today');
     if (tb) {
-        tb.innerHTML = isToday ? 'Hoy' : '<i class="fa-solid fa-rotate-left"></i> Volver a hoy';
-        tb.className = 'px-3 h-10 rounded-xl text-xs font-bold whitespace-nowrap ' + (isToday ? 'bg-mint-600 text-white' : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300');
-        tb.setAttribute('aria-pressed', isToday);
+        tb.innerHTML = isToday ? 'Hoy' : '<i class="fa-solid fa-rotate-left"></i><span class="hidden sm:inline"> Volver a</span> hoy';
+        tb.className = 'px-3 h-10 shrink-0 rounded-xl text-xs font-bold whitespace-nowrap ' + (isToday ? 'bg-mint-600 text-white' : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300');
+        tb.setAttribute('aria-pressed', isToday); tb.setAttribute('aria-label', isToday ? 'Estás viendo hoy' : 'Volver a hoy');
     }
     const dayRel = isToday ? 'Hoy' : diaryDate === shiftISO(todayISO(), -1) ? 'Ayer' : diaryDate === shiftISO(todayISO(), 1) ? 'Mañana' : '';
     $('diary-summary').innerHTML = !c.target ? `<div class="md:col-span-12 flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800">

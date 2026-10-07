@@ -43,6 +43,9 @@ const isInstalled = () => matchMedia('(display-mode: standalone)').matches || na
 let installEvt = null;
 if ('serviceWorker' in navigator && location.protocol.startsWith('http') && (!/^(localhost|127\.)/.test(location.hostname) || new URLSearchParams(location.search).has('sw'))) {
     window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => logErr('Service worker: ' + e.message)));
+    // Si llega una versión nueva mientras la app está abierta, se avisa (se verá al recargar)
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) toast('Hay una versión nueva de nutriDL: recarga la página para verla'); });
 }
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; renderInstall(); });
 window.addEventListener('appinstalled', () => { installEvt = null; renderInstall(); track('installed'); toast('nutriDL instalada en tu dispositivo'); });
