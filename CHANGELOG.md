@@ -1,5 +1,11 @@
 # Cambios de nutriDL
 
+## 2.1.4 · 7 de octubre de 2026
+
+**Arreglado**
+- Las actualizaciones llegan al momento: con internet la app siempre carga la versión más nueva (sin conexión usa la copia guardada) y, si se publica una versión con la app abierta, se recarga sola una vez.
+- Cada archivo lleva una marca de versión para que nunca se mezclen archivos de versiones distintas.
+
 ## 2.1.3 · 7 de octubre de 2026
 
 **Cambiado**

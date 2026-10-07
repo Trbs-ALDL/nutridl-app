@@ -42,10 +42,20 @@ function init() {
 const isInstalled = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
 let installEvt = null;
 if ('serviceWorker' in navigator && location.protocol.startsWith('http') && (!/^(localhost|127\.)/.test(location.hostname) || new URLSearchParams(location.search).has('sw'))) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(e => logErr('Service worker: ' + e.message)));
-    // Si llega una versión nueva mientras la app está abierta, se avisa (se verá al recargar)
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
+            // Al volver a la app (desde otra app o la pantalla de inicio) se busca versión nueva
+            document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => { }); });
+        }).catch(e => logErr('Service worker: ' + e.message));
+    });
+    // Cuando se instala una versión nueva con la app abierta, se recarga sola una vez (lo apuntado ya está guardado)
     const hadController = !!navigator.serviceWorker.controller;
-    navigator.serviceWorker.addEventListener('controllerchange', () => { if (hadController) toast('Hay una versión nueva de nutriDL: recarga la página para verla'); });
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!hadController || sessionStorage.getItem('nd-reloaded') === APP_VERSION) return;
+        try { sessionStorage.setItem('nd-reloaded', APP_VERSION); } catch (e) { }
+        save();
+        location.reload();
+    });
 }
 window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); installEvt = e; renderInstall(); });
 window.addEventListener('appinstalled', () => { installEvt = null; renderInstall(); track('installed'); toast('nutriDL instalada en tu dispositivo'); });
