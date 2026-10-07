@@ -1,0 +1,2582 @@
+[
+ {
+  "label": "Spaghetti",
+  "brand": "Hacendado",
+  "off": "8480000063311",
+  "offName": "Spaghetti",
+  "kcal": 361,
+  "p": 13,
+  "c": 72,
+  "f": 1.5,
+  "fib": 0,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍝",
+  "ml": 0,
+  "raw": 1,
+  "scans": 9
+ },
+ {
+  "label": "Spaghetti integral",
+  "brand": "Hacendado",
+  "off": "8402001010200",
+  "offName": "Spaghetti integral",
+  "kcal": 345,
+  "p": 13.5,
+  "c": 62,
+  "f": 2.4,
+  "fib": 10,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍝",
+  "ml": 0,
+  "raw": 1,
+  "scans": 38
+ },
+ {
+  "label": "Macarrones",
+  "brand": "Hacendado",
+  "off": "8480000062505",
+  "offName": "Macarrón",
+  "kcal": 361,
+  "p": 13,
+  "c": 72,
+  "f": 1.5,
+  "fib": 3.5,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍝",
+  "ml": 0,
+  "raw": 1,
+  "scans": 29
+ },
+ {
+  "label": "Fideos",
+  "brand": "Hacendado",
+  "off": "8480000135773",
+  "offName": "Fideo cabello de ángel",
+  "kcal": 361,
+  "p": 13,
+  "c": 72,
+  "f": 1.5,
+  "fib": 3.5,
+  "serv": [
+   60,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍜",
+  "ml": 0,
+  "raw": 1,
+  "scans": 21
+ },
+ {
+  "label": "Arroz redondo",
+  "brand": "Hacendado",
+  "off": "8480000050441",
+  "offName": "Arroz redondo",
+  "kcal": 344,
+  "p": 8.2,
+  "c": 75,
+  "f": 1,
+  "fib": 0,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍚",
+  "ml": 0,
+  "raw": 1,
+  "scans": 57
+ },
+ {
+  "label": "Arroz basmati",
+  "brand": "Hacendado",
+  "off": "8480000050021",
+  "offName": "Arroz basmati aromático",
+  "kcal": 355,
+  "p": 9,
+  "c": 78,
+  "f": 0.6,
+  "fib": 0,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍚",
+  "ml": 0,
+  "raw": 1,
+  "scans": 59
+ },
+ {
+  "label": "Arroz integral",
+  "brand": "Hacendado",
+  "off": "8480000051844",
+  "offName": "Arroz integral largo",
+  "kcal": 350,
+  "p": 7.6,
+  "c": 72,
+  "f": 2.8,
+  "fib": 3.3,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍚",
+  "ml": 0,
+  "raw": 1,
+  "scans": 65
+ },
+ {
+  "label": "Quinoa",
+  "brand": "Hacendado",
+  "off": "8480000094308",
+  "offName": "Quinoa",
+  "kcal": 389,
+  "p": 14,
+  "c": 66.1,
+  "f": 6.1,
+  "fib": 0,
+  "serv": [
+   60,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍚",
+  "ml": 0,
+  "raw": 1,
+  "scans": 69
+ },
+ {
+  "label": "Tortitas de maíz",
+  "brand": "Hacendado",
+  "off": "8402001039263",
+  "offName": "Tortitas de maíz campestre",
+  "kcal": 414,
+  "p": 6.7,
+  "c": 76,
+  "f": 8.4,
+  "fib": 3.9,
+  "serv": [
+   7,
+   "tortita",
+   "tortitas"
+  ],
+  "em": "🍘",
+  "ml": 0,
+  "raw": 0,
+  "scans": 94
+ },
+ {
+  "label": "Tortillas de trigo (wraps)",
+  "brand": "Hacendado",
+  "off": "8480000808592",
+  "offName": "Tortillas Trigo",
+  "kcal": 294,
+  "p": 8.4,
+  "c": 50,
+  "f": 5.8,
+  "fib": 4.2,
+  "serv": [
+   40,
+   "tortilla",
+   "tortillas"
+  ],
+  "em": "🌯",
+  "ml": 0,
+  "raw": 0,
+  "scans": 158
+ },
+ {
+  "label": "Tortillas de trigo integrales",
+  "brand": "Hacendado",
+  "off": "8480000809421",
+  "offName": "Tortillas de trigo integrales",
+  "kcal": 269,
+  "p": 9.3,
+  "c": 41,
+  "f": 5.8,
+  "fib": 8.5,
+  "serv": [
+   40,
+   "tortilla",
+   "tortillas"
+  ],
+  "em": "🌯",
+  "ml": 0,
+  "raw": 0,
+  "scans": 220
+ },
+ {
+  "label": "Tortillas de avena",
+  "brand": "Hacendado",
+  "off": "8480000805317",
+  "offName": "Tortillas de avena 51%",
+  "kcal": 287,
+  "p": 15,
+  "c": 40,
+  "f": 6,
+  "fib": 5.4,
+  "serv": [
+   40,
+   "tortilla",
+   "tortillas"
+  ],
+  "em": "🌯",
+  "ml": 0,
+  "raw": 0,
+  "scans": 166
+ },
+ {
+  "label": "Pan de molde 100 % integral",
+  "brand": "Hacendado",
+  "off": "8480000838865",
+  "offName": "Pan de molde 100% integral familiar",
+  "kcal": 248,
+  "p": 8.7,
+  "c": 41,
+  "f": 3.8,
+  "fib": 7.5,
+  "serv": [
+   30,
+   "rebanada",
+   "rebanadas"
+  ],
+  "em": "🍞",
+  "ml": 0,
+  "raw": 0,
+  "scans": 105
+ },
+ {
+  "label": "Pan de molde blanco",
+  "brand": "Hacendado",
+  "off": "8480000838674",
+  "offName": "Pan de molde blanco",
+  "kcal": 250,
+  "p": 9,
+  "c": 46,
+  "f": 2.7,
+  "fib": 3,
+  "serv": [
+   30,
+   "rebanada",
+   "rebanadas"
+  ],
+  "em": "🍞",
+  "ml": 0,
+  "raw": 0,
+  "scans": 71
+ },
+ {
+  "label": "Pan de molde 35 % avena",
+  "brand": "Hacendado",
+  "off": "8480000822956",
+  "offName": "Pan de molde 35% avena",
+  "kcal": 265,
+  "p": 13,
+  "c": 35,
+  "f": 6.8,
+  "fib": 6.1,
+  "serv": [
+   30,
+   "rebanada",
+   "rebanadas"
+  ],
+  "em": "🍞",
+  "ml": 0,
+  "raw": 0,
+  "scans": 103
+ },
+ {
+  "label": "Pan tostado integral",
+  "brand": "Hacendado",
+  "off": "8480000837899",
+  "offName": "Pan tostado 100% integral bajo en sal y en azúcares",
+  "kcal": 388,
+  "p": 17.7,
+  "c": 61,
+  "f": 5.7,
+  "fib": 10.9,
+  "serv": [
+   10,
+   "tostada",
+   "tostadas"
+  ],
+  "em": "🍞",
+  "ml": 0,
+  "raw": 0,
+  "scans": 99
+ },
+ {
+  "label": "Panecillos integrales",
+  "brand": "Hacendado",
+  "off": "8480000134455",
+  "offName": "Panecillos 100% integral de trigo",
+  "kcal": 382,
+  "p": 13.3,
+  "c": 59.6,
+  "f": 7.8,
+  "fib": 10.3,
+  "serv": [
+   50,
+   "panecillo",
+   "panecillos"
+  ],
+  "em": "🍞",
+  "ml": 0,
+  "raw": 0,
+  "scans": 61
+ },
+ {
+  "label": "Leche desnatada",
+  "brand": "Hacendado",
+  "off": "8402001002120",
+  "offName": "Leche desnatada",
+  "kcal": 34,
+  "p": 3.2,
+  "c": 4.7,
+  "f": 0.3,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 11
+ },
+ {
+  "label": "Leche semidesnatada",
+  "brand": "Hacendado",
+  "off": "8480000107947",
+  "offName": "Leche semidesnatada",
+  "kcal": 46,
+  "p": 3.1,
+  "c": 4.8,
+  "f": 1.6,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 12
+ },
+ {
+  "label": "Leche sin lactosa semidesnatada",
+  "brand": "Hacendado",
+  "off": "8480000104830",
+  "offName": "Leche semidesnatada Sin Lactosa",
+  "kcal": 44,
+  "p": 3,
+  "c": 4.6,
+  "f": 1.5,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 11
+ },
+ {
+  "label": "Bebida de proteínas fresa y plátano",
+  "brand": "Hacendado",
+  "off": "8402001030383",
+  "offName": "Proteinas Fresa Platano Bebida",
+  "kcal": 48,
+  "p": 7,
+  "c": 4.2,
+  "f": 0.4,
+  "fib": 0,
+  "serv": [
+   250,
+   "botella",
+   "botellas"
+  ],
+  "em": "🥤",
+  "ml": 1,
+  "raw": 0,
+  "scans": 12
+ },
+ {
+  "label": "Bebida de avena",
+  "brand": "Hacendado",
+  "off": "8402001014574",
+  "offName": "Bebida de avena 0%",
+  "kcal": 35,
+  "p": 0.7,
+  "c": 4.7,
+  "f": 1.4,
+  "fib": 0.5,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 14
+ },
+ {
+  "label": "Queso fresco batido 0 %",
+  "brand": "Hacendado",
+  "off": "8480000510211",
+  "offName": "Queso fresco batido 0%",
+  "kcal": 46,
+  "p": 8,
+  "c": 3.5,
+  "f": 0.1,
+  "fib": 0,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 8
+ },
+ {
+  "label": "Queso fresco light",
+  "brand": "Hacendado",
+  "off": "8480000511928",
+  "offName": "Queso fresco light",
+  "kcal": 117,
+  "p": 13,
+  "c": 3.8,
+  "f": 5.7,
+  "fib": 0,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 57
+ },
+ {
+  "label": "Queso fresco de Burgos",
+  "brand": "Hacendado",
+  "off": "8480000524089",
+  "offName": "Queso Burgos Natural",
+  "kcal": 150,
+  "p": 10.3,
+  "c": 3.7,
+  "f": 10.4,
+  "fib": 0,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 52
+ },
+ {
+  "label": "Requesón",
+  "brand": "Hacendado",
+  "off": "8413556010324",
+  "offName": "Requesón",
+  "kcal": 139,
+  "p": 8.7,
+  "c": 5.4,
+  "f": 11.6,
+  "fib": 0,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 76
+ },
+ {
+  "label": "Queso de untar light",
+  "brand": "Hacendado",
+  "off": "8480000512239",
+  "offName": "Queso untar light",
+  "kcal": 130,
+  "p": 9,
+  "c": 4.8,
+  "f": 8.3,
+  "fib": 0,
+  "serv": [
+   30,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 201
+ },
+ {
+  "label": "Mozzarella",
+  "brand": "Hacendado",
+  "off": "8480000510501",
+  "offName": "Mozzarella",
+  "kcal": 202,
+  "p": 17,
+  "c": 2,
+  "f": 14,
+  "fib": 0,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 88
+ },
+ {
+  "label": "Queso rallado para fundir",
+  "brand": "Hacendado",
+  "off": "8480000236227",
+  "offName": "Queso rallado especial fundir",
+  "kcal": 284,
+  "p": 19,
+  "c": 7,
+  "f": 20,
+  "fib": 0,
+  "serv": [
+   20,
+   "puñado",
+   "puñados"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 62
+ },
+ {
+  "label": "Havarti light (lonchas)",
+  "brand": "Hacendado",
+  "off": "8480000505460",
+  "offName": "Havarti light",
+  "kcal": 267,
+  "p": 27,
+  "c": 1.6,
+  "f": 17,
+  "fib": 0,
+  "serv": [
+   20,
+   "loncha",
+   "lonchas"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 152
+ },
+ {
+  "label": "Quesitos",
+  "brand": "Hacendado",
+  "off": "8480000524058",
+  "offName": "Quesitos",
+  "kcal": 192,
+  "p": 11.8,
+  "c": 3.9,
+  "f": 14.3,
+  "fib": 0,
+  "serv": [
+   16,
+   "quesito",
+   "quesitos"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 111
+ },
+ {
+  "label": "Jamón cocido extra",
+  "brand": "Hacendado",
+  "off": "8480000592491",
+  "offName": "Jamón cocido extra",
+  "kcal": 101,
+  "p": 18.6,
+  "c": 0.9,
+  "f": 2.5,
+  "fib": 0,
+  "serv": [
+   15,
+   "loncha",
+   "lonchas"
+  ],
+  "em": "🥓",
+  "ml": 0,
+  "raw": 0,
+  "scans": 72
+ },
+ {
+  "label": "Pechuga de pavo finas lonchas",
+  "brand": "Hacendado",
+  "off": "8480000679727",
+  "offName": "Pechuga de pavo finas lonchas",
+  "kcal": 78,
+  "p": 17.8,
+  "c": 0.6,
+  "f": 0.5,
+  "fib": 0,
+  "serv": [
+   15,
+   "loncha",
+   "lonchas"
+  ],
+  "em": "🦃",
+  "ml": 0,
+  "raw": 0,
+  "scans": 101
+ },
+ {
+  "label": "Pechuga de pollo en lonchas",
+  "brand": "Hacendado",
+  "off": "8480000561565",
+  "offName": "Pechuga de pollo finas lonchas",
+  "kcal": 84,
+  "p": 16.9,
+  "c": 1.3,
+  "f": 1.2,
+  "fib": 0,
+  "serv": [
+   15,
+   "loncha",
+   "lonchas"
+  ],
+  "em": "🍗",
+  "ml": 0,
+  "raw": 0,
+  "scans": 17
+ },
+ {
+  "label": "Tiras de pechuga de pollo al horno",
+  "brand": "Hacendado",
+  "off": "8480000566614",
+  "offName": "tiras pollo",
+  "kcal": 107,
+  "p": 23.4,
+  "c": 0.6,
+  "f": 1.2,
+  "fib": 0,
+  "serv": [
+   140,
+   "envase",
+   "envases"
+  ],
+  "em": "🍗",
+  "ml": 0,
+  "raw": 0,
+  "scans": 86
+ },
+ {
+  "label": "Atún claro al natural",
+  "brand": "Hacendado",
+  "off": "8480000180186",
+  "offName": "Atún claro al natural",
+  "kcal": 99,
+  "p": 21,
+  "c": 0.9,
+  "f": 1.2,
+  "fib": 0,
+  "serv": [
+   52,
+   "lata (escurrida)",
+   "latas (escurridas)"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 161
+ },
+ {
+  "label": "Atún claro en aceite de oliva",
+  "brand": "Hacendado",
+  "off": "8480000180308",
+  "offName": "Atún en aceite de oliva",
+  "kcal": 363,
+  "p": 18,
+  "c": 0.5,
+  "f": 32,
+  "fib": 0,
+  "serv": [
+   52,
+   "lata (escurrida)",
+   "latas (escurridas)"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 29
+ },
+ {
+  "label": "Atún claro en aceite de girasol",
+  "brand": "Hacendado",
+  "off": "8480000180551",
+  "offName": "Atún Claro en Aceite de Girasol",
+  "kcal": 252,
+  "p": 21,
+  "c": 0.9,
+  "f": 18,
+  "fib": 0,
+  "serv": [
+   52,
+   "lata (escurrida)",
+   "latas (escurridas)"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 74
+ },
+ {
+  "label": "Caballa en aceite de oliva",
+  "brand": "Hacendado",
+  "off": "8480000183101",
+  "offName": "Filetes de caballa del sur en aceite de oliva",
+  "kcal": 224,
+  "p": 26.7,
+  "c": 0.6,
+  "f": 12.2,
+  "fib": 0,
+  "serv": [
+   60,
+   "lata",
+   "latas"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 41
+ },
+ {
+  "label": "Sardinas en aceite de oliva",
+  "brand": "Hacendado",
+  "off": "8480000182258",
+  "offName": "Sardinas en aceite de oliva",
+  "kcal": 289,
+  "p": 20,
+  "c": 0.7,
+  "f": 23,
+  "fib": 0,
+  "serv": [
+   60,
+   "lata",
+   "latas"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 23
+ },
+ {
+  "label": "Salmón ahumado",
+  "brand": "Hacendado",
+  "off": "8480000226129",
+  "offName": "Taquitos de salmón ahumado",
+  "kcal": 171,
+  "p": 22,
+  "c": 0.5,
+  "f": 9.1,
+  "fib": 0,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 35
+ },
+ {
+  "label": "Palitos de surimi",
+  "brand": "Hacendado",
+  "off": "8480000625021",
+  "offName": "Palitos de Surimi",
+  "kcal": 90,
+  "p": 7.9,
+  "c": 12.4,
+  "f": 0.8,
+  "fib": 0.9,
+  "serv": [
+   15,
+   "palito",
+   "palitos"
+  ],
+  "em": "🦀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 54
+ },
+ {
+  "label": "Mejillones en escabeche",
+  "brand": "Hacendado",
+  "off": "8480000186157",
+  "offName": "Mejillones en escabeche",
+  "kcal": 158,
+  "p": 18,
+  "c": 6,
+  "f": 7.1,
+  "fib": 0,
+  "serv": [
+   60,
+   "lata",
+   "latas"
+  ],
+  "em": "🦪",
+  "ml": 0,
+  "raw": 0,
+  "scans": 46
+ },
+ {
+  "label": "Hummus de garbanzos",
+  "brand": "Hacendado",
+  "off": "8480000808585",
+  "offName": "Hummus de garbanzos receta clásica",
+  "kcal": 311,
+  "p": 6,
+  "c": 11.1,
+  "f": 25.8,
+  "fib": 5.5,
+  "serv": [
+   30,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🫘",
+  "ml": 0,
+  "raw": 0,
+  "scans": 197
+ },
+ {
+  "label": "Lentejas cocidas",
+  "brand": "Hacendado",
+  "off": "8480000260307",
+  "offName": "Lentejas",
+  "kcal": 89,
+  "p": 8.2,
+  "c": 10.7,
+  "f": 0.4,
+  "fib": 0,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "em": "🫘",
+  "ml": 0,
+  "raw": 0,
+  "scans": 40
+ },
+ {
+  "label": "Alubias rojas cocidas",
+  "brand": "Hacendado",
+  "off": "8480000260000",
+  "offName": "Alubia roja",
+  "kcal": 89,
+  "p": 6.3,
+  "c": 11.5,
+  "f": 0.4,
+  "fib": 0,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "em": "🫘",
+  "ml": 0,
+  "raw": 0,
+  "scans": 34
+ },
+ {
+  "label": "Cacahuete tostado 0 % sal",
+  "brand": "Hacendado",
+  "off": "8480000340313",
+  "offName": "Cacahuete tostado 0% sal añadida",
+  "kcal": 618,
+  "p": 24,
+  "c": 13,
+  "f": 50.4,
+  "fib": 8.2,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "em": "🥜",
+  "ml": 0,
+  "raw": 0,
+  "scans": 62
+ },
+ {
+  "label": "Almendra natural",
+  "brand": "Hacendado",
+  "off": "8480000235756",
+  "offName": "Almendra sin piel",
+  "kcal": 619,
+  "p": 22.8,
+  "c": 6.9,
+  "f": 54,
+  "fib": 10.6,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "em": "🌰",
+  "ml": 0,
+  "raw": 0,
+  "scans": 84
+ },
+ {
+  "label": "Anacardos",
+  "brand": "Hacendado",
+  "off": "8480000340276",
+  "offName": "Anacardo Frito",
+  "kcal": 617,
+  "p": 18,
+  "c": 22,
+  "f": 50,
+  "fib": 6.4,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "em": "🌰",
+  "ml": 0,
+  "raw": 0,
+  "scans": 57
+ },
+ {
+  "label": "Pistachos",
+  "brand": "Hacendado",
+  "off": "8480000342621",
+  "offName": "Pistacho natural",
+  "kcal": 607,
+  "p": 25,
+  "c": 11.5,
+  "f": 49.6,
+  "fib": 7.4,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "em": "🌰",
+  "ml": 0,
+  "raw": 0,
+  "scans": 51
+ },
+ {
+  "label": "Aceite de oliva virgen extra",
+  "brand": "Hacendado",
+  "off": "8480000047403",
+  "offName": "Aceite de oliva virgen extra",
+  "kcal": 822,
+  "p": 0,
+  "c": 0,
+  "f": 91,
+  "fib": 0,
+  "serv": [
+   10,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🫒",
+  "ml": 0,
+  "raw": 0,
+  "scans": 77
+ },
+ {
+  "label": "Chocolate negro 72 %",
+  "brand": "Hacendado",
+  "off": "8410109114157",
+  "offName": "Senzza surtido bombones chocolate negro 70%",
+  "kcal": 560,
+  "p": 7,
+  "c": 40,
+  "f": 39,
+  "fib": 0,
+  "serv": [
+   10,
+   "onza",
+   "onzas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 20
+ },
+ {
+  "label": "Miel",
+  "brand": "Hacendado",
+  "off": "8480000154507",
+  "offName": "Miel de montaña",
+  "kcal": 333,
+  "p": 0.5,
+  "c": 83,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🍯",
+  "ml": 0,
+  "raw": 0,
+  "scans": 16
+ },
+ {
+  "label": "Tomate frito",
+  "brand": "Hacendado",
+  "off": "8480000171511",
+  "offName": "Tomate frito",
+  "kcal": 77,
+  "p": 1.5,
+  "c": 9.5,
+  "f": 3.5,
+  "fib": 0,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍅",
+  "ml": 0,
+  "raw": 0,
+  "scans": 117
+ },
+ {
+  "label": "Salsa de tomate zero",
+  "brand": "Hacendado",
+  "off": "8402001007033",
+  "offName": "Salsa de tomate zero sin azúcares añadidos",
+  "kcal": 83,
+  "p": 1.7,
+  "c": 17.8,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍅",
+  "ml": 0,
+  "raw": 0,
+  "scans": 130
+ },
+ {
+  "label": "Salmorejo",
+  "brand": "Hacendado",
+  "off": "8480000399014",
+  "offName": "Salmorejo fresco",
+  "kcal": 134,
+  "p": 1.5,
+  "c": 9.5,
+  "f": 10,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🍅",
+  "ml": 1,
+  "raw": 0,
+  "scans": 56
+ },
+ {
+  "label": "Tortilla de patatas con cebolla",
+  "brand": "Hacendado",
+  "off": "8480000808950",
+  "offName": "Tortilla De Patatas Con Cebolla",
+  "kcal": 193,
+  "p": 5.7,
+  "c": 17,
+  "f": 11,
+  "fib": 0,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍳",
+  "ml": 0,
+  "raw": 0,
+  "scans": 140
+ },
+ {
+  "label": "Pizza jamón y queso",
+  "brand": "Hacendado",
+  "off": "8480000635815",
+  "offName": "Pizza jamón y queso",
+  "kcal": 224,
+  "p": 14,
+  "c": 25.2,
+  "f": 7.5,
+  "fib": 0,
+  "serv": [
+   175,
+   "media pizza",
+   "medias pizzas"
+  ],
+  "em": "🍕",
+  "ml": 0,
+  "raw": 0,
+  "scans": 19
+ },
+ {
+  "label": "Lasaña boloñesa",
+  "brand": "Hacendado",
+  "off": "8480000044877",
+  "offName": "LASAGNA BOLONESA BOLONHESA HACENDADO",
+  "kcal": 143,
+  "p": 7.4,
+  "c": 14,
+  "f": 6.1,
+  "fib": 1,
+  "serv": [
+   350,
+   "envase",
+   "envases"
+  ],
+  "em": "🍝",
+  "ml": 0,
+  "raw": 0,
+  "scans": 61
+ },
+ {
+  "label": "Patatas fritas clásicas",
+  "brand": "Hacendado",
+  "off": "8480000222459",
+  "offName": "Patatas fritas clásicas",
+  "kcal": 558,
+  "p": 6.7,
+  "c": 52,
+  "f": 35,
+  "fib": 0,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "em": "🥔",
+  "ml": 0,
+  "raw": 0,
+  "scans": 57
+ },
+ {
+  "label": "Maíz dulce",
+  "brand": "Hacendado",
+  "off": "8480000167149",
+  "offName": "Maíz dulce",
+  "kcal": 75,
+  "p": 2.6,
+  "c": 9.3,
+  "f": 2.3,
+  "fib": 0,
+  "serv": [
+   75,
+   "lata",
+   "latas"
+  ],
+  "em": "🌽",
+  "ml": 0,
+  "raw": 0,
+  "scans": 55
+ },
+ {
+  "label": "Salchichas tipo frankfurt",
+  "brand": "Hacendado",
+  "off": "8480000531414",
+  "offName": "Salchichas estilo frankfurt",
+  "kcal": 201,
+  "p": 11.5,
+  "c": 5.2,
+  "f": 14.9,
+  "fib": 0,
+  "serv": [
+   44,
+   "salchicha",
+   "salchichas"
+  ],
+  "em": "🌭",
+  "ml": 0,
+  "raw": 0,
+  "scans": 54
+ },
+ {
+  "label": "Fuet",
+  "brand": "Hacendado",
+  "off": "8480000551085",
+  "offName": "Fuet Espetec",
+  "kcal": 421,
+  "p": 27.5,
+  "c": 1.4,
+  "f": 34,
+  "fib": 0,
+  "serv": [
+   20,
+   "ración",
+   "raciones"
+  ],
+  "em": "🥓",
+  "ml": 0,
+  "raw": 0,
+  "scans": 83
+ },
+ {
+  "label": "Mantequilla",
+  "brand": "Hacendado",
+  "off": "8480000207272",
+  "offName": "Mantequilla con sal",
+  "kcal": 734,
+  "p": 0.5,
+  "c": 0.8,
+  "f": 81,
+  "fib": 0,
+  "serv": [
+   10,
+   "cucharadita",
+   "cucharaditas"
+  ],
+  "em": "🧈",
+  "ml": 0,
+  "raw": 0,
+  "scans": 70
+ },
+ {
+  "label": "Mayonesa",
+  "brand": "Hacendado",
+  "off": "8402001028649",
+  "offName": "Mayonesa",
+  "kcal": 599,
+  "p": 0.6,
+  "c": 2.4,
+  "f": 65,
+  "fib": 0,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🥚",
+  "ml": 0,
+  "raw": 0,
+  "scans": 64
+ },
+ {
+  "label": "Edamame",
+  "brand": "Hacendado",
+  "off": "8480000707406",
+  "offName": "Edamame soja verde",
+  "kcal": 145,
+  "p": 12,
+  "c": 3.3,
+  "f": 7.6,
+  "fib": 7.5,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "em": "🫛",
+  "ml": 0,
+  "raw": 0,
+  "scans": 8
+ },
+ {
+  "label": "Gelatina 0 %",
+  "brand": "Hacendado",
+  "off": "8402001011856",
+  "offName": "Gelatina 0% arándano",
+  "kcal": 9,
+  "p": 1.6,
+  "c": 0.7,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   100,
+   "tarrina",
+   "tarrinas"
+  ],
+  "em": "🍮",
+  "ml": 0,
+  "raw": 0,
+  "scans": 12
+ },
+ {
+  "label": "Natillas proteicas",
+  "brand": "Hacendado",
+  "off": "8402001025235",
+  "offName": "Pudding +Proteinas",
+  "kcal": 78,
+  "p": 10,
+  "c": 5,
+  "f": 1.5,
+  "fib": 0,
+  "serv": [
+   125,
+   "tarrina",
+   "tarrinas"
+  ],
+  "em": "🍮",
+  "ml": 0,
+  "raw": 0,
+  "scans": 11
+ },
+ {
+  "label": "Skyr natural",
+  "brand": "Danone",
+  "off": "3033491454080",
+  "offName": "SKYR",
+  "kcal": 58,
+  "p": 10,
+  "c": 3.9,
+  "f": 0.2,
+  "fib": 0,
+  "serv": [
+   140,
+   "tarrina",
+   "tarrinas"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 261
+ },
+ {
+  "label": "Kéfir natural",
+  "brand": "Activia",
+  "off": "3033491993138",
+  "offName": "Kéfir Doux Nature",
+  "kcal": 59,
+  "p": 3.3,
+  "c": 4.1,
+  "f": 3.3,
+  "fib": 0,
+  "serv": [
+   125,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 0,
+  "raw": 0,
+  "scans": 212
+ },
+ {
+  "label": "Yogur griego natural",
+  "brand": "Milbona (Lidl)",
+  "off": "4056489148739",
+  "offName": "Creamy Greek Style Natural Yogurt",
+  "kcal": 126,
+  "p": 4.1,
+  "c": 4.6,
+  "f": 10,
+  "fib": 0.5,
+  "serv": [
+   125,
+   "yogur",
+   "yogures"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 168
+ },
+ {
+  "label": "Yogur griego light",
+  "brand": "Milbona (Lidl)",
+  "off": "4056489518273",
+  "offName": "Light Greek Style Yogurt",
+  "kcal": 68,
+  "p": 7,
+  "c": 9.2,
+  "f": 0.2,
+  "fib": 0.2,
+  "serv": [
+   125,
+   "yogur",
+   "yogures"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 46
+ },
+ {
+  "label": "Queso cottage",
+  "brand": "Milbona (Lidl)",
+  "off": "20002183",
+  "offName": "Milbona Cottage Cheese",
+  "kcal": 98,
+  "p": 11.5,
+  "c": 2.8,
+  "f": 4.5,
+  "fib": 0,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 259
+ },
+ {
+  "label": "Pudding proteico vainilla",
+  "brand": "Milbona (Lidl)",
+  "off": "4056489216155",
+  "offName": "High Protein Pudding Vainilla",
+  "kcal": 75,
+  "p": 10,
+  "c": 5.2,
+  "f": 1.5,
+  "fib": 0.2,
+  "serv": [
+   200,
+   "tarrina",
+   "tarrinas"
+  ],
+  "em": "🍮",
+  "ml": 0,
+  "raw": 0,
+  "scans": 119
+ },
+ {
+  "label": "Pudding proteico chocolate",
+  "brand": "Arla",
+  "off": "4100290080389",
+  "offName": "Protein Chocolate Flavour Pudding",
+  "kcal": 77,
+  "p": 10,
+  "c": 6.6,
+  "f": 1.5,
+  "fib": 0,
+  "serv": [
+   200,
+   "tarrina",
+   "tarrinas"
+  ],
+  "em": "🍮",
+  "ml": 0,
+  "raw": 0,
+  "scans": 70
+ },
+ {
+  "label": "Crema de cacahuete 100 %",
+  "brand": "Prozis",
+  "off": "5600826203613",
+  "offName": "Peanut butter",
+  "kcal": 626,
+  "p": 26,
+  "c": 13,
+  "f": 51,
+  "fib": 6.8,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🥜",
+  "ml": 0,
+  "raw": 0,
+  "scans": 90
+ },
+ {
+  "label": "Protein Pancakes (preparado)",
+  "brand": "Myprotein",
+  "off": "8721082164009",
+  "offName": "Protein Pancakes",
+  "kcal": 239,
+  "p": 16.3,
+  "c": 26.5,
+  "f": 7.2,
+  "fib": 1.2,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "em": "🥞",
+  "ml": 0,
+  "raw": 0,
+  "scans": 4
+ },
+ {
+  "label": "Gazpacho",
+  "brand": "Kaiku",
+  "off": "8432425070900",
+  "offName": "El Gazpacho",
+  "kcal": 37,
+  "p": 0.9,
+  "c": 2.9,
+  "f": 2.2,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🍅",
+  "ml": 1,
+  "raw": 0,
+  "scans": 0
+ },
+ {
+  "label": "Impact Whey Protein",
+  "brand": "Myprotein",
+  "off": "5055534302941",
+  "offName": "Impact Whey Protein",
+  "kcal": 379,
+  "p": 72,
+  "c": 8.9,
+  "f": 5.9,
+  "fib": 0,
+  "serv": [
+   25,
+   "cacito",
+   "cacitos"
+  ],
+  "em": "🥤",
+  "ml": 0,
+  "raw": 0,
+  "scans": 11
+ },
+ {
+  "label": "Impact Whey Isolate",
+  "brand": "Myprotein",
+  "off": "5055534325834",
+  "offName": "Impact Whey Isolate saveur vanille",
+  "kcal": 360,
+  "p": 83.3,
+  "c": 4.7,
+  "f": 0.8,
+  "fib": 0,
+  "serv": [
+   25,
+   "cacito",
+   "cacitos"
+  ],
+  "em": "🥤",
+  "ml": 0,
+  "raw": 0,
+  "scans": 4
+ },
+ {
+  "label": "Clear Whey Isolate",
+  "brand": "Myprotein",
+  "off": "5059883300740",
+  "offName": "CLEAR Whey Protein",
+  "kcal": 331,
+  "p": 76.9,
+  "c": 8.1,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   25,
+   "cacito",
+   "cacitos"
+  ],
+  "em": "🥤",
+  "ml": 0,
+  "raw": 0,
+  "scans": 8
+ },
+ {
+  "label": "Gold Standard 100 % Whey",
+  "brand": "Optimum Nutrition",
+  "off": "5060469988535",
+  "offName": "Gold Standard Whey",
+  "kcal": 377,
+  "p": 80,
+  "c": 5.7,
+  "f": 4.3,
+  "fib": 0,
+  "serv": [
+   30,
+   "cacito",
+   "cacitos"
+  ],
+  "em": "🥤",
+  "ml": 0,
+  "raw": 0,
+  "scans": 17
+ },
+ {
+  "label": "100 % Real Whey Protein",
+  "brand": "Prozis",
+  "off": "5600380897549",
+  "offName": "100% real whey protein",
+  "kcal": 371,
+  "p": 73,
+  "c": 5.4,
+  "f": 6.4,
+  "fib": 0,
+  "serv": [
+   30,
+   "cacito",
+   "cacitos"
+  ],
+  "em": "🥤",
+  "ml": 0,
+  "raw": 0,
+  "scans": 19
+ },
+ {
+  "label": "Evowhey Protein",
+  "brand": "HSN",
+  "off": "5060326271602",
+  "offName": "Evowhey 2.0 Vainilla HSN",
+  "kcal": 367,
+  "p": 78,
+  "c": 6.2,
+  "f": 3.3,
+  "fib": 0,
+  "serv": [
+   30,
+   "cacito",
+   "cacitos"
+  ],
+  "em": "🥤",
+  "ml": 0,
+  "raw": 0,
+  "scans": 2
+ },
+ {
+  "label": "Barrita de proteínas",
+  "brand": "Quest",
+  "off": "0888849004942",
+  "offName": "Questbar Blueberry Muffin 60 G",
+  "kcal": 322,
+  "p": 35,
+  "c": 12,
+  "f": 11,
+  "fib": 0,
+  "serv": [
+   60,
+   "barrita",
+   "barritas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 3
+ },
+ {
+  "label": "Protein Bar",
+  "brand": "Barebells",
+  "off": "7340001801101",
+  "offName": "White chocolate almond protein bar",
+  "kcal": 364,
+  "p": 36,
+  "c": 29,
+  "f": 15,
+  "fib": 7,
+  "serv": [
+   55,
+   "barrita",
+   "barritas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 33
+ },
+ {
+  "label": "Oikos griego natural",
+  "brand": "Danone",
+  "off": "6194003804223",
+  "offName": "Oikos",
+  "kcal": 128,
+  "p": 4,
+  "c": 6.1,
+  "f": 9.7,
+  "fib": 0,
+  "serv": [
+   110,
+   "yogur",
+   "yogures"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 58
+ },
+ {
+  "label": "YoPro natural",
+  "brand": "Danone",
+  "off": "4009700050533",
+  "offName": "Yopro - Stracciatella-Geschmack",
+  "kcal": 60,
+  "p": 8.4,
+  "c": 5.4,
+  "f": 0.5,
+  "fib": 0.2,
+  "serv": [
+   160,
+   "yogur",
+   "yogures"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 20
+ },
+ {
+  "label": "Activia natural",
+  "brand": "Danone",
+  "off": "3033491147067",
+  "offName": "Activia bifidus nature 125g x 4",
+  "kcal": 62,
+  "p": 3.4,
+  "c": 4.4,
+  "f": 3.4,
+  "fib": 0,
+  "serv": [
+   120,
+   "yogur",
+   "yogures"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 195
+ },
+ {
+  "label": "Danone natural",
+  "brand": "Danone",
+  "off": "3033490004521",
+  "offName": "Yogur natural",
+  "kcal": 46,
+  "p": 3.8,
+  "c": 5.1,
+  "f": 1,
+  "fib": 0,
+  "serv": [
+   120,
+   "yogur",
+   "yogures"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 299
+ },
+ {
+  "label": "Skyr natural",
+  "brand": "Milbona (Lidl)",
+  "off": "4056489491217",
+  "offName": "Skyr",
+  "kcal": 62,
+  "p": 11,
+  "c": 4,
+  "f": 0.2,
+  "fib": 0,
+  "serv": [
+   150,
+   "tarrina",
+   "tarrinas"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 241
+ },
+ {
+  "label": "Arla Protein natural",
+  "brand": "Arla",
+  "off": "4100290077617",
+  "offName": "Dessert Lacté Protein Caramel Salé",
+  "kcal": 79,
+  "p": 10,
+  "c": 7.4,
+  "f": 1.5,
+  "fib": 0,
+  "serv": [
+   150,
+   "tarrina",
+   "tarrinas"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 32
+ },
+ {
+  "label": "Bebida de soja original",
+  "brand": "Alpro",
+  "off": "5411188115472",
+  "offName": "Soyamilch",
+  "kcal": 39,
+  "p": 3,
+  "c": 2.5,
+  "f": 1.8,
+  "fib": 0.5,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 311
+ },
+ {
+  "label": "Bebida de avena",
+  "brand": "Alpro",
+  "off": "5411188115366",
+  "offName": "Alpro smooth subtle creamy oat",
+  "kcal": 42,
+  "p": 0.8,
+  "c": 6,
+  "f": 1.5,
+  "fib": 0.7,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 556
+ },
+ {
+  "label": "Leche semidesnatada",
+  "brand": "Central Lechera Asturiana",
+  "off": "8410297113673",
+  "offName": "Leche Uht Semidesnatada",
+  "kcal": 45,
+  "p": 3.2,
+  "c": 4.7,
+  "f": 1.6,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 13
+ },
+ {
+  "label": "Leche desnatada",
+  "brand": "Puleva",
+  "off": "8411700603798",
+  "offName": "Leche desnatada Eco",
+  "kcal": 37,
+  "p": 3.2,
+  "c": 4.8,
+  "f": 0.5,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 1
+ },
+ {
+  "label": "Leche sin lactosa semidesnatada",
+  "brand": "Kaiku",
+  "off": "8432425049913",
+  "offName": "Kaiku Sin lactosa mix semillas y datiles",
+  "kcal": 101,
+  "p": 5.4,
+  "c": 9,
+  "f": 4.6,
+  "fib": 0,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "em": "🥛",
+  "ml": 1,
+  "raw": 0,
+  "scans": 3
+ },
+ {
+  "label": "Queso de untar original",
+  "brand": "Philadelphia",
+  "off": "7622201695521",
+  "offName": "PHILADELPHIA ORIGINAL",
+  "kcal": 227,
+  "p": 5.3,
+  "c": 4.3,
+  "f": 20.7,
+  "fib": 0.3,
+  "serv": [
+   30,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 114
+ },
+ {
+  "label": "Queso de untar light",
+  "brand": "Philadelphia",
+  "off": "7622300340292",
+  "offName": "Philadelphia light 0292",
+  "kcal": 145,
+  "p": 7.2,
+  "c": 5.1,
+  "f": 10,
+  "fib": 0.3,
+  "serv": [
+   30,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 14
+ },
+ {
+  "label": "Quesitos",
+  "brand": "El Caserío",
+  "off": "8410172462957",
+  "offName": "Quesitos",
+  "kcal": 217,
+  "p": 11,
+  "c": 3.8,
+  "f": 17,
+  "fib": 0,
+  "serv": [
+   16,
+   "quesito",
+   "quesitos"
+  ],
+  "em": "🧀",
+  "ml": 0,
+  "raw": 0,
+  "scans": 5
+ },
+ {
+  "label": "Spaghetti n.º 5",
+  "brand": "Barilla",
+  "off": "0076808011036",
+  "offName": "SPAGHETTINI",
+  "kcal": 353,
+  "p": 12.9,
+  "c": 74.1,
+  "f": 1.8,
+  "fib": 5.9,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍝",
+  "ml": 0,
+  "raw": 1,
+  "scans": 11
+ },
+ {
+  "label": "Spaghetti",
+  "brand": "Gallo",
+  "off": "8410069017895",
+  "offName": "Spaghettini al huevo",
+  "kcal": 350,
+  "p": 13,
+  "c": 67,
+  "f": 2.7,
+  "fib": 3,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍝",
+  "ml": 0,
+  "raw": 1,
+  "scans": 4
+ },
+ {
+  "label": "Arroz largo",
+  "brand": "SOS",
+  "off": "8410184020466",
+  "offName": "Arroz especial ensaladas",
+  "kcal": 349,
+  "p": 7.7,
+  "c": 74,
+  "f": 1.9,
+  "fib": 3.1,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍚",
+  "ml": 0,
+  "raw": 1,
+  "scans": 8
+ },
+ {
+  "label": "Arroz redondo",
+  "brand": "Brillante",
+  "off": "8410184016520",
+  "offName": "Arroz redondo sabroz",
+  "kcal": 351,
+  "p": 7.3,
+  "c": 77,
+  "f": 1.4,
+  "fib": 1.9,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "em": "🍚",
+  "ml": 0,
+  "raw": 1,
+  "scans": 12
+ },
+ {
+  "label": "Copos de avena",
+  "brand": "Quaker",
+  "off": "5000108030904",
+  "offName": "Jumbo Oats",
+  "kcal": 375,
+  "p": 11,
+  "c": 60,
+  "f": 8,
+  "fib": 9,
+  "serv": [
+   40,
+   "ración",
+   "raciones"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 51
+ },
+ {
+  "label": "Special K Original",
+  "brand": "Kellogg's",
+  "off": "5050083296079",
+  "offName": "Cereales special K original",
+  "kcal": 392,
+  "p": 8,
+  "c": 84,
+  "f": 1.3,
+  "fib": 6,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 232
+ },
+ {
+  "label": "Corn Flakes",
+  "brand": "Kellogg's",
+  "off": "3159470000120",
+  "offName": "Corn Flakes",
+  "kcal": 377,
+  "p": 7,
+  "c": 84,
+  "f": 0.9,
+  "fib": 3,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 561
+ },
+ {
+  "label": "Fitness Original",
+  "brand": "Nestlé",
+  "off": "7613287514325",
+  "offName": "Fitness Nature Céréales complètes",
+  "kcal": 368,
+  "p": 9.8,
+  "c": 74.7,
+  "f": 1.5,
+  "fib": 8.5,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "em": "🥣",
+  "ml": 0,
+  "raw": 0,
+  "scans": 321
+ },
+ {
+  "label": "Pan de molde 100 % integral",
+  "brand": "Bimbo",
+  "off": "8412600038635",
+  "offName": "Pan De Molde 100% Integral De Trigo",
+  "kcal": 250,
+  "p": 11,
+  "c": 42,
+  "f": 3.2,
+  "fib": 6.1,
+  "serv": [
+   30,
+   "rebanada",
+   "rebanadas"
+  ],
+  "em": "🍞",
+  "ml": 0,
+  "raw": 0,
+  "scans": 73
+ },
+ {
+  "label": "Atún claro en aceite de oliva",
+  "brand": "Calvo",
+  "off": "8410090051264",
+  "offName": "Atún claro en aceite de oliva bajo en sal",
+  "kcal": 265,
+  "p": 20,
+  "c": 0,
+  "f": 20,
+  "fib": 0,
+  "serv": [
+   52,
+   "lata (escurrida)",
+   "latas (escurridas)"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 15
+ },
+ {
+  "label": "Atún claro en aceite de oliva",
+  "brand": "Isabel",
+  "off": "8410111000615",
+  "offName": "Atún en aceite de oliva",
+  "kcal": 198,
+  "p": 27,
+  "c": 0,
+  "f": 10,
+  "fib": 0,
+  "serv": [
+   52,
+   "lata (escurrida)",
+   "latas (escurridas)"
+  ],
+  "em": "🐟",
+  "ml": 0,
+  "raw": 0,
+  "scans": 1
+ },
+ {
+  "label": "Pechuga de pavo",
+  "brand": "Campofrío",
+  "off": "8410320249478",
+  "offName": "Pavofrio pechuga de pavo horno de leña",
+  "kcal": 82,
+  "p": 16,
+  "c": 2.2,
+  "f": 1,
+  "fib": 0,
+  "serv": [
+   15,
+   "loncha",
+   "lonchas"
+  ],
+  "em": "🦃",
+  "ml": 0,
+  "raw": 0,
+  "scans": 37
+ },
+ {
+  "label": "Pechuga de pavo",
+  "brand": "ElPozo",
+  "off": "8410843146230",
+  "offName": "Pechuga de Pavo 100% Natural",
+  "kcal": 90,
+  "p": 20,
+  "c": 0,
+  "f": 1,
+  "fib": 0,
+  "serv": [
+   15,
+   "loncha",
+   "lonchas"
+  ],
+  "em": "🦃",
+  "ml": 0,
+  "raw": 0,
+  "scans": 32
+ },
+ {
+  "label": "Aceite de oliva virgen extra",
+  "brand": "Carbonell",
+  "off": "8410010006206",
+  "offName": "Aceite de oliva virgen extra gran selección",
+  "kcal": 900,
+  "p": 0,
+  "c": 0,
+  "f": 100,
+  "fib": 0,
+  "serv": [
+   10,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🫒",
+  "ml": 0,
+  "raw": 0,
+  "scans": 36
+ },
+ {
+  "label": "Tomate Ketchup",
+  "brand": "Heinz",
+  "off": "8715700421353",
+  "offName": "Tomato ketchup",
+  "kcal": 102,
+  "p": 1.2,
+  "c": 23.2,
+  "f": 0.1,
+  "fib": 0,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🍅",
+  "ml": 0,
+  "raw": 0,
+  "scans": 290
+ },
+ {
+  "label": "Mayonesa",
+  "brand": "Hellmann's",
+  "off": "8718114724485",
+  "offName": "mayonnaise",
+  "kcal": 726,
+  "p": 1.1,
+  "c": 1.4,
+  "f": 79,
+  "fib": 0,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🥚",
+  "ml": 0,
+  "raw": 0,
+  "scans": 135
+ },
+ {
+  "label": "Cola Cao Original",
+  "brand": "Cola Cao",
+  "off": "8410014468628",
+  "offName": "Cola Cao Original",
+  "kcal": 68,
+  "p": 3.4,
+  "c": 9.6,
+  "f": 1.7,
+  "fib": 0.5,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 82
+ },
+ {
+  "label": "Nutella",
+  "brand": "Nutella",
+  "off": "3017620422003",
+  "offName": "Nutella",
+  "kcal": 539,
+  "p": 6.3,
+  "c": 57.5,
+  "f": 30.9,
+  "fib": 0,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 1064
+ },
+ {
+  "label": "Excellence 85 % cacao",
+  "brand": "Lindt",
+  "off": "3046920028363",
+  "offName": "Excellence 85% Cacao Rich Dark",
+  "kcal": 584,
+  "p": 12.5,
+  "c": 22,
+  "f": 46,
+  "fib": 5,
+  "serv": [
+   10,
+   "onza",
+   "onzas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 571
+ },
+ {
+  "label": "Excellence 70 % cacao",
+  "brand": "Lindt",
+  "off": "3046920028004",
+  "offName": "Lindt Excellence 70% Cocoa",
+  "kcal": 566,
+  "p": 9.5,
+  "c": 35,
+  "f": 41,
+  "fib": 12.2,
+  "serv": [
+   10,
+   "onza",
+   "onzas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 535
+ },
+ {
+  "label": "Pringles Original",
+  "brand": "Pringles",
+  "off": "5053990156009",
+  "offName": "Pringles Original",
+  "kcal": 528,
+  "p": 6.2,
+  "c": 54,
+  "f": 31,
+  "fib": 4.1,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "em": "🥔",
+  "ml": 0,
+  "raw": 0,
+  "scans": 441
+ },
+ {
+  "label": "Oreo Original",
+  "brand": "Oreo",
+  "off": "6111031005576",
+  "offName": "original  oreo",
+  "kcal": 481,
+  "p": 4.8,
+  "c": 70,
+  "f": 20,
+  "fib": 1.5,
+  "serv": [
+   11,
+   "galleta",
+   "galletas"
+  ],
+  "em": "🍪",
+  "ml": 0,
+  "raw": 0,
+  "scans": 184
+ },
+ {
+  "label": "Kinder Bueno",
+  "brand": "Kinder",
+  "off": "80052760",
+  "offName": "kinder bueno",
+  "kcal": 572,
+  "p": 8.6,
+  "c": 49.5,
+  "f": 37.3,
+  "fib": 1.9,
+  "serv": [
+   21.5,
+   "barrita",
+   "barritas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 433
+ },
+ {
+  "label": "KitKat",
+  "brand": "Nestlé",
+  "off": "6294003539054",
+  "offName": "Kitkat",
+  "kcal": 507,
+  "p": 5.4,
+  "c": 63.1,
+  "f": 25.5,
+  "fib": 2.4,
+  "serv": [
+   41.5,
+   "barrita",
+   "barritas"
+  ],
+  "em": "🍫",
+  "ml": 0,
+  "raw": 0,
+  "scans": 122
+ },
+ {
+  "label": "Coca-Cola",
+  "brand": "Coca-Cola",
+  "off": "5701872203005",
+  "offName": "Coca Cola Coca Cola",
+  "kcal": 42,
+  "p": 0,
+  "c": 10.6,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   330,
+   "lata",
+   "latas"
+  ],
+  "em": "🥤",
+  "ml": 1,
+  "raw": 0,
+  "scans": 22
+ },
+ {
+  "label": "Coca-Cola Zero",
+  "brand": "Coca-Cola",
+  "off": "5000112558265",
+  "offName": "Coca-Cola Zero",
+  "kcal": 0,
+  "p": 0,
+  "c": 0,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   330,
+   "lata",
+   "latas"
+  ],
+  "em": "🥤",
+  "ml": 1,
+  "raw": 0,
+  "scans": 86
+ },
+ {
+  "label": "Red Bull Energy Drink",
+  "brand": "Red Bull",
+  "off": "9002490209599",
+  "offName": "Red bull",
+  "kcal": 47,
+  "p": 0,
+  "c": 11,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   250,
+   "lata",
+   "latas"
+  ],
+  "em": "⚡",
+  "ml": 1,
+  "raw": 0,
+  "scans": 6
+ },
+ {
+  "label": "Red Bull Sugarfree",
+  "brand": "Red Bull",
+  "off": "90456220",
+  "offName": "The Pink Edition Sugarfree",
+  "kcal": 2,
+  "p": 0,
+  "c": 0,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   250,
+   "lata",
+   "latas"
+  ],
+  "em": "⚡",
+  "ml": 1,
+  "raw": 0,
+  "scans": 16
+ },
+ {
+  "label": "Monster Energy Ultra",
+  "brand": "Monster",
+  "off": "5060896623863",
+  "offName": "Monster energy ultra gold",
+  "kcal": 2,
+  "p": 0,
+  "c": 1.1,
+  "f": 0,
+  "fib": 0,
+  "serv": [
+   500,
+   "lata",
+   "latas"
+  ],
+  "em": "⚡",
+  "ml": 1,
+  "raw": 0,
+  "scans": 11
+ }
+]

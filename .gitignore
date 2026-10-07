@@ -1,0 +1,3 @@
+node_modules/
+tools/marcas/cache_off/
+*.log

@@ -1,0 +1,158 @@
+html { color-scheme: dark; }
+body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0a0a0a; color: #e5e5e5; }
+input[type="range"] { accent-color: #c49a6c; }
+.glass-card { background: rgba(23,23,23,0.92); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.07); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6); }
+.glass-card-dark { background: linear-gradient(135deg, #22180f 0%, #121212 70%); backdrop-filter: blur(12px); border: 1px solid rgba(196,154,108,0.25); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.7); }
+.mint-glow { box-shadow: 0 0 25px rgba(196,154,108,0.25); }
+.rose-glow { box-shadow: 0 0 25px rgba(160,113,75,0.3); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #111; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+input, select, textarea { color: #f5f5f5; }
+input::placeholder { color: #959595; } /* antes #737373: contraste 3:1, ahora 4,7:1 */
+.ring-prog { transition: stroke-dashoffset .6s var(--ease-out); }
+::-webkit-scrollbar-thumb:hover { background: #9a6b40; }
+.num-input { width: 5.5rem; }
+details > summary { list-style: none; cursor: pointer; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] .chev { transform: rotate(180deg); }
+.chev { transition: transform .2s var(--ease-out); }
+.food-chip[aria-pressed="true"] { background: #9a6b40; color: #fff; border-color: #9a6b40; }
+.toast { transition: opacity .25s var(--ease-out), transform .25s var(--ease-out); }
+
+@media print {
+    header, main, footer, .no-print { display: none !important; }
+    #printable-report { display: block !important; padding: 10px !important; background: white !important; color: #0f172a !important; }
+    .print-avoid-break { break-inside: avoid; }
+    #printable-report, #printable-report * { color: #111 !important; background: transparent !important; border-color: #ccc !important; }
+    body { background: #fff !important; }
+}
+
+/* ===== Añadido: botones de acción, asistente y animaciones ===== */
+.cta-glow { box-shadow: 0 10px 30px -5px rgba(154,107,64,0.45); }
+@keyframes ctaPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+.cta-pulse { animation: ctaPulse 2.4s ease-in-out 3; } /* 3 pulsos y para: llama la atención sin distraer */
+@keyframes wzIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.wz-anim { animation: wzIn .3s var(--ease-out); }
+.wz-tile { transition: transform .15s var(--ease-out), border-color .15s ease, background-color .15s ease; }
+.wz-tile:hover { transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .cta-pulse, .wz-anim { animation: none !important; } }
+@media (max-width: 767px) { #toast { bottom: 6rem; } }
+
+/* ===== Añadido: sensación de app nativa en el móvil ===== */
+/* Sin el destello gris/azul al tocar y sin que el texto se agrande al girar el móvil */
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+/* El gesto de "tirar para recargar" no se cuela al hacer scroll dentro de la app */
+html, body { overscroll-behavior-y: none; }
+#food-grid, #dis-grid, #diary-results, #pdf-modal > div, #wizard { overscroll-behavior: contain; }
+/* Respuesta inmediata al tocar (sin el retraso de 300 ms) y sin seleccionar el texto de los botones al mantener pulsado */
+button, a, summary, label, [role="button"] { touch-action: manipulation; }
+button, summary, [role="button"], .food-chip { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+/* Feedback al pulsar, como en una app (la propiedad scale se suma a cualquier transform existente) */
+button { transition: scale .12s var(--ease-out); }
+button:not(:disabled):active, summary:active { scale: .97; }
+@media (prefers-reduced-motion: reduce) { button:not(:disabled):active, summary:active { scale: 1; } }
+/* iPhone: no hace zoom al escribir en un campo si la letra mide al menos 16 px */
+@media (pointer: coarse) { input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea { font-size: 16px !important; } }
+/* Muesca y barra de inicio del iPhone (app instalada a pantalla completa) */
+body > header { padding-top: env(safe-area-inset-top, 0px); }
+@media (max-width: 767px) { #toast { bottom: calc(6rem + env(safe-area-inset-bottom, 0px)); } }
+/* Altura real de la pantalla en móvil (la barra del navegador no tapa las ventanas) */
+@supports (height: 100dvh) { .max-h-[90vh] { max-height: 90dvh; } }
+/* Efecto al pasar el ratón solo con ratón: en el móvil no se queda "pegado" tras tocar */
+@media not all and (hover: hover) { .wz-tile:hover { transform: none; } }
+
+/* ===== Añadido: movimiento (criterios de Emil Kowalski) ===== */
+:root { --ease-out: cubic-bezier(0.23, 1, 0.32, 1); }
+.wz-bar { transition: width .3s var(--ease-out); }
+/* Ventanas (PDF, confirmar) y menú de perfil: entrada suave en vez de aparecer de golpe */
+@keyframes nd-fade { from { opacity: 0; } }
+@keyframes nd-pop { from { opacity: 0; transform: scale(.96); } }
+#pdf-modal:not(.hidden), #confirm-modal:not(.hidden) { animation: nd-fade .15s ease-out; }
+#pdf-modal:not(.hidden) > div, #confirm-modal:not(.hidden) > div { animation: nd-pop .2s var(--ease-out); }
+#profile-menu:not(.hidden) { animation: nd-pop .15s var(--ease-out); transform-origin: top right; }
+@media (prefers-reduced-motion: reduce) {
+    #pdf-modal:not(.hidden) > div, #confirm-modal:not(.hidden) > div, #profile-menu:not(.hidden) { animation: nd-fade .15s ease-out; }
+    .wz-bar { transition: none; }
+}
+
+/* ===== Añadido: criterios de Apple (hoja inferior, materiales) ===== */
+:root { --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1); }
+@keyframes nd-sheet { from { transform: translateY(100%); } }
+@media (max-width: 639px) { #wizard:not(.hidden) > div, #food-sheet:not(.hidden) > div { animation: nd-sheet .4s var(--ease-drawer); } }
+@media (min-width: 640px) { #wizard:not(.hidden) > div, #food-sheet:not(.hidden) > div { animation: nd-pop .22s var(--ease-out); } }
+#food-sheet:not(.hidden) { animation: nd-fade .2s ease-out; }
+#wizard:not(.hidden) { animation: nd-fade .2s ease-out; }
+@media (prefers-reduced-motion: reduce) { #wizard:not(.hidden) > div { animation: nd-fade .15s ease-out; } }
+/* Quien pide menos transparencia en su sistema ve la cabecera y la barra inferior opacas */
+@media (prefers-reduced-transparency: reduce) {
+    body > header, #sticky-cta { background: #0a0a0a !important; backdrop-filter: none !important; }
+}
+/* Titulares grandes con el espaciado algo más cerrado (las letras grandes se ven separadas) */
+h1 { letter-spacing: -0.02em; }
+
+/* Cifras que cambian (temporizador de descanso, anillos, kcal, macros, gramos): dígitos de ancho fijo para que no bailen */
+#rest-pill, .ring-prog ~ text, #dashboard, #diary-summary, #diary-meals, #gym-app, #trk-stats, #res-tdee, svg text { font-variant-numeric: tabular-nums; }
+
+/* ===== Pulido de diseño ===== */
+/* Titulares sin palabras huérfanas y párrafos con mejor reparto de líneas */
+h1, h2, h3 { text-wrap-style: balance; }
+p, li, .text-xs, .text-sm { text-wrap-style: pretty; }
+/* Textura muy suave sobre el fondo: rompe el negro plano sin restar contraste */
+body::before { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+@media (prefers-reduced-transparency: reduce) { body::before { display: none; } }
+/* Tarjetas: borde superior algo más claro, como si la luz viniera de arriba (profundidad sin sombras negras) */
+.glass-card { box-shadow: inset 0 1px 0 rgba(255, 240, 220, .05), 0 10px 24px -12px rgba(20, 12, 4, .6); }
+/* Resumen del menú: en móvil la 5.ª cifra (fibra) ocupa toda la fila en vez de quedarse sola */
+/* Botones del menú: en móvil, rejilla de 2 × 2 con el mismo ancho */
+/* Zona táctil invisible para enlaces-botón pequeños */
+.nd-hit { position: relative; padding: 4px 2px; }
+.nd-hit::after { content: ''; position: absolute; inset: -8px -4px; }
+/* Saltar al contenido: oculto hasta que se usa el teclado */
+.skip-link { position: absolute; left: 12px; top: -60px; z-index: 100; padding: 10px 16px; border-radius: 12px; background: #9a6b40; color: #fff; font-weight: 800; font-size: 14px; transition: top .15s var(--ease-out); }
+.skip-link:focus { top: 12px; }
+main:focus { outline: none; }
+
+/* ===== Calculadora: estado sin datos ===== */
+.calc-pending > :not(#calc-empty) { display: none !important; }
+#sec-resultados:not(.calc-pending) > #calc-empty { display: none; }
+.calc-empty { background: radial-gradient(120% 90% at 50% 0%, rgba(154, 107, 64, .22), transparent 60%), rgba(23, 23, 23, .9); border: 1px solid rgba(197, 154, 109, .25); }
+.nd-invalid { border-color: #f43f5e !important; box-shadow: 0 0 0 2px rgba(244, 63, 94, .25); }
+.num-input::placeholder { color: #a8937b; opacity: 1; }
+
+/* ===== Gym nuevo ===== */
+#rest-bar { bottom: 1.5rem; } @media (max-width: 767px) { #rest-bar { bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px)); } }
+#rest-bar:not(.hidden), #nd-sheet:not(.hidden) { animation: nd-fade .2s ease-out; }
+@media (max-width: 639px) { #nd-sheet:not(.hidden) > div { animation: nd-sheet .4s var(--ease-drawer); } }
+@media (min-width: 640px) { #nd-sheet:not(.hidden) > div { animation: nd-pop .22s var(--ease-out); } }
+html { scrollbar-color: #4a3b2c #0a0a0a; } input, textarea { caret-color: #c59a6d; }
+.gset-grid input { transition: border-color .15s, background-color .15s; -moz-appearance: textfield; }
+.gset-grid input:focus { outline: none; border-color: #c59a6d; background: #2a2219; }
+.gset-grid input::-webkit-outer-spin-button, .gset-grid input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.gset-grid input::placeholder { color: #a8937b; }
+.gym-hero { background: radial-gradient(140% 120% at 100% 0%, rgba(154, 107, 64, .28), transparent 55%), linear-gradient(180deg, rgba(38, 30, 22, .95), rgba(20, 17, 14, .95)); border: 1px solid rgba(197, 154, 109, .28); box-shadow: inset 0 1px 0 rgba(255, 240, 220, .06), 0 18px 40px -20px rgba(20, 12, 4, .8); }
+.gym-daybtn { background: rgba(38, 38, 38, .7); border: 1px solid #333; color: #e5e5e5; transition: transform .16s var(--ease-out), background-color .2s, border-color .2s; }
+@media (hover: hover) and (pointer: fine) { .gym-daybtn:hover { border-color: rgba(197, 154, 109, .6); background: rgba(154, 107, 64, .18); } }
+.gym-bar { transition: width .5s var(--ease-out); }
+.gym-tabs { scrollbar-width: none; } .gym-tabs::-webkit-scrollbar { display: none; }
+.gset-grid { display: grid; grid-template-columns: 2.25rem 1fr 1fr 2.25rem; gap: .5rem; }
+@media (min-width: 1024px) { #gym-ex { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; } #gym-ex > * { margin: 0 !important; } #gym-ex > :only-child { grid-column: 1 / -1; } }
+#gym-records:not(.hidden) { animation: nd-fade .2s ease-out; }
+@media (max-width: 639px) { #gym-records:not(.hidden) > div { animation: nd-sheet .4s var(--ease-drawer); } }
+@media (min-width: 640px) { #gym-records:not(.hidden) > div { animation: nd-pop .22s var(--ease-out); } }
+@media (prefers-reduced-motion: reduce) { #gym-records:not(.hidden) > div { animation: nd-fade .15s ease-out; } .gym-bar { transition: none; } }
+
+/* ===== Añadido: accesibilidad ===== */
+/* Anillo visible al moverse con el teclado (Tab); con ratón o dedo no aparece */
+:focus-visible { outline: 2px solid #dcc19c; outline-offset: 2px; border-radius: 10px; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline-offset: 0; }
+/* Botones pequeños (quitar un alimento, etc.): zona táctil invisible de 40 px sin cambiar su tamaño */
+button.w-5.h-5, button.w-6.h-6, button.w-7.h-7 { position: relative; }
+button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: ''; position: absolute; inset: -10px; }
+/* Quien pide menos movimiento en su sistema no tiene desplazamientos animados */
+/* Legibilidad (aprobado por el usuario 2026-10-06): gris secundario con contraste ≥ 4,5:1 sobre las tarjetas
+   y texto pequeño a 12 px como mínimo */
+.text-neutral-500 { color: #959595; }
+.text-[9px], .text-[10px], .text-[11px] { font-size: 12px; line-height: 1.45; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto !important; } .ring-prog, .chev, .toast { transition: none !important; } }

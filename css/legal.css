@@ -1,0 +1,19 @@
+/* Páginas de privacidad y términos: mismos colores que la app, lectura cómoda */
+:root { color-scheme: dark; }
+* { box-sizing: border-box; }
+html { scrollbar-color: #4a3b2c #0a0a0a; }
+body { margin: 0; background: #0a0a0a; color: #e5e5e5; font: 16px/1.65 'Plus Jakarta Sans', system-ui, sans-serif; }
+::selection { background: #9a6b40; color: #fff; }
+main { max-width: 68ch; margin: 0 auto; padding: 32px 20px 64px; }
+h1 { font-size: 2rem; line-height: 1.15; letter-spacing: -0.02em; margin: 24px 0 4px; color: #fafafa; }
+h2 { font-size: 1.15rem; margin: 2em 0 .5em; color: #eadcc6; }
+p, li { color: #d4d4d4; text-wrap: pretty; }
+ul { padding-left: 1.2em; }
+li + li { margin-top: .4em; }
+strong { color: #fafafa; }
+a { color: #dcc19c; text-underline-offset: 3px; }
+a:hover { color: #eadcc6; }
+a:focus-visible { outline: 2px solid #dcc19c; outline-offset: 2px; border-radius: 6px; }
+.back { display: inline-block; font-weight: 700; text-decoration: none; padding: 8px 12px; border: 1px solid #333; border-radius: 12px; }
+.meta { color: #a3a3a3; font-size: .9rem; margin: 0; }
+.note { margin-top: 2.5em; padding: 14px 16px; border-radius: 14px; background: #1f1a14; border: 1px solid #3d3124; font-size: .9rem; }
