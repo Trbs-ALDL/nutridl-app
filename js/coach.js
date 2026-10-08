@@ -135,12 +135,13 @@ function msgHtml(m) {
     if (m.r === 'u') return `<div class="nd-msg-u">${esc(m.t)}</div>`;
     if (m.p) pend[m.id] = m.p;
     return `<div class="nd-msg-c" data-msg="${m.id}">${m.tags ? m.tags.map(tagPill).join('') : ''}${m.html || ''}
+        ${m.logged && !m.p ? (m.logged.undone === 1 ? '<div class="nd-done"><i class="fa-solid fa-rotate-left"></i> Deshecho</div>' : `<div class="grid grid-cols-2 gap-2 mt-3"><button type="button" onclick="logAdjust('${m.id}')" class="nd-mbtn"><i class="fa-solid fa-sliders"></i> Ajustar</button><button type="button" onclick="logUndo('${m.id}')" class="nd-mbtn"><i class="fa-solid fa-rotate-left"></i> Deshacer</button></div>`) : ''}
         ${m.p ? `<div data-pend="${m.id}" class="mt-3">${pendHtml(m.id)}</div>` : ''}
         ${m.opts ? `<div class="mt-3 space-y-2">${m.opts.map((o, i) => mealCard(o, { add: `coachAddOpt('${m.id}',${i})`, added: (m.added || []).includes(i), slot: m.slot, key: m.id + i })).join('')}</div>` : ''}</div>`;
 }
 function chatSuggestions() {
     const h = new Date().getHours(), slot = h < 11 ? '¿Qué desayuno?' : h < 16 ? '¿Qué como hoy?' : h < 19 ? '¿Qué meriendo?' : '¿Qué ceno?';
-    return ['¿Cuánto me queda?', slot, 'Quiero un desayuno de 40 g de proteína', 'Voy a cenar fuera', '¿Cómo llego a mis proteínas?', '¿Cómo voy esta semana?', 'He comido pollo con arroz'];
+    return ['¿Cuánto me queda?', slot, 'He comido pollo con arroz', 'Tengo huevos, patata y espinacas, ¿qué ceno?', 'Compra fitness para la semana', 'Quiero un desayuno de 40 g de proteína', 'Voy a cenar fuera', '¿Cómo llego a mis proteínas?', '¿Cómo voy esta semana?'];
 }
 function pushMsg(m) {
     m.id = m.id || 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -179,7 +180,8 @@ const RX = {
     info: /\b(cuant\w* (calorias|kcal|proteina\w*|hidratos|grasas?)|que (tiene|aporta)|macros de|valor\w* nutricional\w*|informacion de)\b/,
     progress: /\b(como voy|progreso|tendencia|mi semana|esta semana|resumen semanal|evolucion|he bajado|he subido|racha)\b/,
     menu: /\b((genera\w*|crea\w*|haz|hazme|quiero|dame|ver) (un |el |mi )?menu|menu (para hoy|completo|semanal|de hoy)|planifica\w*|plan de comidas)\b/,
-    shop: /\b(lista de (la )?compra|que compro|hacer la compra)\b/,
+    shop: /\b(lista de (la )?compra|que compro|hacer (la |una )?compra|compra (fitness|sana|semanal|para)|haz(me)? (la |una )?compra)\b/,
+    fridge: /\b(tengo|me queda\w*|hay)\b.*\b(nevera|frigo|casa|despensa)\b|\b(en (la|mi) nevera|en casa) (tengo|hay|me queda)\b|^tengo\b|\bcon lo que tengo\b/,
     weight: /\b(peso|pesado|bascula)\b.*\b(\d{2,3}([.,]\d)?)\b/,
 };
 function coachReply(raw) {
@@ -191,8 +193,14 @@ function coachReply(raw) {
     if (RX.logged.test(q) || (!RX.suggest.test(q) && !RX.left.test(q) && !RX.info.test(q) && !RX.progress.test(q) && !RX.out.test(q) && !RX.protein.test(q) && !RX.menu.test(q) && !RX.shop.test(q) && /^\s*(\d|un |una |dos |medio |media )/.test(q))) {
         const r = replyLog(raw); if (r) return r;
     }
-    if (RX.menu.test(q)) { setTimeout(() => coachView('menu'), 400); return { r: 'c', tags: ['rec'], html: '<p>Te abro tu menú del día: lo calculo con tus calorías, tus macros y tus preferencias. Puedes cambiar cualquier plato.</p>' }; }
-    if (RX.shop.test(q)) { setTimeout(() => coachView('shop'), 400); return { r: 'c', tags: ['rec'], html: '<p>Te abro la lista de la compra: sale de tu menú, agrupada por secciones del súper.</p>' }; }
+if (RX.menu.test(q)) { if (!canUse('menu')) return proReply('menu'); setTimeout(() => coachView('menu'), 400); return { r: 'c', tags: ['rec'], html: '<p>Te abro tu menú del día: lo calculo con tus calorías, tus macros y tus preferencias. Puedes cambiar cualquier plato.</p>' }; }
+    if (RX.shop.test(q)) {
+        if (!canUse('shop')) return proReply('shop');
+        const wantsPlan = /\b(\d+ dias?|semana|fitness|me gusta|sin |vegetarian|vegan|barat|economic)/.test(q);
+        setTimeout(() => { coachView('shop'); if (wantsPlan) shopAsk(raw); }, 400);
+        return { r: 'c', tags: ['rec'], html: wantsPlan ? '<p>Te preparo la compra con lo que me dices y te la abro. Luego puedes cambiar lo que quieras: «cambia el salmón por merluza», «quita la leche»…</p>' : '<p>Te abro la compra: dime qué quieres (días, lo que te gusta, lo que no) y te la preparo con cantidades.</p>' };
+    }
+    if (RX.fridge.test(q)) { const r = replyFridge(raw, q); if (r) return r; }
     if (RX.out.test(q)) return replyOut(q);
     if (RX.protein.test(q)) return replyProtein();
     if (RX.suggest.test(q)) return replySuggest(q);
@@ -211,13 +219,61 @@ function replyLeft() {
 }
 function replyLog(raw, quiet) {
     const P = parseFoodText(raw);
-    if (!P.items.length) return quiet ? null : { r: 'c', tags: ['rec'], html: `<p>No he reconocido ningún alimento${P.unknown.length ? ` («${esc(P.unknown.join('», «'))}»)` : ''}. Prueba con algo como «200 g de pechuga de pollo, 100 g de arroz y una ensalada».</p>` };
-    const id = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-    newPending(P.items, P.slot || slotByHour(), { id, chat: true });
-    pend[id].src = 'chat';
-    const est = P.items.some(i => i.est);
-    return { r: 'c', id, p: pend[id], tags: est ? ['base', 'est'] : ['base'], html: `<p>He entendido esto. Revisa las cantidades y añádelo:</p>${P.unknown.length ? `<p class="text-xs text-amber-200 mt-1">No he encontrado: «${esc(P.unknown.join('», «'))}». Búscalo en el diario si quieres añadirlo.</p>` : ''}${est ? '<p class="text-xs text-neutral-400 mt-1">Donde no dijiste cantidad he puesto una ración habitual (≈ estimado).</p>' : ''}` };
+    if (!P.items.length) {
+        if (quiet) return null;
+        const name = (P.unknown.join(', ') || norm(raw).replace(/^(me he|he|hemos|acabo de|ya he)\s+\S+\s*/, '')).replace(/^(un|una|unos|unas|el|la)\s+/, '').trim().slice(0, 50);
+        return unknownDish(name, P.slot || slotByHour());
+    }
+    const slot = P.slot || slotByHour(), d = todayISO();
+    const items = P.items.map(i => ({ fid: i.food.id, g: i.g, est: !!i.est, alts: i.alts || [] }));
+    const ids = items.map(it => pushDiary(entryFrom(getFood(it.fid), it.g, slot, it.est), d));
+    track('food_logged'); ev('food_logged_chat'); afterLog();
+    const tot = items.reduce((a, it) => { const m = macrosOf(getFood(it.fid), it.g); a.k += m.kcal; a.p += m.p; return a; }, { k: 0, p: 0 });
+    const est = items.some(i => i.est);
+    const lines = items.map(it => { const f = getFood(it.fid), m = macrosOf(f, it.g); return `<li>${emo(f)} ${esc(f.name)} · ${amountText(f, it.g)}${it.est ? ' <span class="nd-est">≈</span>' : ''} · <b>${fmt(m.kcal)} kcal</b> <span class="text-neutral-400">· P ${fmt(m.p)} · HC ${fmt(m.c)} · G ${fmt(m.f)}</span></li>`; }).join('');
+    const unk = P.unknown.length ? `<p class="text-xs text-amber-200 mt-2">No he encontrado «${esc(P.unknown.join('», «'))}». Apúntalo con una estimación:</p>${quickKcalBtns(P.unknown.join(', '), slot)}` : '';
+    return { r: 'c', tags: est ? ['base', 'est'] : ['base'], logged: { d, ids, slot, items },
+        html: `<p>✓ Apuntado ${toSlot(slot)}:</p><ul class="nd-list">${lines}</ul><p class="mt-2">Total <b>${fmt(tot.k)} kcal</b> · ${fmt(tot.p)} g de proteína. ${leftLine()}</p>${est ? '<p class="text-xs text-neutral-400 mt-1">≈ = ración habitual (no dijiste cantidad). Si no cuadra, pulsa «Ajustar».</p>' : ''}${unk}` };
 }
+// Algo que no está en la base: se apunta con una estimación de calorías (y macros de un plato mixto), marcado como estimado
+const quickKcalBtns = (name, slot) => `<div class="flex flex-wrap gap-1.5 mt-2">${[200, 350, 500, 700, 900].map(k => `<button type="button" onclick="quickKcal(${esc(JSON.stringify(name))},'${slot}',${k})" class="px-3 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100 hover:border-mint-500/60">≈ ${k} kcal</button>`).join('')}<button type="button" onclick="quickKcalOther(${esc(JSON.stringify(name))},'${slot}')" class="px-3 py-2 rounded-lg border border-dashed border-neutral-700 text-xs font-bold text-neutral-300">Otra cantidad</button></div>`;
+function unknownDish(name, slot) {
+    return { r: 'c', tags: ['est'], html: `<p>No tengo «${esc(name || 'eso')}» en la base de alimentos. Para que no se pierda, apúntalo con una estimación (luego puedes corregirla en el diario):</p>${quickKcalBtns(name || 'Comida', slot)}<p class="text-xs text-neutral-400 mt-2">Orientación: un plato combinado ronda 600-800 kcal; un bocadillo, 400-600; un postre, 250-400.</p>` };
+}
+function quickKcal(name, slot, kcal) {
+    const d = todayISO();
+    pushDiary({ slot, name: String(name).slice(0, 50) || 'Comida', kcal: Math.round(kcal), p: round1(kcal * .2 / 4), c: round1(kcal * .45 / 4), f: round1(kcal * .35 / 9), fib: 0, est: 1 }, d);
+    track('food_logged'); afterLog();
+    coachSay(`Apuntado «${esc(name)}» ≈ ${fmt(kcal)} kcal ${toSlot(slot)} (estimado). ${leftLine()}`, 'est');
+}
+function quickKcalOther(name, slot) { openFoodSheet(slot); fs.mode = 'quick'; fsRender(); setTimeout(() => { const i = $('fq-name'); if (i) i.value = name; const k = $('fq-kcal'); if (k) k.focus(); }, 80); }
+function logUndo(mid) {
+    const m = (state.chat || []).find(x => x.id === mid); if (!m || !m.logged || m.logged.undone) return;
+    const L = m.logged;
+    state.diary[L.d] = (state.diary[L.d] || []).filter(e => !L.ids.includes(e.id)); if (!state.diary[L.d].length) delete state.diary[L.d];
+    L.undone = 1; save(); afterLog(); renderChat(); toast('Quitado del diario');
+}
+// Ajustar: se quita lo apuntado y aparece la ficha editable (cantidades, cambiar alimento, comida del día)
+function logAdjust(mid) {
+    const m = (state.chat || []).find(x => x.id === mid); if (!m || !m.logged || m.logged.undone) return;
+    const L = m.logged;
+    state.diary[L.d] = (state.diary[L.d] || []).filter(e => !L.ids.includes(e.id)); if (!state.diary[L.d].length) delete state.diary[L.d];
+    L.undone = 'adjust';
+    newPending(L.items, L.slot, { id: m.id, chat: true }); pend[m.id].src = 'chat'; m.p = pend[m.id];
+    save(); afterLog(); renderChat();
+}
+// «Tengo pollo, arroz y brócoli, ¿qué ceno?»
+function replyFridge(raw, q) {
+    const ids = parseFoodText(raw.replace(/\b(tengo|en (la|mi) nevera|en casa|hay|me queda\w*|con lo que tengo|que (puedo )?(cenar|comer|desayunar|merendar|hacer|cocinar)|que (ceno|como|hago|cocino))\b/gi, ',')).items.map(i => i.food.id);
+    if (!ids.length) return null;
+    if (!canUse('fridge')) return proReply('fridge');
+    const p = myPrefs(); ids.forEach(id => { if (!p.pantry.includes(id)) p.pantry.push(id); }); save();
+    const slot = slotFromText(q) || (nextMeal() || {}).slot || slotByHour();
+    const { tg, opts } = fridgeMeals(slot, ids);
+    if (!opts.length) return { r: 'c', tags: ['rec'], html: `<p>Con ${ids.map(id => getFood(id).name.toLowerCase()).join(', ')} no me sale un plato completo. Añade alguna proteína (huevos, pollo, atún, legumbres…) y algún hidrato (arroz, pasta, patata, pan…).</p>` };
+    return { r: 'c', tags: ['rec', 'base'], slot, opts, html: `<p>Con lo que tienes, para ${slotArt(slot)} (≈ <b>${fmt(tg.kcal)} kcal</b> y <b>${fmt(tg.p)} g de proteína</b>):</p>` };
+}
+const proReply = feature => ({ r: 'c', tags: ['rec'], html: `<p><b>${esc(PRO_FEATURES[feature][0])}</b> es de nutriDL PRO: ${esc(PRO_FEATURES[feature][1].toLowerCase())}</p><button onclick="openPaywall('${feature}')" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold">${proData().trialUsed ? 'Ver nutriDL PRO' : 'Probar 7 días gratis'}</button>` });
 function slotFromText(q) {
     if (/desayun/.test(q)) return 'B';
     if (/media manana|almuerz/.test(q)) return planSlots().includes('M') ? 'M' : 'S';
@@ -321,6 +377,7 @@ function mealCard(meal, o = {}) {
             </div>
             <div class="text-right shrink-0"><div class="text-lg font-extrabold text-neutral-50 leading-none">${fmt(meal.m.kcal)}</div><div class="text-[11px] font-bold text-neutral-400">kcal</div></div>
         </div>
+        ${meal.missing && meal.missing.length ? `<div class="text-xs font-bold text-amber-200">🛒 Te falta: ${meal.missing.map(id => getFood(id)).filter(Boolean).map(f => esc(f.name.toLowerCase())).join(', ')}</div>` : ''}
         <div class="flex gap-3 text-xs font-bold text-neutral-300"><span><span class="nd-dot" style="background:#c49a6c"></span>P ${fmt(meal.m.p)} g</span><span><span class="nd-dot" style="background:#e6d3b3"></span>HC ${fmt(meal.m.c)} g</span><span><span class="nd-dot" style="background:#f59e0b"></span>G ${fmt(meal.m.f)} g</span>${meal.min ? `<span class="text-neutral-500"><i class="fa-regular fa-clock"></i> ${meal.min} min</span>` : ''}</div>
         ${open ? `<div class="nd-recipe"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">Ingredientes</div><ul class="nd-list">${ing.map(x => `<li>${emo(x.f)} ${esc(x.txt)} · ${esc(x.f.name)}</li>`).join('')}</ul><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-2">Pasos</div><ol class="nd-steps">${meal.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></div>` : ''}
         <div class="grid ${o.swap ? 'grid-cols-3' : 'grid-cols-2'} gap-2">
@@ -383,6 +440,7 @@ function renderWte() {
 // =====================================================================
 function renderMenuView() {
     const box = $('cv-menu'); if (!box) return;
+    if (!canUse('menu')) { box.innerHTML = proTeaser('menu'); return; }
     if (!calc.target) { box.innerHTML = emptyPlan('generar tu menú'); return; }
     const mn = state.menu;
     if (!mn || !mn.meals || !mn.meals.length) {
@@ -405,6 +463,7 @@ function renderMenuView() {
 }
 const emptyPlan = what => `<div class="nd-card p-6 text-center space-y-3"><p class="text-sm text-neutral-300">Completa tu plan para ${what}.</p><button onclick="${profiles.current ? "showTab('calc')" : 'newProfile()'}" class="nd-btn-primary mx-auto">Completar mi plan</button></div>`;
 function genMenu() {
+    if (needPro('menu')) return;
     const mn = makeDayMenu(Date.now() % 1000000);
     if (!mn || !mn.meals.length) { toast('Con tus preferencias no encuentro platos: revisa Preferencias'); return; }
     state.menu = { ...mn, at: Date.now(), added: [] }; save(); renderMenuView(); track('menu_generated'); checkAchievements();
@@ -425,58 +484,6 @@ async function menuAddAll() {
 }
 
 // =====================================================================
-//  LISTA DE LA COMPRA
-// =====================================================================
-function genShop(days) {
-    let menus = [];
-    if (state.menu && state.menu.meals && state.menu.meals.length) menus.push(state.menu);
-    if (menus.length < days) menus = menus.concat(makeMenus(days - menus.length, Date.now() % 1000000));
-    if (!menus.length) { toast('Con tus preferencias no encuentro platos: revisa Preferencias'); return; }
-    state.shop = { days, at: Date.now(), items: buildShopping(menus), done: {}, extra: [] };
-    save(); renderShopView(); track('shop_generated');
-}
-function renderShopView() {
-    const box = $('cv-shop'); if (!box) return;
-    if (!calc.target) { box.innerHTML = emptyPlan('crear tu lista de la compra'); return; }
-    const S = state.shop;
-    const pick = `<div class="grid grid-cols-3 gap-2">${[[1, 'Hoy'], [3, '3 días'], [7, 'Semana']].map(([d, l]) => `<button onclick="genShop(${d})" class="nd-mbtn ${S && S.days === d ? 'nd-mbtn-main' : ''}">${l}</button>`).join('')}</div>`;
-    if (!S || !S.items) {
-        box.innerHTML = `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="text-4xl">🛒</div><h3 class="text-xl font-extrabold text-neutral-50">Tu lista, hecha sola</h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">Sale de tu menú del día (y de menús nuevos si eliges más días), agrupada por secciones del súper.</p>${pick}</div>`;
-        return;
-    }
-    const all = S.items.length + (S.extra || []).length, done = S.items.filter(x => S.done[x.fid]).length + (S.extra || []).filter(x => x.done).length;
-    const groups = SHOP_GROUPS.map(([g, label, ic]) => {
-        const L = S.items.filter(x => x.group === g); if (!L.length) return '';
-        return `<div class="space-y-1"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-2">${ic} ${label}</div>${L.map(x => { const f = getFood(x.fid); if (!f) return ''; const on = !!S.done[x.fid]; return `<label class="nd-shop ${on ? 'on' : ''}"><input type="checkbox" ${on ? 'checked' : ''} onchange="shopTick('${x.fid}',this.checked)"><span class="flex-1 min-w-0">${esc(f.name)}</span><span class="text-sm font-bold text-neutral-300 whitespace-nowrap">${shopQty(f, x.g)}</span></label>`; }).join('')}</div>`;
-    }).join('');
-    const extra = (S.extra || []).map((x, i) => `<label class="nd-shop ${x.done ? 'on' : ''}"><input type="checkbox" ${x.done ? 'checked' : ''} onchange="shopTickExtra(${i},this.checked)"><span class="flex-1 min-w-0">${esc(x.t)}</span><button type="button" onclick="event.preventDefault();shopDelExtra(${i})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="Quitar ${esc(x.t)}"><i class="fa-solid fa-xmark"></i></button></label>`).join('');
-    box.innerHTML = `${pick}
-        <div class="nd-card p-5 space-y-2">
-            <div class="flex items-center justify-between gap-3"><div class="text-sm font-extrabold text-neutral-100">${done}/${all} comprados</div><div class="text-xs text-neutral-400">Para ${S.days === 1 ? 'hoy' : S.days + ' días'}</div></div>
-            <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-500 gym-bar" style="width:${all ? done / all * 100 : 0}%"></div></div>
-            ${groups}
-            ${extra ? `<div class="space-y-1"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-2">✏️ Añadidos por ti</div>${extra}</div>` : ''}
-            <form onsubmit="event.preventDefault();shopAddExtra()" class="flex gap-2 pt-3"><input id="shop-extra" maxlength="40" placeholder="Añadir otra cosa (p. ej. café)" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Añadir producto"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold"><i class="fa-solid fa-plus"></i></button></form>
-        </div>
-        <div class="grid grid-cols-2 gap-2"><button onclick="shareShop()" class="nd-mbtn nd-mbtn-main"><i class="fa-solid fa-share-nodes"></i> Compartir lista</button><button onclick="shopClearDone()" class="nd-mbtn"><i class="fa-solid fa-broom"></i> Quitar comprados</button></div>
-        <p class="text-[11px] text-neutral-500">Cantidades en crudo, redondeadas hacia arriba.</p>`;
-}
-function shopTick(fid, on) { state.shop.done[fid] = on; save(); renderShopView(); }
-function shopTickExtra(i, on) { state.shop.extra[i].done = on; save(); renderShopView(); }
-function shopAddExtra() { const t = ($('shop-extra').value || '').trim(); if (!t) return; state.shop.extra = [...(state.shop.extra || []), { t, done: false }]; save(); renderShopView(); }
-function shopDelExtra(i) { state.shop.extra.splice(i, 1); save(); renderShopView(); }
-function shopClearDone() { const S = state.shop; S.items = S.items.filter(x => !S.done[x.fid]); S.extra = (S.extra || []).filter(x => !x.done); S.done = {}; save(); renderShopView(); }
-function shopText() {
-    const S = state.shop;
-    return 'Lista de la compra · nutriDL\n' + SHOP_GROUPS.map(([g, label]) => { const L = S.items.filter(x => x.group === g && !S.done[x.fid]); return L.length ? `\n${label}\n` + L.map(x => { const f = getFood(x.fid); return f ? `- ${f.name}: ${shopQty(f, x.g)}` : ''; }).join('\n') : ''; }).join('') + ((S.extra || []).filter(x => !x.done).length ? '\n\nOtros\n' + S.extra.filter(x => !x.done).map(x => '- ' + x.t).join('\n') : '');
-}
-async function shareShop() {
-    const t = shopText();
-    if (navigator.share) { try { await navigator.share({ title: 'Lista de la compra', text: t }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
-    try { await navigator.clipboard.writeText(t); toast('Lista copiada: pégala donde quieras'); } catch (e) { toast('No se pudo copiar'); }
-}
-
-// =====================================================================
 //  PREFERENCIAS (en «Mi plan» y como hoja desde el Coach)
 // =====================================================================
 function prefsHtml() {
@@ -486,8 +493,8 @@ function prefsHtml() {
         <input type="search" placeholder="${ph}" oninput="prefSearch('${k}',this.value)" class="w-full px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 text-sm font-semibold" aria-label="${ph}"><div id="pref-s-${k}" class="flex flex-wrap gap-1.5"></div>`;
     return `<div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Cómo comes</div><div class="flex flex-wrap gap-2">${Object.entries(DIETS).map(([k, l]) => chip(p.diet === k, `setPref('diet','${k}')`, l)).join('')}</div></div>
         <div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Alergias e intolerancias</div><div class="flex flex-wrap gap-2">${Object.entries(ALLERGENS).map(([k, [l]]) => chip(p.allergies.includes(k), `togglePref('allergies','${k}')`, l)).join('')}</div></div>
-        <div class="grid grid-cols-2 gap-4"><div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Comidas al día</div><div class="flex gap-2">${[3, 4, 5].map(n => chip(p.meals === n, `setPref('meals',${n})`, n)).join('')}</div></div>
-        <div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Presupuesto</div><div class="flex gap-2">${chip(p.budget === 'low', "setPref('budget','low')", 'Ajustado')}${chip(p.budget !== 'low', "setPref('budget','normal')", 'Normal')}</div></div></div>
+        <div class="grid grid-cols-1 min-[360px]:grid-cols-2 gap-4"><div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Comidas al día</div><div class="flex flex-wrap gap-2">${[3, 4, 5].map(n => chip(p.meals === n, `setPref('meals',${n})`, n)).join('')}</div></div>
+        <div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Presupuesto</div><div class="flex flex-wrap gap-2">${chip(p.budget === 'low', "setPref('budget','low')", 'Ajustado')}${chip(p.budget !== 'low', "setPref('budget','normal')", 'Normal')}</div></div></div>
         <div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">No me gusta</div>${lst('dislikes', 'Buscar un alimento que no te guste…')}</div>
         <div class="space-y-2"><div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Tengo en casa</div>${lst('pantry', 'Buscar lo que tienes en la nevera…')}</div>
         <p class="text-[11px] text-neutral-500">Se usan para «¿Qué como?», el menú y la lista de la compra. Revisa siempre las etiquetas si tienes una alergia.</p>`;
@@ -533,6 +540,7 @@ function listen(onText, onState) {
     try { rec.start(); onState('listening'); } catch (e) { onState('error'); }
 }
 function coachMic() {
+    if (needPro('voice')) return;
     if (!SR) { toast('Tu navegador no permite dictado: usa el micrófono del teclado'); $('chat-in').focus(); return; }
     askVoiceConsent(() => {
         const b = $('chat-mic');
@@ -545,6 +553,7 @@ function coachMic() {
 }
 let voicePid = null;
 function openVoiceLog(typeOnly) {
+    if (needPro('voice')) return;
     if (!typeOnly && SR && !consent('voice')) return askVoiceConsent(() => openVoiceLog());
     voicePid = null;
     openSheet('<i class="fa-solid fa-microphone text-mint-400"></i> Registrar comida', `<div class="space-y-4">
@@ -585,7 +594,8 @@ function portionSet(f) {
     return [{ g: Math.round(base * .65 / 5) * 5, l: 'Pequeña' }, { g: base, l: 'Normal' }, { g: Math.round(base * 1.45 / 5) * 5, l: 'Grande' }];
 }
 function openPhotoLog() {
-    photo = { url: null, items: [] };
+    if (needPro('photo')) return;
+    // (el estado de la foto se crea después de abrir la hoja: abrir una hoja cierra la anterior y su limpieza)
     openSheet('<i class="fa-solid fa-camera text-mint-400"></i> Foto del plato', `<div class="space-y-4">
         <label class="nd-photo" id="ph-drop"><input id="ph-file" type="file" accept="image/*" capture="environment" class="sr-only" onchange="photoPicked(this)"><span id="ph-prev" class="flex flex-col items-center gap-2 text-neutral-400"><i class="fa-solid fa-camera text-3xl text-mint-400"></i><span class="text-sm font-bold">Hacer o elegir una foto</span><span class="text-xs">Opcional: te ayuda a recordar el plato. No sale de tu móvil.</span></span></label>
         <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">¿Qué hay en el plato?</div>
@@ -595,17 +605,19 @@ function openPhotoLog() {
         <div id="ph-items" class="space-y-2"></div>
         <div id="ph-foot"></div>
     </div>`, () => { if (photo && photo.url) URL.revokeObjectURL(photo.url); photo = null; });
-    renderPhoto(); track('photo_open');
+    photo = { url: null, items: [] }; renderPhoto(); track('photo_open');
 }
 function photoPicked(inp) {
+    if (!photo) return;
     const file = inp.files && inp.files[0]; if (!file) return;
     if (photo.url) URL.revokeObjectURL(photo.url);
     photo.url = URL.createObjectURL(file);
     $('ph-prev').innerHTML = `<img src="${photo.url}" alt="Foto de tu plato" class="w-full max-h-64 object-cover rounded-2xl">`;
     $('ph-drop').classList.add('has');
 }
-function photoSearch(q) { $('ph-s').innerHTML = q.trim().length < 2 ? '' : matchFoods(q, 8).map(f => `<button type="button" onclick="photoAdd('${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(f.name)}${f.brand ? ' · ' + esc(f.brand) : ''}</button>`).join(''); }
+function photoSearch(q) { if (!photo) return; $('ph-s').innerHTML = q.trim().length < 2 ? '' : matchFoods(q, 8).map(f => `<button type="button" onclick="photoAdd('${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(f.name)}${f.brand ? ' · ' + esc(f.brand) : ''}</button>`).join(''); }
 function photoAdd(id) {
+    if (!photo) return;
     const f0 = getFood(id); if (!f0) return;
     const f = cookedFood(f0); if (photo.items.some(x => x.fid === f.id)) return;
     const ps = portionSet(f); photo.items.push({ fid: f.id, g: ps[1].g, pi: 1 }); renderPhoto();
@@ -614,6 +626,7 @@ function photoPortion(i, pi) { const it = photo.items[i], ps = portionSet(getFoo
 function photoG(i, v) { const g = num(v); if (!g || g <= 0 || g > 3000) return; photo.items[i].g = g; photo.items[i].pi = -1; const f = getFood(photo.items[i].fid), el = $('ph-k' + i); if (el) el.textContent = `≈ ${fmt(macrosOf(f, g).kcal)} kcal`; photoFoot(); }
 function photoDel(i) { photo.items.splice(i, 1); renderPhoto(); }
 function renderPhoto() {
+    if (!photo) return;
     const box = $('ph-items'); if (!box) return;
     box.innerHTML = photo.items.map((it, i) => {
         const f = getFood(it.fid), ps = portionSet(f);
@@ -624,6 +637,7 @@ function renderPhoto() {
     photoFoot();
 }
 function photoFoot() {
+    if (!photo) return;
     const box = $('ph-foot'); if (!box) return;
     if (!photo.items.length) { box.innerHTML = ''; return; }
     const k = photo.items.reduce((a, it) => a + macrosOf(getFood(it.fid), it.g).kcal, 0);

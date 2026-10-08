@@ -3,10 +3,17 @@
 ## Posicionamiento
 **nutriDL, tu entrenador nutricional personal.** No es otro contador de calorías: responde a «¿qué hago ahora para acercarme a mi objetivo?». Diferencia: nutrición + Coach + objetivo físico + acompañamiento diario + privacidad (sin cuentas, sin anuncios).
 
+## Cómo funciona PRO hoy (3.1)
+- Las funciones PRO (voz, foto, nevera, menú del día, compra inteligente, análisis avanzado) **solo se usan con PRO activo** en el dispositivo.
+- **Prueba de 7 días** gratis, una vez, sin tarjeta.
+- **Códigos de activación**: `Escritorio/nutriDL-codigos-PRO.txt` (fuera del repositorio; en la app solo están sus huellas SHA-256). Para vender ahora: cobra por Bizum, PayPal o Stripe y envía un código por persona.
+- **Enlace de pago**: rellena `PAY_LINK` en `js/plans.js` con un Stripe Payment Link (o similar) y el botón «Hazte PRO» lo abrirá.
+- Limitación conocida: sin servidor, alguien con conocimientos podría saltarse el bloqueo modificando la app en su navegador. La validación segura llega con las cuentas.
+
 ## Gratis y PRO (`js/plans.js`)
 - **Gratis siempre**: plan (calorías, macros, cómo se calcula), diario, escáner, peso, medidas, progreso básico, Coach básico, gym, sin anuncios.
 - **PRO (4,99 €/mes · 39,99 €/año)**: IA conversacional, foto con reconocimiento, voz, menú y planificación semanal, lista de la compra inteligente, análisis avanzado, sincronización, informes avanzados.
-- **Beta**: `BETA_ALL_OPEN = true` → todo abierto, nada se cobra. El botón «Me interesa PRO» mide el interés (en el dispositivo).
+- **Medición**: cada vez que alguien ve la pantalla PRO, prueba PRO o activa un código queda contado en el dispositivo («Informe de errores»).
 - Para cobrar hacen falta: cuentas (Supabase), un proveedor de pago (Stripe; en las tiendas de apps, sus propios pagos), términos de venta, derecho de desistimiento y facturación. **No activar pagos antes.**
 
 ## Métricas

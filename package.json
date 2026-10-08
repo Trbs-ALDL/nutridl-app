@@ -1,6 +1,6 @@
 {
   "name": "nutridl-app",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "private": true,
   "description": "nutriDL: tu entrenador nutricional personal (calorías, macros, diario, Coach, menú, lista de la compra, progreso y gym)",
   "scripts": {

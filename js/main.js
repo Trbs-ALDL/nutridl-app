@@ -37,8 +37,9 @@ function init() {
     else if (accion === 'gym') showTab('gym');
     else if (accion === 'voz') { showTab('food'); openVoiceLog(); }
     else if (accion === 'coach') showTab('coach');
+    else if (accion === 'nevera') { showTab('coach'); openFridge(); }
     renderInstall();
-    track('visit');
+    track('visit'); renderLocks();
 }
 
 // =====================================================================

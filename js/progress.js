@@ -128,6 +128,7 @@ function setGoalWeight(v) {
 let msKey = 'waist';
 function renderMeasureChart() {
     const box = $('ms-chart-box'); if (!box) return;
+    if (!canUse('trends')) { box.innerHTML = (state.measures || []).length > 1 ? `<button type="button" onclick="openPaywall('trends')" class="w-full py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300"><i class="fa-solid fa-lock text-amber-300"></i> Gráfica de tus medidas · PRO</button>` : ''; return; }
     const have = MEASURES.filter(([k]) => (state.measures || []).some(m => m[k]));
     if (!have.length) { box.innerHTML = ''; return; }
     if (!have.some(([k]) => k === msKey)) msKey = have[0][0];
@@ -145,8 +146,8 @@ function renderProgress() {
     if ($('trk-goal')) $('trk-goal').value = state.goalWeight || '';
     renderMeasureChart();
     if (!profiles.current) { box.innerHTML = `<div class="nd-card p-6 text-center space-y-3"><p class="text-sm text-neutral-300">Crea tu perfil para ver tu progreso.</p><button onclick="newProfile()" class="nd-btn-primary mx-auto">Empezar gratis</button></div>`; $('prog-ach').innerHTML = ''; return; }
-    const S = streakInfo(), W = weekStats(), T = weightTrend(), L = insightsList();
-    const days = W.days.map(d => { const on = loggedOn(d), t = on ? diaryTotals(d) : null, ok = t && calc.prot && t.p >= calc.prot * .9; return `<div class="flex flex-col items-center gap-1 flex-1"><span class="text-[10px] font-bold text-neutral-500">${'DLMXJVS'[new Date(d + 'T12:00:00').getDay()]}</span><span class="w-8 h-8 rounded-full grid place-items-center text-xs ${on ? (ok ? 'bg-mint-500 text-neutral-950' : 'bg-mint-600/40 text-mint-200') : 'bg-neutral-800 text-neutral-600'}">${on ? (ok ? '<i class="fa-solid fa-check"></i>' : '•') : ''}</span></div>`; }).join('');
+    const S = streakInfo(), W = calWeekStats(), T = weightTrend(), L = insightsList();
+    const days = W.days.map((d, i) => { const on = loggedOn(d), t = on ? diaryTotals(d) : null, ok = t && calc.prot && t.p >= calc.prot * .9, fut = d > todayISO(); return `<div class="flex flex-col items-center gap-1 flex-1 ${fut ? 'opacity-40' : ''}"><span class="text-[10px] font-bold ${d === todayISO() ? 'text-mint-300' : 'text-neutral-500'}">${'LMXJVSD'[i]}</span><span class="w-8 h-8 rounded-full grid place-items-center text-xs ${on ? (ok ? 'bg-mint-500 text-neutral-950' : 'bg-mint-600/40 text-mint-200') : 'bg-neutral-800 text-neutral-600'}">${on ? (ok ? '<i class="fa-solid fa-check"></i>' : '•') : ''}</span></div>`; }).join('');
     const stat = (l, v, s) => `<div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[11px] font-bold uppercase text-neutral-400">${l}</div><div class="text-lg font-extrabold text-neutral-50">${v}</div>${s ? `<div class="text-[11px] text-neutral-400">${s}</div>` : ''}</div>`;
     const gw = num(state.goalWeight), toGoal = gw && T ? T.now - gw : null;
     box.innerHTML = `<div class="grid lg:grid-cols-5 gap-4">
@@ -154,19 +155,32 @@ function renderProgress() {
             <div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-50">Tu semana</h3>${tagPill('dato')}</div>
             <div class="flex justify-between gap-1">${days}</div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                ${stat('Días registrados', `${W.logged}/7`)}${stat('Proteína cumplida', calc.prot ? `${W.protOk}/7` : '—')}
+                ${stat('Días registrados', `${W.logged}/${W.past}`)}${stat('Proteína cumplida', calc.prot ? `${W.protOk}/${W.past}` : '—')}
                 ${stat('Media diaria', W.logged ? `${fmt(W.avgKcal)} kcal` : '—', calc.target ? `objetivo ${fmt(calc.target)}` : '')}${stat('Entrenos', W.workouts)}
             </div>
-            <p class="text-[11px] text-neutral-500">Últimos 7 días completos. ● registrado · ✓ proteína cumplida.</p>
+            <p class="text-[11px] text-neutral-500">De lunes a domingo. ● registrado · ✓ proteína cumplida.</p>
         </div>
         <div class="lg:col-span-2 space-y-3">
             <div class="nd-card p-5 flex items-center gap-4"><span class="text-4xl leading-none">🔥</span><div><div class="text-2xl font-extrabold text-neutral-50">${S.cur} día${S.cur === 1 ? '' : 's'} seguido${S.cur === 1 ? '' : 's'}</div><div class="text-xs text-neutral-400">Mejor racha: ${S.best} · ${S.today ? 'hoy ya has apuntado ✓' : 'apunta algo hoy para mantenerla'}</div></div></div>
             ${T ? `<div class="nd-card p-5 space-y-1"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Peso medio (7 días)</div><div class="text-2xl font-extrabold text-neutral-50">${fmt(T.now, 1)} kg</div><div class="text-xs text-neutral-400">${T.week != null ? `${T.week > 0 ? '+' : ''}${fmt(T.week, 1)} kg respecto a la semana anterior` : 'Con 2 semanas de registros verás la tendencia'}${toGoal != null ? ` · ${Math.abs(toGoal) < .3 ? '¡en tu objetivo!' : `${fmt(Math.abs(toGoal), 1)} kg para tu objetivo`}` : ''}</div></div>` : ''}
         </div>
     </div>
-    ${L.length ? `<div class="nd-card p-5 sm:p-6 space-y-3"><h3 class="text-lg font-extrabold text-neutral-50">Lo que dicen tus datos</h3>${L.slice(0, 5).map(x => `<div class="flex items-start gap-3"><span class="text-xl leading-none">${x.ic}</span><span class="flex-1 text-sm text-neutral-200">${esc(x.t)}</span>${tagPill(x.k === 'consejo' ? 'rec' : 'dato')}</div>`).join('')}<p class="text-[11px] text-neutral-500">Interpretación orientativa de tus registros. No es un diagnóstico.</p></div>` : ''}`;
+    ${L.length && !canUse('trends') ? proTeaser('trends') : ''}${L.length && canUse('trends') ? `<div class="nd-card p-5 sm:p-6 space-y-3"><h3 class="text-lg font-extrabold text-neutral-50">Lo que dicen tus datos</h3>${L.slice(0, 5).map(x => `<div class="flex items-start gap-3"><span class="text-xl leading-none">${x.ic}</span><span class="flex-1 text-sm text-neutral-200">${esc(x.t)}</span>${tagPill(x.k === 'consejo' ? 'rec' : 'dato')}</div>`).join('')}<p class="text-[11px] text-neutral-500">Interpretación orientativa de tus registros. No es un diagnóstico.</p></div>` : ''}`;
     checkAchievements(true);
     const A = state.ach || {};
     $('prog-ach').innerHTML = `<div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-50">Logros</h3><span class="text-xs font-bold text-neutral-400">${Object.keys(A).length}/${ACHIEVEMENTS.length}</span></div>
         <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">${ACHIEVEMENTS.map(([id, ic, name, desc]) => `<div class="nd-ach ${A[id] ? 'on' : ''}" title="${esc(desc)}"><span class="text-2xl">${A[id] ? ic : '🔒'}</span><span class="text-xs font-extrabold text-neutral-100 leading-tight">${name}</span><span class="text-[10px] text-neutral-400 leading-tight">${A[id] ? new Date(A[id] + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) : esc(desc)}</span></div>`).join('')}</div>`;
+}
+
+// Semana de calendario (lunes a domingo): lo que llevas de esta semana
+function calWeekStats() {
+    const t0 = todayISO(), dow = (new Date(t0 + 'T12:00:00').getDay() + 6) % 7, mon = shiftISO(t0, -dow);
+    const days = Array.from({ length: 7 }, (_, i) => shiftISO(mon, i)), past = days.filter(d => d <= t0);
+    const logged = past.filter(loggedOn), tot = logged.map(diaryTotals);
+    return {
+        days, past: past.length, logged: logged.length,
+        protOk: calc.prot ? tot.filter(t => t.p >= calc.prot * .9).length : 0,
+        avgKcal: tot.length ? tot.reduce((a, t) => a + t.kcal, 0) / tot.length : 0,
+        workouts: state.workouts.filter(w => w.d >= mon && w.d <= t0).length,
+    };
 }

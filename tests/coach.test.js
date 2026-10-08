@@ -15,10 +15,12 @@ function loadApp() {
         document: { getElementById: () => null, querySelector: () => null, querySelectorAll: () => [], addEventListener: noop, createElement: () => el, body: { style: {} } },
     };
     vm.createContext(ctx);
-    for (const f of ['core', 'data/foods', 'data/exercises', 'calc', 'analytics', 'progress', 'engine', 'parser', 'insights', 'gym', 'diary', 'profiles', 'coach']) {
+    for (const f of ['core', 'data/foods', 'data/exercises', 'calc', 'analytics', 'progress', 'engine', 'parser', 'insights', 'gym', 'diary', 'profiles', 'dashboard', 'plans', 'kitchen', 'coach', 'app']) {
         vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'js', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
     }
     const run = code => vm.runInContext(code, ctx);
+    // Sin pantalla: los avisos no se dibujan
+    run('toast = () => {}; toastUndo = () => {};');
     const json = code => JSON.parse(run(`JSON.stringify(${code})`));
     // Perfil de ejemplo: mujer, 30 años, 165 cm, 68 kg, actividad ligera, perder grasa
     run("Object.assign(state, { gender: 'female', age: 30, height: 165, weight: 68, activity: 1.375, calcOk: true, goalType: 'lose' }); compute();");
@@ -97,7 +99,64 @@ test('Coach: responde con tus datos, propone platos y avisa en situaciones de sa
     sug.opts.forEach(o => assert.ok(o.m.p >= 30, `${o.name}: ${Math.round(o.m.p)} g de proteína`));
     const safe = json("coachReply('Estoy embarazada, ¿cuánto como?')");
     assert.match(safe.html, /profesional sanitario/);
-    const log = json("coachReply('He comido dos huevos y una tostada')");
-    assert.ok(log.p && log.p.items.length === 2, 'debe pedir confirmación con 2 alimentos');
-    assert.equal(run("state.diary[todayISO()]"), undefined, 'no se guarda nada sin confirmar');
+    // «He comido…» se apunta al momento y se puede deshacer
+    const log = json("(() => { const m = pushMsg(coachReply('He comido dos huevos y una tostada')); return m; })()");
+    assert.equal(log.logged.ids.length, 2, 'apunta los 2 alimentos');
+    assert.equal(run("state.diary[todayISO()].length"), 2);
+    run(`logUndo('${log.id}')`);
+    assert.equal(run("state.diary[todayISO()]"), undefined, 'deshacer lo quita del diario');
+    // Un plato que no está en la base ofrece apuntarlo con una estimación
+    assert.match(json("coachReply('He comido un plato rarísimo de mi abuela')").html, /estimación/);
+});
+
+test('PRO: lo de pago no se puede usar sin PRO; la prueba de 7 días lo abre', () => {
+    const { run } = loadApp();
+    assert.equal(run("canUse('shop')"), false);
+    assert.equal(run("canUse('fridge')"), false);
+    assert.equal(run("canUse('nada-de-pago')"), true, 'lo gratis siempre se puede usar');
+    run("localStorage.setItem('nutridl_pro', JSON.stringify({ trialUsed: 1, trialEnd: Date.now() + 86400000 }))");
+    assert.equal(run("canUse('shop') && canUse('voice') && canUse('menu')"), true);
+    run("localStorage.setItem('nutridl_pro', JSON.stringify({ trialUsed: 1, trialEnd: Date.now() - 1000 }))");
+    assert.equal(run("isPro()"), false, 'la prueba caduca');
+});
+
+test('Mi nevera: solo propone platos con lo que tienes (o dice qué falta)', () => {
+    const { json } = loadApp();
+    const R = json("fridgeMeals('D', ['pollo', 'arroz', 'brocoli', 'huevo', 'patata'])");
+    assert.ok(R.opts.length >= 2);
+    const ok = new Set(['pollo', 'pollopl', 'muslo', 'arroz', 'arrozcocido', 'arrozint', 'arrozintcocido', 'brocoli', 'brocolicocido', 'huevo', 'claras', 'patata', 'patatacocida', 'patataasada', 'aove']);
+    R.opts.forEach(o => o.items.forEach(it => assert.ok(ok.has(it.fid) || o.missing.includes(it.fid), `${o.name}: ${it.fid} no está en la nevera`)));
+});
+
+test('Compra inteligente: entiende días, gustos y lo que no quieres, y cambia alimentos en toda la semana', () => {
+    const { run, json } = loadApp();
+    const R = json("parseShopRequest('quiero una compra fitness para 5 días, me gusta el salmón y el arroz, sin lactosa y no me gusta el atún')");
+    assert.equal(R.days, 5);
+    assert.ok(R.like.includes('salmon') && R.like.includes('arroz'), 'gustos: ' + R.like);
+    assert.ok(R.avoid.includes('atun'), 'evitar: ' + R.avoid);
+    assert.ok(R.allergies.includes('lactosa'));
+    run("shopCreate(parseShopRequest('compra para 3 días, me gusta el salmón'))");
+    assert.equal(run('state.shop.menus.length'), 3);
+    const fids = () => json("state.shop.menus.flatMap(m => m.meals.flatMap(x => x.items.map(i => i.fid)))");
+    if (fids().includes('salmon')) {
+        const pBefore = run("state.shop.menus.reduce((a, m) => a + menuTotals(m).p, 0)");
+        run("shopEdit('cambia el salmón por merluza')");
+        assert.ok(!fids().includes('salmon'), 'ya no hay salmón');
+        const pAfter = run("state.shop.menus.reduce((a, m) => a + menuTotals(m).p, 0)");
+        assert.ok(Math.abs(pAfter - pBefore) / pBefore < .05, `la proteína de la semana se mantiene al cambiar (${Math.round(pBefore)} → ${Math.round(pAfter)} g)`);
+    }
+    run("shopEdit('quita el arroz')");
+    assert.ok(!fids().some(id => ['arroz', 'arrozcocido', 'arrozint', 'arrozintcocido'].includes(id)), 'sin arroz');
+    run("shopEdit('añade 1 plátano al día')");
+    assert.ok(json("state.shop.items.find(x => x.fid === 'platano')").g >= 360, '3 plátanos para 3 días');
+});
+
+test('Semana de lunes a domingo e historial de entrenos completo', () => {
+    const { run, json } = loadApp();
+    const W = json('calWeekStats()');
+    assert.equal(W.days.length, 7);
+    assert.equal(new Date(W.days[0] + 'T12:00:00').getDay(), 1, 'empieza en lunes');
+    run("state.workouts = Array.from({ length: 300 }, (_, i) => ({ id: i + 1, d: shiftISO(todayISO(), -i), t: 'Día', di: 0, ex: [{ id: 'x', name: 'Sentadilla', sets: [{ kg: 50, reps: 5 }] }] }))");
+    run("gh.n = 1000");
+    assert.equal(run("gymHistoryHtml().split('openWorkout(').length - 1"), 300, 'se ven los 300 entrenos');
 });

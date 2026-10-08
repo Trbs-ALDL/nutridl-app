@@ -295,3 +295,9 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 #tabbar-top button { white-space: nowrap; }
 @media (max-width: 1279px) { #tabbar-top i { display: none; } }
 .nd-btn-ghost { white-space: nowrap; }
+
+/* 3.1: candado PRO en los accesos rápidos */
+.nd-quick { position: relative; }
+.nd-lock { position: absolute; top: 5px; right: 6px; font-size: 9px; color: #fcd34d; }
+@media (max-width: 380px) { .nd-quick span { font-size: 11px; } }
+.nd-quick .nd-lock i { font-size: 9px; color: #fcd34d; }

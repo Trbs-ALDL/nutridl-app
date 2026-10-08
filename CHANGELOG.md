@@ -1,5 +1,23 @@
 # Cambios de nutriDL
 
+## 3.1.0 · 9 de octubre de 2026
+
+**Nuevo**
+- **Coach: «He comido…» se apunta al momento**, con calorías y macros de cada cosa, el total y lo que te queda. Botones «Deshacer» y «Ajustar». Si un plato no está en la base, se apunta con una estimación de calorías en un toque.
+- **Mi nevera (PRO)**: escribe o marca lo que tienes (con foto de la nevera como guía) y te propone qué cocinar para la comida que toca, con cantidades y macros; si falta una cosa, te lo dice. También desde el Coach: «Tengo pollo, arroz y brócoli, ¿qué ceno?».
+- **Compra inteligente (PRO)**: pídela con tus palabras («compra fitness para 7 días, me gusta el salmón, sin lactosa») y te prepara el plan de comidas día a día y la lista con las cantidades totales (y por día). Cámbiala igual: «cambia el salmón por merluza» (con la misma proteína), «quita la leche», «añade 1 plátano al día», «me gusta el atún». Marca lo que ya tienes en casa.
+- **Gratis y PRO separados de verdad**: voz, foto, nevera, menú del día, compra inteligente y análisis avanzado son PRO. Prueba de 7 días gratis (sin tarjeta) y códigos de activación.
+- **Gym**: los días se eligen una vez y solo se cambian en «Ajustes» del gym o en «Mi plan»; puedes elegir qué días (lunes a domingo) y al abrir el gym verás el de hoy. **Historial completo** de todos tus entrenos (por meses, con buscador) y cada entreno se abre con todas sus series.
+- Más de 100 alimentos y platos nuevos: versiones ya cocinadas (patata cocida, arroz integral, quinoa, pollo, pavo, salmón, merluza…), comida rápida e internacional (kebab, burrito, pizza margarita, carbonara, ramen, poke, sushi…), platos y tapas de España (pulpo a la gallega, fabada, callos, migas…), postres y bebidas (con agua, café cortado, tinto de verano…).
+
+**Cambiado**
+- «Tu semana» en Progreso va de lunes a domingo.
+- Los platos propuestos llevan el nombre y la receta de lo que de verdad llevan (antes, al cambiar un ingrediente por tu dieta, el nombre no cambiaba).
+- Menús de varios días con más variedad y sin comidas vacías: si con tus preferencias una comida no tiene opciones, sus calorías se reparten entre las demás.
+
+**Arreglado**
+- Las tortitas, el sushi o las croquetas sin cantidad cuentan una ración típica (no una sola pieza).
+
 ## 3.0.1 · 8 de octubre de 2026
 
 **Arreglado**

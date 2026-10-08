@@ -41,6 +41,7 @@ function nowAction() {
     return { ic: '☀️', title: 'Empieza tu día', sub: 'Apunta tu primera comida.', btn: ['Apuntar', 'openFoodSheet()'] };
 }
 function renderDashboard() {
+    renderLocks();
     const box = $('dashboard'); if (!box) return;
     const cur = profiles.list[profiles.current];
     if ($('landing')) $('landing').classList.toggle('hidden', !!cur);
@@ -66,7 +67,7 @@ function renderDashboard() {
     const W = state.weights, T = weightTrend();
     const wk = weekInfo(), gd = gymDays();
     const ins = insightsList()[0];
-    const quick = (fn, ic, l) => `<button onclick="${fn}" class="nd-quick"><i class="fa-solid ${ic}"></i><span>${l}</span></button>`;
+    const quick = (fn, ic, l, pro) => `<button onclick="${fn}" class="nd-quick"><i class="fa-solid ${ic}"></i><span>${l}</span>${pro && !canUse(pro) ? '<b class="nd-lock" aria-label="PRO"><i class="fa-solid fa-lock"></i></b>' : ''}</button>`;
     const tile = (onclick, l, v, sub) => `<button onclick="${onclick}" class="nd-tile text-left"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${l}</div><div class="text-xl font-extrabold text-neutral-50 mt-1">${v}</div>${sub ? `<div class="text-xs text-neutral-400 mt-0.5">${sub}</div>` : ''}</button>`;
     const lastW = W.length ? W[W.length - 1] : null;
     box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
@@ -87,8 +88,8 @@ function renderDashboard() {
                     <div class="flex items-start gap-3"><span class="text-3xl leading-none">${A.ic}</span><div class="min-w-0">${A.kicker ? `<div class="text-xs font-bold text-neutral-400">${A.kicker}</div>` : ''}<div class="text-lg font-extrabold text-neutral-50 leading-snug">${A.title}</div><div class="text-sm text-neutral-300">${A.sub}</div></div></div>
                     <div class="grid ${A.btn2 ? 'grid-cols-2' : 'grid-cols-1'} gap-2"><button onclick="${A.btn[1]}" class="nd-mbtn nd-mbtn-main">${A.btn[0]}</button>${A.btn2 ? `<button onclick="${A.btn2[1]}" class="nd-mbtn">${A.btn2[0]}</button>` : ''}</div>
                 </div>
-                <div class="grid grid-cols-4 gap-2">
-                    ${quick('openVoiceLog()', 'fa-microphone', 'Voz')}${quick('openPhotoLog()', 'fa-camera', 'Foto')}${quick('openFoodSheet()', 'fa-magnifying-glass', 'Buscar')}${quick('openScanner()', 'fa-barcode', 'Escanear')}
+                <div class="grid grid-cols-5 gap-2">
+                    ${quick('openVoiceLog()', 'fa-microphone', 'Voz', 'voice')}${quick('openPhotoLog()', 'fa-camera', 'Foto', 'photo')}${quick('openFridge()', 'fa-snowflake', 'Nevera', 'fridge')}${quick('openFoodSheet()', 'fa-magnifying-glass', 'Buscar')}${quick('openScanner()', 'fa-barcode', 'Escanear')}
                 </div>
             </div>
         </div>

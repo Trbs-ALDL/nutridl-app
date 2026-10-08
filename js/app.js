@@ -34,7 +34,7 @@ function showTab(t, scrollTop = true) {
     if (t === 'home') renderDashboard();
     if (t === 'coach') renderCoach();
     if (t === 'progress') renderProgress();
-    if (t === 'calc') renderPrefs();
+    if (t === 'calc') { renderPrefs(); renderTrainCard(); }
     if (scrollTop) window.scrollTo({ top: 0 });
     save();
 }

@@ -42,7 +42,7 @@ function weightTrend() {
 function insightsList() {
     const out = [], c = calc, S = streakInfo(), W = weekStats(), T = weightTrend(), goal = typeof goalTypeOf === 'function' ? goalTypeOf() : 'maintain';
     if (S.cur >= 2) out.push({ k: 'dato', ic: '🔥', t: `Has registrado comida ${S.cur} días seguidos.`, pr: S.cur >= 7 ? 9 : 6 });
-    if (W.logged >= 3 && c.prot) out.push({ k: 'dato', ic: W.protOk >= 5 ? '🏆' : '🥩', t: `Has cumplido tu objetivo de proteína ${W.protOk}/7 días esta semana.`, pr: W.protOk >= 5 ? 8 : 7 });
+    if (W.logged >= 3 && c.prot) out.push({ k: 'dato', ic: W.protOk >= 5 ? '🏆' : '🥩', t: `Has cumplido tu objetivo de proteína ${W.protOk} de los últimos 7 días.`, pr: W.protOk >= 5 ? 8 : 7 });
     if (W.logged >= 3 && c.target) out.push({ k: 'dato', ic: '🎯', t: `Tus calorías han estado en tu objetivo (±10 %) ${W.kcalOk} de ${W.logged} días registrados.`, pr: 5 });
     if (T && T.week != null && Math.abs(T.week) >= .1) {
         const dir = T.week < 0 ? 'bajado' : 'subido';

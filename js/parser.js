@@ -24,6 +24,7 @@ const PHRASES = [
     [/\bhuevos? (duros?|cocidos?|a la plancha)\b/g, 'huevo'], [/\bhuevos? fritos?\b/g, 'huevo frito'], [/\bhuevos? revueltos?\b/g, 'huevos revueltos'],
     [/\btortilla espanola\b/g, 'tortilla patatas'], [/\btortilla de patatas?\b/g, 'tortilla patatas'], [/\bcafe solo\b/g, 'cafe solo'],
     [/\bcafe\b(?! con| solo)/g, 'cafe con leche'], [/\bensalada mixta\b/g, 'ensalada'], [/\bnueces\b/g, 'nueces'], [/\bnuez\b/g, 'nueces'],
+    [/\bchurros con chocolate\b/g, 'churros y chocolate a la taza'],
     [/\b(pan|tostadas?) con tomate( y aceite)?\b/g, 'pantomate'], [/\bpan tostado\b/g, 'pan'], [/\bpatatas fritas de bolsa\b/g, 'patatas fritas bolsa'], [/\bpatatas fritas\b(?! bolsa)/g, 'patatas fritas caseras'],
     [/\b(bocadillo|bocata) de jamon( serrano)?\b/g, 'bocadillo jamon serrano'], [/\b(bocadillo|bocata) de (?!jamon)/g, 'pan barra y '],
     [/\bbocadillo\b(?! jamon)/g, 'pan barra'], [/\bbocata\b/g, 'pan barra'], [/\bcocacola\b|\bcoca cola\b|\bcoca-cola\b/g, 'coca-cola'],
@@ -33,8 +34,12 @@ const PHRASES = [
 const CANON = { pollo: 'pollo', pechuga: 'pollo', arroz: 'arroz', pasta: 'pasta', macarrones: 'pasta', spaghetti: 'pasta', pan: 'pan', leche: 'leche', yogur: 'yognat',
     atun: 'atun', huevo: 'huevo', aceite: 'aove', patata: 'patata', ternera: 'ternera', galleta: 'galletas', galletas: 'galletas', cerveza: 'cerveza', vino: 'vino',
     cafe: 'cafeleche', salmon: 'salmon', merluza: 'merluza', jamon: 'jamon', pavo: 'pavo', cerdo: 'cerdo', lomo: 'cerdo', avena: 'avena', ensalada: 'ensalada',
-    chocolate: 'choco', zumo: 'zumo', queso: 'burgos', tortilla: 'tortilla', lentejas: 'lentguisadas', garbanzos: 'garbanzos', fruta: 'manzana', pizza: 'pizza' };
-const COOKED_ALT = { arroz: 'arrozcocido', arrozint: 'arrozcocido', pasta: 'pastacocida', pastaint: 'pastacocida', pollo: 'pollopl' };
+    chocolate: 'choco', zumo: 'zumo', hamburguesa: 'hamburguesacomp', tostada: 'pan', sushi: 'sushi', kebab: 'kebab', queso: 'burgos', tortilla: 'tortilla', lentejas: 'lentguisadas', garbanzos: 'garbanzos', fruta: 'manzana', pizza: 'pizza' };
+// Palabras que la base escribe de otra forma
+const ALIAS_W = { espaguetis: 'espaguetis', spaghetti: 'espaguetis', macarrones: 'macarrones', pasta: 'espaguetis', croissant: 'cruasan', croissants: 'cruasan', donut: 'donut', donuts: 'donut', tostada: 'pan', tostadas: 'pan', hamburguesas: 'hamburguesa', bolonesa: 'bolonesa' };
+// Cosas que se comen de varias en varias: sin cantidad, una ración típica (no una sola pieza)
+const TYPICAL_N = { sushi: 10, nigiri: 8, gyozas: 6, croquetas: 5, churros: 4, falafel: 5, tacos: 2, empanadilla: 3, montadito: 2, galletas: 4, galletachoco: 3, alitas: 1, nuggets: 1, rollito: 2, boquerones: 1, almendras: 20, pancakes: 3, tortitas: 3 };
+const COOKED_ALT = { arroz: 'arrozcocido', arrozint: 'arrozintcocido', pasta: 'pastacocida', pastaint: 'pastaintcocida', pollo: 'pollopl', pavo: 'pavopl', ternera: 'terneraplancha', salmon: 'salmonpl', merluza: 'merluzapl', gambas: 'gambaspl', patata: 'patatacocida', boniato: 'boniatoasado', quinoa: 'quinoacocida', cuscus: 'cuscuscocido', brocoli: 'brocolicocido' };
 const SLOT_HINTS = [[/\b(desayun\w*)\b/, 'B'], [/\b(almuerz\w*|media manana)\b/, 'M'], [/\b(merend\w*|merienda)\b/, 'S'], [/\b(cen\w*)\b/, 'D'], [/\b(comida|al mediodia)\b/, 'L']];
 
 const stem = w => w.length > 4 && w.endsWith('es') && !/[aeiou]es$/.test(w.slice(-3)) ? w.slice(0, -2) : w.length > 3 && w.endsWith('s') ? w.slice(0, -1) : w;
@@ -48,7 +53,8 @@ function tokMatch(t, w) {
 function matchFoods(q, max = 6) {
     const raw = norm(q);
     const wantsCooked = /\b(cocid|hech|plancha|asad|cocinad)/.test(raw);
-    const toks = raw.split(/[^a-z0-9ñ%-]+/).filter(t => t && !STOP.has(t)).map(t => (typeof SYN !== 'undefined' && SYN[t]) || t);
+    const toks = raw.split(/[^a-z0-9ñ%-]+/).filter(t => t && !STOP.has(t));
+    const alt = t => [t, (typeof SYN !== 'undefined' && SYN[t]) || t, ALIAS_W[t] || t];
     if (!toks.length) return [];
     const freq = typeof foodFreq === 'function' ? foodFreq() : {};
     const res = [];
@@ -56,10 +62,10 @@ function matchFoods(q, max = 6) {
         const words = norm(`${f.name} ${f.brand || ''} ${f.alias || ''}`).split(/[^a-z0-9ñ%-]+/).filter(Boolean);
         let score = 0, hits = 0;
         toks.forEach((t, i) => {
-            const best = Math.max(0, ...words.map(w => tokMatch(t, w)));
-            if (best) { score += best * (i === 0 ? 1.4 : 1); hits++; } else score -= 1.2;
+            const best = Math.max(0, ...alt(t).flatMap(a => words.map(w => tokMatch(a, w))));
+            if (best) { score += best * (i === 0 ? 1.4 : 1); hits++; } else score -= 2;
         });
-        if (!hits || !words.some(w => tokMatch(toks[0], w)) && hits < 2) continue;
+        if (!hits || !alt(toks[0]).some(a => words.some(w => tokMatch(a, w))) && hits < 2) continue;
         const nameWords = norm(f.name).split(/[^a-z0-9ñ%-]+/).filter(w => w && !STOP.has(w));
         if (tokMatch(toks[0], nameWords[0] || '')) score += 2;
         score -= Math.max(0, nameWords.length - hits) * .35;
@@ -149,7 +155,10 @@ function parseOne(seg) {
         if (cu && q.n < 20) { const half = /^medi/.test(norm(cu[1])); g = (half ? cu[0] * 2 : cu[0]) * q.n; n = q.n; u = half ? null : cu; }
         else if (q.n >= 20) g = q.n;
         else { const d = defaultPortion(f); g = d.g * q.n; est = true; }
-    } else { const d = defaultPortion(f); g = d.g; est = true; if (d.unit.key !== 'g') { n = d.n; u = [d.unit.g, d.unit.label, d.unit.plural]; } }
+    } else {
+        const d = defaultPortion(f), k = TYPICAL_N[f.id] || 1; g = d.g * k; est = true;
+        if (d.unit.key !== 'g') { n = d.n * k; u = [d.unit.g, d.unit.label, d.unit.plural]; }
+    }
     if (!g || g <= 0 || g > 5000) return { text: seg, food: null };
     if (!u && f.u && Math.abs(g / f.u[0] - Math.round(g / f.u[0])) < .01 && g >= f.u[0]) { u = f.u; n = Math.round(g / f.u[0]); }
     const alts = [COOKED_ALT[f.id], ...cands.map(x => x.id)].filter((id, i, a) => id && id !== f.id && getFood(id) && a.indexOf(id) === i).slice(0, 5);
@@ -160,7 +169,8 @@ function parseFoodText(text) {
     let s = norm(String(text || '')).replace(/(\d),(\d)/g, '$1.$2').replace(/(\d)\s*(g|gr|ml|kg)\b/g, '$1 $2');
     let slot = null;
     for (const [re, k] of SLOT_HINTS) if (re.test(s)) { slot = k; break; }
-    s = s.replace(/\b(me he|he|hemos|acabo de|voy a|quiero|para)\s+(comido|tomado|bebido|desayunado|cenado|merendado|almorzado|picado|comer|tomar|cenar|desayunar|merendar)\b/g, ' , ')
+    s = s.replace(/\b(tengo|tenemos|hay|me queda|me quedan|en (la|mi) nevera|en casa)\b/g, ' , ')
+        .replace(/\b(me he|he|hemos|acabo de|voy a|quiero|para)\s+(comido|tomado|bebido|desayunado|cenado|merendado|almorzado|picado|comer|tomar|cenar|desayunar|merendar)\b/g, ' , ')
         .replace(/\b(de|en el|en la|para)\s+(desayuno|comida|cena|merienda|almuerzo)\b/g, ' , ')
         .replace(/\b(desayuno|comida|cena|merienda|almuerzo|hoy|esta manana|esta tarde|esta noche|anoche)\b\s*:?/g, ' , ');
     PHRASES.forEach(([re, rep]) => { s = s.replace(re, rep); });
@@ -169,8 +179,10 @@ function parseFoodText(text) {
     for (const part of parts) {
         // «pollo con arroz» = dos cosas; «café con leche» o «arroz con leche» = una
         const whole = /\bcon\b/.test(part) ? parseOne(part) : null;
-        const wn = whole && whole.food ? norm(whole.food.name) : '';
-        const keepWhole = /[a-z] con [a-z]/.test(wn) && wn.split(' con ').every(w => part.includes(w.trim().split(' ').pop()));
+        const wn = whole && whole.food ? norm(whole.food.name).replace(/\s*\(.*?\)/g, '') : '';
+        // Solo si el orden coincide: «arroz con pollo» es el plato; «pollo con arroz» son dos cosas
+        const parts2 = wn.split(' con '), keys = parts2.map(w => w.trim().split(' ').pop()), pos = keys.map(k => part.indexOf(k));
+        const keepWhole = /[a-z] con [a-z]/.test(wn) && pos.every(p => p >= 0) && pos.every((p, i) => !i || p > pos[i - 1]);
         const pieces = keepWhole ? [part] : part.split(/\s+con\s+/);
         for (const pc of pieces) {
             const r = parseOne(pc.trim());

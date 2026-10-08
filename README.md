@@ -31,7 +31,8 @@ js/wizard.js          asistente de perfil   js/profiles.js   perfiles y copias
 js/dashboard.js       «Hoy»                 js/app.js        pestañas, hojas, informe de errores
 js/engine.js          motor de platos, menú y compra   js/parser.js   entender texto y voz
 js/insights.js        rachas, logros y tendencias      js/coach.js    Coach, ¿Qué como?, menú, compra, voz, foto
-js/plans.js           Gratis / PRO          js/analytics.js  medición de uso (solo en el dispositivo)
+js/kitchen.js         Mi nevera y compra inteligente
+js/plans.js           Gratis / PRO (prueba, códigos, enlace de pago)          js/analytics.js  medición de uso (solo en el dispositivo)
 js/main.js            arranque, instalación como app y modo sin conexión (se carga el último)
 sw.js                 service worker (generado)
 tests/                pruebas automáticas

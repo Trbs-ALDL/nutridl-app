@@ -86,6 +86,9 @@ MT('tortilla_claras', 'Tortilla de claras con pan integral', 'BD', [['claras', '
 MT('batido_fresas', 'Queso batido con fresas, avena y nueces', 'BS', [['batido|skyr|yogdes', 'P'], ['fresas|arandanos|kiwi', 'X', 120], ['avena|muesli', 'C'], ['nueces|almendras|chia', 'F']], ['Pon el queso batido en un bol.', 'Añade la fruta troceada, la avena y los frutos secos.'], 3);
 MT('tostada_aguacate', 'Tostada con aguacate y huevos', 'BD', [['panint|pancenteno|pan', 'C'], ['huevo', 'P'], ['aguacate', 'F']], ['Cuece los huevos 8 minutos (o hazlos a la plancha).', 'Machaca el aguacate sobre el pan tostado con sal y pimienta.', 'Pon los huevos encima.'], 10);
 MT('cafe_jamon', 'Café con leche y tostada con aceite y jamón', 'B', [['cafeleche', 'X', 200], ['pan|panint', 'C'], ['jamon|fiambre', 'P'], ['aove', 'F'], ['tomate', 'X', 50]], ['Prepara el café con leche.', 'Tuesta el pan, añade tomate, aceite y el jamón.'], 5);
+MT('tortitas_cacahuete', 'Tortitas de arroz con crema de cacahuete y plátano', 'BS', [['tortitas', 'C'], ['cacahuete|cremaalmendra|aguacate', 'F'], ['platano', 'X', 120], ['bebsoja|skyr|yogdes|leche', 'P']], ['Unta las tortitas con la crema de cacahuete.', 'Pon el plátano en rodajas encima.', 'Acompaña con la bebida o el yogur.'], 3);
+MT('batido_vegetal', 'Batido de proteína vegetal con plátano y crema de cacahuete', 'BS', [['guisante|whey', 'P'], ['platano', 'X', 120], ['bebsoja|bebalmendra|leche', 'X', 250], ['cacahuete|cremaalmendra', 'F'], ['tortitas|patatacocida', 'C']], ['Bate la proteína con la bebida, el plátano y la crema de cacahuete.', 'Acompaña con las tortitas.'], 3);
+MT('huevos_patata', 'Huevos revueltos con patata y espinacas', 'BD', [['huevo|tofu', 'P'], ['patata|boniato', 'C'], ['espinacas|champi', 'X', 80], ['aove', 'F']], ['Cuece o haz la patata en el microondas (6 minutos) en dados.', 'Saltéala con el aceite y las espinacas.', 'Añade los huevos batidos y remueve hasta que cuajen.'], 12);
 MT('batido_whey', 'Batido de proteína con avena y plátano', 'BS', [['whey|guisante', 'P'], ['avena', 'C'], ['platano', 'X', 120], ['leche|bebsoja|lechesinlac|lechedes', 'X', 250]], ['Pon todo en la batidora con unos hielos.', 'Bate 30 segundos.'], 3);
 MT('tofu_revuelto', 'Tofu revuelto con pan integral', 'BD', [['tofu', 'P'], ['panint|pancenteno|pan', 'C'], ['aove', 'F'], ['espinacas|champi|tomate', 'X', 80]], ['Desmenuza el tofu con un tenedor.', 'Saltéalo con el aceite, la verdura, sal y una pizca de cúrcuma 5 minutos.', 'Sírvelo con el pan.'], 10);
 MT('yogur_cereales', 'Yogur con cereales y fruta', 'BS', [['yogdes|skyr|yognat|bebsoja', 'P'], ['muesli|cereales|avena', 'C'], ['platano|manzana|pera|fresas|kiwi', 'X', 120]], ['Mezcla el yogur con los cereales.', 'Añade la fruta troceada.'], 2);
@@ -128,34 +131,58 @@ MT('crema_pollo', 'Crema de calabacín con pechuga de pollo', 'D', [['calabacin|
 const KIND_LIM = { P: [40, 300], C: [15, 150], F: [0, 30] };
 function itemStep(f, kind) { return f.u && kind !== 'F' ? f.u[0] : kind === 'F' ? 5 : 10; }
 
-// Elige, de las alternativas de cada ingrediente, la primera que encaja con tus preferencias (antes lo que tienes en casa)
-function resolveMeal(t, p = myPrefs()) {
-    const out = [];
+// Alimentos que cuentan como «lo mismo» al mirar la despensa (crudo / cocinado / variantes)
+const PANTRY_EQ = [['pollo', 'pollopl', 'muslo', 'polloasado'], ['pavo', 'pavopl', 'fiambre'], ['ternera', 'terneraplancha', 'picada', 'hamburguesa'], ['salmon', 'salmonpl'], ['merluza', 'merluzapl', 'bacalao'],
+    ['gambas', 'gambaspl'], ['arroz', 'arrozcocido', 'arrozint', 'arrozintcocido'], ['pasta', 'pastacocida', 'pastaint', 'pastaintcocida'], ['patata', 'patatacocida', 'patataasada'],
+    ['boniato', 'boniatoasado'], ['quinoa', 'quinoacocida'], ['cuscus', 'cuscuscocido'], ['pan', 'panint', 'pancenteno', 'panmolde', 'panmulti'], ['leche', 'lechedes', 'lechentera', 'lechesinlac'],
+    ['yognat', 'yogdes', 'yoggr'], ['skyr', 'batido'], ['atun', 'atunaceite'], ['brocoli', 'brocolicocido'], ['ensalada', 'lechuga'], ['jamon', 'jamoncocido']];
+const STAPLES = new Set(['aove']); // se da por hecho que hay aceite
+function inPantry(id, pantry) {
+    if (pantry.includes(id)) return true;
+    const g = PANTRY_EQ.find(x => x.includes(id));
+    return !!g && g.some(x => pantry.includes(x));
+}
+// Elige, de las alternativas de cada ingrediente, la primera que encaja con tus preferencias (antes lo que tienes en casa
+// y lo que te gusta). Con o.pantryOnly solo usa lo que tienes: si falta la proteína o el hidrato, el plato no vale
+// (o, con o.allowMissing, vale apuntando qué falta comprar).
+function resolveMeal(t, p = myPrefs(), o = {}) {
+    const out = [], missing = [], like = o.like || [];
+    let changed = !!o.forceName;
     for (const [alts, kind, fixed] of t.items) {
         const ids = alts.split('|').filter(id => getFood(id) && foodOk(getFood(id), p));
         if (!ids.length) {
             if (kind !== 'P' && kind !== 'C') continue; // un acompañamiento se puede omitir
             return null;
         }
-        const id = ids.find(x => p.pantry.includes(x)) || ids[0];
+        let id = ids.find(x => inPantry(x, p.pantry)) || ids.find(x => like.includes(x)) || ids[0];
+        if (o.pantryOnly && !inPantry(id, p.pantry) && !STAPLES.has(id)) {
+            if (kind === 'P' || kind === 'C') { if (!o.allowMissing || missing.length) return null; missing.push(id); }
+            else { if (kind === 'V') changed = true; continue; } // sin ese acompañamiento
+        }
+        if (id !== alts.split('|')[0] && kind !== 'F') changed = true;
         out.push({ f: getFood(id), kind, fixed });
     }
-    if (!out.some(x => x.kind === 'P' || x.kind === 'C')) return null;
+    if (!out.some(x => x.kind === 'P' || x.kind === 'C' || x.kind === 'X')) return null; // p. ej. fruta + frutos secos
+    out.missing = missing; out.changed = changed;
     return out;
 }
 const sumMacros = items => items.reduce((a, it) => { const m = macrosOf(it.f, it.g); a.kcal += m.kcal; a.p += m.p; a.f += m.f; a.c += m.c; a.fib += m.fib; return a; }, { kcal: 0, p: 0, f: 0, c: 0, fib: 0 });
 
 // Ajusta los gramos de cada ingrediente para acercarse a las kcal y la proteína de esa comida
-function fitMeal(t, tg, p) {
-    const items = resolveMeal(t, p); if (!items) return null;
+function fitMeal(t, tg, p, o = {}) {
+    const items = resolveMeal(t, p, o); if (!items) return null;
+    const missing = items.missing || [];
+    const named = items.changed ? mealNaming(items) : { name: t.name, steps: t.steps };
     items.forEach(it => {
         if (it.kind === 'V' || it.kind === 'X') { it.g = it.fixed || it.f.fixed || 150; return; }
         const [lo0, hi0] = KIND_LIM[it.kind], st = itemStep(it.f, it.kind);
         it.st = st;
-        it.lo = it.kind === 'F' ? 0 : Math.max(st, Math.ceil(lo0 / st) * st);
+        it.lo = it.kind === 'F' ? 0 : Math.max(st, Math.ceil(Math.min(lo0, it.f.min > 0 ? it.f.min : lo0) / st) * st); // p. ej. 1 cacito de proteína (30 g)
         // Topes realistas para un solo plato (p. ej. no más de 300 g de queso batido o de carne)
-        const cap = it.kind === 'P' ? 300 : it.kind === 'C' ? (it.f.cat === 'legum' ? 350 : 250) : 40;
-        it.hi = Math.max(it.lo, Math.floor(Math.min(it.f.max > 0 ? it.f.max : hi0, cap) / st) * st);
+        const big = Math.min(1.8, Math.max(1, tg.kcal / 800)); // comidas muy grandes (dietas de volumen) admiten más cantidad
+        const cap = (it.kind === 'P' ? 300 : it.kind === 'C' ? (it.f.cat === 'legum' ? 350 : 250) : 40) * big;
+        const fmax = it.f.max > 0 ? it.f.max * big : hi0 * big;
+        it.hi = Math.max(it.lo, Math.floor(Math.min(fmax, cap) / st) * st);
         it.g = Math.min(it.hi, Math.max(it.lo, Math.round((it.lo + it.hi) / 3 / st) * st));
     });
     const K = Math.max(tg.kcal, 60), P = Math.max(tg.p, 5), Fa = Math.max(tg.f, 3), C = Math.max(tg.c, 5);
@@ -178,66 +205,101 @@ function fitMeal(t, tg, p) {
     }
     const m = sumMacros(items);
     const ok = Math.abs(m.kcal - K) / K <= (K < 250 ? .3 : .15);
-    return { id: t.id, name: t.name, steps: t.steps, min: t.min, items: items.filter(it => it.g > 0).map(it => ({ fid: it.f.id, g: Math.round(it.g * 10) / 10, kind: it.kind })), m, err: best, ok, main: (items.find(it => it.kind === 'P') || items[0]).f.id };
+    return { id: t.id, name: named.name, steps: named.steps, min: t.min, items: items.filter(it => it.g > 0).map(it => ({ fid: it.f.id, g: Math.round(it.g * 10) / 10, kind: it.kind })), m, err: best, ok, main: (items.find(it => it.kind === 'P') || items[0]).f.id, missing };
 }
 
+// Si un ingrediente se ha cambiado (dieta, alergia, lo que tienes en casa…), el nombre y los pasos se rehacen con lo que lleva
+const shortName = f => f.name.replace(/\s*\(.*?\)/g, '').replace(/ \/.*$/, '').replace(/ a la plancha$/, '').toLowerCase();
+function mealNaming(items) {
+    const P = items.find(i => i.kind === 'P'), C = items.find(i => i.kind === 'C'), V = items.find(i => i.kind === 'V');
+    const X = items.filter(i => i.kind === 'X').map(i => shortName(i.f));
+    const parts = [P, C].filter(Boolean).map(i => shortName(i.f));
+    let name = parts.join(' con ') + (V ? ' y ' + shortName(V.f) : X.length ? ' y ' + X[0] : '');
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    const steps = [];
+    if (P) steps.push(`Prepara ${shortName(P.f)} como más te guste (plancha, horno o cocido).`);
+    if (C) steps.push(C.f.raw ? `Cuece ${shortName(C.f)} según el paquete (el peso indicado es en crudo).` : `Añade ${shortName(C.f)}.`);
+    if (V) steps.push(`Acompaña con ${shortName(V.f)}${items.some(i => i.f.id === 'aove') ? ' y aliña con el aceite' : ''}.`);
+    else if (items.some(i => i.f.id === 'aove')) steps.push('Aliña con el aceite.');
+    X.slice(V ? 0 : 1).forEach(x => steps.push(`Completa con ${x}.`));
+    return { name, steps };
+}
 // Generador pseudoaleatorio con semilla (para «Regenerar» sin repetir siempre lo mismo)
 function seeded(seed) { let a = (seed >>> 0) || 1; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
-// Las mejores opciones para una comida. opts: { n, seed, avoid: [ids de proteína a evitar], exclude: [ids de plato] }
+// Las mejores opciones para una comida. opts: { n, seed, avoid: [ids de proteína a evitar], exclude: [ids de plato],
+//   prefs (preferencias puntuales), like: [alimentos que gustan], pantryOnly, allowMissing }
 function suggestMeals(slot, tg, opts = {}) {
-    const p = myPrefs(), rnd = seeded(opts.seed || 1), n = opts.n || 3;
+    const p = opts.prefs || myPrefs(), rnd = seeded(opts.seed || 1), n = opts.n || 3, like = opts.like || [];
     const slotKey = slot === 'X' ? 'S' : slot;
     const avoid = new Set(opts.avoid || []), exclude = new Set(opts.exclude || []);
     const cands = MEALS.filter(t => t.slots.includes(slotKey) && !exclude.has(t.id))
         .filter(t => p.budget !== 'low' || !t.items.some(([a, k]) => (k === 'P' || k === 'C') && EXPENSIVE.has(a.split('|')[0])))
-        .map(t => fitMeal(t, tg, p)).filter(Boolean)
+        .map(t => fitMeal(t, tg, p, { like, pantryOnly: opts.pantryOnly, allowMissing: opts.allowMissing })).filter(Boolean)
         .map(r => {
             let score = r.err + (r.ok ? 0 : 1) + (avoid.has(r.main) ? .08 : 0) + rnd() * (opts.seed ? .06 : 0);
-            const inPantry = r.items.filter(it => p.pantry.includes(it.fid)).length;
-            score -= Math.min(.06, inPantry * .02);
+            const have = r.items.filter(it => inPantry(it.fid, p.pantry)).length;
+            score -= Math.min(.06, have * .02);
+            // Lo que te gusta sale antes (pero sin repetirlo en todas las comidas: eso lo controla «avoid»)
+            score -= Math.min(.3, r.items.filter(it => like.includes(it.fid)).length * .15);
+            score += r.missing.length * .2;
             return { ...r, score };
         })
         .sort((a, b) => a.score - b.score);
     // Variedad: no dos opciones con la misma proteína principal
-    const out = [], mains = new Set();
-    for (const r of cands) { if (out.length >= n) break; if (mains.has(r.main) && cands.length > n) continue; mains.add(r.main); out.push(r); }
-    for (const r of cands) { if (out.length >= n) break; if (!out.includes(r)) out.push(r); }
+    const out = [], mains = new Set(), names = new Set();
+    for (const r of cands) { if (out.length >= n) break; if (names.has(r.name) || (mains.has(r.main) && cands.length > n)) continue; mains.add(r.main); names.add(r.name); out.push(r); }
+    for (const r of cands) { if (out.length >= n) break; if (!out.includes(r) && !names.has(r.name)) { names.add(r.name); out.push(r); } }
     return out;
 }
 
 // =====================================================================
 //  MENÚ DEL DÍA (y de varios días, para la lista de la compra)
 // =====================================================================
-function makeDayMenu(seed = Date.now(), avoidIds = []) {
+function makeDayMenu(seed = Date.now(), avoidIds = [], o = {}) {
     if (!calc.target) return null;
-    const T = dayTargets(), used = new Set(avoidIds), mains = [];
-    const meals = Object.keys(T).map(slot => {
-        const opt = suggestMeals(slot, T[slot], { n: 1, seed: seed + SLOT_ORDER.indexOf(slot) * 97, avoid: mains, exclude: [...used] })[0];
-        if (!opt) return null;
-        used.add(opt.id); mains.push(opt.main);
-        return { slot, ...opt };
-    }).filter(Boolean);
+    const T = dayTargets();
+    const build = (slots, k) => {
+        const used = new Set(avoidIds), mains = [], meals0 = [];
+        return slots.map(slot => {
+            const tg = { kcal: T[slot].kcal * k, p: T[slot].p * k, f: T[slot].f * k, c: T[slot].c * k };
+            const so = { n: 1, seed: seed + SLOT_ORDER.indexOf(slot) * 97, avoid: mains, prefs: o.prefs, like: o.like };
+            // Si no queda nada sin repetir (pocas opciones por dieta o alergias), se permite repetir de otros días
+            // Siempre antes un plato que encaje en las calorías de esa comida (ok) que uno que no
+            const A = suggestMeals(slot, tg, { ...so, n: 3, exclude: [...used] }), B = A.some(x => x.ok) ? [] : suggestMeals(slot, tg, { ...so, n: 3, exclude: meals0 });
+            const opt = A.find(x => x.ok) || B.find(x => x.ok) || A[0] || B[0];
+            if (!opt) return null;
+            used.add(opt.id); mains.push(opt.main); meals0.push(opt.id);
+            return { slot, ...opt };
+        }).filter(Boolean);
+    };
+    let meals = build(Object.keys(T), 1);
+    // Si alguna comida no tiene opciones con tus preferencias, sus calorías se reparten entre las demás
+    if (meals.length && meals.length < Object.keys(T).length) {
+        const share = SLOT_SHARE[myPrefs().meals], have = meals.reduce((a, m) => a + (share[m.slot] || 0), 0);
+        if (have > 0) meals = build(meals.map(m => m.slot), Math.min(1.6, 1 / have));
+    }
     return { seed, meals };
 }
 function menuTotals(menu) {
     return menu.meals.reduce((a, ml) => { a.kcal += ml.m.kcal; a.p += ml.m.p; a.f += ml.m.f; a.c += ml.m.c; return a; }, { kcal: 0, p: 0, f: 0, c: 0 });
 }
 // Cambia una sola comida del menú por la siguiente mejor opción
-function swapMenuMeal(menu, idx, seed = Date.now()) {
+function swapMenuMeal(menu, idx, seed = Date.now(), o = {}) {
     const ml = menu.meals[idx], T = dayTargets();
     const others = menu.meals.filter((_, i) => i !== idx);
-    const opt = suggestMeals(ml.slot, T[ml.slot], { n: 1, seed, exclude: [ml.id, ...others.map(o => o.id), ...(ml.tried || [])], avoid: others.map(o => o.main) })[0];
+    const opt = suggestMeals(ml.slot, T[ml.slot], { n: 1, seed, exclude: [ml.id, ...others.map(x => x.id), ...(ml.tried || [])], avoid: others.map(x => x.main), prefs: o.prefs, like: o.like })[0];
     if (!opt) return false;
     menu.meals[idx] = { slot: ml.slot, ...opt, tried: [...(ml.tried || []), ml.id].slice(-6) };
     return true;
 }
 // Para varios días: menús distintos (sin repetir platos el mismo día ni seguidos)
-function makeMenus(days, seed = Date.now()) {
+function makeMenus(days, seed = Date.now(), o = {}) {
     const out = []; let prev = [];
     for (let d = 0; d < days; d++) {
-        const m = makeDayMenu(seed + d * 7919, prev); if (!m) break;
-        out.push(m); prev = m.meals.map(x => x.id);
+        const m = makeDayMenu(seed + d * 7919, prev, o); if (!m) break;
+        // Sin repetir platos en dos días seguidos
+        out.push(m); prev = out.slice(-3).flatMap(x => x.meals.map(y => y.id));
     }
     return out;
 }

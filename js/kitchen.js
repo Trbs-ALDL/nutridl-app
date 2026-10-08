@@ -1,0 +1,292 @@
+// nutriDL · Mi nevera (qué cocinar con lo que tienes) y Compra inteligente (planificada, a tu gusto y editable con palabras)
+// Funciones PRO. Todo se calcula en el dispositivo con la base de alimentos.
+'use strict';
+
+// =====================================================================
+//  MI NEVERA
+// =====================================================================
+const FRIDGE_QUICK = ['huevo', 'pollo', 'pavo', 'ternera', 'picada', 'salmon', 'merluza', 'atun', 'gambas', 'tofu', 'leche', 'yogdes', 'skyr', 'batido', 'burgos', 'jamon', 'fiambre',
+    'arroz', 'pasta', 'patata', 'boniato', 'pan', 'avena', 'wrap', 'lentejas', 'garbanzos', 'brocoli', 'espinacas', 'calabacin', 'pimiento', 'tomate', 'lechuga', 'champi', 'zanahoria', 'cebolla',
+    'aguacate', 'platano', 'manzana', 'fresas', 'nueces', 'aove'];
+const fr = { slot: null, url: null };
+const pantry = () => myPrefs().pantry;
+function openFridge(slot) {
+    if (needPro('fridge')) return;
+    if (!calc.target) { toast('Primero completa tu plan'); return; }
+    fr.slot = slot || (nextMeal() || {}).slot || slotByHour();
+    openSheet('<i class="fa-solid fa-snowflake text-mint-400"></i> Mi nevera', `<div class="space-y-4">
+        <label class="nd-photo" id="fr-drop"><input type="file" accept="image/*" capture="environment" class="sr-only" onchange="fridgePhoto(this)"><span id="fr-prev" class="flex flex-col items-center gap-2 text-neutral-400"><i class="fa-solid fa-camera text-3xl text-mint-400"></i><span class="text-sm font-bold">Foto de tu nevera (opcional)</span><span class="text-xs">Te sirve de guía para marcar lo que tienes. No sale de tu móvil.</span></span></label>
+        <form onsubmit="event.preventDefault(); fridgeText()" class="flex gap-2"><input id="fr-q" autocomplete="off" placeholder="Escribe lo que tienes: pollo, huevos, arroz…" class="flex-1 min-w-0 px-3 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Lo que tienes en la nevera"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold">Añadir</button></form>
+        <div id="fr-have"></div>
+        <details class="nd-faq" ${pantry().length < 3 ? 'open' : ''}><summary>Toca lo que tienes<i class="fa-solid fa-chevron-down chev"></i></summary><div id="fr-chips" class="px-3 pb-3 flex flex-wrap gap-1.5"></div></details>
+        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">¿Para qué comida?</div><div id="fr-slots" class="flex gap-2 overflow-x-auto nd-noscroll"></div></div>
+        <button onclick="fridgeCook()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-utensils"></i> ¿Qué cocino?</button>
+        <div id="fr-out" class="space-y-3"></div>
+    </div>`, () => { if (fr.url) URL.revokeObjectURL(fr.url); fr.url = null; });
+    renderFridge(); track('fridge_open');
+}
+function fridgePhoto(inp) {
+    const file = inp.files && inp.files[0]; if (!file) return;
+    if (fr.url) URL.revokeObjectURL(fr.url);
+    fr.url = URL.createObjectURL(file);
+    $('fr-prev').innerHTML = `<img src="${fr.url}" alt="Foto de tu nevera" class="w-full max-h-72 object-contain rounded-2xl">`;
+    $('fr-drop').classList.add('has');
+}
+function renderFridge() {
+    const P = pantry();
+    const have = $('fr-have'); if (!have) return;
+    have.innerHTML = P.length ? `<div class="flex items-center justify-between gap-2 mb-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">Tienes (${P.length})</div><button type="button" onclick="fridgeClear()" class="text-xs font-bold text-neutral-400 underline">Vaciar</button></div>
+        <div class="flex flex-wrap gap-1.5">${P.map(getFood).filter(Boolean).map(f => `<span class="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg bg-mint-600/20 border border-mint-500/40 text-xs font-bold text-neutral-100">${emo(f)} ${esc(f.name)}<button type="button" onclick="fridgeToggle('${f.id}')" class="w-6 h-6 rounded text-neutral-400 hover:text-roseAccent-400" aria-label="Quitar ${esc(f.name)}"><i class="fa-solid fa-xmark"></i></button></span>`).join('')}</div>`
+        : '<p class="text-sm text-neutral-400">Aún no has marcado nada.</p>';
+    $('fr-chips').innerHTML = FRIDGE_QUICK.map(getFood).filter(f => f && !inPantry(f.id, P)).map(f => `<button type="button" onclick="fridgeToggle('${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(f.name.replace(/ \(.*\)$/, ''))}</button>`).join('');
+    $('fr-slots').innerHTML = planSlots().map(s => `<button type="button" onclick="fr.slot='${s}';renderFridge()" class="shrink-0 px-3.5 py-2 rounded-full text-xs font-extrabold border ${s === fr.slot ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${SLOT_NAME[s]}</button>`).join('');
+}
+function fridgeToggle(id) { const p = myPrefs(); p.pantry = p.pantry.includes(id) ? p.pantry.filter(x => x !== id) : p.pantry.concat(id); save(); renderFridge(); }
+function fridgeClear() { myPrefs().pantry = []; save(); renderFridge(); $('fr-out').innerHTML = ''; }
+function fridgeText() {
+    const t = ($('fr-q').value || '').trim(); if (!t) return;
+    const ids = parseFoodText(t).items.map(i => i.food.id), p = myPrefs();
+    if (!ids.length) { toast('No he reconocido ningún alimento'); return; }
+    ids.forEach(id => { if (!p.pantry.includes(id)) p.pantry.push(id); });
+    $('fr-q').value = ''; save(); renderFridge();
+}
+let frOpts = [];
+// Platos con lo que tienes (y, si hacen falta más ideas, los que solo necesitan una cosa más)
+function fridgeMeals(slot, ids, n = 3) {
+    const prefs = { ...myPrefs(), pantry: ids }, tg = targetFor(slot);
+    const full = suggestMeals(slot, tg, { n, pantryOnly: true, prefs, seed: Date.now() % 100000 });
+    const names = new Set(full.map(o => o.name));
+    const near = full.length >= n ? [] : suggestMeals(slot, tg, { n: n * 2, pantryOnly: true, allowMissing: true, prefs }).filter(o => o.missing.length && !names.has(o.name)).slice(0, n - full.length);
+    return { tg, opts: full.concat(near) };
+}
+function fridgeCook() {
+    const P = pantry(); if (!P.length) { toast('Marca primero lo que tienes'); return; }
+    const { tg, opts } = fridgeMeals(fr.slot, P); frOpts = opts;
+    $('fr-out').innerHTML = opts.length ? `<div class="nd-card p-4 flex items-center justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Para ${slotArt(fr.slot)}</div><div class="text-lg font-extrabold text-neutral-50">${fmt(tg.kcal)} kcal · ${fmt(tg.p)} g de proteína</div></div>${tagPill('rec')}</div>
+        ${opts.map((o, i) => mealCard(o, { key: 'fr' + i + o.id, add: `fridgeAdd(${i})` })).join('')}`
+        : '<p class="text-sm text-neutral-300">Con eso no me sale un plato completo. Añade alguna proteína (huevos, pollo, atún, legumbres…) y algún hidrato (arroz, pasta, patata, pan…).</p>';
+    track('fridge_cook');
+    const first = $('fr-out').firstElementChild; if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function fridgeAdd(i) {
+    const o = frOpts[i]; if (!o) return;
+    mealToDiary(o, fr.slot, todayISO()); track('food_logged'); afterLog();
+    toast(`✓ ${o.name} → ${slotLow(fr.slot)}`);
+}
+
+// =====================================================================
+//  COMPRA INTELIGENTE
+// =====================================================================
+const SHOP_FILL = /\b(quiero|hacer|haz|hazme|crea|crear|prepara|preparame|necesito|una|un|compra|lista|fitness|sana|saludable|semanal|para|la|el|los|las|semana|dias?|adaptada|adaptado|a|mis|preferencias|me|gusta|gustan|encanta|encantan|con|incluye|incluir|que|lleve|tenga|mucho|mucha|muchos|muchas|prefiero|economica|barata|alta|en|proteina|proteica|vegana|vegetariana|pescetariana|de|tambien|algo|cosas|comida|comidas|todo|todos)\b/g;
+const NEG = /^(y\s+)?(pero\s+)?(sin|no me gusta\w*|no quiero|nada de|evita\w*|quita\w*|excepto|menos|odio|no como)\b/;
+const ALLERGY_WORDS = { lactosa: /lactosa|lacteos/, gluten: /gluten/, huevo: /\bhuevos?\b/, frutos: /frutos secos/, pescado: /\bpescados?\b/, marisco: /marisco/, soja: /\bsoja\b/ };
+const foodIdsIn = t => [...new Set(parseFoodText(t).items.map(i => i.food).filter(f => !f.brand).map(f => f.id))];
+function parseShopRequest(text, base = {}) {
+    const q = norm(text);
+    let days = base.days || 7;
+    const md = q.match(/(\d{1,2})\s*dias?/);
+    if (md) days = +md[1]; else if (/fin de semana|finde/.test(q)) days = 2; else if (/\b(hoy|un dia)\b/.test(q)) days = 1; else if (/(2|dos) semanas/.test(q)) days = 14; else if (/semana/.test(q)) days = 7;
+    days = Math.min(14, Math.max(1, days));
+    const like = new Set(base.like || []), avoid = new Set(base.avoid || []), allergies = new Set(base.allergies || []);
+    // Cada trozo de la frase: lo que va tras «sin», «no me gusta»… es lo que se evita; lo de antes, lo que se quiere
+    const pieces = [];
+    for (const raw of q.split(/[,.;]|\bpero\b/)) {
+        const c = raw.trim(); if (!c) continue;
+        const i = c.search(/\b(sin|no me gusta\w*|no quiero|nada de|evita\w*|excepto|menos|odio|no como)\b/);
+        if (i > 0) pieces.push(c.slice(0, i).trim(), c.slice(i).trim()); else pieces.push(c);
+    }
+    for (const c of pieces) {
+        if (!c) continue;
+        if (NEG.test(c)) {
+            // «sin lactosa y no me gusta el atún»: cada parte por separado
+            for (const part of c.split(/\by\b|\bni\b/)) {
+                let rest = part.replace(NEG, ' ').replace(/\b(no|me|gusta\w*|quiero|como|el|la|los|las|nada|de)\b/g, ' ');
+                Object.entries(ALLERGY_WORDS).forEach(([k, re]) => { if (re.test(rest)) { allergies.add(k); rest = rest.replace(re, ' '); } });
+                rest = rest.replace(/lacteos|frutos secos/g, ' ').replace(/\s+/g, ' ').trim();
+                if (rest.length > 2) foodIdsIn(rest).forEach(id => { avoid.add(id); like.delete(id); });
+            }
+        } else {
+            const rest = c.replace(SHOP_FILL, ' ').replace(/\s+/g, ' ').trim();
+            if (rest) foodIdsIn(rest).forEach(id => { if (!avoid.has(id)) like.add(id); });
+        }
+    }
+    return {
+        text, days, like: [...like], avoid: [...avoid], allergies: [...allergies],
+        diet: /vegan/.test(q) ? 'vegan' : /vegetarian/.test(q) ? 'veg' : /pescetarian/.test(q) ? 'pesc' : base.diet || null,
+        budget: /barat|economic|ajustad|low cost/.test(q) ? 'low' : base.budget || null,
+    };
+}
+function shopPrefs(req) {
+    const p = myPrefs();
+    return { ...p, diet: req.diet || p.diet, budget: req.budget || p.budget, allergies: [...new Set(p.allergies.concat(req.allergies || []))], dislikes: [...new Set(p.dislikes.concat(req.avoid || []))] };
+}
+function shopBuild(S) {
+    const extra = (S.add || []).length ? [{ meals: [{ items: S.add }] }] : [];
+    S.items = buildShopping(S.menus.concat(extra));
+}
+function shopCreate(req) {
+    if (!calc.target) { toast('Primero completa tu plan'); return; }
+    const menus = makeMenus(req.days, Date.now() % 1000000, { prefs: shopPrefs(req), like: req.like });
+    if (!menus.length) { toast('Con esas preferencias no encuentro platos: prueba con menos restricciones'); return; }
+    const old = state.shop && state.shop.v === 2 ? state.shop : null;
+    state.shop = { v: 2, req, days: req.days, start: todayISO(), at: Date.now(), menus, add: old ? old.add || [] : [], done: old ? old.done : {}, extra: old ? old.extra : [] };
+    shopBuild(state.shop); save(); renderShopView(); track('shop_generated');
+    toast(`Compra para ${req.days} día${req.days === 1 ? '' : 's'} lista`);
+}
+function shopAsk(text) {
+    const t = String(text != null ? text : ($('shop-q') && $('shop-q').value) || '').trim();
+    if (!t) { toast('Dime qué compra quieres'); return; }
+    shopCreate(parseShopRequest(t));
+}
+// Cambios con palabras: «cambia el salmón por merluza», «quita la leche», «añade plátanos», «me gusta el atún»
+function shopEdit(text) {
+    const S = state.shop; if (!S || S.v !== 2) return shopAsk(text);
+    const q = norm(String(text || ($('shop-edit') && $('shop-edit').value) || '').trim()); if (!q) return;
+    let m, msg = '';
+    if ((m = q.match(/\b(?:cambia\w*|sustitu\w*|reemplaz\w*|pon|cambiame)\s+(.+?)\s+por\s+(.+)$/))) {
+        const from = foodIdsIn(m[1]), to = matchFoods(m[2].replace(/^(el|la|los|las|unos|unas)\s+/, ''), 6).find(f => !f.brand);
+        if (!from.length || !to) { toast('No he entendido qué cambiar'); return; }
+        const n = shopReplace(from, to.id);
+        msg = n ? `Cambiado por ${to.name.toLowerCase()} en ${n} comida${n === 1 ? '' : 's'}` : 'Eso no estaba en tu compra';
+    } else if (/^(quita\w*|sin|elimina\w*|no quiero|nada de|fuera|borra\w*)\b/.test(q)) {
+        const ids = foodIdsIn(q.replace(/^(quita\w*|sin|elimina\w*|no quiero|nada de|fuera|borra\w*)\s*/, ''));
+        if (!ids.length) { toast('No he entendido qué quitar'); return; }
+        const n = shopAvoid(ids);
+        msg = `Quitado de la compra${n ? ` (${n} comida${n === 1 ? '' : 's'} cambiada${n === 1 ? '' : 's'})` : ''}`;
+    } else if (/^(añade|anade|agrega|pon|mete|incluye|compra|mas)\b/.test(q)) {
+        const daily = /al dia|cada dia|diari|por dia/.test(q);
+        const P = parseFoodText(q.replace(/^(añade|anade|agrega|pon|mete|incluye|compra|mas)\s*/, '').replace(/al dia|cada dia|diarios?|por dia/g, ''));
+        if (!P.items.length) { toast('No he entendido qué añadir'); return; }
+        P.items.forEach(it => { const g = it.est ? it.g * S.days : daily ? it.g * S.days : it.g; S.add.push({ fid: it.food.id, g: Math.round(g) }); });
+        msg = `Añadido: ${P.items.map(i => i.food.name.toLowerCase()).join(', ')}`;
+    } else {
+        const req = parseShopRequest(q, S.req);
+        if (req.days !== S.days || req.diet !== S.req.diet || req.budget !== S.req.budget || req.allergies.length !== (S.req.allergies || []).length || req.like.length !== (S.req.like || []).length || req.avoid.length !== (S.req.avoid || []).length) { shopCreate(req); return; }
+        toast('Prueba con «cambia X por Y», «quita X» o «añade X»'); return;
+    }
+    shopBuild(S); save(); renderShopView(); toast(msg); track('shop_edit');
+}
+// Cambia un alimento por otro en toda la semana, con la misma proteína (o las mismas calorías si no es proteico)
+function shopReplace(fromIds, toId) {
+    const S = state.shop, to = getFood(toId), from = new Set(fromIds.flatMap(id => PANTRY_EQ.find(g => g.includes(id)) || [id]));
+    let n = 0;
+    S.menus.forEach(mn => mn.meals.forEach(ml => {
+        let hit = false;
+        ml.items.forEach(it => {
+            if (!from.has(it.fid)) return;
+            const f = getFood(it.fid); hit = true;
+            const g = f.p >= 5 && to.p >= 5 ? it.g * f.p / to.p : it.g * (kcal100(f) || 1) / (kcal100(to) || 1);
+            it.fid = toId; it.g = Math.max(5, Math.round(g / 5) * 5);
+        });
+        if (hit) { n++; ml.m = sumMacros(ml.items.map(it => ({ f: getFood(it.fid), g: it.g }))); ml.name = mealNaming(ml.items.map(it => ({ f: getFood(it.fid), kind: it.kind }))).name; }
+    }));
+    S.add = (S.add || []).map(a => from.has(a.fid) ? { fid: toId, g: a.g } : a);
+    S.req.like = [...new Set((S.req.like || []).filter(id => !from.has(id)).concat(toId))];
+    S.req.avoid = [...new Set((S.req.avoid || []).concat([...from]))];
+    return n;
+}
+// Quita un alimento: las comidas que lo llevan se cambian por otras sin él
+function shopAvoid(ids) {
+    const S = state.shop, all = new Set(ids.flatMap(id => PANTRY_EQ.find(g => g.includes(id)) || [id]));
+    S.req.avoid = [...new Set((S.req.avoid || []).concat([...all]))];
+    S.req.like = (S.req.like || []).filter(id => !all.has(id));
+    S.add = (S.add || []).filter(a => !all.has(a.fid));
+    const prefs = shopPrefs(S.req); let n = 0;
+    S.menus.forEach(mn => mn.meals.forEach((ml, i) => {
+        if (!ml.items.some(it => all.has(it.fid))) return;
+        if (swapMenuMeal(mn, i, Date.now() % 1000000 + i, { prefs, like: S.req.like })) n++;
+        else ml.items = ml.items.filter(it => !all.has(it.fid));
+    }));
+    return n;
+}
+function shopSwapItem(fid) {
+    const f = getFood(fid); if (!f) return;
+    openSheet('<i class="fa-solid fa-right-left text-mint-400"></i> Cambiar ' + esc(f.name.toLowerCase()), `<div class="space-y-3">
+        <p class="text-sm text-neutral-300">Se cambia en todas las comidas de la semana, con cantidades equivalentes.</p>
+        <input id="sw-q" type="search" autocomplete="off" placeholder="¿Por qué lo cambio? (p. ej. merluza)" oninput="shopSwapSearch('${fid}', this.value)" class="w-full px-3 py-3 rounded-xl bg-neutral-800 border border-neutral-700 font-semibold">
+        <div id="sw-res" class="flex flex-wrap gap-1.5"></div></div>`);
+    setTimeout(() => { const i = $('sw-q'); if (i) i.focus(); }, 60);
+}
+function shopSwapSearch(fid, q) {
+    $('sw-res').innerHTML = q.trim().length < 2 ? '' : matchFoods(q, 8).filter(f => !f.brand && f.id !== fid).map(f => `<button type="button" onclick="shopSwapDo('${fid}','${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(f.name)}</button>`).join('');
+}
+function shopSwapDo(fid, toId) {
+    const S = state.shop, inAdd = (S.add || []).some(a => a.fid === fid);
+    const n = shopReplace([fid], toId);
+    shopBuild(S); save(); closeSheet(); renderShopView();
+    toast(n || inAdd ? `Cambiado por ${getFood(toId).name.toLowerCase()}` : 'Cambiado');
+}
+function shopRemoveItem(fid) {
+    const S = state.shop;
+    if ((S.add || []).some(a => a.fid === fid) && !S.menus.some(mn => mn.meals.some(ml => ml.items.some(it => it.fid === fid)))) S.add = S.add.filter(a => a.fid !== fid);
+    else shopAvoid([fid]);
+    shopBuild(S); save(); renderShopView(); toast(`Quitado: ${getFood(fid).name.toLowerCase()}`);
+}
+function shopTick(fid, on) { state.shop.done[fid] = on; save(); renderShopView(); }
+function shopTickExtra(i, on) { state.shop.extra[i].done = on; save(); renderShopView(); }
+function shopAddExtra() { const t = ($('shop-extra').value || '').trim(); if (!t) return; state.shop.extra = [...(state.shop.extra || []), { t, done: false }]; save(); renderShopView(); }
+function shopDelExtra(i) { state.shop.extra.splice(i, 1); save(); renderShopView(); }
+function shopClearDone() { const S = state.shop; S.items = S.items.filter(x => !S.done[x.fid]); S.extra = (S.extra || []).filter(x => !x.done); save(); renderShopView(); }
+async function shopReset() { if (await askConfirm('¿Empezar una compra nueva? Se borra la lista actual.', 'Nueva compra')) { state.shop = null; save(); renderShopView(); } }
+const dayLabel = (start, i) => { const d = new Date(start + 'T12:00:00'); d.setDate(d.getDate() + i); return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' }); };
+function renderShopView() {
+    const box = $('cv-shop'); if (!box) return;
+    if (!canUse('shop')) { box.innerHTML = proTeaser('shop'); return; }
+    if (!calc.target) { box.innerHTML = emptyPlan('crear tu compra'); return; }
+    const S = state.shop;
+    const ask = `<div class="nd-card p-5 space-y-3">
+        <div class="flex items-center justify-between gap-2"><h3 class="text-lg font-extrabold text-neutral-50">${S && S.v === 2 ? 'Nueva compra' : '¿Qué compra quieres?'}</h3>${S && S.v === 2 ? '<button onclick="shopReset()" class="text-xs font-bold text-neutral-400 underline">Empezar de cero</button>' : ''}</div>
+        <form onsubmit="event.preventDefault(); shopAsk()" class="space-y-2"><textarea id="shop-q" rows="2" maxlength="300" placeholder="Ej: compra fitness para 7 días, me gusta el salmón y el arroz, sin lactosa" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-semibold text-[15px]" aria-label="Qué compra quieres"></textarea>
+        <button class="w-full py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-basket-shopping"></i> Crear mi compra</button></form>
+        <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${['Compra fitness para la semana', 'Para 3 días', 'Económica para la semana', 'Vegetariana para 5 días'].map(s => `<button type="button" onclick="shopAsk(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-bold text-neutral-200 hover:border-mint-500/50">${s}</button>`).join('')}</div>
+        <button type="button" onclick="openFridge()" class="w-full py-2.5 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-snowflake text-mint-400"></i> Marcar lo que ya tengo en la nevera</button>
+    </div>`;
+    if (!S || !S.items) { box.innerHTML = ask; return; }
+    const P = pantry(), all = S.items.length + (S.extra || []).length, done = S.items.filter(x => S.done[x.fid]).length + (S.extra || []).filter(x => x.done).length;
+    const v2 = S.v === 2, days = S.days || 1;
+    const row = x => { const f = getFood(x.fid); if (!f) return ''; const on = !!S.done[x.fid], home = inPantry(x.fid, P); return `<div class="nd-shop ${on ? 'on' : ''}">
+        <input type="checkbox" ${on ? 'checked' : ''} onchange="shopTick('${x.fid}',this.checked)" aria-label="Comprado: ${esc(f.name)}">
+        <span class="flex-1 min-w-0"><span class="block leading-snug">${emo(f)} ${esc(f.name)}${home ? ' <span class="nd-tag nd-tag-dato" style="margin:0 0 0 4px">en casa</span>' : ''}</span>${v2 && days > 1 ? `<span class="block text-[11px] text-neutral-500">≈ ${fmt(x.g / days)} ${f.ml ? 'ml' : 'g'} al día</span>` : ''}</span>
+        <span class="text-sm font-bold text-neutral-200 whitespace-nowrap">${shopQty(f, x.g)}</span>
+        ${v2 ? `<button type="button" onclick="shopSwapItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="Cambiar ${esc(f.name)}"><i class="fa-solid fa-right-left"></i></button><button type="button" onclick="shopRemoveItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Quitar ${esc(f.name)}"><i class="fa-solid fa-xmark"></i></button>` : ''}
+    </div>`; };
+    const groups = SHOP_GROUPS.map(([g, label, ic]) => { const L = S.items.filter(x => x.group === g); return L.length ? `<div class="space-y-0.5"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${ic} ${label}</div>${L.map(row).join('')}</div>` : ''; }).join('');
+    const extra = (S.extra || []).map((x, i) => `<label class="nd-shop ${x.done ? 'on' : ''}"><input type="checkbox" ${x.done ? 'checked' : ''} onchange="shopTickExtra(${i},this.checked)"><span class="flex-1 min-w-0">${esc(x.t)}</span><button type="button" onclick="event.preventDefault();shopDelExtra(${i})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="Quitar ${esc(x.t)}"><i class="fa-solid fa-xmark"></i></button></label>`).join('');
+    const tot = v2 ? S.menus.map(menuTotals) : [], avgK = tot.length ? tot.reduce((a, t) => a + t.kcal, 0) / tot.length : 0, avgP = tot.length ? tot.reduce((a, t) => a + t.p, 0) / tot.length : 0;
+    const R = S.req || {};
+    const chips = [...(R.like || []).map(id => getFood(id)).filter(Boolean).map(f => `❤️ ${esc(f.name.toLowerCase())}`), ...(R.avoid || []).map(id => getFood(id)).filter(Boolean).map(f => `🚫 ${esc(f.name.toLowerCase())}`), ...(R.allergies || []).map(a => `sin ${ALLERGENS[a] ? ALLERGENS[a][0].toLowerCase() : a}`), R.diet ? DIETS[R.diet] : '', R.budget === 'low' ? 'económica' : ''].filter(Boolean);
+    const plan = v2 ? `<details class="nd-faq"><summary>Plan de comidas día a día<i class="fa-solid fa-chevron-down chev"></i></summary><div class="px-3 pb-3 space-y-3">${S.menus.map((mn, i) => { const t = menuTotals(mn); return `<div class="rounded-xl bg-neutral-900 border border-neutral-800 p-3 space-y-1.5">
+            <div class="flex items-baseline justify-between gap-2"><div class="text-sm font-extrabold text-neutral-100 first-letter:uppercase">${dayLabel(S.start, i)}</div><div class="text-xs font-bold text-neutral-400 whitespace-nowrap">${fmt(t.kcal)} kcal · P ${fmt(t.p)} g</div></div>
+            ${mn.meals.map(ml => `<div class="text-xs text-neutral-300"><b class="text-neutral-200">${SLOT_NAME[ml.slot]}:</b> ${esc(ml.name)} <span class="text-neutral-500">· ${fmt(ml.m.kcal)} kcal · ${mealIngredients(ml).map(x => esc(x.txt) + ' ' + esc(x.f.name.toLowerCase().replace(/ \(.*\)$/, ''))).join(', ')}</span></div>`).join('')}
+        </div>`; }).join('')}</div></details>` : '';
+    box.innerHTML = `<div class="nd-card p-5 space-y-3">
+            <div class="flex items-start justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Tu compra</div><div class="text-xl font-extrabold text-neutral-50">Para ${days === 1 ? 'hoy' : days + ' días'}</div>${v2 ? `<div class="text-xs text-neutral-400">≈ ${fmt(avgK)} kcal y ${fmt(avgP)} g de proteína al día (objetivo ${fmt(calc.target)} kcal)</div>` : ''}</div>${tagPill('rec')}</div>
+            ${chips.length ? `<div class="flex flex-wrap gap-1.5">${chips.map(c => `<span class="px-2 py-1 rounded-lg bg-neutral-800 text-[11px] font-bold text-neutral-300">${c}</span>`).join('')}</div>` : ''}
+            ${v2 ? `<form onsubmit="event.preventDefault(); shopEdit()" class="flex gap-2"><input id="shop-edit" autocomplete="off" maxlength="200" placeholder="Cambia algo: «cambia el salmón por merluza»" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Cambiar algo de la compra"><button class="px-4 rounded-xl bg-mint-600 text-white text-sm font-extrabold" aria-label="Aplicar cambio"><i class="fa-solid fa-arrow-up"></i></button></form>
+            <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${['Quita la leche', 'Añade 1 plátano al día', 'Cambia el pollo por pavo', 'Me gusta el atún'].map(s => `<button type="button" onclick="shopEdit(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-[11px] font-bold text-neutral-300 hover:border-mint-500/50">${s}</button>`).join('')}</div>` : ''}
+            <div class="flex items-center justify-between gap-3 pt-1"><div class="text-sm font-extrabold text-neutral-100">${done}/${all} comprados</div></div>
+            <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-500 gym-bar" style="width:${all ? done / all * 100 : 0}%"></div></div>
+            ${groups}
+            ${extra ? `<div class="space-y-1"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">✏️ Añadidos por ti</div>${extra}</div>` : ''}
+            <form onsubmit="event.preventDefault();shopAddExtra()" class="flex gap-2 pt-3"><input id="shop-extra" maxlength="40" placeholder="Apuntar otra cosa (p. ej. café, papel…)" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Apuntar otra cosa"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold" aria-label="Apuntar"><i class="fa-solid fa-plus"></i></button></form>
+        </div>
+        ${plan}
+        <div class="grid grid-cols-2 gap-2"><button onclick="shareShop()" class="nd-mbtn nd-mbtn-main"><i class="fa-solid fa-share-nodes"></i> Compartir lista</button><button onclick="shopClearDone()" class="nd-mbtn"><i class="fa-solid fa-broom"></i> Quitar comprados</button></div>
+        <p class="text-[11px] text-neutral-500">Cantidades totales en crudo, redondeadas hacia arriba. Calculado con la base de alimentos.</p>
+        ${ask}`;
+}
+function shopText() {
+    const S = state.shop;
+    return `Lista de la compra · nutriDL (${S.days === 1 ? 'hoy' : S.days + ' días'})\n` + SHOP_GROUPS.map(([g, label]) => { const L = S.items.filter(x => x.group === g && !S.done[x.fid]); return L.length ? `\n${label}\n` + L.map(x => { const f = getFood(x.fid); return f ? `- ${f.name}: ${shopQty(f, x.g)}` : ''; }).join('\n') : ''; }).join('') + ((S.extra || []).filter(x => !x.done).length ? '\n\nOtros\n' + S.extra.filter(x => !x.done).map(x => '- ' + x.t).join('\n') : '');
+}
+async function shareShop() {
+    const t = shopText();
+    if (navigator.share) { try { await navigator.share({ title: 'Lista de la compra', text: t }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+    try { await navigator.clipboard.writeText(t); toast('Lista copiada: pégala donde quieras'); } catch (e) { toast('No se pudo copiar'); }
+}
+// Tarjeta para funciones PRO cuando no hay PRO (en lugar de la función)
+function proTeaser(feature) {
+    const [name, why] = PRO_FEATURES[feature];
+    return `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="text-4xl">👑</div><h3 class="text-xl font-extrabold text-neutral-50">${esc(name)} <span class="nd-pro-badge">PRO</span></h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${esc(why)}</p>
+        <button onclick="openPaywall('${feature}')" class="nd-btn-primary mx-auto">${proData().trialUsed ? 'Ver nutriDL PRO' : 'Probar 7 días gratis'}</button></div>`;
+}

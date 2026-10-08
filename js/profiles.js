@@ -25,7 +25,7 @@ function refreshAll() {
     syncCustomFoods();
     diaryDate = null; diarySel = null; gymDay = 0;
     syncInputsFromState();
-    update(); renderTracker(); renderMeasures(); renderProfileChip(); renderDiary(); renderDashboard(); updateSticky(); renderPrefs();
+    update(); renderTracker(); renderMeasures(); renderProfileChip(); renderDiary(); renderDashboard(); updateSticky(); renderPrefs(); renderTrainCard();
     if (state.tab === 'coach') renderCoach();
     if (state.tab === 'progress') renderProgress();
 }
@@ -106,7 +106,7 @@ function renderProfileChip() {
             <button onclick="importProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-upload w-7 text-center text-neutral-400"></i>Cargar una copia</button>
             <button onclick="deleteProfile(profiles.current)" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-trash w-7 text-center"></i>Borrar mi perfil</button>
             <div class="my-2 border-t border-neutral-800"></div>
-            <button onclick="openPro()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-crown w-7 text-center text-amber-300"></i>nutriDL PRO <span class="nd-pro-badge ml-auto">Beta</span></button>
+            <button onclick="openPro()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-crown w-7 text-center text-amber-300"></i>nutriDL PRO <span class="nd-pro-badge ml-auto">${isPro() ? 'Activo' : 'Probar'}</span></button>
             <button onclick="openSync()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-rotate w-7 text-center text-neutral-400"></i>Móvil y ordenador</button>
             <button data-install onclick="installApp()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-mobile-screen-button w-7 text-center text-mint-400"></i>Instalar la app</button>
                 <button onclick="openReport()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-bug w-7 text-center text-neutral-400"></i>Informe de errores</button>

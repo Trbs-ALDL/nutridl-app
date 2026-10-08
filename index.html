@@ -26,9 +26,9 @@
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="stylesheet" href="css/fonts.css?v=990c47b567">
-    <link rel="stylesheet" href="css/icons.css?v=0e6a3e403f">
-    <link rel="stylesheet" href="css/tailwind.css?v=0273ad5eca">
-    <link rel="stylesheet" href="css/app.css?v=1099fad6f5">
+    <link rel="stylesheet" href="css/icons.css?v=789e898284">
+    <link rel="stylesheet" href="css/tailwind.css?v=38f93df475">
+    <link rel="stylesheet" href="css/app.css?v=ee1f820c73">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -133,7 +133,7 @@
 
             <div class="space-y-4 max-w-3xl">
                 <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-50">Preguntas frecuentes</h2>
-                <details class="nd-faq"><summary>¿Es gratis?<i class="fa-solid fa-chevron-down chev"></i></summary><p>Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. Habrá un plan PRO opcional; mientras la app está en beta, todas sus funciones están abiertas.</p></details>
+                <details class="nd-faq"><summary>¿Es gratis?<i class="fa-solid fa-chevron-down chev"></i></summary><p>Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, foto, nevera, menú del día y compra inteligente) y puedes probarlo 7 días gratis, sin tarjeta.</p></details>
                 <details class="nd-faq"><summary>¿Dónde se guardan mis datos?<i class="fa-solid fa-chevron-down chev"></i></summary><p>En tu propio dispositivo. No hay cuentas ni servidores con tus datos. Puedes guardar una copia de seguridad o borrarlo todo cuando quieras.</p></details>
                 <details class="nd-faq"><summary>¿Cómo se calculan mis calorías?<i class="fa-solid fa-chevron-down chev"></i></summary><p>Con la ecuación de Mifflin-St Jeor (la más precisa en población general), tu nivel de actividad y un ajuste según tu objetivo, sin bajar nunca de un mínimo seguro.</p></details>
                 <details class="nd-faq"><summary>¿Sustituye a un nutricionista?<i class="fa-solid fa-chevron-down chev"></i></summary><p>No. nutriDL es orientativa y educativa. Si tienes alguna enfermedad, estás embarazada o en lactancia, o tienes antecedentes de trastornos de la conducta alimentaria, consulta a un profesional sanitario.</p></details>
@@ -229,6 +229,9 @@
                         <div class="space-y-3" id="goal-list"></div>
                     </div>
                 </div>
+
+                <!-- Entrenamiento: días a la semana (solo se cambian aquí o en Ajustes del gym) -->
+                <div id="train-card" class="glass-card rounded-3xl p-6 sm:p-7 space-y-4 border border-neutral-800"></div>
 
                 <!-- Preferencias de comida (las usa el Coach: «¿Qué como?», menú y lista de la compra) -->
                 <div id="prefs-card" class="glass-card rounded-3xl p-6 sm:p-7 space-y-5 border border-neutral-800"></div>
@@ -444,9 +447,10 @@
             </button>
             <button type="button" onclick="openScanner()" class="w-14 shrink-0 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-mint-400 text-lg hover:border-mint-500/50" aria-label="Escanear código de barras"><i class="fa-solid fa-barcode"></i></button>
             </div>
-            <div class="grid grid-cols-2 gap-2">
-                <button type="button" onclick="openVoiceLog()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-microphone text-mint-400"></i> Registrar por voz</button>
-                <button type="button" onclick="openPhotoLog()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-camera text-mint-400"></i> Foto del plato</button>
+            <div class="grid grid-cols-3 gap-2">
+                <button type="button" onclick="openVoiceLog()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-microphone text-mint-400"></i> Voz <i data-lock="voice" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
+                <button type="button" onclick="openPhotoLog()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-camera text-mint-400"></i> Foto <i data-lock="photo" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
+                <button type="button" onclick="openFridge()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-snowflake text-mint-400"></i> Nevera <i data-lock="fridge" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
             </div>
 
             <div id="diary-meals" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3"></div>
@@ -463,8 +467,8 @@
             </div>
             <div id="coach-seg" class="nd-seg" role="tablist" aria-label="Vistas del Coach">
                 <button role="tab" data-cv="chat" onclick="coachView('chat')"><i class="fa-solid fa-comment-dots"></i> Coach</button>
-                <button role="tab" data-cv="menu" onclick="coachView('menu')"><i class="fa-solid fa-calendar-day"></i> Menú</button>
-                <button role="tab" data-cv="shop" onclick="coachView('shop')"><i class="fa-solid fa-basket-shopping"></i> Compra</button>
+                <button role="tab" data-cv="menu" onclick="coachView('menu')"><i class="fa-solid fa-calendar-day"></i> Menú <i data-lock="menu" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
+                <button role="tab" data-cv="shop" onclick="coachView('shop')"><i class="fa-solid fa-basket-shopping"></i> Compra <i data-lock="shop" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
             </div>
             <div id="cv-chat" class="space-y-4">
                 <div id="coach-ctx"></div>
@@ -536,7 +540,10 @@
         <section id="sec-gym" class="space-y-5 scroll-mt-24">
             <div class="flex items-center justify-between gap-3">
                 <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight">Entrenar</h2>
-                <button onclick="openPdfModal('gym')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                <div class="flex gap-2">
+                    <button onclick="openGymSettings()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-gear text-mint-400"></i> Ajustes</button>
+                    <button onclick="openPdfModal('gym')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                </div>
             </div>
             <div id="gym-app" class="space-y-5"></div>
         </section>
@@ -674,24 +681,25 @@
         </div>
     </div>
 
-    <script src="js/core.js?v=10cea86455"></script>
-    <script src="js/data/foods.js?v=1839c844f5"></script>
+    <script src="js/core.js?v=ce307c01a2"></script>
+    <script src="js/data/foods.js?v=3845662a62"></script>
     <script src="js/data/exercises.js?v=8e845d8e16"></script>
     <script src="js/calc.js?v=b74fd08e29"></script>
     <script src="js/analytics.js?v=1974b7351f"></script>
-    <script src="js/progress.js?v=93986c7f4c"></script>
-    <script src="js/engine.js?v=36a2d48d51"></script>
-    <script src="js/parser.js?v=5e8e6d516f"></script>
-    <script src="js/insights.js?v=2fc9071f50"></script>
+    <script src="js/progress.js?v=bf9a792eed"></script>
+    <script src="js/engine.js?v=ca09975bf8"></script>
+    <script src="js/parser.js?v=a9a85849ff"></script>
+    <script src="js/insights.js?v=d790c4aa8c"></script>
     <script src="js/pdf.js?v=a36031981f"></script>
     <script src="js/wizard.js?v=d7e299f3ec"></script>
-    <script src="js/gym.js?v=9a22ada857"></script>
+    <script src="js/gym.js?v=fb3e9ae569"></script>
     <script src="js/diary.js?v=b1c1acf8ad"></script>
-    <script src="js/profiles.js?v=75fbe42a86"></script>
-    <script src="js/dashboard.js?v=9232bbbda4"></script>
-    <script src="js/coach.js?v=9769ef825e"></script>
-    <script src="js/plans.js?v=cb5f55cae1"></script>
-    <script src="js/app.js?v=29d2ffca1b"></script>
-    <script src="js/main.js?v=73e60cfdd3"></script>
+    <script src="js/profiles.js?v=7c2668427b"></script>
+    <script src="js/dashboard.js?v=7b26bb748c"></script>
+    <script src="js/kitchen.js?v=41bfb9876a"></script>
+    <script src="js/coach.js?v=0388c83579"></script>
+    <script src="js/plans.js?v=2ca838e74c"></script>
+    <script src="js/app.js?v=97aed7424b"></script>
+    <script src="js/main.js?v=f1daf6bf5a"></script>
 </body>
 </html>
