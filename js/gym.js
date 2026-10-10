@@ -258,7 +258,7 @@ function gymHistoryHtml() {
         const m = new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
         if (m !== month) { month = m; rows += `<div class="pt-3 pb-1 text-xs font-extrabold uppercase tracking-wider text-neutral-400 first-letter:uppercase">${m}</div>`; }
         const n = w.ex.reduce((a, e) => a + e.sets.length, 0), vol = w.ex.reduce((a, e) => a + e.sets.reduce((b, s) => b + s.kg * s.reps, 0), 0);
-        rows += `<button type="button" onclick="openWorkout(${w.id})" class="w-full flex items-center gap-3 py-2.5 text-left border-b border-neutral-800/70">
+        rows += `<button type="button" onclick="openWorkout(${+w.id || 0})" class="w-full flex items-center gap-3 py-2.5 text-left border-b border-neutral-800/70">
             <div class="w-11 shrink-0 text-center"><div class="text-[10px] font-bold uppercase text-neutral-500">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'short' })}</div><div class="text-lg font-extrabold text-neutral-100 leading-none">${+w.d.slice(8)}</div></div>
             <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(w.t)}</div><div class="text-xs text-neutral-400 truncate">${w.ex.length} ejercicio${w.ex.length === 1 ? '' : 's'} · ${n} serie${n === 1 ? '' : 's'}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div></div>
             <i class="fa-solid fa-chevron-right text-neutral-600"></i></button>`;
@@ -286,7 +286,7 @@ function openWorkout(id) {
         <div class="text-sm text-neutral-400 first-letter:uppercase">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div>
         ${w.ex.map(e => `<div class="rounded-2xl bg-neutral-800/50 border border-neutral-800 p-3 space-y-1.5"><button type="button" onclick="closeSheet();openProgress('${exKey(e).replace(/'/g, '')}')" class="text-sm font-extrabold text-mint-300 text-left">${esc(e.name)} <i class="fa-solid fa-chart-line text-[11px] text-neutral-500"></i></button>
             ${e.sets.map((st, i) => `<div class="flex justify-between text-sm"><span class="text-neutral-400">Serie ${i + 1}</span><span class="font-bold text-neutral-100">${st.kg ? kgTxt(st.kg) + ' kg × ' : ''}${st.reps} reps</span></div>`).join('')}</div>`).join('')}
-        <div class="grid grid-cols-2 gap-2"><button type="button" onclick="editWorkout(${w.id})" class="py-3 rounded-xl bg-neutral-800 font-bold text-sm"><i class="fa-solid fa-pen"></i> Editar</button><button type="button" onclick="closeSheet();delWorkout(${w.id})" class="py-3 rounded-xl border border-neutral-700 text-roseAccent-400 font-bold text-sm"><i class="fa-solid fa-trash-can"></i> Borrar</button></div>
+        <div class="grid grid-cols-2 gap-2"><button type="button" onclick="editWorkout(${+w.id || 0})" class="py-3 rounded-xl bg-neutral-800 font-bold text-sm"><i class="fa-solid fa-pen"></i> Editar</button><button type="button" onclick="closeSheet();delWorkout(${+w.id || 0})" class="py-3 rounded-xl border border-neutral-700 text-roseAccent-400 font-bold text-sm"><i class="fa-solid fa-trash-can"></i> Borrar</button></div>
     </div>`);
 }
 function savedWorkoutsHtml() {
@@ -297,8 +297,8 @@ function savedWorkoutsHtml() {
         <div class="divide-y divide-neutral-800">${W.map(w => { const n = w.ex.reduce((a, e) => a + e.sets.length, 0); return `<div class="flex items-center gap-2 py-2.5">
             <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(w.t)}</div>
                 <div class="text-xs text-neutral-400">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })} · ${w.ex.length} ejercicio${w.ex.length === 1 ? '' : 's'} · ${n} serie${n === 1 ? '' : 's'}</div></div>
-            <button onclick="editWorkout(${w.id})" class="px-3 py-2 rounded-xl bg-neutral-800 text-xs font-bold text-neutral-200 hover:bg-neutral-700"><i class="fa-solid fa-pen"></i> Editar</button>
-            <button onclick="delWorkout(${w.id})" class="w-9 h-9 rounded-xl text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Borrar entreno del ${w.d}"><i class="fa-solid fa-trash-can"></i></button>
+            <button onclick="editWorkout(${+w.id || 0})" class="px-3 py-2 rounded-xl bg-neutral-800 text-xs font-bold text-neutral-200 hover:bg-neutral-700"><i class="fa-solid fa-pen"></i> Editar</button>
+            <button onclick="delWorkout(${+w.id || 0})" class="w-9 h-9 rounded-xl text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Borrar entreno del ${w.d}"><i class="fa-solid fa-trash-can"></i></button>
         </div>`; }).join('')}</div>
     </div>`;
 }

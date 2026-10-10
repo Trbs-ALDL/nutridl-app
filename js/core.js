@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.1.0';
+const APP_VERSION = '3.2.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -28,6 +28,9 @@ let profiles = { current: null, list: {} }; // list[id] = { name, created, state
 const $ = id => document.getElementById(id);
 const fmt = (n, d = 0) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// Iconos de línea en lugar de emojis en los bloques principales (si no hay equivalente, se deja el emoji)
+const EMOJI_IC = { '🔥': 'fa-fire', '⚖️': 'fa-scale-balanced', '🧘': 'fa-spa', '🥩': 'fa-drumstick-bite', '💪': 'fa-dumbbell', '💡': 'fa-lightbulb', '🎯': 'fa-bullseye', '🍽️': 'fa-utensils', '☀️': 'fa-sun', '📈': 'fa-chart-line', '📉': 'fa-chart-line', '🏆': 'fa-trophy', '🥗': 'fa-leaf', '💧': 'fa-droplet', '😴': 'fa-moon', '⭐': 'fa-star', '🎉': 'fa-champagne-glasses' };
+const icon = (e, cls = '') => EMOJI_IC[e] ? `<i class="fa-solid ${EMOJI_IC[e]} ${cls}" aria-hidden="true"></i>` : esc(e || '');
 
 // =====================================================================
 //  PERSISTENCIA
@@ -153,7 +156,7 @@ function lineChart(el, o) {
         const xs = o.points.map(p => p.x), x0 = Math.min(...xs), x1 = Math.max(...xs);
         const X = x => L + (W - L - R) * (x1 > x0 ? (x - x0) / (x1 - x0) : 0.5);
         const Y = y => T + (H - T - B) * (1 - (y - mn) / (mx - mn));
-        const grid = [0, 0.5, 1].map(f => { const v = mn + (mx - mn) * f, y = Y(v).toFixed(1); return `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="#2e2e2e"/><text x="${L - 8}" y="${(+y + 4).toFixed(1)}" font-size="12" fill="#a3a3a3" text-anchor="end">${fmt(v, dec)}</text>`; }).join('');
+        const grid = [0, 0.5, 1].map(f => { const v = mn + (mx - mn) * f, y = Y(v).toFixed(1); return `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" stroke="#2e2e2e"/><text x="${L - 8}" y="${(+y + 4).toFixed(1)}" font-size="12" fill="#aea396" text-anchor="end">${fmt(v, dec)}</text>`; }).join('');
         const line = o.line && o.line.length > 1 ? `<polyline points="${o.line.map(p => `${X(p.x).toFixed(1)},${Y(p.y).toFixed(1)}`).join(' ')}" fill="none" stroke="#c49a6c" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>` : '';
         const goal = o.goal && o.goal.y > mn && o.goal.y < mx ? `<line x1="${L}" x2="${W - R}" y1="${Y(o.goal.y).toFixed(1)}" y2="${Y(o.goal.y).toFixed(1)}" stroke="#f59e0b" stroke-dasharray="6 5"/><text x="${W - R}" y="${(Y(o.goal.y) - 6).toFixed(1)}" font-size="12" fill="#f59e0b" font-weight="700" text-anchor="end">${o.goal.label}</text>` : '';
         const r = W < 480 ? 4.5 : 4;
@@ -161,8 +164,8 @@ function lineChart(el, o) {
         el.innerHTML = `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria || 'Gráfica'}" style="display:block">
             <text x="${L}" y="16" font-size="12" fill="#c49a6c" font-weight="700">${o.legend || ''}</text>
             ${grid}${goal}${line}${dots}
-            <text x="${L}" y="${H - 8}" font-size="12" fill="#a3a3a3">${(o.xLabels || [])[0] || ''}</text>
-            <text x="${W - R}" y="${H - 8}" font-size="12" fill="#a3a3a3" text-anchor="end">${(o.xLabels || [])[1] || ''}</text>
+            <text x="${L}" y="${H - 8}" font-size="12" fill="#aea396">${(o.xLabels || [])[0] || ''}</text>
+            <text x="${W - R}" y="${H - 8}" font-size="12" fill="#aea396" text-anchor="end">${(o.xLabels || [])[1] || ''}</text>
         </svg>`;
     };
     el._draw = draw; draw();

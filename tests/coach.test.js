@@ -160,3 +160,30 @@ test('Semana de lunes a domingo e historial de entrenos completo', () => {
     run("gh.n = 1000");
     assert.equal(run("gymHistoryHtml().split('openWorkout(').length - 1"), 300, 'se ven los 300 entrenos');
 });
+
+test('Seguridad: una copia trucada no puede colar código en la página', () => {
+    const { run, json } = loadApp();
+    run("DOMParser = class { parseFromString(h) { return { body: { textContent: String(h).replace(/<[^>]*>/g, '') } }; } }");
+    const evil = {
+        name: 'Ana', tab: 'coach',
+        chat: [{ r: 'c', html: '<img src=x onerror=alert(1)>Hola', opts: ["x');alert(1);('"] }, { r: 'u', t: 'hola <b>' }],
+        weights: [{ d: "2026-01-01');alert(1);('", w: 70 }],
+        diary: { '2026-01-01': [{ id: 'a"><img src=x onerror=alert(1)>', name: "Pan d'oro", kcal: 100 }] },
+        'x"><img>': 1,
+    };
+    const s = json(`cleanImportedState(${JSON.stringify(evil)})`);
+    const txt = JSON.stringify(s);
+    const strs = v => typeof v === 'string' ? [v] : v && typeof v === 'object' ? Object.entries(v).flatMap(([k, x]) => [k, ...strs(x)]) : [];
+    assert.ok(!strs([s.weights, s.diary]).some(x => /[<>'"`\\]/.test(x)), 'sin caracteres peligrosos en datos');
+    assert.ok(!txt.includes('onerror=alert') || !/<img/.test(txt), 'el chat no trae HTML ejecutable');
+    assert.equal(s.chat[0].html, '<p>Hola</p>');
+    assert.equal(s.chat[1].t, 'hola b');
+    assert.equal(s['x"><img>'], undefined);
+    assert.equal(s.diary['2026-01-01'][0].name, 'Pan doro');
+    // Ids sin comillas en los botones (entrenos): siempre número; fechas sin paréntesis
+    const w = json(`cleanImportedState({ workouts: [{ id: '1);alert(1', d: '2026-01-01' }, { id: 1700000000000, d: '2026-01-02' }] })`).workouts;
+    assert.equal(typeof w[0].id, 'number'); assert.equal(w[1].id, 1700000000000);
+    assert.equal(s.weights[0].d, '2026-01-01alert1');
+    // Y sigue siendo un perfil válido
+    assert.equal(json(`mergeState(cleanImportedState(${JSON.stringify(evil)})).weights.length`), 1);
+});

@@ -68,7 +68,7 @@ function renderTracker() {
     const dLabel = d => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
     const gw = num(state.goalWeight);
     lineChart($('trk-chart'), {
-        aria: 'Gráfica de peso', legend: '— media de 7 días   ● registros', dotColor: '#737373',
+        aria: 'Gráfica de peso', legend: '— media de 7 días   ● registros', dotColor: '#9c9084',
         points: L.map(e => ({ x: dayNum(e.d), y: e.w, tip: `${dLabel(e.d)}: ${fmt(e.w, 1)} kg` })),
         line: L.map(e => ({ x: dayNum(e.d), y: avgAround(dayNum(e.d), L) })),
         goal: gw ? { y: gw, label: `Objetivo ${fmt(gw, 1)} kg` } : null,
@@ -161,11 +161,11 @@ function renderProgress() {
             <p class="text-[11px] text-neutral-500">De lunes a domingo. ● registrado · ✓ proteína cumplida.</p>
         </div>
         <div class="lg:col-span-2 space-y-3">
-            <div class="nd-card p-5 flex items-center gap-4"><span class="text-4xl leading-none">🔥</span><div><div class="text-2xl font-extrabold text-neutral-50">${S.cur} día${S.cur === 1 ? '' : 's'} seguido${S.cur === 1 ? '' : 's'}</div><div class="text-xs text-neutral-400">Mejor racha: ${S.best} · ${S.today ? 'hoy ya has apuntado ✓' : 'apunta algo hoy para mantenerla'}</div></div></div>
+            <div class="nd-card p-5 flex items-center gap-4"><span class="nd-ic-lg">${icon('🔥')}</span><div><div class="text-2xl font-extrabold text-neutral-50">${S.cur} día${S.cur === 1 ? '' : 's'} seguido${S.cur === 1 ? '' : 's'}</div><div class="text-xs text-neutral-400">Mejor racha: ${S.best} · ${S.today ? 'hoy ya has apuntado ✓' : 'apunta algo hoy para mantenerla'}</div></div></div>
             ${T ? `<div class="nd-card p-5 space-y-1"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Peso medio (7 días)</div><div class="text-2xl font-extrabold text-neutral-50">${fmt(T.now, 1)} kg</div><div class="text-xs text-neutral-400">${T.week != null ? `${T.week > 0 ? '+' : ''}${fmt(T.week, 1)} kg respecto a la semana anterior` : 'Con 2 semanas de registros verás la tendencia'}${toGoal != null ? ` · ${Math.abs(toGoal) < .3 ? '¡en tu objetivo!' : `${fmt(Math.abs(toGoal), 1)} kg para tu objetivo`}` : ''}</div></div>` : ''}
         </div>
     </div>
-    ${L.length && !canUse('trends') ? proTeaser('trends') : ''}${L.length && canUse('trends') ? `<div class="nd-card p-5 sm:p-6 space-y-3"><h3 class="text-lg font-extrabold text-neutral-50">Lo que dicen tus datos</h3>${L.slice(0, 5).map(x => `<div class="flex items-start gap-3"><span class="text-xl leading-none">${x.ic}</span><span class="flex-1 text-sm text-neutral-200">${esc(x.t)}</span>${tagPill(x.k === 'consejo' ? 'rec' : 'dato')}</div>`).join('')}<p class="text-[11px] text-neutral-500">Interpretación orientativa de tus registros. No es un diagnóstico.</p></div>` : ''}`;
+    ${L.length && !canUse('trends') ? proTeaser('trends') : ''}${L.length && canUse('trends') ? `<div class="nd-card p-5 sm:p-6 space-y-3"><h3 class="text-lg font-extrabold text-neutral-50">Lo que dicen tus datos</h3>${L.slice(0, 5).map(x => `<div class="flex items-start gap-3"><span class="nd-ic">${icon(x.ic)}</span><span class="flex-1 text-sm text-neutral-200">${esc(x.t)}</span>${tagPill(x.k === 'consejo' ? 'rec' : 'dato')}</div>`).join('')}<p class="text-[11px] text-neutral-500">Interpretación orientativa de tus registros. No es un diagnóstico.</p></div>` : ''}`;
     checkAchievements(true);
     const A = state.ach || {};
     $('prog-ach').innerHTML = `<div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-50">Logros</h3><span class="text-xs font-bold text-neutral-400">${Object.keys(A).length}/${ACHIEVEMENTS.length}</span></div>

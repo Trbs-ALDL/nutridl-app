@@ -8,11 +8,11 @@ function ring(value, target, size = 132) {
     const r = size / 2 - 10, C = 2 * Math.PI * r, pct = target > 0 ? Math.min(1, value / target) : 0;
     const over = value > target * 1.05;
     return `<svg viewBox="0 0 ${size} ${size}" class="w-full h-auto max-w-[150px]" role="img" aria-label="${fmt(value)} de ${fmt(target)} kcal">
-        <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="#262626" stroke-width="12"/>
+        <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="#2a2521" stroke-width="12"/>
         <circle class="ring-prog" cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${over ? '#c2603f' : '#dcc19c'}" stroke-width="12" stroke-linecap="round"
             stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - pct)).toFixed(1)}" transform="rotate(-90 ${size / 2} ${size / 2})"/>
-        <text x="50%" y="47%" text-anchor="middle" font-size="22" font-weight="800" fill="#f5f5f5">${fmt(value)}</text>
-        <text x="50%" y="62%" text-anchor="middle" font-size="10" fill="#a3a3a3">de ${fmt(target)} kcal</text>
+        <text x="50%" y="47%" text-anchor="middle" font-size="22" font-weight="800" fill="#f2ede6">${fmt(value)}</text>
+        <text x="50%" y="62%" text-anchor="middle" font-size="10" fill="#aea396">de ${fmt(target)} kcal</text>
     </svg>`;
 }
 function macroBar(label, val, target, color) {
@@ -51,13 +51,13 @@ function renderDashboard() {
     const S = streakInfo();
     const head = `<div class="flex items-start justify-between gap-3">
             <div class="min-w-0"><div class="text-xs font-bold uppercase tracking-wider text-mint-400">${dateTxt}</div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-50 truncate">Hola, ${esc(cur.name)} 👋</h1>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-50 truncate">Hola, ${esc(cur.name)}</h1>
                 <p class="text-sm text-neutral-400">Vamos a por tus objetivos de hoy.</p></div>
-            <button onclick="showTab('progress')" class="nd-streak shrink-0" aria-label="Racha de ${S.cur} días">🔥 ${S.cur}</button>
+            <button onclick="showTab('progress')" class="nd-streak shrink-0" aria-label="Racha de ${S.cur} días"><i class="fa-solid fa-fire text-amber-400" aria-hidden="true"></i> ${S.cur}</button>
         </div>`;
     if (!calc.target) {
         box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
-            <div class="nd-card p-6 sm:p-8 space-y-4 text-center"><div class="text-4xl">🎯</div><h2 class="text-xl font-extrabold text-neutral-50">Termina tu plan para empezar</h2><p class="text-sm text-neutral-400">Necesitamos tu edad, peso y estatura para calcular tus calorías y macros.</p>
+            <div class="nd-card p-6 sm:p-8 space-y-4 text-center"><div class="nd-ic-lg mx-auto">${icon('🎯')}</div><h2 class="text-xl font-extrabold text-neutral-50">Termina tu plan para empezar</h2><p class="text-sm text-neutral-400">Necesitamos tu edad, peso y estatura para calcular tus calorías y macros.</p>
             <button onclick="openWizard('edit')" class="nd-btn-primary mx-auto">Completar mi plan <i class="fa-solid fa-arrow-right"></i></button></div></div>`;
         return;
     }
@@ -71,7 +71,7 @@ function renderDashboard() {
     const tile = (onclick, l, v, sub) => `<button onclick="${onclick}" class="nd-tile text-left"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${l}</div><div class="text-xl font-extrabold text-neutral-50 mt-1">${v}</div>${sub ? `<div class="text-xs text-neutral-400 mt-0.5">${sub}</div>` : ''}</button>`;
     const lastW = W.length ? W[W.length - 1] : null;
     box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
-        <button onclick="showTab('calc')" class="nd-goal"><span>${gIc}</span> ${gTxt} <span class="text-neutral-500">·</span> <span class="text-neutral-300">${fmt(c.target)} kcal/día</span> <i class="fa-solid fa-chevron-right text-[10px] text-neutral-500"></i></button>
+        <button onclick="showTab('calc')" class="nd-goal"><span class="text-mint-400">${icon(gIc)}</span> ${gTxt} <span class="text-neutral-500">·</span> <span class="text-neutral-300">${fmt(c.target)} kcal/día</span> <i class="fa-solid fa-chevron-right text-[10px] text-neutral-500"></i></button>
         <div class="grid lg:grid-cols-5 gap-4">
             <div class="lg:col-span-3 nd-card p-5 sm:p-6 space-y-5">
                 <div class="flex items-end justify-between gap-3">
@@ -85,7 +85,7 @@ function renderDashboard() {
             <div class="lg:col-span-2 space-y-4">
                 <div class="nd-now p-5 space-y-3">
                     <div class="text-[11px] font-bold uppercase tracking-wider text-mint-300">¿Qué hago ahora?</div>
-                    <div class="flex items-start gap-3"><span class="text-3xl leading-none">${A.ic}</span><div class="min-w-0">${A.kicker ? `<div class="text-xs font-bold text-neutral-400">${A.kicker}</div>` : ''}<div class="text-lg font-extrabold text-neutral-50 leading-snug">${A.title}</div><div class="text-sm text-neutral-300">${A.sub}</div></div></div>
+                    <div class="flex items-start gap-3"><span class="nd-ic">${icon(A.ic)}</span><div class="min-w-0">${A.kicker ? `<div class="text-xs font-bold text-neutral-400">${A.kicker}</div>` : ''}<div class="text-lg font-extrabold text-neutral-50 leading-snug">${A.title}</div><div class="text-sm text-neutral-300">${A.sub}</div></div></div>
                     <div class="grid ${A.btn2 ? 'grid-cols-2' : 'grid-cols-1'} gap-2"><button onclick="${A.btn[1]}" class="nd-mbtn nd-mbtn-main">${A.btn[0]}</button>${A.btn2 ? `<button onclick="${A.btn2[1]}" class="nd-mbtn">${A.btn2[0]}</button>` : ''}</div>
                 </div>
                 <div class="grid grid-cols-5 gap-2">
@@ -93,10 +93,10 @@ function renderDashboard() {
                 </div>
             </div>
         </div>
-        ${ins ? `<button onclick="showTab('progress')" class="nd-insight w-full text-left"><span class="text-2xl leading-none">${ins.ic}</span><span class="min-w-0 flex-1 text-sm text-neutral-200">${esc(ins.t)}</span>${tagPill(ins.k === 'consejo' ? 'rec' : 'dato')}</button>` : ''}
+        ${ins ? `<button onclick="showTab('progress')" class="nd-insight w-full text-left"><span class="nd-ic">${icon(ins.ic)}</span><span class="min-w-0 flex-1 text-sm text-neutral-200">${esc(ins.t)}</span>${tagPill(ins.k === 'consejo' ? 'rec' : 'dato')}</button>` : ''}
         <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
             ${tile("showTab('progress');setTimeout(()=>{const w=$('trk-w');if(w)w.focus()},300)", 'Peso', `${fmt(state.weight, 1)} kg`, T && T.week != null && Math.abs(T.week) >= .05 ? `${T.week > 0 ? '+' : ''}${fmt(T.week, 1)} kg esta semana` : lastW ? `Último: ${new Date(lastW.d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}` : 'Toca para apuntarlo')}
-            ${tile("showTab('gym')", 'Entrenos', gd ? `${wk.done} / ${gd}` : `${wk.done}`, gd ? (wk.done >= gd ? 'Semana completada 🎉' : 'esta semana') : 'Elige tus días')}
+            ${tile("showTab('gym')", 'Entrenos', gd ? `${wk.done} / ${gd}` : `${wk.done}`, gd ? (wk.done >= gd ? 'Semana completada' : 'esta semana') : 'Elige tus días')}
             ${tile("showTab('calc')", 'IMC', fmt(c.bmi, 1), c.bmiCat || '')}
             ${tile("showTab('progress')", 'Mejor racha', `${S.best} día${S.best === 1 ? '' : 's'}`, `${Object.keys(state.ach || {}).length} logros`)}
         </div>

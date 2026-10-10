@@ -8,6 +8,19 @@ module.exports = {
   "theme": {
     "extend": {
       "colors": {
+        "neutral": {
+          "50": "#faf7f3",
+          "100": "#f2ede6",
+          "200": "#e4dcd2",
+          "300": "#cfc5b8",
+          "400": "#aea396",
+          "500": "#9c9084",
+          "600": "#6d6359",
+          "700": "#463f38",
+          "800": "#2a2521",
+          "900": "#1a1714",
+          "950": "#110f0d"
+        },
         "mint": {
           "50": "#1f1a14",
           "100": "#2a2219",
@@ -43,6 +56,11 @@ module.exports = {
           "Plus Jakarta Sans",
           "Inter",
           "sans-serif"
+        ],
+        "display": [
+          "Newsreader",
+          "Georgia",
+          "serif"
         ],
         "mono": [
           "JetBrains Mono",

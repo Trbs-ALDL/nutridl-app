@@ -146,6 +146,45 @@ function exportProfiles() {
     setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     toast('Copia descargada: guárdala para recuperar tus perfiles');
 }
+// Seguridad: una copia puede venir de otra persona. Antes de guardarla se limpia todo lo que podría colarse
+// en la página como código: claves raras fuera, textos sin < > " ' ` \ y el chat convertido a texto plano.
+const SAFE_KEY = /^[\w.:-]{1,64}$/;
+const ID_KEYS = new Set(['id', 'fid', 'd', 'date', 'slot', 'start', 'created', 'tab', 'goalType', 'gender', 'strategy', 'level', 'eq']);
+function cleanImported(v, depth = 0) {
+    if (depth > 12) return undefined;
+    if (typeof v === 'string') return v.replace(/[<>"'`\\]/g, '').slice(0, 2000);
+    if (typeof v === 'number') return Number.isFinite(v) ? v : 0;
+    if (typeof v === 'boolean' || v === null) return v;
+    if (Array.isArray(v)) return v.slice(0, 5000).map(x => cleanImported(x, depth + 1)).filter(x => x !== undefined);
+    if (typeof v === 'object') {
+        const o = {};
+        for (const [k, x] of Object.entries(v)) {
+            if (!SAFE_KEY.test(k) || k === '__proto__' || k === 'constructor' || k === 'prototype') continue;
+            let c = cleanImported(x, depth + 1);
+            // Identificadores y fechas: solo letras, números, guion, punto y dos puntos (sin paréntesis ni espacios)
+            if (typeof c === 'string' && ID_KEYS.has(k)) c = c.replace(/[^\w.:-]/g, '').slice(0, 64);
+            if (c !== undefined) o[k] = c;
+        }
+        return o;
+    }
+    return undefined;
+}
+function plainText(html) {
+    try { return new DOMParser().parseFromString(String(html || ''), 'text/html').body.textContent || ''; } catch (e) { return ''; }
+}
+function cleanImportedState(s) {
+    if (!s || typeof s !== 'object') return {};
+    const chat = Array.isArray(s.chat) ? s.chat.slice(-40) : [];
+    const out = cleanImported({ ...s, chat: [] }) || {};
+    // Los entrenos se identifican con un número
+    if (Array.isArray(out.workouts)) out.workouts = out.workouts.filter(w => w && typeof w === 'object').map((w, i) => ({ ...w, id: Number.isFinite(+w.id) && +w.id > 0 ? +w.id : Date.now() + i }));
+    // Mensajes del chat: solo el texto (las respuestas del Coach se vuelven a mostrar como texto plano, sin botones)
+    out.chat = chat.filter(m => m && typeof m === 'object').map(m => {
+        const t = String(m.r === 'u' ? (m.t || plainText(m.html)) : plainText(m.html)).slice(0, 2000);
+        return m.r === 'u' ? { r: 'u', t: t.replace(/[<>"'`\\]/g, '') } : { r: 'c', html: `<p>${esc(t)}</p>` };
+    }).filter(m => (m.t || m.html));
+    return out;
+}
 function importProfiles() {
     closeProfileMenu();
     const inp = document.createElement('input');
@@ -158,14 +197,17 @@ function importProfiles() {
             const list = data && data.app === 'nutridl' && data.profiles && data.profiles.list;
             if (!list || typeof list !== 'object') { toast('Ese archivo no es una copia de NutriDL'); return; }
             save();
-            const entries = Object.entries(list).filter(([, p]) => p && typeof p === 'object');
+            // Ids de perfil raros (con comillas, etiquetas…) reciben un id nuevo y seguro
+            const entries = Object.entries(list).filter(([, p]) => p && typeof p === 'object')
+                .map(([id, p], i) => [/^[\w-]{1,40}$/.test(id) ? id : 'p' + Date.now().toString(36) + i, p]);
             // Mismo perfil (mismo id) ya en este dispositivo: solo se sustituye si lo confirmas
             const clash = entries.filter(([id]) => profiles.list[id]);
             const replace = clash.length ? await askConfirm(`La copia trae datos de ${clash.map(([id]) => profiles.list[id].name).join(', ')}, que ya ${clash.length === 1 ? 'existe' : 'existen'} en este dispositivo. ¿Sustituirlos por los de la copia? Si eliges no, solo se añadirán los perfiles nuevos.`, 'Sustituir') : false;
             let added = 0, updated = 0;
             entries.forEach(([id, p]) => {
                 if (profiles.list[id] && !replace) return;
-                const entry = { name: String(p.name || 'Perfil').slice(0, 40), created: p.created || todayISO(), state: mergeState(p.state) };
+                const created = /^\d{4}-\d{2}-\d{2}$/.test(p.created) ? p.created : todayISO();
+                const entry = { name: String(p.name || 'Perfil').replace(/[<>"'`\\]/g, '').slice(0, 40) || 'Perfil', created, state: mergeState(cleanImportedState(p.state)) };
                 if (profiles.list[id]) updated++; else added++;
                 profiles.list[id] = entry;
             });

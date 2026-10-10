@@ -122,7 +122,7 @@ function pdfDoc() {
             const N = pages.length;
             pages.forEach((p, i) => {
                 ops = p;
-                d.line(M, H - 30, W - M, H - 30, '#e5e5e5');
+                d.line(M, H - 30, W - M, H - 30, '#e4dcd2');
                 d.text(M, H - 18, meta.footer, { size: 7.5, color: '#8a8a8a' });
                 d.text(W - M, H - 18, `Página ${i + 1} de ${N}`, { size: 7.5, color: '#8a8a8a', align: 'right' });
             });

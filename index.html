@@ -14,7 +14,7 @@
     <!-- Seguridad: solo se cargan archivos propios y solo se conecta con Open Food Facts (escáner) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <!-- Añadido: SEO social, color de tema e icono -->
-    <meta name="theme-color" content="#0a0a0a">
+    <meta name="theme-color" content="#110f0d">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
     <meta property="og:title" content="nutriDL · Tu entrenador nutricional personal">
@@ -25,10 +25,10 @@
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="manifest" href="manifest.webmanifest">
-    <link rel="stylesheet" href="css/fonts.css?v=990c47b567">
-    <link rel="stylesheet" href="css/icons.css?v=789e898284">
-    <link rel="stylesheet" href="css/tailwind.css?v=38f93df475">
-    <link rel="stylesheet" href="css/app.css?v=ee1f820c73">
+    <link rel="stylesheet" href="css/fonts.css?v=316b37d954">
+    <link rel="stylesheet" href="css/icons.css?v=db0bcaf1bc">
+    <link rel="stylesheet" href="css/tailwind.css?v=d6957d0fa6">
+    <link rel="stylesheet" href="css/app.css?v=165145e0df">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -49,10 +49,10 @@
     <header class="sticky top-0 z-50 bg-neutral-950/85 backdrop-blur-md border-b border-neutral-800 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
             <button onclick="showTab('home')" class="flex items-center gap-2.5" aria-label="nutriDL, ir al inicio">
-                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-mint-600 to-mint-400 flex items-center justify-center text-white shadow-md">
+                <div class="nd-logo w-10 h-10 rounded-2xl flex items-center justify-center text-white">
                     <i class="fa-solid fa-leaf text-lg"></i>
                 </div>
-                <span class="font-extrabold text-xl tracking-tight text-neutral-100">nutri<span class="text-mint-500">DL</span></span>
+                <span class="nd-brand text-[1.4rem] text-neutral-100">nutri<span class="text-mint-400">DL</span></span>
             </button>
             <nav id="tabbar-top" class="hidden lg:flex items-center gap-1 p-1 rounded-2xl bg-neutral-900 border border-neutral-800 text-sm font-extrabold" aria-label="Secciones">
                 <button data-tab="home" onclick="showTab('home')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-house"></i> Hoy</button>
@@ -75,7 +75,7 @@
             <div class="nd-hero relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-12 sm:py-16">
                 <div class="relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
                     <div class="space-y-6">
-                        <span class="nd-eyebrow"><i class="fa-solid fa-leaf"></i> Nutrición · Coach · Progreso</span>
+                        <span class="nd-eyebrow">Nutrición, Coach y progreso en una sola app</span>
                         <h1 class="text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight text-neutral-50">Tu entrenador nutricional personal</h1>
                         <p class="text-lg sm:text-xl text-neutral-300 max-w-xl">Controla tus calorías, macros, comidas y progreso en un solo lugar.</p>
                         <div class="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
@@ -90,7 +90,7 @@
                     </div>
                     <div class="nd-phone mx-auto w-full max-w-[330px]" aria-hidden="true">
                         <div class="nd-phone-inner space-y-3">
-                            <div class="flex items-center justify-between"><div><div class="text-[11px] font-bold text-mint-400 uppercase tracking-wider">Ejemplo</div><div class="text-lg font-extrabold text-neutral-50">Hola, Laura 👋</div></div><span class="nd-streak">🔥 12</span></div>
+                            <div class="flex items-center justify-between"><div><div class="text-[11px] font-bold text-mint-400 uppercase tracking-wider">Ejemplo</div><div class="text-lg font-extrabold text-neutral-50">Hola, Laura</div></div><span class="nd-streak">🔥 12</span></div>
                             <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-4 space-y-3">
                                 <div class="flex items-baseline justify-between"><span class="text-2xl font-extrabold text-neutral-50">1.640</span><span class="text-xs font-bold text-neutral-400">/ 2.100 kcal</span></div>
                                 <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-400" style="width:78%"></div></div>
@@ -102,10 +102,10 @@
                             </div>
                             <div class="rounded-2xl bg-mint-600/15 border border-mint-500/30 p-4 space-y-1">
                                 <div class="text-[11px] font-bold uppercase tracking-wider text-mint-300">¿Qué hago ahora?</div>
-                                <div class="text-sm font-extrabold text-neutral-50">🍽️ Cena · 460 kcal y 32 g de proteína</div>
+                                <div class="text-sm font-extrabold text-neutral-50"><i class="fa-solid fa-utensils text-mint-400 mr-1"></i> Cena · 460 kcal y 32 g de proteína</div>
                                 <div class="text-xs text-neutral-300">Merluza con patata y judías verdes</div>
                             </div>
-                            <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-3 text-xs text-neutral-300">🏆 Has cumplido tu proteína 6/7 días</div>
+                            <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-3 text-xs text-neutral-300"><i class="fa-solid fa-trophy text-amber-300 mr-1"></i> Has cumplido tu proteína 6/7 días</div>
                         </div>
                     </div>
                 </div>
@@ -114,19 +114,19 @@
             <div class="space-y-8">
                 <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-50 max-w-2xl">Todo lo que necesitas para llegar a tu objetivo</h2>
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="nd-feature"><span class="nd-feature-ic">✨</span><h3>Un Coach que te responde</h3><p>«¿Qué ceno con 600 kcal?» Te propone platos con tus calorías y tu proteína, y te dice cuánto te queda.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic">🎙️</span><h3>Apuntar es rapidísimo</h3><p>Dilo en voz alta, escanea el código de barras o busca entre cientos de alimentos y marcas de España.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic">🍽️</span><h3>Menú y lista de la compra</h3><p>Un día completo con gramos exactos para ti y la lista de la compra agrupada, en un toque.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic">📈</span><h3>Progreso que se entiende</h3><p>Tendencia real de tu peso, medidas, rachas y logros. Sin números sueltos: te explica qué está pasando.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic">💪</span><h3>Tu gym incluido</h3><p>Apunta tus series y pesos, con descanso y tus mejores marcas por ejercicio.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic">🔒</span><h3>Privacidad de verdad</h3><p>Sin cuentas ni anuncios. Todo se guarda en tu dispositivo y puedes borrarlo cuando quieras.</p></div>
+                    <div class="nd-feature nd-feature-lead sm:col-span-2"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><h3>Un Coach que te responde</h3><p>«¿Qué ceno con 600 kcal?» Te propone platos con tus calorías y tu proteína, y te dice cuánto te queda.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-microphone"></i></span><h3>Apuntar es rapidísimo</h3><p>Dilo en voz alta, escanea el código de barras o busca entre cientos de alimentos y marcas de España.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-basket-shopping"></i></span><h3>Menú y lista de la compra</h3><p>Un día completo con gramos exactos para ti y la lista de la compra agrupada, en un toque.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span><h3>Progreso que se entiende</h3><p>Tendencia real de tu peso, medidas, rachas y logros. Sin números sueltos: te explica qué está pasando.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></span><h3>Tu gym incluido</h3><p>Apunta tus series y pesos, con descanso y tus mejores marcas por ejercicio.</p></div>
+                    <div class="nd-feature sm:col-span-2 lg:col-span-3"><div class="nd-feature-row"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-lock"></i></span><h3>Privacidad de verdad</h3></div><p>Sin cuentas ni anuncios. Todo se guarda en tu dispositivo y puedes borrarlo cuando quieras.</p></div>
                 </div>
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-4">
-                <div class="nd-step"><span>1</span><div><h3>Cuéntanos tu objetivo</h3><p>Dos minutos: objetivo, datos, actividad y cómo comes.</p></div></div>
-                <div class="nd-step"><span>2</span><div><h3>Recibe tu plan</h3><p>Calorías y macros calculados con Mifflin-St Jeor, explicados.</p></div></div>
-                <div class="nd-step"><span>3</span><div><h3>Te acompañamos cada día</h3><p>Qué comer ahora, cuánto te queda y cómo vas.</p></div></div>
+            <div class="grid lg:grid-cols-3 gap-6 lg:gap-10">
+                <div class="nd-step"><span>01</span><div><h3>Cuéntanos tu objetivo</h3><p>Dos minutos: objetivo, datos, actividad y cómo comes.</p></div></div>
+                <div class="nd-step"><span>02</span><div><h3>Recibe tu plan</h3><p>Calorías y macros calculados con Mifflin-St Jeor, explicados.</p></div></div>
+                <div class="nd-step"><span>03</span><div><h3>Te acompañamos cada día</h3><p>Qué comer ahora, cuánto te queda y cómo vas.</p></div></div>
             </div>
 
             <div id="landing-pro"></div>
@@ -681,21 +681,21 @@
         </div>
     </div>
 
-    <script src="js/core.js?v=ce307c01a2"></script>
+    <script src="js/core.js?v=fd1ad42a52"></script>
     <script src="js/data/foods.js?v=3845662a62"></script>
     <script src="js/data/exercises.js?v=8e845d8e16"></script>
     <script src="js/calc.js?v=b74fd08e29"></script>
     <script src="js/analytics.js?v=1974b7351f"></script>
-    <script src="js/progress.js?v=bf9a792eed"></script>
+    <script src="js/progress.js?v=e1300bf95e"></script>
     <script src="js/engine.js?v=ca09975bf8"></script>
     <script src="js/parser.js?v=a9a85849ff"></script>
     <script src="js/insights.js?v=d790c4aa8c"></script>
-    <script src="js/pdf.js?v=a36031981f"></script>
+    <script src="js/pdf.js?v=c48629955f"></script>
     <script src="js/wizard.js?v=d7e299f3ec"></script>
-    <script src="js/gym.js?v=fb3e9ae569"></script>
-    <script src="js/diary.js?v=b1c1acf8ad"></script>
-    <script src="js/profiles.js?v=7c2668427b"></script>
-    <script src="js/dashboard.js?v=7b26bb748c"></script>
+    <script src="js/gym.js?v=35222ef468"></script>
+    <script src="js/diary.js?v=f8ff6c3880"></script>
+    <script src="js/profiles.js?v=e569adbef3"></script>
+    <script src="js/dashboard.js?v=39869bce58"></script>
     <script src="js/kitchen.js?v=41bfb9876a"></script>
     <script src="js/coach.js?v=0388c83579"></script>
     <script src="js/plans.js?v=2ca838e74c"></script>

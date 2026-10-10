@@ -1,5 +1,19 @@
 # Cambios de nutriDL
 
+## 3.2.0 · 10 de octubre de 2026
+
+**Diseño más profesional** (nada se ha quitado: todo funciona igual)
+- Grises cálidos en toda la app (antes se mezclaban grises fríos con el marrón) y fondo casi negro cálido.
+- Titulares con una serifa editorial (Newsreader) y el logotipo con la misma letra; menos negrita extra en el resto.
+- Etiquetas en minúscula normal en lugar de MAYÚSCULAS espaciadas; superficies sobrias con luz desde arriba, sin brillos de colores; esquinas algo más contenidas.
+- Iconos de línea en lugar de emojis en «Hoy», «Lo que dicen tus datos», la racha y la portada.
+- Portada: bloque de funciones asimétrico, pasos numerados «01 · 02 · 03» y textos más claros.
+- Accesibilidad: el gris más apagado sube a un contraste de 5:1; las pestañas del buscador de alimentos ya no se salen en móviles de 320 px.
+
+**Seguridad**
+- Al cargar una copia de seguridad se limpia todo lo que trae: identificadores y fechas válidos, sin comillas ni etiquetas HTML, entrenos con número y el chat convertido a texto plano. Así un archivo trucado que te envíe otra persona no puede ejecutar nada en la app ni leer tus datos. Las copias normales se cargan igual que antes.
+- Botones de entrenos con identificadores siempre numéricos.
+
 ## 3.1.0 · 9 de octubre de 2026
 
 **Nuevo**

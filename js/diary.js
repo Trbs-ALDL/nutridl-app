@@ -379,7 +379,7 @@ function fsSetUnit(key) {
 function fsUpdateDetail() {
     const f = fs.food, u = unitsOf(f).find(x => x.key === fs.unit), g = u.g * (num(fs.n) || 0), m = macrosOf(f, g);
     const box = (l, v, unit, col) => `<div class="p-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800"><div class="text-[11px] font-bold text-neutral-400">${l}</div><div class="text-lg font-extrabold" style="color:${col}">${fmt(v, v < 10 && v % 1 ? 1 : 0)}<span class="text-xs text-neutral-400 font-semibold">${unit}</span></div></div>`;
-    $('fs-macros').innerHTML = box('Kcal', m.kcal, '', '#f5f5f5') + box('Proteína', m.p, ' g', '#c49a6c') + box('Grasa', m.f, ' g', '#f59e0b') + box('Hidratos', m.c, ' g', '#e6d3b3');
+    $('fs-macros').innerHTML = box('Kcal', m.kcal, '', '#f2ede6') + box('Proteína', m.p, ' g', '#c49a6c') + box('Grasa', m.f, ' g', '#f59e0b') + box('Hidratos', m.c, ' g', '#e6d3b3');
 }
 function fsConfirm() {
     const f = fs.food, u = unitsOf(f).find(x => x.key === fs.unit), n = num(fs.n);

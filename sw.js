@@ -1,7 +1,7 @@
 // nutriDL · service worker (generado por tools/build-sw.js; no editar a mano)
 // Con internet: siempre la versión más nueva (y se guarda una copia). Sin internet: la copia guardada.
 // Las consultas a Open Food Facts no pasan por aquí.
-const CACHE = 'nutridl-0d87ec858f';
+const CACHE = 'nutridl-989ec4dbc9';
 const FILES = [
   "./css/app.css",
   "./css/fonts.css",
@@ -10,6 +10,8 @@ const FILES = [
   "./css/tailwind.css",
   "./fonts/fa-regular-400.woff2",
   "./fonts/fa-solid-900.woff2",
+  "./fonts/newsreader-500.woff2",
+  "./fonts/newsreader-600.woff2",
   "./fonts/plus-jakarta-sans-400.woff2",
   "./fonts/plus-jakarta-sans-500.woff2",
   "./fonts/plus-jakarta-sans-600.woff2",
