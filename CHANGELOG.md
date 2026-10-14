@@ -1,5 +1,9 @@
 # Cambios de nutriDL
 
+## 3.4.2 · 14 de octubre de 2026
+
+- Coach: la conversación empieza limpia cada día (solo se guardan los mensajes de hoy). Lo apuntado en el diario no cambia.
+
 ## 3.4.1 · 14 de octubre de 2026
 
 - Contacto del responsable (aannggeelltrabajos@gmail.com) en la política de privacidad (v4.1), en los términos (v1.1) y al pie de la app; añadido el derecho a reclamar ante la AEPD.

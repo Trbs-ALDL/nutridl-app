@@ -81,3 +81,15 @@ test('Open Food Facts: como mucho 8 búsquedas por minuto y no repite la misma',
     assert.equal(calls, 8);
     await assert.rejects(() => run(`offProduct('8480000000099')`), e => e.limit === true);
 });
+
+test('Coach: el chat empieza limpio cada día y el diario no se toca', () => {
+    const { run, json } = loadApp();
+    const id = t => 'm' + t.toString(36) + 'abcd';
+    const ayer = Date.now() - 864e5 * 1.2, hoy = Date.now() - 60000;
+    run(`state.diary = { x: [1] }; state.chatDay = '2000-01-01'; state.chat = ${JSON.stringify([{ id: id(ayer), r: 'u', t: 'ayer' }, { id: id(hoy), r: 'u', t: 'hoy' }, { r: 'c', html: '<p>sin id</p>' }])}; freshChat();`);
+    assert.deepEqual(json('state.chat.map(m => m.t)'), ['hoy']);
+    assert.equal(run('state.chatDay'), run('todayISO()'));
+    assert.equal(json('state.diary').x.length, 1);
+    run(`pushMsg({ r: 'u', t: 'nuevo' })`);
+    assert.deepEqual(json('state.chat.map(m => m.t)'), ['hoy', 'nuevo']);
+});

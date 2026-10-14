@@ -121,7 +121,18 @@ function renderCoachCtx() {
 // =====================================================================
 //  COACH: CONVERSACIÓN
 // =====================================================================
+// El chat del Coach empieza limpio cada día: solo se guardan los mensajes de hoy
+// (la hora sale del id de cada mensaje, «m» + Date.now() en base 36; lo apuntado en el diario no se toca)
+const msgDay = m => { const t = parseInt(String(m && m.id || '').slice(1, 9), 36); return Number.isFinite(t) && t > 1e12 ? new Date(t - new Date(t).getTimezoneOffset() * 60000).toISOString().slice(0, 10) : null; };
+function freshChat() {
+    const d = todayISO();
+    if (state.chatDay === d) return;
+    state.chat = (state.chat || []).filter(m => msgDay(m) === d);
+    state.chatDay = d;
+    save();
+}
 function renderChat(scroll) {
+    freshChat();
     renderCoachCtx();
     const log = $('chat-log'); if (!log) return;
     const L = state.chat || [];
@@ -145,6 +156,7 @@ function chatSuggestions() {
 }
 function pushMsg(m) {
     m.id = m.id || 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    freshChat();
     state.chat = state.chat || []; state.chat.push(m);
     if (state.chat.length > 40) state.chat.splice(0, state.chat.length - 40);
     save(); return m;
