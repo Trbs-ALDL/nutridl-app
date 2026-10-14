@@ -28,15 +28,16 @@ nutriDL es una **PWA sin servidor**:
 | Llamadas a la API y tiempos de carga | Quitada la espera de hasta **4 s** al abrir (el service worker esperaba a la red). Ahora abre al instante con lo guardado (7 ms medidos) y se actualiza por detrás. Scripts con `defer`, fuentes precargadas. Lighthouse móvil: **Rendimiento 91 · Accesibilidad 100 · Buenas prácticas 100 · SEO 100** (primer pintado 6,3 s → 1,7 s). |
 | Accesibilidad | Lighthouse 100. Contrastes ≥ 4,5:1 medidos en la 3.2/3.3, foco visible, «Saltar al contenido», zonas táctiles de 40 px, respeta «reducir movimiento». |
 | Monitorización de errores y cierres | Local: registro de errores + **detección de cierres inesperados** (la app anota si la última vez se cerró de golpe). Para verlos de todos los usuarios haría falta un servicio externo (p. ej. Sentry, plan gratuito): necesita cuenta y que la política de privacidad lo explique; no se ha activado. |
-| Política de privacidad | Actualizada a la versión 4 (copias automáticas, registro limpio, fuentes de datos, límites). Pendiente: **datos de contacto del responsable** (lo exigen el RGPD y las dos tiendas). |
+| Política de privacidad | Versión 4.1: copias automáticas, registro limpio, fuentes de datos, límites, **responsable y contacto** (aannggeelltrabajos@gmail.com) y derecho a reclamar ante la AEPD. |
 
 ## Requisitos para publicar en Google Play
 
 Forma recomendada: **Trusted Web Activity (TWA)** con Bubblewrap o PWABuilder (envuelve la web tal cual).
 
 - [ ] Cuenta de desarrollador de Google Play (pago único de 25 $).
-- [ ] Generar el paquete con PWABuilder/Bubblewrap y subir `/.well-known/assetlinks.json` a la web (con la huella del certificado de firma) para que se abra sin barra de navegador.
-- [ ] **Política de privacidad pública** (ya está: `privacidad.html`) con **contacto** del responsable (pendiente).
+- [ ] Generar el paquete con PWABuilder/Bubblewrap.
+- [ ] Publicar `assetlinks.json` (con la huella del certificado de firma) para que la app se abra sin barra de navegador. **Ojo:** tiene que estar en la raíz del dominio (`https://trbs-aldl.github.io/.well-known/assetlinks.json`), no dentro de `/nutridl-app/`. Hay que crear el repositorio `Trbs-ALDL.github.io` solo con ese archivo, o usar un dominio propio.
+- [x] **Política de privacidad pública** con contacto: `https://trbs-aldl.github.io/nutridl-app/privacidad.html`.
 - [ ] Formulario **Seguridad de los datos**: «No se recogen datos» (todo queda en el dispositivo); el código de barras va a Open Food Facts sin datos personales; la voz la procesa el servicio del sistema.
 - [ ] **Apps de salud**: declarar en la Consola que es una app de salud/fitness; incluir el aviso de que no sustituye a un profesional (ya está en la app).
 - [ ] Clasificación de contenido (cuestionario IARC) y público objetivo **18+** (la app ya lo indica).
@@ -55,7 +56,7 @@ Forma recomendada: **Trusted Web Activity (TWA)** con Bubblewrap o PWABuilder (e
 
 ## Pendiente (necesita decisión o datos de Ángel)
 
-1. Correo o forma de contacto del responsable para la política de privacidad y las tiendas.
+1. ~~Contacto del responsable~~ → hecho en la 3.4.1: aannggeelltrabajos@gmail.com en la política, los términos y el pie de la app; añadido el derecho a reclamar ante la AEPD.
 2. Pasarela de pago para la web (`PAY_LINK`) y, para tiendas, Play Billing / compras de Apple.
 3. Si se quiere ver los errores de todos los usuarios: elegir servicio (p. ej. Sentry) y añadirlo a la política.
 4. Migrar el CSS a Tailwind 4 para quitar los dos avisos de dependencias de desarrollo.

@@ -1,5 +1,10 @@
 # Cambios de nutriDL
 
+## 3.4.1 · 14 de octubre de 2026
+
+- Contacto del responsable (aannggeelltrabajos@gmail.com) en la política de privacidad (v4.1), en los términos (v1.1) y al pie de la app; añadido el derecho a reclamar ante la AEPD.
+- Las copias de seguridad en un solo archivo vuelven a incluir todo el JavaScript (desde la 3.4.0 salían incompletas por los scripts diferidos).
+
 ## 3.4.0 · 14 de octubre de 2026
 
 **Nuevo**
