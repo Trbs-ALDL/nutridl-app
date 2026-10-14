@@ -14,7 +14,7 @@ function addWeight() {
     state.weights = state.weights.filter(e => e.d !== d).concat([{ d, w }]).sort((a, b) => a.d.localeCompare(b.d));
     $('trk-w').value = '';
     syncWeightFromLog(); track('weight_logged'); checkAchievements(); if (state.tab === 'progress') renderProgress();
-    toast('Registro guardado ✔ Tus calorías y macros se han actualizado');
+    toast('Registro guardado. Tus calorías y macros se han actualizado');
 }
 // Confirmación propia: devuelve una promesa (true si el usuario acepta)
 function askConfirm(msg, okLabel = 'Aceptar') {
@@ -47,7 +47,7 @@ function renderTracker() {
     const L = state.weights;
     if (!L.length) {
         $('trk-stats').innerHTML = '';
-        $('trk-chart').innerHTML = '<div class="p-6 rounded-2xl bg-neutral-800/60 border border-dashed border-neutral-700 text-center text-xs text-neutral-400">Añade tu primer registro para ver tu gráfica de progreso 📈</div>';
+        $('trk-chart').innerHTML = '<div class="p-6 rounded-2xl bg-neutral-800/60 border border-dashed border-neutral-700 text-center text-xs text-neutral-400">Añade tu primer registro para ver tu gráfica de progreso.</div>';
         $('trk-actions').innerHTML = ''; $('trk-list').innerHTML = '';
         return;
     }
@@ -169,7 +169,7 @@ function renderProgress() {
     checkAchievements(true);
     const A = state.ach || {};
     $('prog-ach').innerHTML = `<div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-50">Logros</h3><span class="text-xs font-bold text-neutral-400">${Object.keys(A).length}/${ACHIEVEMENTS.length}</span></div>
-        <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">${ACHIEVEMENTS.map(([id, ic, name, desc]) => `<div class="nd-ach ${A[id] ? 'on' : ''}" title="${esc(desc)}"><span class="text-2xl">${A[id] ? ic : '🔒'}</span><span class="text-xs font-extrabold text-neutral-100 leading-tight">${name}</span><span class="text-[10px] text-neutral-400 leading-tight">${A[id] ? new Date(A[id] + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) : esc(desc)}</span></div>`).join('')}</div>`;
+        <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">${ACHIEVEMENTS.map(([id, ic, name, desc]) => `<div class="nd-ach ${A[id] ? 'on' : ''}" title="${esc(desc)}"><span class="nd-ic">${icon(A[id] ? ic : '🔒')}</span><span class="text-xs font-extrabold text-neutral-100 leading-tight">${name}</span><span class="text-[10px] text-neutral-400 leading-tight">${A[id] ? new Date(A[id] + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }) : esc(desc)}</span></div>`).join('')}</div>`;
 }
 
 // Semana de calendario (lunes a domingo): lo que llevas de esta semana

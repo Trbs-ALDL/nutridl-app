@@ -3,7 +3,9 @@
 // Proceso completo para añadir productos: off_fetch.js → off_fetch2.js → off_build.js (valida kcal y rangos) → off_embed.js
 const fs = require('fs'), path = require('path');
 const file = path.join(__dirname, '..', '..', 'js', 'data', 'foods.js');
-const M = JSON.parse(fs.readFileSync(path.join(__dirname, 'marcas.json'), 'utf8'));
+// marcas.json (la base de siempre) va primero para que sus ids no cambien; marcas_v3.json (3.4) se añade detrás
+const M = JSON.parse(fs.readFileSync(path.join(__dirname, 'marcas.json'), 'utf8'))
+    .concat(fs.existsSync(path.join(__dirname, 'marcas_v3.json')) ? JSON.parse(fs.readFileSync(path.join(__dirname, 'marcas_v3.json'), 'utf8')) : []);
 const slug = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
 const seen = new Set();
 const rows = M.map(m => {

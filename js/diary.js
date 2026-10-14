@@ -50,6 +50,27 @@ async function openScanner(slot) {
         const st = $('sc-status'); if (st) st.textContent = 'Sin permiso para la cámara: escribe el código abajo';
     }
 }
+// Consultas a Open Food Facts con freno: como mucho 8 por minuto, una a la vez, 8 s de espera máxima
+// y memoria de los códigos ya buscados en esta sesión (no se repite la misma consulta)
+const OFF_LIMIT = { per: 60000, max: 8, log: [], busy: false, seen: new Map() };
+async function offProduct(code) {
+    if (OFF_LIMIT.seen.has(code)) return OFF_LIMIT.seen.get(code);
+    const now = Date.now();
+    OFF_LIMIT.log = OFF_LIMIT.log.filter(t => now - t < OFF_LIMIT.per);
+    if (OFF_LIMIT.busy || OFF_LIMIT.log.length >= OFF_LIMIT.max) { const e = new Error('limite'); e.limit = true; throw e; }
+    OFF_LIMIT.busy = true; OFF_LIMIT.log.push(now);
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = ctl && setTimeout(() => ctl.abort(), 8000);
+    try {
+        const r = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,product_name_es,brands,nutriments,serving_quantity`, ctl ? { signal: ctl.signal } : {});
+        if (r.status === 404) { OFF_LIMIT.seen.set(code, null); return null; }
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        const j = await r.json();
+        const p = (j && j.product) || null;
+        OFF_LIMIT.seen.set(code, p);
+        return p;
+    } finally { OFF_LIMIT.busy = false; if (timer) clearTimeout(timer); }
+}
 async function lookupBarcode(raw) {
     const code = String(raw || '').replace(/\D/g, '');
     if (code.length < 8) { toast('Escribe un código de 8 a 14 números'); return; }
@@ -61,9 +82,7 @@ async function lookupBarcode(raw) {
     if (!navigator.onLine) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> Sin conexión: no se puede buscar este producto ahora.</p>'; return; }
     box.innerHTML = '<p class="text-sm text-neutral-400"><i class="fa-solid fa-circle-notch fa-spin"></i> Buscando el producto…</p>';
     try {
-        const r = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,product_name_es,brands,nutriments,serving_quantity`);
-        const j = await r.json();
-        const p = j && j.product, n = p && p.nutriments;
+        const p = await offProduct(code), n = p && p.nutriments;
         const kcal = n && (n['energy-kcal_100g'] ?? (n.energy_100g ? n.energy_100g / 4.184 : null));
         if (!p || !n || kcal == null) throw new Error('sin datos');
         const P = +n.proteins_100g || 0, G = +n.fat_100g || 0, C = +n.carbohydrates_100g || 0, Fi = +n.fiber_100g || 0;
@@ -76,6 +95,8 @@ async function lookupBarcode(raw) {
         track('scan_found');
         scanOpenFood(getFood(food.id), slot);
     } catch (e) {
+        if (e && e.limit) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-hourglass-half"></i> Has buscado muchos productos seguidos. Espera un minuto y vuelve a probar.</p>'; return; }
+        if (e && (e.name === 'AbortError' || /^HTTP|Failed to fetch|NetworkError/.test(e.message))) { logErr('Open Food Facts: ' + (e.name === 'AbortError' ? 'tiempo agotado' : e.message)); box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> El servicio de productos no responde ahora. Prueba en un momento o crea el alimento con su etiqueta.</p>'; return; }
         box.innerHTML = `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 space-y-3 text-sm text-neutral-300"><p>No hemos encontrado ese producto (${esc(code)}).</p>
             <button onclick="closeSheet(); openFoodSheet('${slot}'); fs.mode='create'; fsRender()" class="w-full py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-plus"></i> Crear el alimento con su etiqueta</button></div>`;
     }
@@ -185,7 +206,7 @@ function renderDiary() {
                     <button type="button" onclick="editDiaryEntry('${e.id}')" class="flex-1 min-w-0 text-left" aria-label="Editar ${esc(e.name)}">
                         <div class="text-sm font-semibold text-neutral-100 break-words leading-snug">${f ? emo(f) + ' ' : ''}${esc(e.name)}</div>
                         <div class="text-xs text-neutral-400">${e.brand ? esc(e.brand) + ' · ' : ''}${e.g ? entryAmount(e) : 'Solo calorías'}${e.est ? ' · <span class="nd-est">≈ estimado</span>' : ''}</div>
-                        <div class="text-[11px] text-neutral-500 tabular-nums">P ${fmt(e.p)} · HC ${fmt(e.c)} · G ${fmt(e.f)}</div>
+                        <div class="text-[11px] text-neutral-400 tabular-nums flex flex-wrap gap-x-2.5 mt-0.5">${macroLine(e.p, e.c, e.f)}</div>
                     </button>
                     <span class="text-sm font-extrabold text-neutral-100 shrink-0">${fmt(e.kcal)}<span class="text-xs font-semibold text-neutral-500"> kcal</span></span>
                     <button type="button" onclick="diaryDel('${e.id}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-600 hover:bg-neutral-800" aria-label="Quitar ${esc(e.name)}"><i class="fa-solid fa-xmark"></i></button>
@@ -222,7 +243,10 @@ function searchFoods(q) {
         const txt = foodText(f), words = txt.split(/[^a-z0-9ñ%+]+/);
         let score = 0;
         for (const t of toks) {
+            // «cocidas» encuentra «cocido», «patatas» encuentra «patata»: se prueba también sin la terminación de género/número
+            const stem = t.length >= 5 ? t.replace(/(as|os|es|a|o|s)$/, '') : null;
             if (words.some(w => w.startsWith(t))) score += 3;
+            else if (stem && words.some(w => w.startsWith(stem))) score += 2;
             else if (txt.includes(t)) score += 1;
             else return null;
         }
@@ -309,7 +333,7 @@ function fsRender() {
             <button type="button" onclick="fs.mode='create';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-plus text-mint-400"></i> Crear alimento</button>
             <button type="button" onclick="fs.mode='quick';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-bolt text-mint-400"></i> Apuntar solo calorías</button>
         </div>
-        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">Datos de productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comprueba la etiqueta: las recetas cambian.</p>' : ''}`;
+        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">Alimentos genéricos: USDA FoodData Central (dominio público). Productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comprueba la etiqueta: las recetas cambian.</p>' : ''}`;
     $('fs-body').scrollTop = 0;
 }
 function fsQuickAdd(id) {

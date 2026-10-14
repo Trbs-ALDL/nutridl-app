@@ -214,7 +214,7 @@ function saveGymDay() {
     if (justUnlocked) g.unlocked = true;
     save(); renderGym(); renderDashboard();
     if (navigator.vibrate) navigator.vibrate(15);
-    toast(justUnlocked ? '🏆 Semana completada: ya puedes ver tus pesos más altos' : `✅ ${title} guardado`);
+    toast(justUnlocked ? 'Semana completada: ya puedes ver tus pesos más altos' : `${title} guardado`);
 }
 
 // ----- Pesos más altos de cada ejercicio -----
@@ -371,7 +371,7 @@ function startRest(sec) {
         const left = Math.max(0, Math.round((+bar.dataset.end - Date.now()) / 1000));
         $('rest-time').textContent = fmtDur(left);
         $('rest-prog').style.width = `${Math.min(100, left / +bar.dataset.total * 100)}%`;
-        if (!left) { clearInterval(restT); bar.classList.add('hidden'); if (navigator.vibrate) navigator.vibrate([200, 100, 200]); toast('💪 A por la siguiente serie'); }
+        if (!left) { clearInterval(restT); bar.classList.add('hidden'); if (navigator.vibrate) navigator.vibrate([200, 100, 200]); toast('Descanso terminado: a por la siguiente serie'); }
     };
     tick(); restT = setInterval(tick, 500);
 }

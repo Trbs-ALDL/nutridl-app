@@ -25,10 +25,12 @@
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
     <link rel="manifest" href="manifest.webmanifest">
+    <link rel="preload" href="fonts/newsreader-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="fonts/plus-jakarta-sans-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="css/fonts.css?v=316b37d954">
-    <link rel="stylesheet" href="css/icons.css?v=db0bcaf1bc">
-    <link rel="stylesheet" href="css/tailwind.css?v=d6957d0fa6">
-    <link rel="stylesheet" href="css/app.css?v=165145e0df">
+    <link rel="stylesheet" href="css/icons.css?v=69a87bd5e4">
+    <link rel="stylesheet" href="css/tailwind.css?v=d255a34d93">
+    <link rel="stylesheet" href="css/app.css?v=d7035c4393">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -75,8 +77,7 @@
             <div class="nd-hero relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-12 sm:py-16">
                 <div class="relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
                     <div class="space-y-6">
-                        <span class="nd-eyebrow">Nutrición, Coach y progreso en una sola app</span>
-                        <h1 class="text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight text-neutral-50">Tu entrenador nutricional personal</h1>
+                                                <h1 class="text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight text-neutral-50">Tu entrenador nutricional personal</h1>
                         <p class="text-lg sm:text-xl text-neutral-300 max-w-xl">Controla tus calorías, macros, comidas y progreso en un solo lugar.</p>
                         <div class="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
                             <button onclick="newProfile()" class="nd-btn-primary">Empezar gratis <i class="fa-solid fa-arrow-right"></i></button>
@@ -90,7 +91,7 @@
                     </div>
                     <div class="nd-phone mx-auto w-full max-w-[330px]" aria-hidden="true">
                         <div class="nd-phone-inner space-y-3">
-                            <div class="flex items-center justify-between"><div><div class="text-[11px] font-bold text-mint-400 uppercase tracking-wider">Ejemplo</div><div class="text-lg font-extrabold text-neutral-50">Hola, Laura</div></div><span class="nd-streak">🔥 12</span></div>
+                            <div class="flex items-center justify-between"><div><div class="text-[11px] font-bold text-mint-400 uppercase tracking-wider">Ejemplo</div><div class="text-lg font-extrabold text-neutral-50">Hola, Laura</div></div><span class="nd-streak"><i class="fa-solid fa-fire text-amber-400" aria-hidden="true"></i> 12</span></div>
                             <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-4 space-y-3">
                                 <div class="flex items-baseline justify-between"><span class="text-2xl font-extrabold text-neutral-50">1.640</span><span class="text-xs font-bold text-neutral-400">/ 2.100 kcal</span></div>
                                 <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-400" style="width:78%"></div></div>
@@ -681,25 +682,25 @@
         </div>
     </div>
 
-    <script src="js/core.js?v=fd1ad42a52"></script>
-    <script src="js/data/foods.js?v=3845662a62"></script>
-    <script src="js/data/exercises.js?v=8e845d8e16"></script>
-    <script src="js/calc.js?v=b74fd08e29"></script>
-    <script src="js/analytics.js?v=1974b7351f"></script>
-    <script src="js/progress.js?v=e1300bf95e"></script>
-    <script src="js/engine.js?v=ca09975bf8"></script>
-    <script src="js/parser.js?v=a9a85849ff"></script>
-    <script src="js/insights.js?v=d790c4aa8c"></script>
-    <script src="js/pdf.js?v=c48629955f"></script>
-    <script src="js/wizard.js?v=d7e299f3ec"></script>
-    <script src="js/gym.js?v=35222ef468"></script>
-    <script src="js/diary.js?v=f8ff6c3880"></script>
-    <script src="js/profiles.js?v=e569adbef3"></script>
-    <script src="js/dashboard.js?v=39869bce58"></script>
-    <script src="js/kitchen.js?v=41bfb9876a"></script>
-    <script src="js/coach.js?v=0388c83579"></script>
-    <script src="js/plans.js?v=2ca838e74c"></script>
-    <script src="js/app.js?v=97aed7424b"></script>
-    <script src="js/main.js?v=f1daf6bf5a"></script>
+    <script src="js/core.js?v=421e90cbf2" defer></script>
+    <script src="js/data/foods.js?v=a1615a5b2f" defer></script>
+    <script src="js/data/exercises.js?v=8e845d8e16" defer></script>
+    <script src="js/calc.js?v=fbac00ff26" defer></script>
+    <script src="js/analytics.js?v=1974b7351f" defer></script>
+    <script src="js/progress.js?v=00ed4a58a8" defer></script>
+    <script src="js/engine.js?v=ca09975bf8" defer></script>
+    <script src="js/parser.js?v=a9a85849ff" defer></script>
+    <script src="js/insights.js?v=8a0dea1dd5" defer></script>
+    <script src="js/pdf.js?v=c48629955f" defer></script>
+    <script src="js/wizard.js?v=f8c635fba2" defer></script>
+    <script src="js/gym.js?v=cd6d4d0721" defer></script>
+    <script src="js/diary.js?v=bf46d086c9" defer></script>
+    <script src="js/profiles.js?v=6df143d544" defer></script>
+    <script src="js/dashboard.js?v=76f217f462" defer></script>
+    <script src="js/kitchen.js?v=e60c77038a" defer></script>
+    <script src="js/coach.js?v=690026e332" defer></script>
+    <script src="js/plans.js?v=778c56757c" defer></script>
+    <script src="js/app.js?v=8c5831e6b5" defer></script>
+    <script src="js/main.js?v=cbd74a585f" defer></script>
 </body>
 </html>

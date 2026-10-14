@@ -104,6 +104,7 @@ function renderProfileChip() {
             <button onclick="newProfile()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-user-plus w-7 text-center text-neutral-400"></i>Añadir otra persona</button>
             <button onclick="exportProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-download w-7 text-center text-neutral-400"></i>Guardar copia de seguridad</button>
             <button onclick="importProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-upload w-7 text-center text-neutral-400"></i>Cargar una copia</button>
+            <button onclick="openAutoBackups()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-clock-rotate-left w-7 text-center text-neutral-400"></i>Copias automáticas</button>
             <button onclick="deleteProfile(profiles.current)" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-trash w-7 text-center"></i>Borrar mi perfil</button>
             <div class="my-2 border-t border-neutral-800"></div>
             <button onclick="openPro()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-crown w-7 text-center text-amber-300"></i>nutriDL PRO <span class="nd-pro-badge ml-auto">${isPro() ? 'Activo' : 'Probar'}</span></button>
@@ -136,6 +137,47 @@ function openSync() {
 }
 
 // ----- Copia de seguridad de los perfiles (para cambiar de móvil o pasar los datos a la app) -----
+// =====================================================================
+//  COPIAS AUTOMÁTICAS (en este dispositivo): una al día, se guardan las 3 últimas.
+//  Sirven para deshacer un error (borrar algo sin querer, cargar una copia equivocada).
+//  No sustituyen a «Guardar copia de seguridad», que es un archivo que puedes llevarte a otro sitio.
+// =====================================================================
+const AUTO_KEY = 'nutridl_autobackup';
+const autoList = () => { try { const L = JSON.parse(localStorage.getItem(AUTO_KEY) || '[]'); return Array.isArray(L) ? L : []; } catch (e) { return []; } };
+function autoBackup(force) {
+    try {
+        if (!profiles || !profiles.list || !Object.keys(profiles.list).length) return;
+        const L = autoList(), d = todayISO();
+        if (!force && L.length && L[0].d === d) return;
+        const data = JSON.stringify(profiles);
+        if (data.length > 1500000) return; // muy grande para guardar 3 copias aquí: mejor el archivo de copia
+        const next = [{ d, t: new Date().toISOString(), n: Object.keys(profiles.list).length, data }, ...L.filter(x => x.d !== d)].slice(0, 3);
+        localStorage.setItem(AUTO_KEY, JSON.stringify(next));
+    } catch (e) { logErr('Copia automática: ' + e.message); }
+}
+function openAutoBackups() {
+    closeProfileMenu();
+    const L = autoList();
+    openSheet('<i class="fa-solid fa-clock-rotate-left text-mint-400"></i> Copias automáticas', `
+        <div class="space-y-4">
+            <p class="text-sm text-neutral-300">Cada día se guarda sola una copia de todo en este dispositivo (las 3 últimas). Si borras algo sin querer, vuelve a como estaba ese día.</p>
+            ${L.length ? `<div class="divide-y divide-neutral-800 border border-neutral-800 rounded-xl">${L.map((b, i) => `<div class="flex items-center gap-3 p-3"><div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100">${esc(new Date(b.t).toLocaleString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }))}</div><div class="text-xs text-neutral-400">${b.n} perfil${b.n === 1 ? '' : 'es'}</div></div><button onclick="restoreAutoBackup(${i})" class="nd-mbtn">Restaurar</button></div>`).join('')}</div>` : '<p class="text-sm text-neutral-400">Aún no hay copias. Se crea la primera hoy mismo.</p>'}
+            <p class="text-xs text-neutral-400">Para no perder nada si cambias de móvil o borras el navegador, guarda también de vez en cuando una copia en archivo (menú del perfil → «Guardar copia de seguridad»).</p>
+        </div>`);
+}
+async function restoreAutoBackup(i) {
+    const b = autoList()[i]; if (!b) return;
+    if (!(await askConfirm(`¿Volver a como estaba todo el ${new Date(b.t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}? Lo que hayas apuntado después se perderá (antes guardamos una copia de cómo está ahora).`, 'Restaurar'))) return;
+    let p; try { p = JSON.parse(b.data); } catch (e) { toast('Esa copia está dañada'); return; }
+    if (!p || !p.list || typeof p.list !== 'object') { toast('Esa copia está dañada'); return; }
+    save(); autoBackup(true); // la situación actual queda guardada como copia de hoy
+    profiles = p;
+    if (!profiles.current || !profiles.list[profiles.current]) profiles.current = Object.keys(profiles.list)[0] || null;
+    state = mergeState(profiles.current ? profiles.list[profiles.current].state : null);
+    if (profiles.current) profiles.list[profiles.current].state = state;
+    persistProfiles(); closeSheet(); refreshAll(); showTab('home');
+    toast('Copia restaurada');
+}
 function exportProfiles() {
     closeProfileMenu(); save();
     const data = { app: 'nutridl', v: 1, exported: new Date().toISOString(), profiles };

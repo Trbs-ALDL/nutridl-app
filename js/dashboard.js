@@ -50,9 +50,8 @@ function renderDashboard() {
     const dateTxt = new Date().toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' });
     const S = streakInfo();
     const head = `<div class="flex items-start justify-between gap-3">
-            <div class="min-w-0"><div class="text-xs font-bold uppercase tracking-wider text-mint-400">${dateTxt}</div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-50 truncate">Hola, ${esc(cur.name)}</h1>
-                <p class="text-sm text-neutral-400">Vamos a por tus objetivos de hoy.</p></div>
+            <div class="min-w-0"><h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-50 truncate">Hola, ${esc(cur.name)}</h1>
+                <p class="text-sm text-neutral-400 first-letter:uppercase">${dateTxt}</p></div>
             <button onclick="showTab('progress')" class="nd-streak shrink-0" aria-label="Racha de ${S.cur} días"><i class="fa-solid fa-fire text-amber-400" aria-hidden="true"></i> ${S.cur}</button>
         </div>`;
     if (!calc.target) {

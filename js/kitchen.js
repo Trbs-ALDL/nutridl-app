@@ -250,11 +250,11 @@ function renderShopView() {
         <span class="text-sm font-bold text-neutral-200 whitespace-nowrap">${shopQty(f, x.g)}</span>
         ${v2 ? `<button type="button" onclick="shopSwapItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="Cambiar ${esc(f.name)}"><i class="fa-solid fa-right-left"></i></button><button type="button" onclick="shopRemoveItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Quitar ${esc(f.name)}"><i class="fa-solid fa-xmark"></i></button>` : ''}
     </div>`; };
-    const groups = SHOP_GROUPS.map(([g, label, ic]) => { const L = S.items.filter(x => x.group === g); return L.length ? `<div class="space-y-0.5"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${ic} ${label}</div>${L.map(row).join('')}</div>` : ''; }).join('');
+    const groups = SHOP_GROUPS.map(([g, label, ic]) => { const L = S.items.filter(x => x.group === g); return L.length ? `<div class="space-y-0.5"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${icon(ic, "text-mint-400 mr-1")} ${label}</div>${L.map(row).join('')}</div>` : ''; }).join('');
     const extra = (S.extra || []).map((x, i) => `<label class="nd-shop ${x.done ? 'on' : ''}"><input type="checkbox" ${x.done ? 'checked' : ''} onchange="shopTickExtra(${i},this.checked)"><span class="flex-1 min-w-0">${esc(x.t)}</span><button type="button" onclick="event.preventDefault();shopDelExtra(${i})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="Quitar ${esc(x.t)}"><i class="fa-solid fa-xmark"></i></button></label>`).join('');
     const tot = v2 ? S.menus.map(menuTotals) : [], avgK = tot.length ? tot.reduce((a, t) => a + t.kcal, 0) / tot.length : 0, avgP = tot.length ? tot.reduce((a, t) => a + t.p, 0) / tot.length : 0;
     const R = S.req || {};
-    const chips = [...(R.like || []).map(id => getFood(id)).filter(Boolean).map(f => `❤️ ${esc(f.name.toLowerCase())}`), ...(R.avoid || []).map(id => getFood(id)).filter(Boolean).map(f => `🚫 ${esc(f.name.toLowerCase())}`), ...(R.allergies || []).map(a => `sin ${ALLERGENS[a] ? ALLERGENS[a][0].toLowerCase() : a}`), R.diet ? DIETS[R.diet] : '', R.budget === 'low' ? 'económica' : ''].filter(Boolean);
+    const chips = [...(R.like || []).map(id => getFood(id)).filter(Boolean).map(f => `${icon('❤️', 'text-mint-400')} ${esc(f.name.toLowerCase())}`), ...(R.avoid || []).map(id => getFood(id)).filter(Boolean).map(f => `${icon('🚫', 'text-neutral-400')} ${esc(f.name.toLowerCase())}`), ...(R.allergies || []).map(a => `sin ${ALLERGENS[a] ? ALLERGENS[a][0].toLowerCase() : a}`), R.diet ? DIETS[R.diet] : '', R.budget === 'low' ? 'económica' : ''].filter(Boolean);
     const plan = v2 ? `<details class="nd-faq"><summary>Plan de comidas día a día<i class="fa-solid fa-chevron-down chev"></i></summary><div class="px-3 pb-3 space-y-3">${S.menus.map((mn, i) => { const t = menuTotals(mn); return `<div class="rounded-xl bg-neutral-900 border border-neutral-800 p-3 space-y-1.5">
             <div class="flex items-baseline justify-between gap-2"><div class="text-sm font-extrabold text-neutral-100 first-letter:uppercase">${dayLabel(S.start, i)}</div><div class="text-xs font-bold text-neutral-400 whitespace-nowrap">${fmt(t.kcal)} kcal · P ${fmt(t.p)} g</div></div>
             ${mn.meals.map(ml => `<div class="text-xs text-neutral-300"><b class="text-neutral-200">${SLOT_NAME[ml.slot]}:</b> ${esc(ml.name)} <span class="text-neutral-500">· ${fmt(ml.m.kcal)} kcal · ${mealIngredients(ml).map(x => esc(x.txt) + ' ' + esc(x.f.name.toLowerCase().replace(/ \(.*\)$/, ''))).join(', ')}</span></div>`).join('')}
@@ -267,7 +267,7 @@ function renderShopView() {
             <div class="flex items-center justify-between gap-3 pt-1"><div class="text-sm font-extrabold text-neutral-100">${done}/${all} comprados</div></div>
             <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-500 gym-bar" style="width:${all ? done / all * 100 : 0}%"></div></div>
             ${groups}
-            ${extra ? `<div class="space-y-1"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">✏️ Añadidos por ti</div>${extra}</div>` : ''}
+            ${extra ? `<div class="space-y-1"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${icon('✏️', 'mr-1')} Añadidos por ti</div>${extra}</div>` : ''}
             <form onsubmit="event.preventDefault();shopAddExtra()" class="flex gap-2 pt-3"><input id="shop-extra" maxlength="40" placeholder="Apuntar otra cosa (p. ej. café, papel…)" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Apuntar otra cosa"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold" aria-label="Apuntar"><i class="fa-solid fa-plus"></i></button></form>
         </div>
         ${plan}
@@ -287,6 +287,6 @@ async function shareShop() {
 // Tarjeta para funciones PRO cuando no hay PRO (en lugar de la función)
 function proTeaser(feature) {
     const [name, why] = PRO_FEATURES[feature];
-    return `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="text-4xl">👑</div><h3 class="text-xl font-extrabold text-neutral-50">${esc(name)} <span class="nd-pro-badge">PRO</span></h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${esc(why)}</p>
+    return `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="nd-ic-xl mx-auto">${icon('👑')}</div><h3 class="text-xl font-extrabold text-neutral-50">${esc(name)} <span class="nd-pro-badge">PRO</span></h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${esc(why)}</p>
         <button onclick="openPaywall('${feature}')" class="nd-btn-primary mx-auto">${proData().trialUsed ? 'Ver nutriDL PRO' : 'Probar 7 días gratis'}</button></div>`;
 }

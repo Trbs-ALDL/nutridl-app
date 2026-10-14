@@ -1,5 +1,43 @@
 # Cambios de nutriDL
 
+## 3.4.0 · 14 de octubre de 2026
+
+**Nuevo**
+- **Base de alimentos tres veces más grande (1.448)**:
+  - 279 alimentos genéricos crudos y cocinados (hervido, a la plancha, al horno, en seco…) con los valores oficiales del USDA.
+  - 671 productos de marca más, 420 de ellos de Hacendado, con los datos de su etiqueta (Open Food Facts).
+  - Cada producto se valida: las calorías tienen que cuadrar con sus macros.
+- **El buscador entiende masculino/femenino y singular/plural**: «gambas cocidas» encuentra «langostinos cocidos».
+- **Copias automáticas**: una al día en el dispositivo (las 3 últimas), con «Restaurar» en el menú del perfil.
+- La app pide al navegador que **no borre sus datos** por falta de espacio.
+
+**Más rápida**
+- **Se abre al instante**: antes esperaba a internet hasta 4 segundos en cada apertura; ahora usa lo guardado y se actualiza por detrás.
+- Primera visita: el primer pintado en un móvil lento pasa de 6,3 s a 1,7 s (scripts diferidos y fuentes precargadas). Lighthouse: 91 · 100 · 100 · 100.
+
+**Seguridad y fiabilidad**
+- Revisión con gitleaks (sin secretos), osv-scanner (solo 2 avisos en herramientas de desarrollo) y semgrep.
+- Búsquedas en Open Food Facts con límite (8 por minuto, sin repetir) y espera máxima de 8 s.
+- **Errores**: el registro se guarda sin correos, teléfonos ni lo que escribiste, y anota los cierres inesperados.
+- **Pantalla de rescate** si la app no pudiera arrancar.
+- Los datos dañados se apartan antes de que nada los pise.
+- Herramientas de GitHub fijadas a versiones exactas y con permisos mínimos; el servidor local solo escucha en el propio ordenador.
+- Política de privacidad v4. Nuevo `docs/SEGURIDAD-Y-PUBLICACION.md`, con la revisión completa y los requisitos de Play Store y App Store.
+
+**Corregido**
+- Hidratos de los anacardos (USDA).
+
+## 3.3.0 · 10 de octubre de 2026
+
+**Diseño profesional, sin emojis** (todas las funciones siguen igual)
+- Adiós a los emojis: cada alimento lleva un icono de línea sobrio según lo que es (carne, pescado, marisco, huevo, lácteo, queso, pan, arroz, pasta, fruta, verdura, frutos secos, aceite, bebidas, café, postres…). El asistente, los logros, las celebraciones, el Coach, la compra y los avisos usan la misma familia de iconos. Los mensajes antiguos del chat también se muestran con iconos.
+- Cifras protagonistas en «Hoy»: las calorías y los datos clave en serifa con dígitos alineados, como un marcador.
+- Macros con su punto de color (proteína, hidratos, grasa) en el diario.
+- Superficies planas con borde fino y esquinas de 16 px; botones con la misma altura y radio en toda la app; barras de progreso más finas.
+- Barra inferior con un indicador fino sobre el apartado activo; etiquetas BETA/PRO rectangulares y discretas.
+- «Hoy»: la fecha va debajo del saludo; portada sin la etiqueta encima del título.
+- Arreglado: el botón principal de «¿Qué hago ahora?» había perdido su color de marca.
+
 ## 3.2.0 · 10 de octubre de 2026
 
 **Diseño más profesional** (nada se ha quitado: todo funciona igual)

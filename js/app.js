@@ -87,6 +87,6 @@ async function wipeAll() {
     closeProfileMenu();
     if (!(await askConfirm('¿Borrar TODOS los datos de nutriDL en este dispositivo? Perfiles, diario, pesos, medidas y entrenos. No se puede deshacer: si quieres, guarda antes una copia de seguridad.', 'Continuar'))) return;
     if (!(await askConfirm('Última confirmación: se borrará todo.', 'Borrar todo'))) return;
-    try { [PROFILES_KEY, STORAGE_KEY, ERR_KEY, USAGE_KEY, 'nutridl_events', 'nutridl_consent'].forEach(k => localStorage.removeItem(k)); } catch (e) { }
+    try { [PROFILES_KEY, STORAGE_KEY, ERR_KEY, USAGE_KEY, 'nutridl_events', 'nutridl_consent', 'nutridl_autobackup', 'nutridl_run'].forEach(k => localStorage.removeItem(k)); } catch (e) { }
     location.reload();
 }

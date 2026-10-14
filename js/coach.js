@@ -125,7 +125,7 @@ function renderChat(scroll) {
     renderCoachCtx();
     const log = $('chat-log'); if (!log) return;
     const L = state.chat || [];
-    const hello = `<div class="nd-msg-c">${tagPill('rec')}<p>Hola${profiles.current ? ', ' + esc(profiles.list[profiles.current].name) : ''} 👋 Soy tu Coach. Dime lo que has comido y lo apunto, pregúntame qué comer o cómo vas. Respondo con tus datos de nutriDL.</p></div>`;
+    const hello = `<div class="nd-msg-c">${tagPill('rec')}<p>Hola${profiles.current ? ', ' + esc(profiles.list[profiles.current].name) : ''}. Soy tu Coach. Dime lo que has comido y lo apunto, pregúntame qué comer o cómo vas. Respondo con tus datos de nutriDL.</p></div>`;
     log.innerHTML = (L.length ? '' : hello) + L.map(msgHtml).join('');
     $('chat-sugg').innerHTML = chatSuggestions().map(s => `<button type="button" onclick="coachSend(${esc(JSON.stringify(s))})" class="shrink-0 px-3.5 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-bold text-neutral-200 hover:border-mint-500/50">${esc(s)}</button>`).join('');
     // La respuesta nueva se ve desde su principio (sin quedar detrás de la caja de texto)
@@ -134,7 +134,7 @@ function renderChat(scroll) {
 function msgHtml(m) {
     if (m.r === 'u') return `<div class="nd-msg-u">${esc(m.t)}</div>`;
     if (m.p) pend[m.id] = m.p;
-    return `<div class="nd-msg-c" data-msg="${m.id}">${m.tags ? m.tags.map(tagPill).join('') : ''}${m.html || ''}
+    return `<div class="nd-msg-c" data-msg="${m.id}">${m.tags ? m.tags.map(tagPill).join('') : ''}${deEmoji(m.html)}
         ${m.logged && !m.p ? (m.logged.undone === 1 ? '<div class="nd-done"><i class="fa-solid fa-rotate-left"></i> Deshecho</div>' : `<div class="grid grid-cols-2 gap-2 mt-3"><button type="button" onclick="logAdjust('${m.id}')" class="nd-mbtn"><i class="fa-solid fa-sliders"></i> Ajustar</button><button type="button" onclick="logUndo('${m.id}')" class="nd-mbtn"><i class="fa-solid fa-rotate-left"></i> Deshacer</button></div>`) : ''}
         ${m.p ? `<div data-pend="${m.id}" class="mt-3">${pendHtml(m.id)}</div>` : ''}
         ${m.opts ? `<div class="mt-3 space-y-2">${m.opts.map((o, i) => mealCard(o, { add: `coachAddOpt('${m.id}',${i})`, added: (m.added || []).includes(i), slot: m.slot, key: m.id + i })).join('')}</div>` : ''}</div>`;
@@ -315,7 +315,7 @@ function coachAddOpt(mid, i) {
 }
 function replyProtein() {
     const R = remainingToday();
-    if (R.p <= 0) return { r: 'c', tags: ['dato'], html: `<p>🏆 Ya has llegado a tu proteína de hoy (${fmt(R.t.p)} g de ${calc.prot} g).</p>` };
+    if (R.p <= 0) return { r: 'c', tags: ['dato'], html: `<p>${icon('🏆', 'text-amber-300 mr-1')} Ya has llegado a tu proteína de hoy (${fmt(R.t.p)} g de ${calc.prot} g).</p>` };
     const need = Math.min(R.p, 40), p = myPrefs();
     const ids = ['pollo', 'pavo', 'atun', 'claras', 'skyr', 'batido', 'merluza', 'gambas', 'huevo', 'tofu', 'seitan', 'fiambre', 'cottage', 'whey', 'lentejas', 'edamame', 'tempeh'];
     const L = ids.map(getFood).filter(f => f && foodOk(f, p)).map(f => { const g = Math.round(need / (f.p / 100) / 5) * 5; return { f, g, k: macrosOf(f, g).kcal }; })
@@ -337,7 +337,7 @@ function replyInfo(q) {
 function replyProgress() {
     const L = insightsList().slice(0, 4), S = streakInfo();
     if (!L.length) return { r: 'c', tags: ['dato'], html: '<p>Aún tengo pocos datos. Apunta tus comidas unos días y pésate una vez por semana: te contaré cómo vas.</p>' };
-    return { r: 'c', tags: ['dato'], html: `<p>${S.cur ? `🔥 Racha de ${S.cur} día${S.cur === 1 ? '' : 's'}. ` : ''}Esto es lo que dicen tus datos:</p><ul class="nd-list">${L.map(x => `<li>${x.ic} ${esc(x.t)}</li>`).join('')}</ul>` };
+    return { r: 'c', tags: ['dato'], html: `<p>${S.cur ? `${icon('🔥', 'text-amber-400 mr-1')} Racha de ${S.cur} día${S.cur === 1 ? '' : 's'}. ` : ''}Esto es lo que dicen tus datos:</p><ul class="nd-list">${L.map(x => `<li>${icon(x.ic, 'text-mint-400 mr-1')} ${esc(x.t)}</li>`).join('')}</ul>` };
 }
 // Comer fuera: consejos y cuánto cabe en lo que te queda (valores medios de la base)
 const OUT = {
@@ -377,7 +377,7 @@ function mealCard(meal, o = {}) {
             </div>
             <div class="text-right shrink-0"><div class="text-lg font-extrabold text-neutral-50 leading-none">${fmt(meal.m.kcal)}</div><div class="text-[11px] font-bold text-neutral-400">kcal</div></div>
         </div>
-        ${meal.missing && meal.missing.length ? `<div class="text-xs font-bold text-amber-200">🛒 Te falta: ${meal.missing.map(id => getFood(id)).filter(Boolean).map(f => esc(f.name.toLowerCase())).join(', ')}</div>` : ''}
+        ${meal.missing && meal.missing.length ? `<div class="text-xs font-bold text-amber-200">${icon('🛒', 'mr-1')} Te falta: ${meal.missing.map(id => getFood(id)).filter(Boolean).map(f => esc(f.name.toLowerCase())).join(', ')}</div>` : ''}
         <div class="flex gap-3 text-xs font-bold text-neutral-300"><span><span class="nd-dot" style="background:#c49a6c"></span>P ${fmt(meal.m.p)} g</span><span><span class="nd-dot" style="background:#e6d3b3"></span>HC ${fmt(meal.m.c)} g</span><span><span class="nd-dot" style="background:#f59e0b"></span>G ${fmt(meal.m.f)} g</span>${meal.min ? `<span class="text-neutral-500"><i class="fa-regular fa-clock"></i> ${meal.min} min</span>` : ''}</div>
         ${open ? `<div class="nd-recipe"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">Ingredientes</div><ul class="nd-list">${ing.map(x => `<li>${emo(x.f)} ${esc(x.txt)} · ${esc(x.f.name)}</li>`).join('')}</ul><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-2">Pasos</div><ol class="nd-steps">${meal.steps.map(s => `<li>${esc(s)}</li>`).join('')}</ol></div>` : ''}
         <div class="grid ${o.swap ? 'grid-cols-3' : 'grid-cols-2'} gap-2">
@@ -444,7 +444,7 @@ function renderMenuView() {
     if (!calc.target) { box.innerHTML = emptyPlan('generar tu menú'); return; }
     const mn = state.menu;
     if (!mn || !mn.meals || !mn.meals.length) {
-        box.innerHTML = `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="text-4xl">🍽️</div><h3 class="text-xl font-extrabold text-neutral-50">Tu día completo, con gramos exactos</h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${myPrefs().meals} comidas que suman tus ${fmt(calc.target)} kcal y tus ${calc.prot} g de proteína, según tus preferencias.</p><button onclick="genMenu()" class="nd-btn-primary mx-auto"><i class="fa-solid fa-wand-magic-sparkles"></i> Generar mi menú</button></div>`;
+        box.innerHTML = `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="nd-ic-xl mx-auto">${icon('🍽️')}</div><h3 class="text-xl font-extrabold text-neutral-50">Tu día completo, con gramos exactos</h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${myPrefs().meals} comidas que suman tus ${fmt(calc.target)} kcal y tus ${calc.prot} g de proteína, según tus preferencias.</p><button onclick="genMenu()" class="nd-btn-primary mx-auto"><i class="fa-solid fa-wand-magic-sparkles"></i> Generar mi menú</button></div>`;
         return;
     }
     const T = menuTotals(mn);

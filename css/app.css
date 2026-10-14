@@ -379,3 +379,68 @@ h1 { line-height: 1.06; }
 .text-neutral-600 { color: #928679; } /* texto apagado con contraste suficiente (≥ 4,5:1) */
 #fs-tabs { flex-wrap: wrap; } /* pestañas del buscador: en móviles de 320 px pasan a dos líneas */
 .shadow-2xl { --tw-shadow: 0 2px 6px rgba(8, 5, 2, .5), 0 18px 36px -18px rgba(8, 5, 2, .85); box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow); } /* ventanas: sombra cálida y más corta */
+
+/* =====================================================================
+   nutriDL 3.3 · Sistema visual profesional
+   Ideas de apps de datos serias, adaptadas a nuestra paleta: listas antes que tarjetas,
+   cifras protagonistas, un solo acento, iconos de línea (nunca emojis) y controles de un solo tamaño.
+   ===================================================================== */
+:root { --nd-r-lg: 1rem; --nd-r-md: .75rem; --nd-r-sm: .5rem; --nd-p: #c49a6c; --nd-c: #e6d3b3; --nd-f: #f59e0b; }
+::selection { background: rgba(196, 154, 108, .35); color: #faf7f3; }
+
+/* Superficies: planas, borde fino, sin sombra que flote */
+.glass-card, .nd-card { border-radius: var(--nd-r-lg); background: #17140f; border: 1px solid var(--nd-line); box-shadow: none; }
+.nd-tile, .nd-insight, .nd-feature, .nd-faq, .nd-price, .nd-ctx, .nd-meal { border-radius: var(--nd-r-lg); box-shadow: none; }
+.nd-now, .gym-hero { border-radius: var(--nd-r-lg); background: #1d1915; border-color: rgba(197, 154, 109, .22); box-shadow: none; }
+.nd-hero { border-radius: 1.25rem; }
+.rounded-3xl { border-radius: var(--nd-r-lg); }
+.rounded-2xl { border-radius: var(--nd-r-md); }
+
+/* Botones: misma altura y radio en toda la app */
+.nd-btn-primary { min-height: 3rem; padding: .8rem 1.4rem; border-radius: var(--nd-r-md); font-size: .95rem; box-shadow: none; }
+.nd-btn-ghost { min-height: 3rem; padding: .8rem 1.25rem; border-radius: var(--nd-r-md); }
+.nd-mbtn { border-radius: var(--nd-r-sm); min-height: 2.75rem; }
+.nd-wide, .nd-quick { border-radius: var(--nd-r-md); }
+.nd-quick { background: #1d1915; border-color: transparent; }
+.nd-quick span { color: #cfc5b8; font-weight: 600; }
+.nd-goal { border-radius: var(--nd-r-md); padding: .5rem .85rem; font-weight: 600; }
+.nd-streak { background: transparent; border-color: rgba(245, 158, 11, .35); color: #fcd34d; font-weight: 600; }
+.cta-glow, .mint-glow { box-shadow: none; }
+
+/* Cifras: serifa con dígitos alineados (se leen como un marcador, no como un texto) */
+.nd-num, #dashboard .text-4xl.tabular-nums, #dashboard .nd-tile .text-xl, #dashboard .text-right > .text-2xl, .nd-ctx b {
+    font-family: var(--font-display); font-weight: 500 !important; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -0.01em;
+}
+#dashboard .text-4xl.tabular-nums { font-size: 3rem; line-height: 1; }
+#dashboard .nd-tile .text-xl { font-size: 1.5rem; }
+
+/* Barras de progreso finas */
+.nd-kbar { height: 8px; }
+.h-2.rounded-full.bg-neutral-800 { height: 6px; }
+
+/* Icono de alimento: cuadradito sobrio con glifo de línea, siempre del mismo tamaño */
+.nd-fi { display: inline-grid; place-items: center; width: 1.6rem; height: 1.6rem; margin-right: .45rem; vertical-align: -.45rem; border-radius: .45rem; background: rgba(220, 193, 156, .09); color: #cdb594; font-size: .72rem; line-height: 1; flex: none; }
+.nd-list .nd-fi, .nd-msg-c .nd-fi { width: 1.35rem; height: 1.35rem; font-size: .62rem; vertical-align: -.3rem; margin-right: .35rem; }
+.nd-ic-xl { display: grid; place-items: center; width: 4rem; height: 4rem; border-radius: 1.1rem; background: rgba(196, 154, 108, .12); color: var(--nd-sand); font-size: 1.6rem; }
+.nd-list { list-style: none; padding-left: 0; }
+
+/* Macros con su punto de color (proteína, hidratos, grasa) */
+.nd-m { display: inline-flex; align-items: center; gap: .25rem; white-space: nowrap; }
+.nd-m::before { content: ''; width: 6px; height: 6px; border-radius: 999px; background: currentColor; }
+.nd-m-p::before { background: var(--nd-p); } .nd-m-c::before { background: var(--nd-c); } .nd-m-f::before { background: var(--nd-f); }
+
+/* Barra inferior: indicador fino arriba del apartado activo, sin fondo de píldora */
+#tabbar-bottom button { position: relative; font-weight: 600; letter-spacing: .01em; }
+#tabbar-bottom button.is-on::before { content: ''; position: absolute; top: 0; left: 50%; width: 1.75rem; height: 2px; margin-left: -.875rem; border-radius: 0 0 2px 2px; background: var(--nd-sand); }
+#tabbar-bottom .is-on .nd-coach-tab { background: transparent; }
+#tabbar-top { background: transparent; border-color: transparent; }
+#tabbar-top button { font-weight: 600; }
+
+/* Asistente: opciones planas con borde fino */
+.wz-tile { border-radius: var(--nd-r-md); }
+.wz-tile .nd-ic { width: 2.25rem; height: 2.25rem; }
+.nd-mbtn.nd-mbtn-main { background: var(--nd-brand); border-color: var(--nd-brand); color: #fff; } .nd-mbtn.nd-mbtn-main:hover { background: var(--nd-brand-hi); }
+/* Etiquetas BETA / PRO: rectangulares, finas y discretas (antes, píldora dorada) */
+.nd-pro-badge { font-family: 'Plus Jakarta Sans', sans-serif; padding: .15rem .4rem; border-radius: .3rem; background: transparent; border: 1px solid rgba(220, 193, 156, .45); color: var(--nd-sand); font-size: 10px; font-weight: 700; letter-spacing: .08em; line-height: 1.2; }
+/* Primera carga: el contenido se pinta tal cual, sin aparecer con transición (la animación queda para los cambios de pestaña) */
+html:not(.nd-ready) [data-panel]:not(.hidden) { animation: none; }

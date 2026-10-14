@@ -86,7 +86,7 @@ function openPro() {
 function openPaywall(feature) {
     const [name, why] = PRO_FEATURES[feature] || ['Función PRO', ''];
     openSheet('<span class="nd-pro-badge">PRO</span> ' + esc(name), `<div class="space-y-4">
-        <div class="text-center space-y-2 py-2"><div class="text-4xl">👑</div><h3 class="text-xl font-extrabold text-neutral-50">${esc(name)} es de nutriDL PRO</h3><p class="text-sm text-neutral-300">${esc(why)}</p></div>
+        <div class="text-center space-y-2 py-2"><div class="nd-ic-xl mx-auto">${icon('👑')}</div><h3 class="text-xl font-extrabold text-neutral-50">${esc(name)} es de nutriDL PRO</h3><p class="text-sm text-neutral-300">${esc(why)}</p></div>
         ${proActions()}${proPrices()}
         <details class="nd-faq"><summary>Qué incluye PRO<i class="fa-solid fa-chevron-down chev"></i></summary><div class="px-3 pb-3">${proTable()}</div></details>
     </div>`);

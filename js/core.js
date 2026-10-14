@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.2.0';
+const APP_VERSION = '3.4.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -20,7 +20,23 @@ const DEFAULT_STATE = {
 let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 let calc = {};
 // Los errores se guardan solo en este dispositivo (últimos 30) para el «Informe de errores»
-function logErr(m) { try { const L = JSON.parse(localStorage.getItem(ERR_KEY) || '[]'); L.push({ t: new Date().toISOString(), m: String(m).slice(0, 300), v: APP_VERSION }); localStorage.setItem(ERR_KEY, JSON.stringify(L.slice(-30))); } catch (e) { } }
+// Antes de guardarlo se limpia: sin correos, teléfonos, números largos ni texto entre comillas (podría ser lo que escribiste)
+const scrubLog = m => String(m).replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[correo]').replace(/\+?\d[\d\s-]{7,}\d/g, '[número]')
+    .replace(/(["'«])[^"'»]{3,}(["'»])/g, '$1…$2').replace(/https?:\/\/[^\s)]+/g, u => u.split('?')[0]).slice(0, 300);
+function logErr(m) { try { const L = JSON.parse(localStorage.getItem(ERR_KEY) || '[]'); L.push({ t: new Date().toISOString(), m: scrubLog(m), v: APP_VERSION }); localStorage.setItem(ERR_KEY, JSON.stringify(L.slice(-30))); } catch (e) { } }
+// Cierres inesperados: al abrir se marca «en marcha»; al salir bien (cambiar de app, cerrar), «cerrada bien».
+// Si al volver a abrir seguía «en marcha», la última vez se cerró de golpe (fallo o falta de memoria) y se anota.
+const RUN_KEY = 'nutridl_run';
+(function watchCrashes() {
+    try {
+        const prev = JSON.parse(localStorage.getItem(RUN_KEY) || 'null');
+        if (prev && prev.open && Date.now() - prev.t < 7 * 864e5) logErr(`Cierre inesperado detectado (versión ${prev.v}, ${new Date(prev.t).toISOString().slice(0, 16)})`);
+        const mark = open => { try { localStorage.setItem(RUN_KEY, JSON.stringify({ open, t: Date.now(), v: APP_VERSION })); } catch (e) { } };
+        mark(true);
+        addEventListener('pagehide', () => mark(false));
+        document.addEventListener('visibilitychange', () => mark(document.visibilityState === 'visible'));
+    } catch (e) { }
+})();
 window.addEventListener('error', e => /ResizeObserver loop/.test(e.message || '') || logErr(`${e.message} @ ${String(e.filename || '').split('/').pop()}:${e.lineno || 0}`));
 window.addEventListener('unhandledrejection', e => logErr('Promesa: ' + ((e.reason && e.reason.message) || e.reason)));
 let profiles = { current: null, list: {} }; // list[id] = { name, created, state }
@@ -28,9 +44,19 @@ let profiles = { current: null, list: {} }; // list[id] = { name, created, state
 const $ = id => document.getElementById(id);
 const fmt = (n, d = 0) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-// Iconos de línea en lugar de emojis en los bloques principales (si no hay equivalente, se deja el emoji)
-const EMOJI_IC = { '🔥': 'fa-fire', '⚖️': 'fa-scale-balanced', '🧘': 'fa-spa', '🥩': 'fa-drumstick-bite', '💪': 'fa-dumbbell', '💡': 'fa-lightbulb', '🎯': 'fa-bullseye', '🍽️': 'fa-utensils', '☀️': 'fa-sun', '📈': 'fa-chart-line', '📉': 'fa-chart-line', '🏆': 'fa-trophy', '🥗': 'fa-leaf', '💧': 'fa-droplet', '😴': 'fa-moon', '⭐': 'fa-star', '🎉': 'fa-champagne-glasses' };
-const icon = (e, cls = '') => EMOJI_IC[e] ? `<i class="fa-solid ${EMOJI_IC[e]} ${cls}" aria-hidden="true"></i>` : esc(e || '');
+// Iconos de línea en lugar de emojis en toda la app (los emojis se veían infantiles).
+// Las claves van sin el selector de variante (U+FE0F): icon() lo quita antes de buscar.
+const EMOJI_IC = {
+    '🔥': 'fa-fire', '⚖': 'fa-scale-balanced', '🧘': 'fa-spa', '🥩': 'fa-drumstick-bite', '💪': 'fa-dumbbell', '💡': 'fa-lightbulb',
+    '🎯': 'fa-bullseye', '🍽': 'fa-utensils', '☀': 'fa-sun', '📈': 'fa-arrow-trend-up', '📉': 'fa-arrow-trend-down', '🏆': 'fa-trophy',
+    '🥗': 'fa-leaf', '💧': 'fa-droplet', '😴': 'fa-moon', '⭐': 'fa-star', '🎉': 'fa-champagne-glasses', '🌱': 'fa-seedling',
+    '👩': 'fa-venus', '👨': 'fa-mars', '🛋': 'fa-couch', '🚶': 'fa-person-walking', '🏃': 'fa-person-running', '🏋': 'fa-dumbbell',
+    '⛏': 'fa-helmet-safety', '🍗': 'fa-drumstick-bite', '🐟': 'fa-fish', '🥚': 'fa-egg', '🥪': 'fa-bread-slice', '🍎': 'fa-apple-whole',
+    '🏅': 'fa-medal', '👑': 'fa-crown', '📏': 'fa-ruler', '🔒': 'fa-lock', '🛒': 'fa-cart-shopping', '🍚': 'fa-bowl-rice',
+    '🥛': 'fa-glass-water', '🥦': 'fa-carrot', '❤': 'fa-heart', '🚫': 'fa-ban', '✏': 'fa-pen', '🥫': 'fa-jar', '🧂': 'fa-mortar-pestle',
+    '🍫': 'fa-cookie', '🥤': 'fa-bottle-water', '☕': 'fa-mug-hot', '🍺': 'fa-beer-mug-empty', '🍷': 'fa-wine-glass', '🧊': 'fa-snowflake',
+};
+const icon = (e, cls = '') => { const k = String(e || '').replace(/️/g, ''); return EMOJI_IC[k] ? `<i class="fa-solid ${EMOJI_IC[k]} ${cls}" aria-hidden="true"></i>` : esc(e || ''); };
 
 // =====================================================================
 //  PERSISTENCIA
@@ -45,7 +71,13 @@ function save() {
 }
 function load() {
     try {
-        try { profiles = JSON.parse(localStorage.getItem(PROFILES_KEY) || 'null') || profiles; } catch (e) { }
+        try { profiles = JSON.parse(localStorage.getItem(PROFILES_KEY) || 'null') || profiles; }
+        catch (e) {
+            // Datos ilegibles: se apartan tal cual ANTES de que nada los pise, para poder recuperarlos
+            try { const raw = localStorage.getItem(PROFILES_KEY); if (raw && !localStorage.getItem(PROFILES_KEY + '_rescate')) localStorage.setItem(PROFILES_KEY + '_rescate', raw); } catch (e2) { }
+            logErr('Datos de perfiles ilegibles: copia apartada en ' + PROFILES_KEY + '_rescate');
+        }
+        if (!profiles || typeof profiles !== 'object' || !profiles.list || typeof profiles.list !== 'object') profiles = { current: null, list: {} };
         const cur = profiles.current && profiles.list[profiles.current];
         const s = cur ? cur.state : JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
         if (s && typeof s === 'object') state = mergeState(s);
@@ -138,7 +170,62 @@ const EMOJI = {
     cebolla: '🧅', pistachos: '🥜', anacardos: '🥜', pipas: '🌻', mantequilla: '🧈', mayonesa: '🥚', girasol: '🌻', chocoleche: '🍫', cola: '🥤', colazero: '🥤',
     cerveza: '🍺', vino: '🍷', cafeleche: '☕', colacao: '🥛', azucar: '🍬'
 };
-const emo = f => EMOJI[f.id] || f.em || '⭐';
+// Icono de cada alimento: un glifo de línea según lo que es (sin emojis). Primero por palabras del id/nombre, luego por categoría.
+const FOOD_IC_RULES = [
+    [/pizza/, 'fa-pizza-slice'], [/hamburgues|burger/, 'fa-burger'], [/perrito|hotdog/, 'fa-hotdog'], [/helado|yogsab/, 'fa-ice-cream'],
+    [/sushi|nigiri|sashimi|poke|maki/, 'fa-fish'], [/gamba|calamar|mejill|pulpo|marisc|langost|sepia/, 'fa-shrimp'],
+    [/salmon|merluza|atun|dorada|sardin|caballa|bacalao|boquer|lubina|pescad|trucha|rape|ceviche/, 'fa-fish'],
+    [/huevo|claras|tortilla|revuelto/, 'fa-egg'], [/jamon|fiambre|chorizo|salchich|lomo embuchado|bacon|beicon|secreto|costilla/, 'fa-bacon'],
+    [/queso|mozzarella|burgos|cottage|curado|parmesano/, 'fa-cheese'],
+    [/cafe|cortado|capuchino|^te\b|infusion|chocolatetaza|colacao/, 'fa-mug-hot'], [/cerveza/, 'fa-beer-mug-empty'],
+    [/vino|tinto|sangria|cava/, 'fa-wine-glass'], [/gintonic|vermut|copa|cubata/, 'fa-martini-glass-citrus'],
+    [/cola|aquarius|refresco|naranjada|teefrio|zumo|isoton|bebidaprot/, 'fa-bottle-water'],
+    [/tarta|brownie|galleta|cookie|croissant|napolitana|ensaimada|churro|donut|bolleria|gofre|crepe|pancake|magdalena|bizcocho|choco|azucar|tiramisu|barrita/, 'fa-cookie'],
+    [/bocadillo|boca|sandw|montadito|pan|tostada|biscote|bagel|wrap|durum|kebab|burrito|taco|fajita|pita/, 'fa-bread-slice'],
+    [/arroz|paella|risotto|fideua|sushi/, 'fa-bowl-rice'], [/pasta|espagueti|macarron|gnocchi|carbonara|bolonesa|pesto|lasana|ramen|fideo|padthai/, 'fa-bowl-food'],
+    [/naranja|mandarina|limon|pomelo/, 'fa-lemon'], [/pimiento|guindilla|chili|padron/, 'fa-pepper-hot'],
+    [/ensalada|lechuga|espinaca|canonigo|rucula|acelga|kale/, 'fa-leaf'], [/aceite|aove|mantequilla/, 'fa-droplet'],
+    [/almendra|nuez|nueces|cacahuete|pistacho|anacardo|avellana|frutossecos|pipas|semilla|chia/, 'fa-seedling'],
+    [/pollo|pavo|pechuga|ternera|vacuno|cerdo|cordero|conejo|pato|codorniz|carne|lomo|solomillo|chuleta|higado|lengua|mortadela|chopped|salchich|fuet|sobrasada/, 'fa-drumstick-bite'],
+    [/whey|protein|proteina en polvo|caseina|isolate/, 'fa-dumbbell'], [/spaghetti|cous ?cous/, 'fa-bowl-food'],
+    [/quesito|havarti|gouda|edam|emmental|brie|feta/, 'fa-cheese'], [/surimi/, 'fa-fish'],
+    [/cacao|excellence|oreo|kitkat|kinder|pringles/, 'fa-cookie'], [/red bull|monster|energy|isotonic/, 'fa-bottle-water'],
+    [/oikos|activia|yopro|danone|arla|actimel/, 'fa-jar'], [/special k|fitness|kellogg/, 'fa-wheat-awn'], [/margarina/, 'fa-droplet'],
+    [/pipa|frutos secos|coctel/, 'fa-seedling'], [/lonchas vegetarianas|vegalia/, 'fa-seedling'],
+    [/leche|bebida|kefir|batido|horchata|latte|caldo/, 'fa-glass-water'], [/yogur|skyr|natillas|flan|postre|cuajada|gelatina|mousse|pudin|pudding|quark|nata/, 'fa-jar'],
+    [/cereal|muesli|granola|copos|avena|corn ?flakes|espelta|harina|quinoa|bulgur|cuscus|mijo|cebada|maiz|palomitas/, 'fa-wheat-awn'],
+    [/lenteja|garbanzo|alubia|judia|soja|tofu|tempeh|seitan|hummus|edamame|guisante|haba|altramuz/, 'fa-seedling'],
+    [/salsa|ketchup|mayonesa|mostaza|alioli|allioli|tomate frito|vinagre|tsatsiki|guacamole/, 'fa-bottle-droplet'],
+    [/miel|mermelada|confitura|sirope|crema de cacao|nocilla|nutella|tahini|panela/, 'fa-jar'],
+    [/patata|boniato|yuca|gnocchi|nachos|tortitas|crackers|picos|regana/, 'fa-bowl-food'],
+    [/manzana|pera|platano|fresa|arandano|frambuesa|mora|uva|melocoton|cereza|kiwi|pina|mango|melon|sandia|higo|datil|ciruela|orejon|pasas|fruta|macedonia|coco/, 'fa-apple-whole'],
+    [/brocoli|coliflor|calabac|berenjena|zanahoria|pepino|cebolla|puerro|champi|seta|esparrago|alcachofa|col |repollo|lombarda|remolacha|rabano|apio|hinojo|verdura|pisto|gazpacho|salmorejo|crema de/, 'fa-carrot'],
+];
+const FOOD_IC_CAT = { prot: 'fa-drumstick-bite', vprot: 'fa-seedling', lacteo: 'fa-glass-water', hc: 'fa-wheat-awn', legum: 'fa-seedling', grasa: 'fa-droplet', fruta: 'fa-apple-whole', verdura: 'fa-carrot', bebida: 'fa-glass-water', platos: 'fa-bowl-food' };
+function foodIcon(f) {
+    if (!f) return 'fa-utensils';
+    if (f._ic) return f._ic;
+    const k = (String(f.id || '') + ' ' + norm(f.name || '')).toLowerCase();
+    const r = FOOD_IC_RULES.find(([re]) => re.test(k));
+    const ic = r ? r[1] : FOOD_IC_CAT[f.cat] || (f.brand || String(f.id).startsWith('b_') ? 'fa-barcode' : 'fa-utensils');
+    try { Object.defineProperty(f, '_ic', { value: ic, enumerable: false, configurable: true }); } catch (e) { }
+    return ic;
+}
+// Mensajes guardados de versiones anteriores: sus emojis se muestran como iconos (o se quitan)
+const EMOJI_RE = /(?:[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}\u{2B50}](?:️)?(?:‍[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}](?:️)?)*)/gu;
+let EMOJI_FOOD = null; // emoji antiguo de un alimento → id del alimento
+function deEmoji(html) {
+    if (!EMOJI_FOOD) { EMOJI_FOOD = {}; Object.entries(EMOJI).forEach(([id, e]) => { const k = e.replace(/️/g, ''); if (!EMOJI_FOOD[k]) EMOJI_FOOD[k] = id; }); }
+    return String(html || '').replace(EMOJI_RE, e => {
+        const k = e.replace(/️/g, '');
+        const f = EMOJI_FOOD[k] && typeof getFood === 'function' && getFood(EMOJI_FOOD[k]);
+        if (f) return emo(f);
+        return EMOJI_IC[k] ? icon(k, 'text-mint-400') : '';
+    });
+}
+// Línea de macros con su punto de color: P (proteína) · HC (hidratos) · G (grasa)
+const macroLine = (p, c, f) => `<span class="nd-m nd-m-p">P ${fmt(p)}</span> <span class="nd-m nd-m-c">HC ${fmt(c)}</span> <span class="nd-m nd-m-f">G ${fmt(f)}</span>`;
+const emo = f => `<span class="nd-fi" aria-hidden="true"><i class="fa-solid ${foodIcon(f)}"></i></span>`;
 
 // =====================================================================
 //  GRÁFICA DE LÍNEAS (peso, progreso del gym)

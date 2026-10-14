@@ -40,6 +40,29 @@ function init() {
     else if (accion === 'nevera') { showTab('coach'); openFridge(); }
     renderInstall();
     track('visit'); renderLocks();
+    // Copia automática del día y petición al navegador para que NO borre los datos de la app por falta de espacio
+    requestAnimationFrame(() => requestAnimationFrame(() => document.documentElement.classList.add('nd-ready')));
+    setTimeout(() => autoBackup(), 1500);
+    try { if (navigator.storage && navigator.storage.persist) navigator.storage.persisted().then(p => p || navigator.storage.persist()).catch(() => { }); } catch (e) { }
+}
+// Si algo fallase al arrancar, en vez de una pantalla en blanco se ve cómo descargar los datos y recargar
+function bootRescue(err) {
+    logErr('Arranque: ' + ((err && err.message) || err));
+    const box = document.createElement('div');
+    box.setAttribute('role', 'alert');
+    box.style.cssText = 'position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:24px;background:#110f0d;color:#f2ede6;font-family:system-ui,sans-serif';
+    box.innerHTML = `<div style="max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 10px">nutriDL no ha podido abrirse bien</h1>
+        <p style="color:#cfc5b8;line-height:1.5;margin:0 0 18px">Tus datos siguen guardados en este dispositivo. Descarga una copia por seguridad y vuelve a cargar la app.</p>
+        <button id="rescue-dl" style="width:100%;padding:14px;border-radius:12px;border:0;background:#9a6b40;color:#fff;font-weight:700;font-size:16px;margin-bottom:10px">Descargar mis datos</button>
+        <button id="rescue-reload" style="width:100%;padding:14px;border-radius:12px;border:1px solid #463f38;background:transparent;color:#f2ede6;font-weight:700;font-size:16px">Volver a cargar</button></div>`;
+    document.body.appendChild(box);
+    box.querySelector('#rescue-dl').onclick = () => {
+        let raw = ''; try { raw = localStorage.getItem(PROFILES_KEY) || localStorage.getItem(PROFILES_KEY + '_rescate') || ''; } catch (e) { }
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([`{"app":"nutridl","v":1,"profiles":${raw && raw.trim().startsWith('{') ? raw : '{"list":{}}'}}`], { type: 'application/json' }));
+        a.download = 'nutridl-copia-rescate.json'; document.body.appendChild(a); a.click(); a.remove();
+    };
+    box.querySelector('#rescue-reload').onclick = () => location.reload();
 }
 
 // =====================================================================
@@ -86,4 +109,4 @@ async function installApp() {
         <p class="mt-4 text-xs text-neutral-400">Así se abre como una app, a pantalla completa, y funciona sin conexión.</p>`);
 }
 
-init();
+try { init(); } catch (e) { bootRescue(e); }

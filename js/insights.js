@@ -99,9 +99,9 @@ function checkDayMoments() {
 
 // Aviso de celebración (discreto, arriba, 3 s)
 let celT;
-function celebrate(icon, title, sub) {
+function celebrate(ic, title, sub) {
     const el = $('nd-celebrate'); if (!el) return;
-    el.innerHTML = `<span class="text-2xl leading-none">${icon}</span><span class="min-w-0"><span class="block text-sm font-extrabold text-neutral-50">${esc(title)}</span>${sub ? `<span class="block text-xs text-neutral-300">${esc(sub)}</span>` : ''}</span>`;
+    el.innerHTML = `<span class="nd-ic">${icon(ic)}</span><span class="min-w-0"><span class="block text-sm font-extrabold text-neutral-50">${esc(title)}</span>${sub ? `<span class="block text-xs text-neutral-300">${esc(sub)}</span>` : ''}</span>`;
     el.classList.add('show');
     if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(12); } catch (e) { }
     clearTimeout(celT); celT = setTimeout(() => el.classList.remove('show'), 3200);

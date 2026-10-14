@@ -1,6 +1,6 @@
 // 1) Pone a cada CSS/JS de index.html una marca de versión (?v=huella del contenido): así ningún móvil
 //    ni el servidor de GitHub mezclan archivos de versiones distintas.
-// 2) Genera sw.js: con internet SIEMPRE trae lo último (y lo guarda); sin internet usa lo guardado.
+// 2) Genera sw.js: abre al instante con lo guardado y lo refresca por detrás; las versiones nuevas se instalan solas.
 // Uso: npm run build (lo incluye)
 const fs = require('fs'), path = require('path'), crypto = require('crypto');
 const root = path.join(__dirname, '..');
@@ -25,7 +25,7 @@ files.forEach(f => h.update(f).update(fs.readFileSync(path.join(root, f))));
 const version = h.digest('hex').slice(0, 10);
 
 const sw = `// nutriDL · service worker (generado por tools/build-sw.js; no editar a mano)
-// Con internet: siempre la versión más nueva (y se guarda una copia). Sin internet: la copia guardada.
+// Se abre al instante con la copia guardada y se refresca desde la red por detrás. Sin internet: la copia guardada.
 // Las consultas a Open Food Facts no pasan por aquí.
 const CACHE = 'nutridl-${version}';
 const FILES = ${JSON.stringify(files.map(f => './' + f), null, 2)};
@@ -39,19 +39,16 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
     const req = e.request, url = new URL(req.url);
     if (req.method !== 'GET' || url.origin !== location.origin) return;
+    // Abre AL INSTANTE con la copia guardada de esta versión y, a la vez, la refresca desde la red.
+    // (Antes esperaba a la red hasta 4 s en cada apertura.) Las versiones nuevas llegan con un sw.js nuevo:
+    // se instala por detrás y la app se recarga sola una vez (main.js), con todo lo apuntado ya guardado.
     e.respondWith((async () => {
         const cache = await caches.open(CACHE);
-        try {
-            // Red primero (sin la caché HTTP del navegador), con un límite de espera para conexiones muy lentas
-            const net = fetch(req, { cache: 'no-cache' }); net.catch(() => { });
-            const res = await Promise.race([net, new Promise((_, rej) => setTimeout(() => rej(new Error('lenta')), 4000))]);
-            if (res && res.ok) cache.put(req, res.clone());
-            return res;
-        } catch (err) {
-            const hit = await cache.match(req) || await cache.match(req, { ignoreSearch: true }) || (req.mode === 'navigate' ? await cache.match('./index.html') : null);
-            if (hit) return hit;
-            throw err;
-        }
+        const hit = await cache.match(req) || await cache.match(req, { ignoreSearch: true })
+            || (req.mode === 'navigate' ? await cache.match('./index.html') || await cache.match('./') : null);
+        const net = fetch(req, { cache: 'no-cache' }).then(res => { if (res && res.ok) cache.put(req, res.clone()); return res; });
+        if (hit) { e.waitUntil(net.catch(() => { })); return hit; }
+        return net;
     })());
 });
 `;

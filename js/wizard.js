@@ -79,14 +79,14 @@ function renderWz() {
     $('wz-count').innerText = wz.i < WZ_Q ? `Paso ${wz.i + 1} de ${WZ_Q}` : step === 'loading' ? 'Creando tu plan…' : '¡Plan listo!';
     $('wz-back').style.visibility = wz.i > 0 && wz.i < WZ_Q ? 'visible' : 'hidden';
     const title = t => `<h2 id="wz-title" class="text-xl sm:text-2xl font-extrabold text-neutral-100 mb-5">${t}</h2>`; // sin subtítulos
-    const tile = (on, onclick, emoji, t, d) => `<button onclick="${onclick}" class="wz-tile w-full text-left p-4 rounded-2xl border-2 flex items-center gap-4 ${on ? 'border-mint-600 bg-mint-500/10' : 'border-neutral-800 hover:border-mint-400 bg-neutral-900'}"><span class="text-3xl">${emoji}</span><span class="min-w-0"><span class="block font-extrabold text-sm text-neutral-100">${t}</span>${d && step === 'activity' ? `<span class="block text-xs text-neutral-400">${d}</span>` : ''}</span></button>`;
+    const tile = (on, onclick, emoji, t, d) => `<button onclick="${onclick}" class="wz-tile w-full text-left p-4 rounded-2xl border flex items-center gap-4 ${on ? 'border-mint-600 bg-mint-500/10' : 'border-neutral-800 hover:border-mint-400 bg-neutral-900'}">${emoji ? `<span class="nd-ic">${icon(emoji)}</span>` : ""}<span class="min-w-0"><span class="block font-extrabold text-sm text-neutral-100">${t}</span>${d && step === 'activity' ? `<span class="block text-xs text-neutral-400">${d}</span>` : ''}</span></button>`;
     const next = (label, dis) => `<button onclick="wzNext()" ${dis ? 'disabled' : ''} class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-sm cta-glow flex items-center justify-center gap-2 ${dis ? 'opacity-50' : ''}">${label || 'Continuar'} <i class="fa-solid fa-arrow-right"></i></button>`;
     // Opciones cortas en rejilla de 2: emoji arriba y texto debajo (cabe en móviles pequeños)
-    const tileV = (on, onclick, emoji, t) => `<button onclick="${onclick}" class="wz-tile w-full p-4 rounded-2xl border-2 flex flex-col items-center gap-2 text-center ${on ? 'border-mint-600 bg-mint-500/10' : 'border-neutral-800 hover:border-mint-400 bg-neutral-900'}"><span class="text-3xl">${emoji}</span><span class="font-extrabold text-sm text-neutral-100">${t}</span></button>`;
+    const tileV = (on, onclick, emoji, t) => `<button onclick="${onclick}" class="wz-tile w-full p-4 rounded-2xl border flex flex-col items-center gap-2 text-center ${on ? 'border-mint-600 bg-mint-500/10' : 'border-neutral-800 hover:border-mint-400 bg-neutral-900'}">${emoji ? `<span class="nd-ic">${icon(emoji)}</span>` : ""}<span class="font-extrabold text-sm text-neutral-100">${t}</span></button>`;
     let body = '', foot = '';
     switch (step) {
         case 'name':
-            body = title(wz.mode === 'edit' ? 'Tu perfil' : '👋 ¡Hola! ¿Cómo te llamas?', wz.mode === 'edit' ? 'Revisa tus datos: todo se recalculará al terminar.' : 'Crearemos tu perfil: la próxima vez que entres estará todo listo (peso, calorías, menú, diario y gym).') +
+            body = title(wz.mode === 'edit' ? 'Tu perfil' : '¿Cómo te llamas?', wz.mode === 'edit' ? 'Revisa tus datos: todo se recalculará al terminar.' : 'Crearemos tu perfil: la próxima vez que entres estará todo listo (peso, calorías, menú, diario y gym).') +
                 `<label class="block p-4 rounded-2xl border-2 border-neutral-800 focus-within:border-mint-500"><span class="text-xs font-bold text-neutral-400 uppercase">Nombre</span><input id="wz-name" type="text" maxlength="30" autocomplete="given-name" value="${esc(wz.name || '')}" placeholder="Ej: Laura" class="w-full text-3xl font-extrabold text-neutral-100 outline-none bg-transparent"></label>
                 <p class="text-xs text-neutral-500 mt-3"><i class="fa-solid fa-lock"></i> Sin contraseñas: tu perfil se guarda solo en este dispositivo.</p>`;
             foot = next();
@@ -141,14 +141,14 @@ function renderWz() {
             break;
         case 'loading': {
             const items = ['Calculando tu metabolismo basal (Mifflin-St Jeor)', 'Ajustando tu objetivo de forma segura', 'Repartiendo proteína, grasa e hidratos', 'Preparando tu Coach, tu diario y tu gym'];
-            body = `<div class="py-6 text-center space-y-6"><div class="text-5xl animate-bounce">🥗</div><h2 id="wz-title" class="text-xl font-extrabold">Creando tu plan personalizado…</h2>
+            body = `<div class="py-6 text-center space-y-6"><div class="nd-ic-xl mx-auto">${icon('🥗')}</div><h2 id="wz-title" class="text-xl font-extrabold">Creando tu plan personalizado…</h2>
                 <ul class="text-left max-w-sm mx-auto space-y-3 text-sm font-semibold">${items.map((t, k) => `<li data-load="${k}" class="flex items-center gap-3 text-neutral-500"><i class="fa-solid fa-circle-notch fa-spin text-mint-500"></i>${t}</li>`).join('')}</ul></div>`;
             break;
         }
         case 'done': {
             const c = calc, wk = c.weeklyKg;
             const mac = (l, v, col) => `<div class="p-3 rounded-2xl bg-neutral-900/70 border border-white/5 text-center"><div class="text-xl font-extrabold text-neutral-50">${v} g</div><div class="text-[11px] font-bold" style="color:${col}">${l}</div></div>`;
-            body = `<div class="text-center space-y-1 mb-5"><div class="text-5xl">🎯</div><h2 id="wz-title" class="text-2xl font-extrabold">Tu plan personal</h2></div>
+            body = `<div class="text-center space-y-1 mb-5"><div class="nd-ic-xl mx-auto">${icon('🎯')}</div><h2 id="wz-title" class="text-2xl font-extrabold">Tu plan personal</h2></div>
                 <div class="space-y-3">
                     <div class="p-5 rounded-2xl nd-now text-center">
                         <div class="text-xs font-bold uppercase tracking-wider text-mint-300">Calorías al día</div>

@@ -41,7 +41,7 @@ function acceptData() {
     state.calcOk = true; calcEditing = false;
     syncInputsFromState(); update();
     if (innerWidth < 1024) goTo('sec-resultados');
-    toast('✅ Datos guardados: ya tienes tu IMC y tus calorías');
+    toast('Datos guardados: ya tienes tu IMC y tus calorías');
 }
 function onPair(key, el) {
     const v = parseFloat(el.value);
