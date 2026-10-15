@@ -722,7 +722,7 @@ D("u_tortitas_pancake_usda", "Tortitas americanas (hechas)", 'hc', 6.4, 9.7, 28.
 D("u_bebida_cafe_solo", "Café solo (espresso)", 'bebida', 0.1, 0.2, 1.7, 0, [30,"taza","tazas"], '', 'N', {"ml":1,"fdc":171891});
 D("u_bebida_te", "Té (preparado)", 'bebida', 0, 0, 0.3, 0, [250,"taza","tazas"], '', 'N', {"ml":1,"fdc":173227});
 // </usda>
-// <marcas> (lo genera tools/marcas/off_embed.js · datos: Open Food Facts, licencia ODbL · 2026-10-14)
+// <marcas> (lo genera tools/marcas/off_embed.js · datos: Open Food Facts, licencia ODbL · 2026-10-15)
 const BRAND_FOODS = [
     ["m_hacendado_spaghetti","Spaghetti","Hacendado",361,13,72,1.5,0,[80,"ración","raciones"],"🍝",0,1,"8480000063311"],
     ["m_hacendado_spaghetti_integral","Spaghetti integral","Hacendado",345,13.5,62,2.4,10,[80,"ración","raciones"],"🍝",0,1,"8402001010200"],
@@ -1523,7 +1523,16 @@ const BRAND_FOODS = [
     ["m_pascual_bebida_vivesoy_soja_choc","Bebida vivesoy Soja Chocolate","Pascual",53,3.2,5.3,1.8,1.2,[250,"vaso","vasos"],"",1,0,"8410128785321"],
     ["m_pascual_nata_montada_azucarada_s","Nata montada azucarada spray","Pascual",305,2.3,12,28,0,[100,"ración","raciones"],"",0,0,"8410128050269"],
     ["m_pascual_leche_desnatada_sin_lact","Leche desnatada sin lactosa","Pascual",34,3.4,4.8,0.1,0,[250,"vaso","vasos"],"",1,0,"8410128750046"],
-    ["m_pascual_mantequilla_original_tar","Mantequilla original tarrina","Pascual",745,0.7,1.1,82,0,[100,"ración","raciones"],"",0,0,"8410128000578"]
+    ["m_pascual_mantequilla_original_tar","Mantequilla original tarrina","Pascual",745,0.7,1.1,82,0,[100,"ración","raciones"],"",0,0,"8410128000578"],
+    ["m_hacendado_carne_picada_de_vacuno","Carne picada de vacuno","Hacendado",190,18,2.4,12,0,[125,"ración","raciones"],"🥩",0,1,"8436569263242"],
+    ["m_hacendado_carne_picada_mixta_vacun","Carne picada mixta vacuno y cerdo","Hacendado",192,17,2,12,0,[125,"ración","raciones"],"🥩",0,1,"8421610134534"],
+    ["m_hacendado_burger_meat_de_vacuno","Burger meat de vacuno","Hacendado",182,17,0.9,12,0,[125,"ración","raciones"],"🥩",0,1,"8421610028680"],
+    ["m_hacendado_hamburguesa_de_lomo_de_v","Hamburguesa de lomo de vacuno","Hacendado",240,19,0.5,18,0,[120,"hamburguesa","hamburguesas"],"🍔",0,1,"8436569262924"],
+    ["m_hacendado_mini_hamburguesas_de_pol","Mini hamburguesas de pollo","Hacendado",123,16,1.6,5.8,0,[35,"hamburguesa","hamburguesas"],"🍗",0,1,"8436021418654"],
+    ["m_hacendado_albondigas_de_pollo","Albóndigas de pollo","Hacendado",167,17.9,1.4,9.6,1.6,[120,"ración","raciones"],"🍗",0,1,"8436000461732"],
+    ["m_heura_bocados_originales","Bocados originales","Heura",136,19.7,1.8,3,6.4,[100,"ración","raciones"],"🌱",0,0,"8437017032526"],
+    ["m_heura_burger_original","Burger original","Heura",180,19,4.6,8.8,4,[100,"ración","raciones"],"🌱",0,0,"8437017034872"],
+    ["m_heura_nuggets_originales","Nuggets originales","Heura",203,11,17,8.4,6.4,[100,"ración","raciones"],"🌱",0,0,"8437017034889"]
 ];
 BRAND_FOODS.forEach(([id, name, brand, kcal, p, c, f, fib, serv, em, ml, raw, off]) => {
     const role = p * 4 >= Math.max(c * 4, f * 9) ? 'protein' : f * 9 > c * 4 ? 'fat' : 'carb';

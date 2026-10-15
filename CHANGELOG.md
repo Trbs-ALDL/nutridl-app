@@ -1,5 +1,12 @@
 # Cambios de nutriDL
 
+## 3.4.3 · 15 de octubre de 2026
+
+- **9 alimentos nuevos (1.457 en total)**, con los datos de su etiqueta (Open Food Facts) y comprobados (las calorías cuadran con sus macros):
+  - Hacendado: carne picada de vacuno, carne picada mixta vacuno y cerdo, burger meat de vacuno, hamburguesa de lomo de vacuno, mini hamburguesas de pollo y albóndigas de pollo.
+  - Heura (proteína vegetal): bocados, burger y nuggets originales.
+- Nuevo `tools/marcas/marcas_v4.json` para añadir productos sueltos sin tocar los anteriores.
+
 ## 3.4.2 · 14 de octubre de 2026
 
 - Coach: la conversación empieza limpia cada día (solo se guardan los mensajes de hoy). Lo apuntado en el diario no cambia.

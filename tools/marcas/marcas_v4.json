@@ -1,0 +1,11 @@
+[
+ {"label":"Carne picada de vacuno","brand":"Hacendado","off":"8436569263242","offName":"Preparado de carne picada de vacuno","kcal":190,"p":18,"c":2.4,"f":12,"fib":0,"serv":[125,"ración","raciones"],"em":"🥩","ml":0,"raw":1},
+ {"label":"Carne picada mixta vacuno y cerdo","brand":"Hacendado","off":"8421610134534","offName":"Cerdo Vacuno Picada","kcal":192,"p":17,"c":2,"f":12,"fib":0,"serv":[125,"ración","raciones"],"em":"🥩","ml":0,"raw":1},
+ {"label":"Burger meat de vacuno","brand":"Hacendado","off":"8421610028680","offName":"Burger meat Vacuno","kcal":182,"p":17,"c":0.9,"f":12,"fib":0,"serv":[125,"ración","raciones"],"em":"🥩","ml":0,"raw":1},
+ {"label":"Hamburguesa de lomo de vacuno","brand":"Hacendado","off":"8436569262924","offName":"Hamburguesa de lomo de vacuno","kcal":240,"p":19,"c":0.5,"f":18,"fib":0,"serv":[120,"hamburguesa","hamburguesas"],"em":"🍔","ml":0,"raw":1},
+ {"label":"Mini hamburguesas de pollo","brand":"Hacendado","off":"8436021418654","offName":"Mini hamburguesas de pollo","kcal":123,"p":16,"c":1.6,"f":5.8,"fib":0,"serv":[35,"hamburguesa","hamburguesas"],"em":"🍗","ml":0,"raw":1},
+ {"label":"Albóndigas de pollo","brand":"Hacendado","off":"8436000461732","offName":"Albóndigas de pollo","kcal":167,"p":17.9,"c":1.4,"f":9.6,"fib":1.6,"serv":[120,"ración","raciones"],"em":"🍗","ml":0,"raw":1},
+ {"label":"Bocados originales","brand":"Heura","off":"8437017032526","offName":"Heura chunks originali","kcal":136,"p":19.7,"c":1.8,"f":3,"fib":6.4,"serv":[100,"ración","raciones"],"em":"🌱","ml":0,"raw":0},
+ {"label":"Burger original","brand":"Heura","off":"8437017034872","offName":"burguer original","kcal":180,"p":19,"c":4.6,"f":8.8,"fib":4,"serv":[100,"ración","raciones"],"em":"🌱","ml":0,"raw":0},
+ {"label":"Nuggets originales","brand":"Heura","off":"8437017034889","offName":"Nuggets originales","kcal":203,"p":11,"c":17,"f":8.4,"fib":6.4,"serv":[100,"ración","raciones"],"em":"🌱","ml":0,"raw":0}
+]
