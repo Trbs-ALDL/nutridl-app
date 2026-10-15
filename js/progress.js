@@ -162,6 +162,7 @@ function renderProgress() {
         </div>
         <div class="lg:col-span-2 space-y-3">
             <div class="nd-card p-5 flex items-center gap-4"><span class="nd-ic-lg">${icon('🔥')}</span><div><div class="text-2xl font-extrabold text-neutral-50">${S.cur} día${S.cur === 1 ? '' : 's'} seguido${S.cur === 1 ? '' : 's'}</div><div class="text-xs text-neutral-400">Mejor racha: ${S.best} · ${S.today ? 'hoy ya has apuntado ✓' : 'apunta algo hoy para mantenerla'}</div></div></div>
+            ${S.total ? `<button onclick="shareProgress()" class="w-full py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-sm font-extrabold text-neutral-100 hover:border-mint-400"><i class="fa-solid fa-share-nodes text-mint-400"></i> Compartir mi semana</button>` : ''}
             ${T ? `<div class="nd-card p-5 space-y-1"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Peso medio (7 días)</div><div class="text-2xl font-extrabold text-neutral-50">${fmt(T.now, 1)} kg</div><div class="text-xs text-neutral-400">${T.week != null ? `${T.week > 0 ? '+' : ''}${fmt(T.week, 1)} kg respecto a la semana anterior` : 'Con 2 semanas de registros verás la tendencia'}${toGoal != null ? ` · ${Math.abs(toGoal) < .3 ? '¡en tu objetivo!' : `${fmt(Math.abs(toGoal), 1)} kg para tu objetivo`}` : ''}</div></div>` : ''}
         </div>
     </div>
@@ -173,6 +174,52 @@ function renderProgress() {
 }
 
 // Semana de calendario (lunes a domingo): lo que llevas de esta semana
+// Tarjeta para compartir tu semana (imagen 1080×1350 sin librerías). Por privacidad no lleva peso ni medidas.
+const SHARE_URL = 'trbs-aldl.github.io/nutridl-app';
+async function shareProgress() {
+    const S = streakInfo(), W = calWeekStats(), A = Object.keys(state.ach || {}).length;
+    const cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1350;
+    const g = cv.getContext('2d'), F = (w, s) => `${w} ${s}px 'Plus Jakarta Sans', sans-serif`;
+    try { await document.fonts.load(F(800, 40)); await document.fonts.load(F(600, 40)); } catch (e) { }
+    const bg = g.createLinearGradient(0, 0, 0, 1350); bg.addColorStop(0, '#1d1814'); bg.addColorStop(1, '#0d0b0a');
+    g.fillStyle = bg; g.fillRect(0, 0, 1080, 1350);
+    const glow = g.createRadialGradient(840, 220, 0, 840, 220, 620); glow.addColorStop(0, 'rgba(154,107,64,.35)'); glow.addColorStop(1, 'rgba(154,107,64,0)');
+    g.fillStyle = glow; g.fillRect(0, 0, 1080, 1350);
+    const box = (x, y, w, h, r, fill) => { g.beginPath(); g.roundRect(x, y, w, h, r); g.fillStyle = fill; g.fill(); };
+    g.textBaseline = 'alphabetic';
+    // Marca
+    g.fillStyle = '#f2ebe3'; g.font = F(800, 52); g.fillText('nutri', 90, 140); const wn = g.measureText('nutri').width;
+    g.fillStyle = '#dcc19c'; g.fillText('DL', 90 + wn, 140);
+    g.fillStyle = '#a89c90'; g.font = F(600, 34); g.fillText('Mi semana', 90, 200);
+    // Racha
+    g.fillStyle = '#f2ebe3'; g.font = F(800, 260); g.fillText(String(S.cur), 80, 520);
+    const wr = g.measureText(String(S.cur)).width;
+    g.font = F(800, 64); g.fillStyle = '#dcc19c'; g.fillText('🔥', 110 + wr, 520);
+    g.fillStyle = '#e4dcd2'; g.font = F(700, 44); g.fillText(`día${S.cur === 1 ? '' : 's'} seguido${S.cur === 1 ? '' : 's'} cuidando lo que como`, 90, 600);
+    // Datos de la semana
+    const tiles = [['Días registrados', `${W.logged}/${W.past}`], ['Proteína cumplida', calc.prot ? `${W.protOk}/${W.past}` : '—'], ['Entrenos', String(W.workouts)], ['Logros', String(A)]];
+    tiles.forEach(([l, v], i) => {
+        const x = 90 + (i % 2) * 460, y = 680 + Math.floor(i / 2) * 230;
+        box(x, y, 440, 200, 36, 'rgba(255,255,255,.06)');
+        g.fillStyle = '#a89c90'; g.font = F(700, 30); g.fillText(l.toUpperCase(), x + 40, y + 70);
+        g.fillStyle = '#f2ebe3'; g.font = F(800, 84); g.fillText(v, x + 40, y + 160);
+    });
+    // Llamada a la acción
+    box(90, 1170, 900, 110, 55, '#9a6b40');
+    g.fillStyle = '#ffffff'; g.font = F(800, 36); g.textAlign = 'center'; g.fillText(`Calcula tu plan gratis · ${SHARE_URL}`, 540, 1238); g.textAlign = 'left';
+    const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
+    if (!blob) { toast('No se pudo crear la imagen'); return; }
+    const file = new File([blob], 'mi-semana-nutridl.png', { type: 'image/png' });
+    track('share_progress');
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try { await navigator.share({ files: [file], text: `Llevo ${S.cur} día${S.cur === 1 ? '' : 's'} seguido${S.cur === 1 ? '' : 's'} con nutriDL. Calcula tu plan gratis: https://${SHARE_URL}/` }); return; }
+        catch (e) { if (e && e.name === 'AbortError') return; }
+    }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    toast('Imagen guardada: compártela donde quieras');
+}
+
 function calWeekStats() {
     const t0 = todayISO(), dow = (new Date(t0 + 'T12:00:00').getDay() + 6) % 7, mon = shiftISO(t0, -dow);
     const days = Array.from({ length: 7 }, (_, i) => shiftISO(mon, i)), past = days.filter(d => d <= t0);

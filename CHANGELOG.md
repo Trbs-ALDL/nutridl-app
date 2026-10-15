@@ -1,5 +1,13 @@
 # Cambios de nutriDL
 
+## 3.5.0 · 15 de octubre de 2026
+
+- **Compartir mi semana** (Progreso): crea una imagen con tu racha, días registrados, proteína cumplida, entrenos y logros, con el enlace a la app. Sin peso ni medidas, por privacidad.
+- **Portada más clara**: «Gratis y sin anuncios», «Escáner y macros gratis» y «más de 1.400 alimentos, con casi 500 productos Hacendado».
+- **Lista para Google Play**: al abrir desde la app de Play (`?src=play`) no se muestran precios, el botón de pago ni el campo de códigos; la prueba de 7 días sigue. Guía completa en `docs/PLAY-STORE.md` y gráfico destacado en `tools/play/`.
+- SEO: `sitemap.xml` y dirección canónica.
+- `LICENSE`: todos los derechos reservados.
+
 ## 3.4.3 · 15 de octubre de 2026
 
 - **9 alimentos nuevos (1.457 en total)**, con los datos de su etiqueta (Open Food Facts) y comprobados (las calorías cuadran con sus macros):

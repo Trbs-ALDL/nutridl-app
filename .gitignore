@@ -1,3 +1,8 @@
 node_modules/
 tools/marcas/cache_off/
 *.log
+
+# Llave de firma de Google Play: NUNCA en el repositorio
+*.keystore
+*.jks
+signing-key-info.txt
