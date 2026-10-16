@@ -1,4 +1,4 @@
-// Mete tools/genericos/usda.json en js/data/foods.js, entre // <usda> y // </usda> (justo antes de las marcas).
+// Mete tools/genericos/usda.json (SR Legacy) y platos.json (FNDDS, platos de España y Latinoamérica) en js/data/foods.js, entre // <usda> y // </usda> (justo antes de las marcas).
 // Las kcal NO se fijan: la app las calcula como en las etiquetas europeas (4·P + 4·HC + 9·G + 2·fibra).
 // Uso: node tools/genericos/embed.js
 const fs = require('fs'), path = require('path'), vm = require('vm');
@@ -11,7 +11,7 @@ vm.runInContext(base + ';this.FOODS=FOODS', ctx);
 const ids = new Set(ctx.FOODS.map(f => f.id));
 const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 const names = new Set(ctx.FOODS.filter(f => !f.brand).map(f => norm(f.name)));
-const U = JSON.parse(fs.readFileSync(path.join(__dirname, 'usda.json'), 'utf8'));
+const U = ['usda.json', 'platos.json'].filter(f => fs.existsSync(path.join(__dirname, f))).flatMap(f => JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')));
 const rows = [], skip = [];
 for (const u of U) {
     let id = 'u_' + u.id;
@@ -21,11 +21,12 @@ for (const u of U) {
     const tok = u.flags.split(/\s+/), x = {};
     if (tok.includes('raw')) x.raw = 1;
     if (tok.includes('ml')) x.ml = 1;
+    if (u.sug != null) x.sug = u.sug; // azúcares del USDA (nutriente 2000); si no hay dato, no se pone
     x.fdc = u.fdc;
     const flags = tok.filter(t => t !== 'raw' && t !== 'ml').join('');
     rows.push(`D(${JSON.stringify(id)}, ${JSON.stringify(u.name)}, '${u.cat}', ${u.p}, ${u.f}, ${u.c}, ${u.fib}, ${JSON.stringify(u.serv)}, '', '${flags}', ${JSON.stringify(x)});`);
 }
-const block = `// <usda> (lo genera tools/genericos/embed.js · USDA FoodData Central, SR Legacy, dominio público · ${new Date().toISOString().slice(0, 10)})
+const block = `// <usda> (lo genera tools/genericos/embed.js · USDA FoodData Central: SR Legacy y FNDDS, dominio público · ${new Date().toISOString().slice(0, 10)})
 // Alimentos crudos y cocinados con su ficha oficial (fdc = número de la ficha). HC sin fibra, como las etiquetas de la UE.
 ${rows.join('\n')}
 // </usda>

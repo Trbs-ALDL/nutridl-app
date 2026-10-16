@@ -444,3 +444,25 @@ h1 { line-height: 1.06; }
 .nd-pro-badge { font-family: 'Plus Jakarta Sans', sans-serif; padding: .15rem .4rem; border-radius: .3rem; background: transparent; border: 1px solid rgba(220, 193, 156, .45); color: var(--nd-sand); font-size: 10px; font-weight: 700; letter-spacing: .08em; line-height: 1.2; }
 /* Primera carga: el contenido se pinta tal cual, sin aparecer con transición (la animación queda para los cambios de pestaña) */
 html:not(.nd-ready) [data-panel]:not(.hidden) { animation: none; }
+
+/* =====================================================================
+   3.6 · Gym: dropsets y cronómetro del entreno
+   ===================================================================== */
+/* Número de serie que se toca para cambiar entre normal y dropset */
+.nd-settype { position: relative; width: 2.25rem; height: 2.25rem; margin: 0 auto; border-radius: .6rem; border: 1px solid transparent; background: transparent; color: #cfc5b8; font-size: .8rem; font-weight: 800; font-variant-numeric: tabular-nums; transition: background-color .15s ease, border-color .15s ease; }
+@media (hover: hover) and (pointer: fine) { .nd-settype:hover { border-color: var(--nd-line-hi); } }
+.nd-settype.is-drop { background: rgba(245, 158, 11, .12); border-color: rgba(245, 158, 11, .4); color: #fcd34d; }
+.nd-settype small { position: absolute; right: 2px; bottom: 1px; font-size: 8px; font-weight: 800; line-height: 1; }
+.nd-droprow { margin-top: -.15rem; }
+.nd-adddrop { display: block; width: calc(100% - 2.75rem); margin: 0 0 .25rem 2.75rem; padding: .35rem; border-radius: .6rem; border: 1px dashed rgba(245, 158, 11, .35); color: #fcd34d; font-size: .72rem; font-weight: 700; }
+.nd-droptag { display: inline-block; padding: 0 .3rem; border-radius: .25rem; border: 1px solid rgba(245, 158, 11, .4); color: #fcd34d; font-size: 10px; font-weight: 700; line-height: 1.5; vertical-align: 1px; }
+/* Cronómetro: botón para empezar y barra fija mientras dura el entreno */
+.nd-sess-start { display: flex; align-items: center; justify-content: center; gap: .5rem; width: 100%; min-height: 2.75rem; border-radius: var(--nd-r-md); border: 1px solid var(--nd-line-hi); color: #f2ede6; font-size: .875rem; font-weight: 700; }
+.nd-sess-start i { color: var(--nd-sand); font-size: .75rem; }
+.nd-sess-start span { color: #aea396; font-weight: 600; }
+.nd-sess { position: sticky; top: calc(4.25rem + env(safe-area-inset-top, 0px)); z-index: 15; display: flex; align-items: center; gap: .6rem; padding: .55rem .6rem .55rem .85rem; border-radius: var(--nd-r-md); background: #241e18; border: 1px solid rgba(197, 154, 109, .35); box-shadow: 0 8px 20px -14px rgba(8, 5, 2, .9); }
+.nd-sess > i { color: var(--nd-sand); }
+.nd-sess-lbl { font-size: 11px; font-weight: 600; color: #aea396; }
+.nd-sess-time { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; line-height: 1.05; color: #f2ede6; font-variant-numeric: lining-nums tabular-nums; }
+.nd-sess.is-paused .nd-sess-time { color: #aea396; }
+.nd-sess .nd-mbtn { min-height: 2.5rem; padding: .5rem .7rem; }

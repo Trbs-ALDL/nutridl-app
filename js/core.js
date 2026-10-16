@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.5.0';
+const APP_VERSION = '3.6.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -109,7 +109,9 @@ function norm(s) { return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '
 function kcal100(f) { if (f.kcal != null) return f.kcal; return 4 * f.p + 9 * f.f + 4 * f.c + 2 * f.fib + 7 * (f.alc || 0); }
 function macrosOf(food, g) {
     const k = g / 100;
-    return { p: food.p * k, f: food.f * k, c: food.c * k, fib: food.fib * k, kcal: kcal100(food) * k };
+    const m = { p: food.p * k, f: food.f * k, c: food.c * k, fib: food.fib * k, kcal: kcal100(food) * k };
+    if (food.sug != null) m.sug = food.sug * k; // azúcares: solo si la fuente los da
+    return m;
 }
 
 // =====================================================================
@@ -207,7 +209,7 @@ function foodIcon(f) {
     if (f._ic) return f._ic;
     const k = (String(f.id || '') + ' ' + norm(f.name || '')).toLowerCase();
     const r = FOOD_IC_RULES.find(([re]) => re.test(k));
-    const ic = r ? r[1] : FOOD_IC_CAT[f.cat] || (f.brand || String(f.id).startsWith('b_') ? 'fa-barcode' : 'fa-utensils');
+    const ic = r ? r[1] : f.fast ? 'fa-burger' : FOOD_IC_CAT[f.cat] || (f.brand || String(f.id).startsWith('b_') ? 'fa-barcode' : 'fa-utensils');
     try { Object.defineProperty(f, '_ic', { value: ic, enumerable: false, configurable: true }); } catch (e) { }
     return ic;
 }

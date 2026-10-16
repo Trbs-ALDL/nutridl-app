@@ -1,5 +1,23 @@
 # Cambios de nutriDL
 
+## 3.6.0 · 17 de octubre de 2026
+
+**Gym**
+- **Dropsets**: toca el número de una serie para hacerla dropset y apunta cada bajada de peso con sus repeticiones (+ Bajada / quitar). Se ven en el historial, en el detalle del entreno, en «Última vez» y en el PDF. El volumen cuenta todas las bajadas; el récord del ejercicio usa la primera.
+- **Cronómetro del entreno**: «Empezar entreno» lo pone en marcha y queda fijo arriba mientras entrenas, con pausa y reanudar. Guarda la hora de inicio, así que sigue contando aunque cierres la app o se bloquee el móvil. Al guardar, el entreno guarda su duración y se ve en el historial y en el detalle.
+- Los entrenos de antes se leen igual (series normales, sin duración).
+
+**Comida**
+- **Azúcares**: los alimentos los traen cuando la fuente los da (1.900+); se ven en la ficha («de los cuales azúcares»), en cada comida del diario y en el total del día. Nunca se inventa un 0.
+- **Crear alimento** pide energía (kcal), grasas, hidratos, azúcares, proteínas y fibra (opcional), en el orden de la etiqueta. Si pones las kcal de la etiqueta, mandan.
+- **+797 alimentos (2.254 en total)**:
+  - Comida rápida con los valores oficiales que publica cada cadena en España: McDonald's (75), KFC (61) y Burger King (27).
+  - Platos de España y Latinoamérica: tacos, burritos, enchiladas, tamales, pupusas, empanadas, arepa, ceviche, paella, gazpacho, mofongo y más. Incluye pulled pork. Fuente: USDA FNDDS, con su ración típica oficial.
+  - Proteínas y despensa: Myprotein, HSN, Prozis, Optimum Nutrition, Amix, mermeladas (Hero, Helios, La Vieja Fábrica…), Nocilla, Cola Cao, Kellogg's, quesos…
+  - Bebidas: Coca-Cola, Aquarius, Nestea, Fanta, Sprite, Pepsi, Kas, Schweppes, Trina, Monster, Red Bull, Burn, zumos Don Simón, Granini, Zumosol… También las versiones Zero.
+  - Todo validado: las kcal cuadran con las macros, sin repetidos y con nombres claros.
+- Ningún alimento ya publicado cambia (los diarios siguen enlazando igual).
+
 ## 3.5.0 · 15 de octubre de 2026
 
 - **Compartir mi semana** (Progreso): crea una imagen con tu racha, días registrados, proteína cumplida, entrenos y logros, con el enlace a la app. Sin peso ni medidas, por privacidad.

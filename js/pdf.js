@@ -200,7 +200,8 @@ function buildPlanPdf(opt) {
             if (!p.ex.length) d.para('Sin ejercicios todavía.', { size: 9 });
             p.ex.forEach((e, k) => {
                 const lp = lastPerfOf(e);
-                d.row(`${k + 1}. ${e.n}`, `${e.s.length} series`, lp ? 'Última vez: ' + lp.map(s => `${s.kg ? kgTxt(s.kg) + ' kg x ' : ''}${s.reps}`).join(' · ') : '');
+                const nd = e.s.filter(s => s.t === 'drop').length;
+                d.row(`${k + 1}. ${e.n}`, `${e.s.length} series${nd ? ` (${nd} dropset)` : ''}`, lp ? 'Última vez: ' + lp.map(s => setText(s, ' x ').replace(/↓/g, 'drop')).join(' · ') : '');
             });
             d.gap(4);
         });

@@ -86,10 +86,12 @@ async function lookupBarcode(raw) {
         const kcal = n && (n['energy-kcal_100g'] ?? (n.energy_100g ? n.energy_100g / 4.184 : null));
         if (!p || !n || kcal == null) throw new Error('sin datos');
         const P = +n.proteins_100g || 0, G = +n.fat_100g || 0, C = +n.carbohydrates_100g || 0, Fi = +n.fiber_100g || 0;
+        const Su = n.sugars_100g != null && isFinite(+n.sugars_100g) ? +n.sugars_100g : null;
         if (kcal < 0 || kcal > 950 || P + G + C > 101) throw new Error('datos raros');
         const name = String(p.product_name_es || p.product_name || 'Producto ' + code).trim().slice(0, 60);
         const brand = String(p.brands || '').split(',')[0].trim().slice(0, 30);
         const food = { id: 'b_' + code, name, brand, cat: 'custom', role: P * 4 >= Math.max(C * 4, G * 9) ? 'protein' : G * 9 > C * 4 ? 'fat' : 'carb', meals: 'BSLD', p: round1(P), f: round1(G), c: round1(C), fib: round1(Fi), kcal: Math.round(kcal), min: 0, max: 0, flags: '', custom: 1, barcode: code, off: code };
+        if (Su != null && Su <= C + 0.5) food.sug = round1(Su);
         const sq = +p.serving_quantity; if (sq > 0 && sq < 1000) food.serv = [sq, 'ración', 'raciones'];
         if (!FOODS.some(f => f.id === food.id)) { registerCustom(food); state.customFoods.push(food); save(); }
         track('scan_found');
@@ -154,7 +156,7 @@ function savedMealsHtml() {
 const DSLOTS = [['B', 'Desayuno', 'fa-mug-hot'], ['M', 'Media mañana', 'fa-sun'], ['L', 'Comida', 'fa-bowl-rice'], ['S', 'Merienda', 'fa-apple-whole'], ['D', 'Cena', 'fa-moon'], ['X', 'Otros', 'fa-cookie-bite']];
 let diaryDate = null, diarySel = null;
 function diaryTotals(d) {
-    return (state.diary[d] || []).reduce((a, e) => { a.kcal += e.kcal; a.p += e.p; a.f += e.f; a.c += e.c; a.fib += e.fib || 0; return a; }, { kcal: 0, p: 0, f: 0, c: 0, fib: 0 });
+    return (state.diary[d] || []).reduce((a, e) => { a.kcal += e.kcal; a.p += e.p; a.f += e.f; a.c += e.c; a.fib += e.fib || 0; if (e.sug != null) { a.sug += e.sug; a.sugN++; } return a; }, { kcal: 0, p: 0, f: 0, c: 0, fib: 0, sug: 0, sugN: 0 });
 }
 function slotByHour() { const h = new Date().getHours(); return h < 11 ? 'B' : h < 13 ? 'M' : h < 16 ? 'L' : h < 19 ? 'S' : 'D'; }
 function diaryShift(n) { const d = new Date((diaryDate || todayISO()) + 'T12:00:00'); d.setDate(d.getDate() + n); diaryDate = new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); renderDiary(); }
@@ -178,7 +180,7 @@ function renderDiary() {
         <div class="md:col-span-3 flex flex-col items-center gap-1">${ring(t.kcal, c.target, 120)}
             <div class="text-xs font-bold ${left >= 0 ? 'text-mint-400' : 'text-roseAccent-400'}">${left >= 0 ? `Quedan ${fmt(left)} kcal` : `+${fmt(-left)} kcal sobre tu objetivo`}</div></div>
         <div class="md:col-span-9 space-y-3">
-            <div class="text-xs text-neutral-400">${dayRel || new Date(diaryDate + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })} · objetivo ${fmt(c.target)} kcal · fibra ${fmt(t.fib)} / ${c.fiber} g</div>
+            <div class="text-xs text-neutral-400">${dayRel || new Date(diaryDate + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })} · objetivo ${fmt(c.target)} kcal · fibra ${fmt(t.fib)} / ${c.fiber} g${t.sugN ? ` · azúcares ${fmt(t.sug)} g` : ''}</div>
             ${macroBar('Proteína', t.p, c.prot, '#a0714b')}${macroBar('Grasa', t.f, c.fat, '#f59e0b')}${macroBar('Hidratos', t.c, c.carbs, '#e6d3b3')}
         </div>`;
     // Todas las comidas siempre visibles, cada una con su «+ Añadir» (como FatSecret)
@@ -206,7 +208,7 @@ function renderDiary() {
                     <button type="button" onclick="editDiaryEntry('${e.id}')" class="flex-1 min-w-0 text-left" aria-label="Editar ${esc(e.name)}">
                         <div class="text-sm font-semibold text-neutral-100 break-words leading-snug">${f ? emo(f) + ' ' : ''}${esc(e.name)}</div>
                         <div class="text-xs text-neutral-400">${e.brand ? esc(e.brand) + ' · ' : ''}${e.g ? entryAmount(e) : 'Solo calorías'}${e.est ? ' · <span class="nd-est">≈ estimado</span>' : ''}</div>
-                        <div class="text-[11px] text-neutral-400 tabular-nums flex flex-wrap gap-x-2.5 mt-0.5">${macroLine(e.p, e.c, e.f)}</div>
+                        <div class="text-[11px] text-neutral-400 tabular-nums flex flex-wrap gap-x-2.5 mt-0.5">${macroLine(e.p, e.c, e.f)}${e.sug != null ? `<span class="nd-m">azúc. ${fmt(e.sug, e.sug < 10 ? 1 : 0)}</span>` : ''}</div>
                     </button>
                     <span class="text-sm font-extrabold text-neutral-100 shrink-0">${fmt(e.kcal)}<span class="text-xs font-semibold text-neutral-500"> kcal</span></span>
                     <button type="button" onclick="diaryDel('${e.id}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-600 hover:bg-neutral-800" aria-label="Quitar ${esc(e.name)}"><i class="fa-solid fa-xmark"></i></button>
@@ -333,7 +335,7 @@ function fsRender() {
             <button type="button" onclick="fs.mode='create';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-plus text-mint-400"></i> Crear alimento</button>
             <button type="button" onclick="fs.mode='quick';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-bolt text-mint-400"></i> Apuntar solo calorías</button>
         </div>
-        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">Alimentos genéricos: USDA FoodData Central (dominio público). Productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comprueba la etiqueta: las recetas cambian.</p>' : ''}`;
+        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">Alimentos genéricos y platos: USDA FoodData Central (dominio público). Productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comida rápida: información nutricional oficial de cada cadena en España. Comprueba la etiqueta: las recetas cambian.</p>' : ''}`;
     $('fs-body').scrollTop = 0;
 }
 function fsQuickAdd(id) {
@@ -347,6 +349,7 @@ function fsQuickAdd(id) {
 function logFood(f, unit, n, slot, replaceId) {
     const g = Math.round(unit.g * n * 10) / 10, m = macrosOf(f, g);
     const entry = { slot, fid: f.id, name: f.name, brand: f.brand || '', g, ml: !!f.ml, kcal: Math.round(m.kcal), p: round1(m.p), f: round1(m.f), c: round1(m.c), fib: round1(m.fib) };
+    if (m.sug != null) entry.sug = round1(m.sug);
     if (unit.key !== 'g') Object.assign(entry, { u: unit.label, up: unit.plural, n });
     let id;
     if (replaceId) {
@@ -376,7 +379,7 @@ function fsRenderDetail() {
         <div>
             <div class="text-xl font-extrabold text-neutral-100 leading-tight">${emo(f)} ${esc(f.name)}</div>
             ${f.brand ? `<div class="text-sm font-semibold text-mint-300/90">${esc(f.brand)}</div>` : ''}
-            <div class="text-xs text-neutral-400 mt-1">Por 100 ${f.ml ? 'ml' : 'g'}: ${fmt(k)} kcal · P ${fmt(f.p, 1)} · G ${fmt(f.f, 1)} · HC ${fmt(f.c, 1)}${f.raw ? ' · peso en crudo' : ''}</div>
+            <div class="text-xs text-neutral-400 mt-1">Por 100 ${f.ml ? 'ml' : 'g'}: ${fmt(k)} kcal · P ${fmt(f.p, 1)} · G ${fmt(f.f, 1)} · HC ${fmt(f.c, 1)}${f.sug != null ? ` (azúcares ${fmt(f.sug, 1)})` : ''}${f.raw ? ' · peso en crudo' : ''}</div>
         </div>
         <div class="grid grid-cols-5 gap-2">
             <label class="col-span-2 block"><span class="text-xs font-bold text-neutral-400">Cantidad</span>
@@ -403,7 +406,8 @@ function fsSetUnit(key) {
 function fsUpdateDetail() {
     const f = fs.food, u = unitsOf(f).find(x => x.key === fs.unit), g = u.g * (num(fs.n) || 0), m = macrosOf(f, g);
     const box = (l, v, unit, col) => `<div class="p-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800"><div class="text-[11px] font-bold text-neutral-400">${l}</div><div class="text-lg font-extrabold" style="color:${col}">${fmt(v, v < 10 && v % 1 ? 1 : 0)}<span class="text-xs text-neutral-400 font-semibold">${unit}</span></div></div>`;
-    $('fs-macros').innerHTML = box('Kcal', m.kcal, '', '#f2ede6') + box('Proteína', m.p, ' g', '#c49a6c') + box('Grasa', m.f, ' g', '#f59e0b') + box('Hidratos', m.c, ' g', '#e6d3b3');
+    $('fs-macros').innerHTML = box('Kcal', m.kcal, '', '#f2ede6') + box('Proteína', m.p, ' g', '#c49a6c') + box('Grasa', m.f, ' g', '#f59e0b') + box('Hidratos', m.c, ' g', '#e6d3b3')
+        + (m.sug != null ? `<div class="col-span-4 text-xs text-neutral-400 text-right -mt-1">de los cuales azúcares <b class="text-neutral-200">${fmt(m.sug, m.sug < 10 ? 1 : 0)} g</b></div>` : '');
 }
 function fsConfirm() {
     const f = fs.food, u = unitsOf(f).find(x => x.key === fs.unit), n = num(fs.n);
@@ -454,10 +458,12 @@ function fsRenderCreate() {
         ${inp('fc-brand', 'Marca (opcional)', 'type="text" maxlength="30" placeholder="Ej: Hacendado"')}
         <div class="text-xs font-bold text-neutral-300 pt-1">Por cada 100 g (tabla nutricional)</div>
         <div class="grid grid-cols-2 gap-2">
-            ${inp('fc-p', 'Proteína (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-f', 'Grasa (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
+            ${inp('fc-kcal', 'Energía (kcal)', 'type="number" inputmode="decimal" min="0" max="950" placeholder="Opcional"')}
+            ${inp('fc-f', 'Grasas (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
             ${inp('fc-c', 'Hidratos (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-fib', 'Fibra (g)', 'type="number" inputmode="decimal" min="0" max="100" value="0"')}
+            ${inp('fc-sug', 'de los cuales azúcares (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
+            ${inp('fc-p', 'Proteínas (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
+            ${inp('fc-fib', 'Fibra (g, opcional)', 'type="number" inputmode="decimal" min="0" max="100" value="0"')}
         </div>
         ${inp('fc-serv', 'Peso de una ración (g, opcional)', 'type="number" inputmode="decimal" min="1" max="2000" placeholder="Ej: 60"')}
         <button type="button" onclick="fsCreateSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">Crear y elegir cantidad</button>
@@ -467,10 +473,15 @@ function fsRenderCreate() {
 function fsCreateSave() {
     const name = $('fc-name').value.trim(), brand = $('fc-brand').value.trim();
     const p = num($('fc-p').value) ?? 0, f = num($('fc-f').value) ?? 0, c = num($('fc-c').value) ?? 0, fib = num($('fc-fib').value) ?? 0, serv = num($('fc-serv').value);
-    if (!name) { toast('Escribe el nombre del alimento'); return; }
+    const kcal = num($('fc-kcal').value), sug = num($('fc-sug').value);
+    if (!name) { toast('Escribe el nombre del alimento'); $('fc-name').focus(); return; }
     if (p + f + c + fib > 100.5 || p + f + c <= 0) { toast('Revisa los valores: deben ser por 100 g y sumar ≤ 100'); return; }
+    if (sug != null && sug > c + 0.5) { toast('Los azúcares no pueden ser más que los hidratos'); $('fc-sug').focus(); return; }
+    if (kcal != null && (kcal < 0 || kcal > 950)) { toast('Las kcal por 100 g deben estar entre 0 y 950'); $('fc-kcal').focus(); return; }
     const role = p * 4 >= Math.max(c * 4, f * 9) ? 'protein' : f * 9 > c * 4 ? 'fat' : 'carb';
     const food = { id: 'c_' + Date.now().toString(36), name, brand, cat: 'custom', role, meals: 'BSLD', p, f, c, fib, min: role === 'fat' ? 5 : 30, max: role === 'fat' ? 60 : 300, flags: '', custom: true };
+    if (kcal != null && kcal > 0) food.kcal = Math.round(kcal); // las kcal de la etiqueta mandan
+    if (sug != null) food.sug = sug;
     if (serv && serv > 0) food.serv = [serv, 'ración', 'raciones'];
     registerCustom(food); state.customFoods.push(food); save();
     fsOpen(food.id);

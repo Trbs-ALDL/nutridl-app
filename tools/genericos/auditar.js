@@ -8,7 +8,7 @@ vm.runInContext(fs.readFileSync(path.join(__dirname, '..', '..', 'js', 'data', '
 const F = new Map(ctx.FOODS.map(f => [f.id, f]));
 // id de la app → descripción USDA equivalente (solo equivalencias claras)
 const EQ = {
-    pollo: 'Chicken, broilers or fryers, breast, meat only, raw', pavo: 'Turkey, whole, breast, meat only, raw',
+    pollo: 'Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw', pavo: 'Turkey, whole, breast, meat only, raw',
     salmon: 'Fish, salmon, Atlantic, farmed, raw', merluza: 'Fish, whiting, mixed species, raw', gambas: 'Crustaceans, shrimp, raw',
     huevo: 'Egg, whole, raw, fresh', claras: 'Egg, white, raw, fresh', tofu: 'Tofu, firm, prepared with calcium sulfate and magnesium chloride (nigari)',
     tempeh: 'Tempeh', arroz: 'Rice, white, long-grain, regular, raw, enriched', pasta: 'Pasta, dry, enriched', quinoa: 'Quinoa, uncooked',
@@ -27,7 +27,7 @@ const EQ = {
     pollopl: 'Chicken, broilers or fryers, breast, meat only, cooked, roasted', patatacocida: 'Potatoes, boiled, cooked without skin, flesh, without salt',
     arrozcocido: 'Rice, white, long-grain, regular, unenriched, cooked without salt', pastacocida: 'Pasta, cooked, enriched, without added salt',
     quinoacocida: 'Quinoa, cooked', cuscuscocido: 'Couscous, cooked', brocolicocido: 'Broccoli, cooked, boiled, drained, without salt',
-    avellanas: 'Nuts, hazelnuts or filberts', datiles: 'Dates, deglet noor', pasas: 'Raisins, seedless', kale: 'Kale, raw',
+    avellanas: 'Nuts, hazelnuts or filberts', datiles: 'Dates, deglet noor', pasas: "Raisins, dark, seedless (Includes foods for USDA's Food Distribution Program)", kale: 'Kale, raw',
 };
 const kc = f => f.kcal != null ? f.kcal : 4 * f.p + 9 * f.f + 4 * f.c + 2 * f.fib;
 const out = [];
@@ -41,3 +41,20 @@ for (const [id, d] of Object.entries(EQ)) {
 console.log(out.length, 'con desviación (kcal, P, G, HC, fibra):');
 out.forEach(o => console.log(` ${o.id.padEnd(14)} app ${JSON.stringify(o.app).padEnd(26)} usda ${JSON.stringify(o.usda)}  ${o.name}`));
 fs.writeFileSync(path.join(__dirname, 'auditoria.json'), JSON.stringify(out, null, 1));
+
+// 3.6 · Azúcares de los genéricos de siempre: los de su equivalente USDA (nutriente 2000), nunca más que sus hidratos.
+// Se escriben en js/data/foods.js entre // <azucar> y // </azucar> (al final). Sin equivalente claro = sin azúcar (no un 0 inventado).
+const SUG = {};
+for (const [id, d] of Object.entries(EQ)) {
+    const f = F.get(id), u = SR.get(d.toLowerCase());
+    if (f && u && u.sug != null) SUG[id] = Math.round(Math.min(u.sug, f.c) * 10) / 10;
+}
+const foodsFile = path.join(__dirname, '..', '..', 'js', 'data', 'foods.js');
+let js = fs.readFileSync(foodsFile, 'utf8').replace(/\/\/ <azucar>[\s\S]*?\/\/ <\/azucar>\n?/, '');
+js = js.replace(/\n*$/, '\n') + `// <azucar> (lo genera tools/genericos/auditar.js · azúcares USDA de los alimentos genéricos de siempre)
+const SUG_BASE = ${JSON.stringify(SUG)};
+FOODS.forEach(f => { if (f.sug == null && SUG_BASE[f.id] != null) f.sug = SUG_BASE[f.id]; });
+// </azucar>
+`;
+fs.writeFileSync(foodsFile, js);
+console.log(Object.keys(SUG).length, 'genéricos de siempre con azúcares');

@@ -1,0 +1,461 @@
+[
+ {
+  "brand": "Burger King",
+  "label": "Bacon Chicken Cheeseburger",
+  "kcal": 301,
+  "p": 10.8,
+  "c": 25.2,
+  "f": 16.9,
+  "fib": 2.4,
+  "sug": 4.3,
+  "serv": [
+   158,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Bacon Lover Crispy Chicken®",
+  "kcal": 276,
+  "p": 12.4,
+  "c": 21.3,
+  "f": 15.1,
+  "fib": 2.3,
+  "sug": 5.4,
+  "serv": [
+   359,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Bacon Lover Doble Cheeseburger",
+  "kcal": 277,
+  "p": 16.4,
+  "c": 12.9,
+  "f": 17.8,
+  "fib": 1.8,
+  "sug": 4.8,
+  "serv": [
+   390,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Burger King Sandy™ Nutella®",
+  "kcal": 175,
+  "p": 3.1,
+  "c": 25.9,
+  "f": 6.5,
+  "fib": 0.3,
+  "sug": 24,
+  "serv": [
+   135,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Burger Vegetal",
+  "kcal": 233,
+  "p": 11.4,
+  "c": 28.6,
+  "f": 6.9,
+  "fib": 5,
+  "sug": 7.4,
+  "serv": [
+   101,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "CBK Doble",
+  "kcal": 297,
+  "p": 11.1,
+  "c": 22.4,
+  "f": 17.8,
+  "fib": 1.5,
+  "sug": 3,
+  "serv": [
+   331,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Cheeseburger Bacon",
+  "kcal": 258,
+  "p": 14,
+  "c": 23.5,
+  "f": 11.3,
+  "fib": 2.5,
+  "sug": 6.4,
+  "serv": [
+   123,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Cheeseburger Vegetal",
+  "kcal": 242,
+  "p": 12.1,
+  "c": 26.4,
+  "f": 8.7,
+  "fib": 4.6,
+  "sug": 7.1,
+  "serv": [
+   112,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Cheesy Doritos",
+  "kcal": 262,
+  "p": 14,
+  "c": 19.4,
+  "f": 14,
+  "fib": 1.8,
+  "sug": 4.9,
+  "serv": [
+   277,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Chef Crispy",
+  "kcal": 287,
+  "p": 11.9,
+  "c": 24.8,
+  "f": 15.4,
+  "fib": 1.1,
+  "sug": 4.7,
+  "serv": [
+   305,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Chili Cheese Bites (9 uds.)",
+  "kcal": 285,
+  "p": 9,
+  "c": 27.9,
+  "f": 15,
+  "fib": 1.5,
+  "sug": 1.2,
+  "serv": [
+   167,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Chocolate Oreo® Shake",
+  "kcal": 178,
+  "p": 2.8,
+  "c": 27.6,
+  "f": 6.2,
+  "fib": 0.4,
+  "sug": 23.2,
+  "serv": [
+   397,
+   "ración",
+   "raciones"
+  ],
+  "ml": 1,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Chocolate Shake",
+  "kcal": 152,
+  "p": 2.6,
+  "c": 26.5,
+  "f": 3.9,
+  "fib": 0.2,
+  "sug": 24,
+  "serv": [
+   182,
+   "ración",
+   "raciones"
+  ],
+  "ml": 1,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Doble Crispy Chicken®",
+  "kcal": 277,
+  "p": 10.1,
+  "c": 19.7,
+  "f": 16.9,
+  "fib": 2,
+  "sug": 2.6,
+  "serv": [
+   273,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Don Simón Tropical",
+  "kcal": 43,
+  "p": 0.6,
+  "c": 10,
+  "f": 0.1,
+  "fib": 0.1,
+  "sug": 10,
+  "serv": [
+   260,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Duo Bacon Cheddar Carne",
+  "kcal": 275,
+  "p": 14.4,
+  "c": 18.2,
+  "f": 15.8,
+  "fib": 1.9,
+  "sug": 4.5,
+  "serv": [
+   259,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Fusion™ Nutella®",
+  "kcal": 208,
+  "p": 3.4,
+  "c": 29.7,
+  "f": 8.4,
+  "fib": 0.6,
+  "sug": 25.4,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Gofre con Nutella®",
+  "kcal": 471,
+  "p": 6,
+  "c": 54.7,
+  "f": 25,
+  "fib": 1.9,
+  "sug": 34.5,
+  "serv": [
+   75,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "King Aros de Cebolla x5",
+  "kcal": 241,
+  "p": 3.9,
+  "c": 30.2,
+  "f": 11.6,
+  "fib": 0.5,
+  "sug": 4,
+  "serv": [
+   59,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "King Fusion™ con Nutella®",
+  "kcal": 217,
+  "p": 3.5,
+  "c": 30.9,
+  "f": 8.8,
+  "fib": 0.6,
+  "sug": 25.5,
+  "serv": [
+   181,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "King Sandy™ Chocolate Blanco",
+  "kcal": 187,
+  "p": 2.8,
+  "c": 26.5,
+  "f": 7.8,
+  "fib": 0,
+  "sug": 24.7,
+  "serv": [
+   160,
+   "ración",
+   "raciones"
+  ],
+  "ml": 1,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "King Shake™ Oreo®",
+  "kcal": 159,
+  "p": 2.9,
+  "c": 25.9,
+  "f": 4.8,
+  "fib": 0.3,
+  "sug": 21.5,
+  "serv": [
+   350,
+   "ración",
+   "raciones"
+  ],
+  "ml": 1,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Magnum Double Chocolate",
+  "kcal": 323,
+  "p": 4.7,
+  "c": 29,
+  "f": 20,
+  "fib": 2.2,
+  "sug": 27,
+  "serv": [
+   324,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Mini King Sandy™ Chocolate Blanco",
+  "kcal": 206,
+  "p": 2.8,
+  "c": 28,
+  "f": 9.2,
+  "fib": 0,
+  "sug": 26.3,
+  "serv": [
+   60,
+   "ración",
+   "raciones"
+  ],
+  "ml": 1,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Nuggets Vegetales x20",
+  "kcal": 225,
+  "p": 6.5,
+  "c": 20.3,
+  "f": 12.2,
+  "fib": 4.3,
+  "sug": 3.1,
+  "serv": [
+   410,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "Strawberry Shake",
+  "kcal": 142,
+  "p": 2.5,
+  "c": 25.8,
+  "f": 3.2,
+  "fib": 0,
+  "sug": 23.2,
+  "serv": [
+   352,
+   "ración",
+   "raciones"
+  ],
+  "ml": 1,
+  "src": "burgerking.es (información nutricional oficial)"
+ },
+ {
+  "brand": "Burger King",
+  "label": "The King Bacon 1C",
+  "kcal": 265,
+  "p": 14,
+  "c": 19.7,
+  "f": 14.2,
+  "fib": 2.1,
+  "sug": 3.9,
+  "serv": [
+   251,
+   "ración",
+   "raciones"
+  ],
+  "ml": 0,
+  "src": "burgerking.es (información nutricional oficial)"
+ }
+]

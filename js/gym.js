@@ -23,7 +23,13 @@ function lastPerfOf(e) {
     return null;
 }
 const kgTxt = kg => fmt(kg, kg % 1 ? 1 : 0);
-const perfText = sets => sets.slice(0, 4).map(s => `${s.kg ? kgTxt(s.kg) + ' kg × ' : ''}${s.reps}`).join(' · ');
+// Una serie guardada: { kg, reps } y, si es dropset, drop: [{ kg, reps }, …] con las bajadas que siguen a la primera.
+// Los entrenos antiguos no tienen «drop»: son series normales y se leen igual que siempre.
+const isDrop = s => Array.isArray(s && s.drop) && s.drop.length > 0;
+const setText = (s, x = ' × ') => `${s.kg ? kgTxt(s.kg) + ' kg' + x : ''}${s.reps}${isDrop(s) ? s.drop.map(d => ` ↓ ${d.kg ? kgTxt(d.kg) + x : ''}${d.reps}`).join('') : ''}`;
+const setVol = s => s.kg * s.reps + (isDrop(s) ? s.drop.reduce((a, d) => a + d.kg * d.reps, 0) : 0); // el volumen cuenta todas las bajadas
+const exVol = e => e.sets.reduce((a, s) => a + setVol(s), 0);
+const perfText = sets => sets.slice(0, 4).map(s => setText(s)).join(' · ');
 function weekInfo() {
     const now = new Date(todayISO() + 'T12:00:00'), dow = (now.getDay() + 6) % 7;
     const start = new Date(now); start.setDate(now.getDate() - dow);
@@ -122,6 +128,7 @@ function renderGym() {
         <div class="glass-card rounded-3xl p-4 sm:p-6 space-y-4 border border-neutral-800">
             <label class="block"><span class="sr-only">Nombre del día</span>
                 <input value="${esc(day.name)}" maxlength="40" placeholder="Día ${gymDay + 1} · ponle nombre" oninput="myGym().plan[${gymDay}].name=this.value; gymSave()" onchange="renderGym()" class="w-full bg-transparent text-xl font-extrabold text-neutral-100 placeholder:text-neutral-600 outline-none border-b border-neutral-800 focus:border-mint-500 pb-2"></label>
+            ${sessHtml()}
             <div id="gym-ex" class="space-y-3">${day.ex.length ? day.ex.map((e, k) => gymExHtml(e, k)).join('') : `<div class="p-6 rounded-2xl border border-dashed border-neutral-700 text-center text-sm text-neutral-400"><i class="fa-solid fa-dumbbell text-2xl text-neutral-600 block mb-2"></i>Añade tu primer ejercicio</div>`}</div>
             <div class="space-y-3">
                 <div class="relative">
@@ -136,6 +143,8 @@ function renderGym() {
         </div>
         ${gymHistoryHtml()}`;
     renderGymSearch();
+    clearInterval(sessT); sessT = null;
+    if (g.sess && !g.sess.pausedAt) sessT = setInterval(sessTick, 1000);
 }
 function gymExHtml(e, k) {
     const lp = lastPerfOf(e) || [];
@@ -146,14 +155,38 @@ function gymExHtml(e, k) {
             <button onclick="removeGymEx(${k})" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Quitar ${esc(e.n)}"><i class="fa-solid fa-trash-can"></i></button>
         </div>
         <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500 px-1"><span class="text-center">Serie</span><span class="text-center">kg</span><span class="text-center">Reps</span><span></span></div>
-        ${e.s.map((s, i) => `<div class="gset-grid items-center">
-            <span class="text-center text-xs font-extrabold text-neutral-300">${i + 1}</span>
+        ${e.s.map((s, i) => { const drop = s.t === 'drop', ld = (lp[i] && lp[i].drop) || []; return `<div class="gset-grid items-center">
+            <button type="button" onclick="toggleDrop(${k},${i})" class="nd-settype ${drop ? 'is-drop' : ''}" aria-pressed="${drop}" aria-label="Serie ${i + 1}: ${drop ? 'dropset' : 'normal'}. Pulsa para cambiar a ${drop ? 'normal' : 'dropset'}">${i + 1}${drop ? '<small>D</small>' : ''}</button>
             <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(s.kg))}" placeholder="${lp[i] && lp[i].kg ? lp[i].kg : 0}" oninput="gymSet(${k},${i},'kg',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Kilos serie ${i + 1}">
             <input type="number" inputmode="numeric" min="0" value="${esc(String(s.r))}" placeholder="${lp[i] ? lp[i].reps : 0}" oninput="gymSet(${k},${i},'r',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Repeticiones serie ${i + 1}">
             <button onclick="removeGymSet(${k},${i})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="Quitar serie ${i + 1}" ${e.s.length < 2 ? 'disabled style="visibility:hidden"' : ''}><i class="fa-solid fa-xmark"></i></button>
-        </div>`).join('')}
+        </div>${drop ? (s.d || []).map((d, j) => `<div class="gset-grid items-center nd-droprow">
+            <span class="text-center text-xs font-extrabold text-amber-300" aria-hidden="true">↓</span>
+            <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(d.kg))}" placeholder="${ld[j] && ld[j].kg ? ld[j].kg : 0}" oninput="gymDrop(${k},${i},${j},'kg',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Kilos bajada ${j + 2} de la serie ${i + 1}">
+            <input type="number" inputmode="numeric" min="0" value="${esc(String(d.r))}" placeholder="${ld[j] ? ld[j].reps : 0}" oninput="gymDrop(${k},${i},${j},'r',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Repeticiones bajada ${j + 2} de la serie ${i + 1}">
+            <button type="button" onclick="removeDrop(${k},${i},${j})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="Quitar bajada ${j + 2} de la serie ${i + 1}"><i class="fa-solid fa-xmark"></i></button>
+        </div>`).join('') + `<button type="button" onclick="addDrop(${k},${i})" class="nd-adddrop"><i class="fa-solid fa-plus"></i> Bajada</button>` : ''}`; }).join('')}
         <button onclick="addGymSet(${k})" class="w-full py-2 rounded-xl bg-neutral-800 text-neutral-200 text-xs font-bold hover:bg-neutral-700"><i class="fa-solid fa-plus"></i> Añadir serie</button>
+        ${k === 0 ? '<p class="text-[11px] text-neutral-500">Toca el número de una serie para hacerla dropset y apuntar cada bajada de peso.</p>' : ''}
     </div>`;
+}
+// Dropsets en el plan del día: s.t = 'drop' y s.d = [{ kg, r }] (las bajadas que siguen a la primera)
+function toggleDrop(k, i) {
+    const s = curDay().ex[k].s[i];
+    if (s.t === 'drop') { delete s.t; }
+    else { s.t = 'drop'; if (!Array.isArray(s.d) || !s.d.length) s.d = [{ kg: '', r: '' }]; }
+    save(); renderGym();
+}
+function gymDrop(k, i, j, f, v) { const d = curDay().ex[k].s[i].d; if (d && d[j]) { d[j][f] = v; gymSave(); } }
+function addDrop(k, i) {
+    const s = curDay().ex[k].s[i]; s.d = Array.isArray(s.d) ? s.d : [];
+    if (s.d.length >= 5) { toast('Como mucho 6 pesos dentro de una dropset'); return; }
+    s.d.push({ kg: '', r: '' }); save(); renderGym();
+}
+function removeDrop(k, i, j) {
+    const s = curDay().ex[k].s[i]; if (!Array.isArray(s.d)) return;
+    s.d.splice(j, 1); if (!s.d.length) delete s.t;
+    save(); renderGym();
 }
 const curDay = () => myGym().plan[gymDay];
 function gymSet(k, i, f, v) { curDay().ex[k].s[i][f] = v; gymSave(); }
@@ -201,20 +234,71 @@ function renderGymSearch() {
 }
 function saveGymDay() {
     const d = curDay();
-    const ex = d.ex.map(e => ({ id: e.id || '', name: e.n, sets: e.s.map(s => ({ kg: Math.max(0, num(s.kg) || 0), reps: Math.max(0, Math.round(num(s.r) || 0)) })).filter(s => s.reps > 0) })).filter(e => e.sets.length);
+    const kr = x => ({ kg: Math.max(0, num(x.kg) || 0), reps: Math.max(0, Math.round(num(x.r) || 0)) });
+    const ex = d.ex.map(e => ({ id: e.id || '', name: e.n, sets: e.s.map(s => {
+        const set = kr(s);
+        if (s.t === 'drop') { const drop = (s.d || []).map(kr).filter(x => x.reps > 0); if (drop.length) set.drop = drop; }
+        return set;
+    }).filter(s => s.reps > 0) })).filter(e => e.sets.length);
     if (!ex.length) { toast('Apunta al menos las repeticiones de una serie'); return; }
     const t = todayISO(), title = d.name || `Día ${gymDay + 1}`;
     const before = weekInfo().done;
+    const dur = sessSeconds(), w = { id: Date.now(), d: t, t: title, di: gymDay, ex };
+    if (dur >= 60 && dur <= 6 * 3600) w.dur = dur; // duración real del entreno (si se usó el cronómetro y es creíble)
     // Si ese día ya se guardó hoy, se sustituye (no se duplica)
-    state.workouts = state.workouts.filter(w => !(w.d === t && w.di === gymDay));
-    state.workouts.push({ id: Date.now(), d: t, t: title, di: gymDay, ex }); track('workout_saved');
-    d.ex.forEach(e => e.s.forEach(s => { s.kg = ''; s.r = ''; }));
+    state.workouts = state.workouts.filter(x => !(x.d === t && x.di === gymDay));
+    state.workouts.push(w); track('workout_saved');
+    stopSession(true);
+    d.ex.forEach(e => e.s.forEach(s => { s.kg = ''; s.r = ''; if (Array.isArray(s.d)) s.d.forEach(x => { x.kg = ''; x.r = ''; }); }));
     const N = gymDays(), W = weekInfo(), g = myGym();
     const justUnlocked = W.done >= N && before < N;
     if (justUnlocked) g.unlocked = true;
     save(); renderGym(); renderDashboard();
     if (navigator.vibrate) navigator.vibrate(15);
-    toast(justUnlocked ? 'Semana completada: ya puedes ver tus pesos más altos' : `${title} guardado`);
+    toast(justUnlocked ? 'Semana completada: ya puedes ver tus pesos más altos' : `${title} guardado${w.dur ? ' · ' + durTxt(w.dur) : ''}`);
+}
+
+// ----- Cronómetro del entreno -----
+// Se guarda la HORA de inicio (no un contador): sigue contando aunque cierres la app o se bloquee el móvil.
+// g.sess = { start: ms, pausedAt: ms | null, pausedMs: ms acumulados en pausa }
+const durTxt = s => { const m = Math.round(s / 60); return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min` : `${m} min`; };
+const clockTxt = s => { const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
+function sessSeconds() {
+    const S = myGym().sess; if (!S || !S.start) return 0;
+    const end = S.pausedAt || Date.now();
+    return Math.max(0, Math.round((end - S.start - (S.pausedMs || 0)) / 1000));
+}
+let sessT = null;
+function sessTick() {
+    const el = $('gs-clock');
+    if (!myGym().sess || !el) { clearInterval(sessT); sessT = null; return; }
+    el.textContent = clockTxt(sessSeconds());
+}
+function startSession() {
+    myGym().sess = { start: Date.now(), pausedAt: null, pausedMs: 0 };
+    save(); renderGym(); if (navigator.vibrate) navigator.vibrate(10);
+}
+function pauseSession() {
+    const S = myGym().sess; if (!S) return;
+    if (S.pausedAt) { S.pausedMs = (S.pausedMs || 0) + (Date.now() - S.pausedAt); S.pausedAt = null; }
+    else S.pausedAt = Date.now();
+    save(); renderGym();
+}
+async function stopSession(silent) {
+    if (!myGym().sess) return;
+    if (!silent && !(await askConfirm('¿Parar el cronómetro sin guardar el entreno? Tus series apuntadas se quedan.', 'Parar'))) return;
+    delete myGym().sess; clearInterval(sessT); sessT = null;
+    save(); if (!silent) renderGym();
+}
+function sessHtml() {
+    const S = myGym().sess;
+    if (!S) return `<button type="button" onclick="startSession()" class="nd-sess-start"><i class="fa-solid fa-play"></i> Empezar entreno <span>cronómetro</span></button>`;
+    const paused = !!S.pausedAt;
+    return `<div class="nd-sess ${paused ? 'is-paused' : ''}" role="timer" aria-live="off">
+        <i class="fa-solid fa-stopwatch"></i><div class="min-w-0 flex-1"><div class="nd-sess-lbl">${paused ? 'En pausa' : 'Entreno en marcha'}</div><div id="gs-clock" class="nd-sess-time">${clockTxt(sessSeconds())}</div></div>
+        <button type="button" onclick="pauseSession()" class="nd-mbtn" aria-label="${paused ? 'Reanudar' : 'Pausar'} cronómetro"><i class="fa-solid ${paused ? 'fa-play' : 'fa-pause'}"></i> ${paused ? 'Seguir' : 'Pausa'}</button>
+        <button type="button" onclick="stopSession()" class="nd-mbtn" aria-label="Parar cronómetro sin guardar"><i class="fa-solid fa-stop"></i></button>
+    </div>`;
 }
 
 // ----- Pesos más altos de cada ejercicio -----
@@ -257,10 +341,10 @@ function gymHistoryHtml() {
     shown.forEach(w => {
         const m = new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
         if (m !== month) { month = m; rows += `<div class="pt-3 pb-1 text-xs font-extrabold uppercase tracking-wider text-neutral-400 first-letter:uppercase">${m}</div>`; }
-        const n = w.ex.reduce((a, e) => a + e.sets.length, 0), vol = w.ex.reduce((a, e) => a + e.sets.reduce((b, s) => b + s.kg * s.reps, 0), 0);
+        const n = w.ex.reduce((a, e) => a + e.sets.length, 0), vol = w.ex.reduce((a, e) => a + exVol(e), 0);
         rows += `<button type="button" onclick="openWorkout(${+w.id || 0})" class="w-full flex items-center gap-3 py-2.5 text-left border-b border-neutral-800/70">
             <div class="w-11 shrink-0 text-center"><div class="text-[10px] font-bold uppercase text-neutral-500">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'short' })}</div><div class="text-lg font-extrabold text-neutral-100 leading-none">${+w.d.slice(8)}</div></div>
-            <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(w.t)}</div><div class="text-xs text-neutral-400 truncate">${w.ex.length} ejercicio${w.ex.length === 1 ? '' : 's'} · ${n} serie${n === 1 ? '' : 's'}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div></div>
+            <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(w.t)}</div><div class="text-xs text-neutral-400 truncate">${w.ex.length} ejercicio${w.ex.length === 1 ? '' : 's'} · ${n} serie${n === 1 ? '' : 's'}${w.dur ? ` · ${durTxt(w.dur)}` : ''}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div></div>
             <i class="fa-solid fa-chevron-right text-neutral-600"></i></button>`;
     });
     return `<div class="glass-card rounded-3xl p-4 sm:p-6 space-y-2 border border-neutral-800">
@@ -281,11 +365,11 @@ function ghRefresh() {
 // Ver un entreno completo
 function openWorkout(id) {
     const w = state.workouts.find(x => x.id === id); if (!w) return;
-    const vol = w.ex.reduce((a, e) => a + e.sets.reduce((b, s) => b + s.kg * s.reps, 0), 0);
+    const vol = w.ex.reduce((a, e) => a + exVol(e), 0);
     openSheet(`<i class="fa-solid fa-dumbbell text-mint-400"></i> ${esc(w.t)}`, `<div class="space-y-4">
-        <div class="text-sm text-neutral-400 first-letter:uppercase">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div>
+        <div class="text-sm text-neutral-400 first-letter:uppercase">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${w.dur ? ` · <i class="fa-solid fa-stopwatch"></i> ${durTxt(w.dur)}` : ''}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div>
         ${w.ex.map(e => `<div class="rounded-2xl bg-neutral-800/50 border border-neutral-800 p-3 space-y-1.5"><button type="button" onclick="closeSheet();openProgress('${exKey(e).replace(/'/g, '')}')" class="text-sm font-extrabold text-mint-300 text-left">${esc(e.name)} <i class="fa-solid fa-chart-line text-[11px] text-neutral-500"></i></button>
-            ${e.sets.map((st, i) => `<div class="flex justify-between text-sm"><span class="text-neutral-400">Serie ${i + 1}</span><span class="font-bold text-neutral-100">${st.kg ? kgTxt(st.kg) + ' kg × ' : ''}${st.reps} reps</span></div>`).join('')}</div>`).join('')}
+            ${e.sets.map((st, i) => `<div class="flex justify-between gap-3 text-sm"><span class="text-neutral-400 shrink-0">Serie ${i + 1}${isDrop(st) ? ' <span class="nd-droptag">Dropset</span>' : ''}</span><span class="font-bold text-neutral-100 text-right">${setText(st)} reps</span></div>`).join('')}</div>`).join('')}
         <div class="grid grid-cols-2 gap-2"><button type="button" onclick="editWorkout(${+w.id || 0})" class="py-3 rounded-xl bg-neutral-800 font-bold text-sm"><i class="fa-solid fa-pen"></i> Editar</button><button type="button" onclick="closeSheet();delWorkout(${+w.id || 0})" class="py-3 rounded-xl border border-neutral-700 text-roseAccent-400 font-bold text-sm"><i class="fa-solid fa-trash-can"></i> Borrar</button></div>
     </div>`);
 }
@@ -318,7 +402,9 @@ function editWorkout(id) {
                 <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500"><span class="text-center">Serie</span><span class="text-center">kg</span><span class="text-center">Reps</span><span></span></div>
                 ${e.sets.map((s, i) => `<div class="gset-grid items-center"><span class="text-center text-xs font-extrabold text-neutral-300">${i + 1}</span>
                     <input data-w="${k}-${i}-kg" type="number" inputmode="decimal" step="0.5" min="0" value="${s.kg || ''}" placeholder="0" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Kilos serie ${i + 1}">
-                    <input data-w="${k}-${i}-reps" type="number" inputmode="numeric" min="0" value="${s.reps || ''}" placeholder="0" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Repeticiones serie ${i + 1}"><span></span></div>`).join('')}
+                    <input data-w="${k}-${i}-reps" type="number" inputmode="numeric" min="0" value="${s.reps || ''}" placeholder="0" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Repeticiones serie ${i + 1}"><span>${isDrop(s) ? '<span class="nd-droptag">D</span>' : ''}</span></div>${isDrop(s) ? s.drop.map((d, j) => `<div class="gset-grid items-center nd-droprow"><span class="text-center text-xs font-extrabold text-amber-300" aria-hidden="true">↓</span>
+                    <input data-w="${k}-${i}-d${j}-kg" type="number" inputmode="decimal" step="0.5" min="0" value="${d.kg || ''}" placeholder="0" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Kilos bajada ${j + 2} de la serie ${i + 1}">
+                    <input data-w="${k}-${i}-d${j}-reps" type="number" inputmode="numeric" min="0" value="${d.reps || ''}" placeholder="0" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Repeticiones bajada ${j + 2} de la serie ${i + 1}"><span></span></div>`).join('') : ''}`).join('')}
             </div>`).join('')}
             <p class="text-[11px] text-neutral-500">Deja las repeticiones a 0 para quitar una serie.</p>
             <button class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">Guardar cambios</button>
@@ -327,7 +413,11 @@ function editWorkout(id) {
 function saveWorkoutEdit(id) {
     const w = state.workouts.find(x => x.id === id); if (!w) return;
     const val = (k, i, f) => num(document.querySelector(`#nd-sheet [data-w="${k}-${i}-${f}"]`).value) || 0;
-    w.ex = w.ex.map((e, k) => ({ ...e, sets: e.sets.map((s, i) => ({ kg: Math.max(0, val(k, i, 'kg')), reps: Math.max(0, Math.round(val(k, i, 'reps'))) })).filter(s => s.reps > 0) })).filter(e => e.sets.length);
+    w.ex = w.ex.map((e, k) => ({ ...e, sets: e.sets.map((s, i) => {
+        const set = { kg: Math.max(0, val(k, i, 'kg')), reps: Math.max(0, Math.round(val(k, i, 'reps'))) };
+        if (isDrop(s)) { const drop = s.drop.map((d, j) => ({ kg: Math.max(0, val(k, i, `d${j}-kg`)), reps: Math.max(0, Math.round(val(k, i, `d${j}-reps`))) })).filter(d => d.reps > 0); if (drop.length) set.drop = drop; }
+        return set;
+    }).filter(s => s.reps > 0) })).filter(e => e.sets.length);
     if (!w.ex.length) state.workouts = state.workouts.filter(x => x.id !== id);
     save(); closeSheet(); renderGym(); renderDashboard(); toast('Entreno actualizado');
 }

@@ -1,0 +1,2002 @@
+[
+ {
+  "id": "taco_ternera",
+  "name": "Taco de ternera con queso (tortilla de maíz)",
+  "cat": "platos",
+  "fdc": 2708515,
+  "usda": "Taco, corn tortilla, beef, cheese",
+  "kcal": 249,
+  "p": 15.5,
+  "f": 13.9,
+  "c": 13.2,
+  "fib": 2.1,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   105,
+   "taco",
+   "tacos"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "taco_pollo",
+  "name": "Taco de pollo con queso (tortilla de maíz)",
+  "cat": "platos",
+  "fdc": 2708519,
+  "usda": "Taco, corn tortilla, chicken, cheese",
+  "kcal": 211,
+  "p": 16.2,
+  "f": 9.6,
+  "c": 13.2,
+  "fib": 2.1,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   105,
+   "taco",
+   "tacos"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "taco_cerdo",
+  "name": "Taco de cerdo con queso (tortilla de maíz)",
+  "cat": "platos",
+  "fdc": 2708517,
+  "usda": "Taco, corn tortilla, pork, cheese",
+  "kcal": 251,
+  "p": 14.8,
+  "f": 14.5,
+  "c": 13.2,
+  "fib": 2.1,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   105,
+   "taco",
+   "tacos"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "taco_pescado",
+  "name": "Taco de pescado",
+  "cat": "platos",
+  "fdc": 2708529,
+  "usda": "Taco, fish",
+  "kcal": 275,
+  "p": 11.6,
+  "f": 15.3,
+  "c": 20.5,
+  "fib": 2.5,
+  "alc": 0,
+  "sug": 0.4,
+  "serv": [
+   100,
+   "taco",
+   "tacos"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "taco_trigo_ternera",
+  "name": "Taco de ternera con queso (tortilla de trigo)",
+  "cat": "platos",
+  "fdc": 2708522,
+  "usda": "Taco, flour tortilla, beef, cheese",
+  "kcal": 257,
+  "p": 16.7,
+  "f": 12.3,
+  "c": 17.6,
+  "fib": 1.3,
+  "alc": 0,
+  "sug": 1.5,
+  "serv": [
+   105,
+   "taco",
+   "tacos"
+  ],
+  "flags": "M G L"
+ },
+ {
+  "id": "taco_frijoles",
+  "name": "Taco de frijoles con queso",
+  "cat": "platos",
+  "fdc": 2708521,
+  "usda": "Taco, corn tortilla, with beans, cheese",
+  "kcal": 176,
+  "p": 5.8,
+  "f": 7.3,
+  "c": 18.8,
+  "fib": 4.2,
+  "alc": 0,
+  "sug": 0.6,
+  "serv": [
+   105,
+   "taco",
+   "tacos"
+  ],
+  "flags": "V L"
+ },
+ {
+  "id": "burrito_ternera_arroz_frijoles",
+  "name": "Burrito de ternera con arroz y frijoles",
+  "cat": "platos",
+  "fdc": 2708538,
+  "usda": "Burrito, beef, with beans and rice, cheese",
+  "kcal": 225,
+  "p": 10.8,
+  "f": 8.3,
+  "c": 24.1,
+  "fib": 2,
+  "alc": 0,
+  "sug": 1.6,
+  "serv": [
+   220,
+   "burrito",
+   "burritos"
+  ],
+  "flags": "M G L"
+ },
+ {
+  "id": "burrito_pollo_arroz_frijoles",
+  "name": "Burrito de pollo con arroz y frijoles",
+  "cat": "platos",
+  "fdc": 2708546,
+  "usda": "Burrito, chicken, with beans and rice, cheese",
+  "kcal": 209,
+  "p": 11.1,
+  "f": 6.5,
+  "c": 24.1,
+  "fib": 2,
+  "alc": 0,
+  "sug": 1.6,
+  "serv": [
+   220,
+   "burrito",
+   "burritos"
+  ],
+  "flags": "M G L"
+ },
+ {
+  "id": "burrito_frijoles_queso",
+  "name": "Burrito de frijoles con queso",
+  "cat": "platos",
+  "fdc": 2708548,
+  "usda": "Burrito, with beans, cheese",
+  "kcal": 196,
+  "p": 8.1,
+  "f": 5.2,
+  "c": 24.6,
+  "fib": 4.9,
+  "alc": 0,
+  "sug": 1.7,
+  "serv": [
+   190,
+   "burrito",
+   "burritos"
+  ],
+  "flags": "V G L"
+ },
+ {
+  "id": "burrito_bowl_pollo",
+  "name": "Burrito bowl de pollo con arroz y frijoles",
+  "cat": "platos",
+  "fdc": 2708563,
+  "usda": "Burrito bowl, chicken, with beans and rice",
+  "kcal": 145,
+  "p": 13,
+  "f": 5.4,
+  "c": 9.6,
+  "fib": 1,
+  "alc": 0,
+  "sug": 0.2,
+  "serv": [
+   315,
+   "bol",
+   "boles"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "burrito_bowl_ternera",
+  "name": "Burrito bowl de ternera con arroz y frijoles",
+  "cat": "platos",
+  "fdc": 2708559,
+  "usda": "Burrito bowl, beef or pork, with beans and rice",
+  "kcal": 171,
+  "p": 12.5,
+  "f": 8.5,
+  "c": 9.6,
+  "fib": 1,
+  "alc": 0,
+  "sug": 0.2,
+  "serv": [
+   315,
+   "bol",
+   "boles"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "burrito_huevo",
+  "name": "Burrito de huevo (desayuno)",
+  "cat": "platos",
+  "fdc": 2707343,
+  "usda": "Egg burrito",
+  "kcal": 249,
+  "p": 10.9,
+  "f": 13.7,
+  "c": 18.7,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 1.8,
+  "serv": [
+   180,
+   "burrito",
+   "burritos"
+  ],
+  "flags": "V G"
+ },
+ {
+  "id": "enchilada_pollo",
+  "name": "Enchilada de pollo",
+  "cat": "platos",
+  "fdc": 2708568,
+  "usda": "Enchilada, chicken",
+  "kcal": 178,
+  "p": 10,
+  "f": 9,
+  "c": 12.3,
+  "fib": 2.3,
+  "alc": 0,
+  "sug": 0.8,
+  "serv": [
+   150,
+   "enchilada",
+   "enchiladas"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "enchilada_ternera",
+  "name": "Enchilada de ternera",
+  "cat": "platos",
+  "fdc": 2708566,
+  "usda": "Enchilada, beef",
+  "kcal": 191,
+  "p": 9.8,
+  "f": 10.5,
+  "c": 12.3,
+  "fib": 2.3,
+  "alc": 0,
+  "sug": 0.8,
+  "serv": [
+   150,
+   "enchilada",
+   "enchiladas"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "enchilada_queso",
+  "name": "Enchilada de queso (sin carne)",
+  "cat": "platos",
+  "fdc": 2708569,
+  "usda": "Enchilada, no meat",
+  "kcal": 165,
+  "p": 6.4,
+  "f": 8.2,
+  "c": 14.2,
+  "fib": 3.1,
+  "alc": 0,
+  "sug": 0.9,
+  "serv": [
+   150,
+   "enchilada",
+   "enchiladas"
+  ],
+  "flags": "V L"
+ },
+ {
+  "id": "quesadilla_queso",
+  "name": "Quesadilla de queso",
+  "cat": "platos",
+  "fdc": 2708591,
+  "usda": "Quesadilla, cheese only",
+  "kcal": 316,
+  "p": 13.4,
+  "f": 16.2,
+  "c": 26.6,
+  "fib": 2,
+  "alc": 0,
+  "sug": 2.4,
+  "serv": [
+   60,
+   "quesadilla",
+   "quesadillas"
+  ],
+  "flags": "V G L"
+ },
+ {
+  "id": "quesadilla_pollo",
+  "name": "Quesadilla de pollo",
+  "cat": "platos",
+  "fdc": 2708593,
+  "usda": "Quesadilla, chicken",
+  "kcal": 287,
+  "p": 14.5,
+  "f": 13,
+  "c": 25.4,
+  "fib": 1.9,
+  "alc": 0,
+  "sug": 2.2,
+  "serv": [
+   70,
+   "quesadilla",
+   "quesadillas"
+  ],
+  "flags": "M G L"
+ },
+ {
+  "id": "quesadilla_carne",
+  "name": "Quesadilla de carne",
+  "cat": "platos",
+  "fdc": 2708592,
+  "usda": "Quesadilla, beef or pork",
+  "kcal": 305,
+  "p": 14.1,
+  "f": 15.1,
+  "c": 25.4,
+  "fib": 1.9,
+  "alc": 0,
+  "sug": 2.2,
+  "serv": [
+   70,
+   "quesadilla",
+   "quesadillas"
+  ],
+  "flags": "M G L"
+ },
+ {
+  "id": "fajita_pollo",
+  "name": "Fajita de pollo",
+  "cat": "platos",
+  "fdc": 2708604,
+  "usda": "Fajita, chicken",
+  "kcal": 206,
+  "p": 11.3,
+  "f": 9.8,
+  "c": 16.5,
+  "fib": 1.5,
+  "alc": 0,
+  "sug": 2.4,
+  "serv": [
+   95,
+   "fajita",
+   "fajitas"
+  ],
+  "flags": "M G"
+ },
+ {
+  "id": "fajita_ternera",
+  "name": "Fajita de ternera",
+  "cat": "platos",
+  "fdc": 2708605,
+  "usda": "Fajita, beef or pork",
+  "kcal": 231,
+  "p": 12.1,
+  "f": 12.2,
+  "c": 16.5,
+  "fib": 1.5,
+  "alc": 0,
+  "sug": 2.4,
+  "serv": [
+   95,
+   "fajita",
+   "fajitas"
+  ],
+  "flags": "M G"
+ },
+ {
+  "id": "fajita_gambas",
+  "name": "Fajita de gambas",
+  "cat": "platos",
+  "fdc": 2708606,
+  "usda": "Fajita, shrimp",
+  "kcal": 189,
+  "p": 8.3,
+  "f": 8.9,
+  "c": 16.9,
+  "fib": 1.5,
+  "alc": 0,
+  "sug": 2.4,
+  "serv": [
+   95,
+   "fajita",
+   "fajitas"
+  ],
+  "flags": "P G"
+ },
+ {
+  "id": "fajita_verduras",
+  "name": "Fajita de verduras",
+  "cat": "platos",
+  "fdc": 2708607,
+  "usda": "Fajita, vegetable",
+  "kcal": 166,
+  "p": 3.2,
+  "f": 7.8,
+  "c": 18.4,
+  "fib": 2,
+  "alc": 0,
+  "sug": 3.7,
+  "serv": [
+   95,
+   "fajita",
+   "fajitas"
+  ],
+  "flags": "N G"
+ },
+ {
+  "id": "tamal_cerdo",
+  "name": "Tamal de cerdo",
+  "cat": "platos",
+  "fdc": 2708572,
+  "usda": "Tamale, pork",
+  "kcal": 174,
+  "p": 7.4,
+  "f": 9,
+  "c": 13.4,
+  "fib": 2.4,
+  "alc": 0,
+  "sug": 0.5,
+  "serv": [
+   140,
+   "tamal",
+   "tamales"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "tamal_pollo",
+  "name": "Tamal de pollo",
+  "cat": "platos",
+  "fdc": 2708573,
+  "usda": "Tamale, chicken",
+  "kcal": 174,
+  "p": 7.4,
+  "f": 9,
+  "c": 13.4,
+  "fib": 2.4,
+  "alc": 0,
+  "sug": 0.5,
+  "serv": [
+   140,
+   "tamal",
+   "tamales"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "tamal_dulce",
+  "name": "Tamal dulce",
+  "cat": "platos",
+  "fdc": 2708038,
+  "usda": "Tamale, sweet",
+  "kcal": 259,
+  "p": 2.2,
+  "f": 12.6,
+  "c": 33.3,
+  "fib": 2.3,
+  "alc": 0,
+  "sug": 15.4,
+  "serv": [
+   70,
+   "tamal",
+   "tamales"
+  ],
+  "flags": "V"
+ },
+ {
+  "id": "pupusa_queso",
+  "name": "Pupusa de queso",
+  "cat": "platos",
+  "fdc": 2708608,
+  "usda": "Pupusa, cheese only",
+  "kcal": 256,
+  "p": 11.7,
+  "f": 13.3,
+  "c": 19.5,
+  "fib": 2.9,
+  "alc": 0,
+  "sug": 1.2,
+  "serv": [
+   100,
+   "pupusa",
+   "pupusas"
+  ],
+  "flags": "V L"
+ },
+ {
+  "id": "pupusa_frijoles",
+  "name": "Pupusa de frijoles",
+  "cat": "platos",
+  "fdc": 2708609,
+  "usda": "Pupusa, with beans",
+  "kcal": 229,
+  "p": 5.6,
+  "f": 9,
+  "c": 25.7,
+  "fib": 5.8,
+  "alc": 0,
+  "sug": 1.3,
+  "serv": [
+   130,
+   "pupusa",
+   "pupusas"
+  ],
+  "flags": "V"
+ },
+ {
+  "id": "pupusa_carne",
+  "name": "Pupusa revuelta (con carne)",
+  "cat": "platos",
+  "fdc": 2708610,
+  "usda": "Pupusa, meat",
+  "kcal": 232,
+  "p": 11.5,
+  "f": 10.4,
+  "c": 20.4,
+  "fib": 2.6,
+  "alc": 0,
+  "sug": 1.5,
+  "serv": [
+   130,
+   "pupusa",
+   "pupusas"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "gordita_carne",
+  "name": "Gordita de carne",
+  "cat": "platos",
+  "fdc": 2708585,
+  "usda": "Gordita, meat",
+  "kcal": 296,
+  "p": 17,
+  "f": 19.4,
+  "c": 12.1,
+  "fib": 1,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   175,
+   "gordita",
+   "gorditas"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "nachos_carne_frijoles",
+  "name": "Nachos con carne y frijoles",
+  "cat": "platos",
+  "fdc": 2708579,
+  "usda": "Nachos, beef or pork, with beans",
+  "kcal": 220,
+  "p": 9.3,
+  "f": 12.5,
+  "c": 16.3,
+  "fib": 2,
+  "alc": 0,
+  "sug": 0.4,
+  "serv": [
+   125,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "nachos_pollo",
+  "name": "Nachos con pollo",
+  "cat": "platos",
+  "fdc": 2708580,
+  "usda": "Nachos, chicken",
+  "kcal": 242,
+  "p": 11.2,
+  "f": 13.3,
+  "c": 18.5,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   125,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "ensalada_taco",
+  "name": "Ensalada de taco con carne",
+  "cat": "platos",
+  "fdc": 2708508,
+  "usda": "Taco or tostada salad with meat",
+  "kcal": 179,
+  "p": 7.5,
+  "f": 9.3,
+  "c": 13.6,
+  "fib": 2.9,
+  "alc": 0,
+  "sug": 1.8,
+  "serv": [
+   225,
+   "plato",
+   "platos"
+  ],
+  "flags": "M L"
+ },
+ {
+  "id": "chilaquiles",
+  "name": "Chilaquiles",
+  "cat": "platos",
+  "fdc": 2708505,
+  "usda": "Chilaquiles",
+  "kcal": 195,
+  "p": 10.6,
+  "f": 10.7,
+  "c": 12.8,
+  "fib": 2.1,
+  "alc": 0,
+  "sug": 1.1,
+  "serv": [
+   170,
+   "plato",
+   "platos"
+  ],
+  "flags": "V L"
+ },
+ {
+  "id": "huevos_rancheros",
+  "name": "Huevos rancheros",
+  "cat": "platos",
+  "fdc": 2707191,
+  "usda": "Huevos rancheros",
+  "kcal": 121,
+  "p": 6.7,
+  "f": 6.7,
+  "c": 7.2,
+  "fib": 1.7,
+  "alc": 0,
+  "sug": 2.3,
+  "serv": [
+   236,
+   "plato",
+   "platos"
+  ],
+  "flags": "V"
+ },
+ {
+  "id": "pollo_mole",
+  "name": "Pollo con mole",
+  "cat": "platos",
+  "fdc": 2706439,
+  "usda": "Chicken with mole sauce",
+  "kcal": 137,
+  "p": 19,
+  "f": 5.6,
+  "c": 2.9,
+  "fib": 0.3,
+  "alc": 0,
+  "sug": 2.1,
+  "serv": [
+   244,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pollo_guisado_mexicano",
+  "name": "Pollo guisado en salsa de tomate (estilo mexicano)",
+  "cat": "platos",
+  "fdc": 2706424,
+  "usda": "Stewed chicken with tomato-based sauce, Mexican style",
+  "kcal": 120,
+  "p": 12,
+  "f": 7.1,
+  "c": 2.1,
+  "fib": 0.4,
+  "alc": 0,
+  "sug": 1,
+  "serv": [
+   244,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "picadillo_mexicano",
+  "name": "Picadillo de carne con patatas (estilo mexicano)",
+  "cat": "platos",
+  "fdc": 2706479,
+  "usda": "Stewed, seasoned, ground beef with potatoes, Mexican style",
+  "kcal": 137,
+  "p": 10.4,
+  "f": 7.9,
+  "c": 4.8,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 0.7,
+  "serv": [
+   166,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "carnitas",
+  "name": "Carnitas de cerdo",
+  "cat": "prot",
+  "fdc": 2705864,
+  "usda": "Pork, carnitas",
+  "kcal": 271,
+  "p": 24.6,
+  "f": 18.3,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   135,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pozole",
+  "name": "Pozole",
+  "cat": "platos",
+  "fdc": 2707129,
+  "usda": "Soup, pozole",
+  "kcal": 43,
+  "p": 3.4,
+  "f": 1.2,
+  "c": 3.7,
+  "fib": 0.9,
+  "alc": 0,
+  "sug": 1,
+  "serv": [
+   245,
+   "plato",
+   "platos"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "caldo_res",
+  "name": "Caldo de res",
+  "cat": "platos",
+  "fdc": 2707128,
+  "usda": "Soup, sopa or caldo de res",
+  "kcal": 71,
+  "p": 5.9,
+  "f": 3.4,
+  "c": 3.2,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 1.1,
+  "serv": [
+   245,
+   "plato",
+   "platos"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "caldo_pollo_latino",
+  "name": "Caldo de pollo (sopa latina)",
+  "cat": "platos",
+  "fdc": 2707135,
+  "usda": "Soup, sopa or caldo de pollo",
+  "kcal": 55,
+  "p": 6.2,
+  "f": 1.6,
+  "c": 3.2,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 1.1,
+  "serv": [
+   245,
+   "plato",
+   "platos"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "frijoles_refritos",
+  "name": "Frijoles refritos",
+  "cat": "legum",
+  "fdc": 2707396,
+  "usda": "Refried beans",
+  "kcal": 90,
+  "p": 5,
+  "f": 2,
+  "c": 9.9,
+  "fib": 3.7,
+  "alc": 0,
+  "sug": 0.5,
+  "serv": [
+   130,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "frijoles_negros",
+  "name": "Frijoles negros guisados",
+  "cat": "legum",
+  "fdc": 2707360,
+  "usda": "Black beans, from dried, fat added",
+  "kcal": 181,
+  "p": 8.2,
+  "f": 7,
+  "c": 13.9,
+  "fib": 8.1,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   92,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "arroz_frijoles_negros",
+  "name": "Arroz con frijoles negros (gallo pinto / moros)",
+  "cat": "platos",
+  "fdc": 2708994,
+  "usda": "Black beans and white rice",
+  "kcal": 160,
+  "p": 6,
+  "f": 4.3,
+  "c": 19.4,
+  "fib": 5,
+  "alc": 0,
+  "sug": 0.2,
+  "serv": [
+   170,
+   "plato",
+   "platos"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "arroz_mexicano",
+  "name": "Arroz rojo a la mexicana",
+  "cat": "hc",
+  "fdc": 2709085,
+  "usda": "Spanish rice, fat added",
+  "kcal": 115,
+  "p": 2.9,
+  "f": 2.6,
+  "c": 18.5,
+  "fib": 1.1,
+  "alc": 0,
+  "sug": 1.6,
+  "serv": [
+   182,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "guacamole_tomate",
+  "name": "Guacamole con tomate",
+  "cat": "grasa",
+  "fdc": 2709308,
+  "usda": "Guacamole with tomatoes",
+  "kcal": 145,
+  "p": 1.9,
+  "f": 13.1,
+  "c": 2,
+  "fib": 6.1,
+  "alc": 0,
+  "sug": 0.9,
+  "serv": [
+   60,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pico_de_gallo",
+  "name": "Pico de gallo",
+  "cat": "verdura",
+  "fdc": 2709737,
+  "usda": "Salsa, pico de gallo",
+  "kcal": 17,
+  "p": 0.7,
+  "f": 0.1,
+  "c": 2.6,
+  "fib": 1.1,
+  "alc": 0,
+  "sug": 2.1,
+  "serv": [
+   32,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "salsa_mole",
+  "name": "Salsa mole",
+  "cat": "grasa",
+  "fdc": 2707151,
+  "usda": "Mole sauce",
+  "kcal": 75,
+  "p": 1,
+  "f": 3.8,
+  "c": 9.8,
+  "fib": 1,
+  "alc": 0,
+  "sug": 7.1,
+  "serv": [
+   32,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "bolillo",
+  "name": "Bolillo (pan mexicano)",
+  "cat": "hc",
+  "fdc": 2707664,
+  "usda": "Roll, Mexican, bolillo",
+  "kcal": 318,
+  "p": 10.7,
+  "f": 5.8,
+  "c": 53.6,
+  "fib": 2.2,
+  "alc": 0,
+  "sug": 3.6,
+  "serv": [
+   117,
+   "bolillo",
+   "bolillos"
+  ],
+  "flags": "N G"
+ },
+ {
+  "id": "horchata",
+  "name": "Horchata (con agua)",
+  "cat": "bebida",
+  "fdc": 2710602,
+  "usda": "Horchata, made with water",
+  "kcal": 88,
+  "p": 1.1,
+  "f": 0.1,
+  "c": 20,
+  "fib": 0.5,
+  "alc": 0,
+  "sug": 8.1,
+  "serv": [
+   248,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "horchata_leche",
+  "name": "Horchata con leche",
+  "cat": "bebida",
+  "fdc": 2710603,
+  "usda": "Horchata, made with milk",
+  "kcal": 91,
+  "p": 1.4,
+  "f": 0.6,
+  "c": 19.3,
+  "fib": 0.4,
+  "alc": 0,
+  "sug": 9.6,
+  "serv": [
+   248,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "V L ml"
+ },
+ {
+  "id": "dulce_de_leche",
+  "name": "Dulce de leche",
+  "cat": "hc",
+  "fdc": 2705699,
+  "usda": "Dulce de leche",
+  "kcal": 315,
+  "p": 6.8,
+  "f": 7.4,
+  "c": 55.4,
+  "fib": 0,
+  "alc": 0,
+  "sug": 49.7,
+  "serv": [
+   20,
+   "cucharada",
+   "cucharadas"
+  ],
+  "flags": "V L"
+ },
+ {
+  "id": "flan_casero",
+  "name": "Flan casero",
+  "cat": "lacteo",
+  "fdc": 2705683,
+  "usda": "Flan",
+  "kcal": 178,
+  "p": 5.2,
+  "f": 4.9,
+  "c": 28.2,
+  "fib": 0,
+  "alc": 0,
+  "sug": 28.1,
+  "serv": [
+   130,
+   "flan",
+   "flanes"
+  ],
+  "flags": "V L"
+ },
+ {
+  "id": "churros_usda",
+  "name": "Churros",
+  "cat": "hc",
+  "fdc": 2708070,
+  "usda": "Churros",
+  "kcal": 419,
+  "p": 6.1,
+  "f": 22.2,
+  "c": 46.3,
+  "fib": 2.6,
+  "alc": 0,
+  "sug": 23.4,
+  "serv": [
+   45,
+   "churro",
+   "churros"
+  ],
+  "flags": "N G"
+ },
+ {
+  "id": "empanada_carne",
+  "name": "Empanada de carne",
+  "cat": "platos",
+  "fdc": 2708711,
+  "usda": "Empanada, beef",
+  "kcal": 333,
+  "p": 12.1,
+  "f": 19.2,
+  "c": 25.9,
+  "fib": 1.6,
+  "alc": 0,
+  "sug": 2.1,
+  "serv": [
+   105,
+   "empanada",
+   "empanadas"
+  ],
+  "flags": "M G"
+ },
+ {
+  "id": "empanada_pollo",
+  "name": "Empanada de pollo",
+  "cat": "platos",
+  "fdc": 2708713,
+  "usda": "Empanada, chicken",
+  "kcal": 309,
+  "p": 12.6,
+  "f": 16.5,
+  "c": 25.9,
+  "fib": 1.6,
+  "alc": 0,
+  "sug": 2.1,
+  "serv": [
+   105,
+   "empanada",
+   "empanadas"
+  ],
+  "flags": "M G"
+ },
+ {
+  "id": "empanada_queso",
+  "name": "Empanada de queso o verdura",
+  "cat": "platos",
+  "fdc": 2708710,
+  "usda": "Empanada, no meat",
+  "kcal": 265,
+  "p": 5.8,
+  "f": 13.2,
+  "c": 28.1,
+  "fib": 3.4,
+  "alc": 0,
+  "sug": 2.6,
+  "serv": [
+   100,
+   "empanada",
+   "empanadas"
+  ],
+  "flags": "V G L"
+ },
+ {
+  "id": "empanada_fruta",
+  "name": "Empanada dulce de fruta",
+  "cat": "hc",
+  "fdc": 2708057,
+  "usda": "Empanada, fruit",
+  "kcal": 260,
+  "p": 2.7,
+  "f": 11.5,
+  "c": 35.2,
+  "fib": 1.8,
+  "alc": 0,
+  "sug": 15.4,
+  "serv": [
+   75,
+   "empanada",
+   "empanadas"
+  ],
+  "flags": "V G"
+ },
+ {
+  "id": "arepa",
+  "name": "Arepa",
+  "cat": "hc",
+  "fdc": 2707828,
+  "usda": "Arepa Dominicana",
+  "kcal": 267,
+  "p": 5.7,
+  "f": 14,
+  "c": 28.1,
+  "fib": 2.4,
+  "alc": 0,
+  "sug": 3.3,
+  "serv": [
+   115,
+   "arepa",
+   "arepas"
+  ],
+  "flags": "V"
+ },
+ {
+  "id": "ceviche_usda",
+  "name": "Ceviche de pescado",
+  "cat": "platos",
+  "fdc": 2706463,
+  "usda": "Ceviche",
+  "kcal": 63,
+  "p": 10.5,
+  "f": 0.8,
+  "c": 3.1,
+  "fib": 0.5,
+  "alc": 0,
+  "sug": 1.3,
+  "serv": [
+   125,
+   "plato",
+   "platos"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "sandwich_cubano",
+  "name": "Sándwich cubano",
+  "cat": "platos",
+  "fdc": 2706973,
+  "usda": "Cuban sandwich",
+  "kcal": 228,
+  "p": 15.9,
+  "f": 10.7,
+  "c": 15.5,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 2.5,
+  "serv": [
+   190,
+   "sándwich",
+   "sándwiches"
+  ],
+  "flags": "M G L"
+ },
+ {
+  "id": "pan_cubano",
+  "name": "Pan cubano",
+  "cat": "hc",
+  "fdc": 2707604,
+  "usda": "Bread, Cuban",
+  "kcal": 272,
+  "p": 10.8,
+  "f": 2.4,
+  "c": 49.7,
+  "fib": 2.2,
+  "alc": 0,
+  "sug": 4.6,
+  "serv": [
+   20,
+   "trozo",
+   "trozos"
+  ],
+  "flags": "N G"
+ },
+ {
+  "id": "cafe_cubano",
+  "name": "Café cubano",
+  "cat": "bebida",
+  "fdc": 2710381,
+  "usda": "Coffee, Cuban",
+  "kcal": 34,
+  "p": 0.1,
+  "f": 0.2,
+  "c": 7.8,
+  "fib": 0,
+  "alc": 0,
+  "sug": 6.3,
+  "serv": [
+   60,
+   "taza",
+   "tazas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "platano_frito",
+  "name": "Plátano macho frito (tostones / maduros)",
+  "cat": "hc",
+  "fdc": 2709559,
+  "usda": "Plantain, cooked with oil",
+  "kcal": 144,
+  "p": 1.3,
+  "f": 3.2,
+  "c": 29.3,
+  "fib": 1.6,
+  "alc": 0,
+  "sug": 17,
+  "serv": [
+   85,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "platano_cocido",
+  "name": "Plátano macho cocido",
+  "cat": "hc",
+  "fdc": 2709558,
+  "usda": "Plantain, cooked, no added fat",
+  "kcal": 122,
+  "p": 1.3,
+  "f": 0.4,
+  "c": 30.1,
+  "fib": 1.7,
+  "alc": 0,
+  "sug": 17.5,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "chips_platano",
+  "name": "Chips de plátano (mariquitas)",
+  "cat": "hc",
+  "fdc": 2709563,
+  "usda": "Plantain chips",
+  "kcal": 531,
+  "p": 2.3,
+  "f": 29.6,
+  "c": 60.3,
+  "fib": 3.5,
+  "alc": 0,
+  "sug": 0.9,
+  "serv": [
+   38,
+   "bolsa",
+   "bolsas"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "yuca_cocida",
+  "name": "Yuca cocida",
+  "cat": "hc",
+  "fdc": 2709564,
+  "usda": "Cassava, cooked",
+  "kcal": 191,
+  "p": 1.4,
+  "f": 3,
+  "c": 37.7,
+  "fib": 1.9,
+  "alc": 0,
+  "sug": 1.8,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "yuca_frita",
+  "name": "Yuca frita",
+  "cat": "hc",
+  "fdc": 2709565,
+  "usda": "Yuca fries",
+  "kcal": 269,
+  "p": 1.2,
+  "f": 13.9,
+  "c": 33.1,
+  "fib": 1.6,
+  "alc": 0,
+  "sug": 1.6,
+  "serv": [
+   70,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "casabe",
+  "name": "Casabe (pan de yuca)",
+  "cat": "hc",
+  "fdc": 2709566,
+  "usda": "Casabe, cassava bread",
+  "kcal": 299,
+  "p": 2.5,
+  "f": 0.5,
+  "c": 67.8,
+  "fib": 3.4,
+  "alc": 0,
+  "sug": 3.2,
+  "serv": [
+   100,
+   "torta",
+   "tortas"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "mofongo_chicharron",
+  "name": "Mofongo (plátano verde con chicharrón)",
+  "cat": "platos",
+  "fdc": 2710139,
+  "usda": "Green plantain with cracklings, Puerto Rican style",
+  "kcal": 358,
+  "p": 13.2,
+  "f": 22.8,
+  "c": 25.6,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 14.8,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pastelon",
+  "name": "Pastelón de plátano maduro y carne",
+  "cat": "platos",
+  "fdc": 2710140,
+  "usda": "Ripe plantain meat pie, Puerto Rican style",
+  "kcal": 315,
+  "p": 12.8,
+  "f": 20.2,
+  "c": 19.9,
+  "fib": 2.1,
+  "alc": 0,
+  "sug": 11.4,
+  "serv": [
+   190,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pasteles_pr",
+  "name": "Pasteles puertorriqueños",
+  "cat": "platos",
+  "fdc": 2710141,
+  "usda": "Puerto Rican pasteles",
+  "kcal": 213,
+  "p": 7.1,
+  "f": 13.2,
+  "c": 15.2,
+  "fib": 2.2,
+  "alc": 0,
+  "sug": 5.6,
+  "serv": [
+   149,
+   "pastel",
+   "pasteles"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "hallacas",
+  "name": "Hallacas",
+  "cat": "platos",
+  "fdc": 2708718,
+  "usda": "Hayacas, Puerto Rican style",
+  "kcal": 157,
+  "p": 5.8,
+  "f": 10.8,
+  "c": 8.3,
+  "fib": 1.1,
+  "alc": 0,
+  "sug": 3.4,
+  "serv": [
+   95,
+   "hallaca",
+   "hallacas"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "papa_rellena",
+  "name": "Papa rellena",
+  "cat": "platos",
+  "fdc": 2710138,
+  "usda": "Fried stuffed potatoes, Puerto Rican style",
+  "kcal": 185,
+  "p": 4.9,
+  "f": 11.3,
+  "c": 14.3,
+  "fib": 1.9,
+  "alc": 0,
+  "sug": 0.9,
+  "serv": [
+   95,
+   "papa",
+   "papas"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "arroz_pollo_caldoso",
+  "name": "Asopao de pollo (arroz caldoso)",
+  "cat": "platos",
+  "fdc": 2708974,
+  "usda": "Soupy rice with chicken, Puerto Rican style",
+  "kcal": 151,
+  "p": 12.1,
+  "f": 4,
+  "c": 15.1,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 1.2,
+  "serv": [
+   329,
+   "plato",
+   "platos"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "arroz_habichuelas",
+  "name": "Arroz con habichuelas guisadas",
+  "cat": "platos",
+  "fdc": 2708980,
+  "usda": "Rice with stewed beans, Puerto Rican style",
+  "kcal": 138,
+  "p": 3.7,
+  "f": 3.2,
+  "c": 21.5,
+  "fib": 1.5,
+  "alc": 0,
+  "sug": 0.1,
+  "serv": [
+   141,
+   "plato",
+   "platos"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "arroz_con_salchichas",
+  "name": "Arroz con chorizo (estilo caribeño)",
+  "cat": "platos",
+  "fdc": 2708979,
+  "usda": "Rice with Spanish sausage, Puerto Rican style",
+  "kcal": 289,
+  "p": 8.4,
+  "f": 13.6,
+  "c": 31.6,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 0.4,
+  "serv": [
+   112,
+   "plato",
+   "platos"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "arroz_blanco_caribe",
+  "name": "Arroz blanco con aceite (estilo caribeño)",
+  "cat": "hc",
+  "fdc": 2708432,
+  "usda": "Rice, white, cooked with fat, Puerto Rican style",
+  "kcal": 200,
+  "p": 2.8,
+  "f": 6.3,
+  "c": 31.4,
+  "fib": 0.5,
+  "alc": 0,
+  "sug": 0.1,
+  "serv": [
+   116,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "ternera_guisada_patatas",
+  "name": "Carne guisada con papas",
+  "cat": "platos",
+  "fdc": 2706503,
+  "usda": "Beef stew with potatoes, Puerto Rican style",
+  "kcal": 220,
+  "p": 14.6,
+  "f": 14.9,
+  "c": 5.5,
+  "fib": 1,
+  "alc": 0,
+  "sug": 0.9,
+  "serv": [
+   159,
+   "plato",
+   "platos"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "cerdo_guisado_latino",
+  "name": "Cerdo guisado (estilo caribeño)",
+  "cat": "platos",
+  "fdc": 2706412,
+  "usda": "Stewed pork, Puerto Rican style",
+  "kcal": 200,
+  "p": 17.9,
+  "f": 12.7,
+  "c": 2.2,
+  "fib": 0.6,
+  "alc": 0,
+  "sug": 1.3,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "fricase_pollo",
+  "name": "Fricasé de pollo",
+  "cat": "platos",
+  "fdc": 2706822,
+  "usda": "Chicken or turkey fricassee, with sauce, no potatoes, potatoes reported separately, Puerto Rican style",
+  "kcal": 183,
+  "p": 14,
+  "f": 13.1,
+  "c": 1.8,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 1.2,
+  "serv": [
+   223,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "albondigas_latinas",
+  "name": "Albóndigas guisadas (estilo caribeño)",
+  "cat": "platos",
+  "fdc": 2706395,
+  "usda": "Meatballs, Puerto Rican style",
+  "kcal": 225,
+  "p": 14.3,
+  "f": 15.3,
+  "c": 6.1,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 1.7,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "bistec_encebollado",
+  "name": "Bistec encebollado",
+  "cat": "platos",
+  "fdc": 2706754,
+  "usda": "Beef steak with onions, Puerto Rican style",
+  "kcal": 321,
+  "p": 20.9,
+  "f": 24.1,
+  "c": 3.2,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 1.6,
+  "serv": [
+   134,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "gambas_ajillo_latinas",
+  "name": "Camarones al ajillo",
+  "cat": "platos",
+  "fdc": 2706465,
+  "usda": "Shrimp in garlic sauce, Puerto Rican style",
+  "kcal": 281,
+  "p": 11.6,
+  "f": 25,
+  "c": 2.3,
+  "fib": 0.2,
+  "alc": 0,
+  "sug": 0.5,
+  "serv": [
+   106,
+   "ración",
+   "raciones"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "ensalada_bacalao",
+  "name": "Ensalada de bacalao (serenata)",
+  "cat": "platos",
+  "fdc": 2706871,
+  "usda": "Codfish salad, Puerto Rican style, Serenata",
+  "kcal": 183,
+  "p": 6.6,
+  "f": 15.9,
+  "c": 2.1,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 1.5,
+  "serv": [
+   72,
+   "plato",
+   "platos"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "ensalada_pulpo",
+  "name": "Ensalada de pulpo",
+  "cat": "platos",
+  "fdc": 2706870,
+  "usda": "Octopus salad, Puerto Rican style",
+  "kcal": 170,
+  "p": 9.7,
+  "f": 12,
+  "c": 4.6,
+  "fib": 1,
+  "alc": 0,
+  "sug": 2.1,
+  "serv": [
+   90,
+   "plato",
+   "platos"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "bacalao_viandas",
+  "name": "Bacalao con viandas (papa, yuca, plátano)",
+  "cat": "platos",
+  "fdc": 2706719,
+  "usda": "Codfish with starchy vegetables, Puerto Rican style",
+  "kcal": 135,
+  "p": 3.5,
+  "f": 5.4,
+  "c": 15.8,
+  "fib": 2.7,
+  "alc": 0,
+  "sug": 2.9,
+  "serv": [
+   86,
+   "plato",
+   "platos"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "pimiento_relleno",
+  "name": "Pimiento relleno de carne",
+  "cat": "platos",
+  "fdc": 2706633,
+  "usda": "Stuffed green pepper, Puerto Rican style",
+  "kcal": 152,
+  "p": 8.9,
+  "f": 5.8,
+  "c": 13.9,
+  "fib": 1.7,
+  "alc": 0,
+  "sug": 3.5,
+  "serv": [
+   250,
+   "pimiento",
+   "pimientos"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "repollo_relleno",
+  "name": "Repollo relleno de carne y arroz",
+  "cat": "platos",
+  "fdc": 2710143,
+  "usda": "Stuffed cabbage, with meat and rice, Syrian dish, Puerto Rican style",
+  "kcal": 84,
+  "p": 3.1,
+  "f": 3,
+  "c": 9.3,
+  "fib": 1.8,
+  "alc": 0,
+  "sug": 2.3,
+  "serv": [
+   220,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "paella_marisco_usda",
+  "name": "Paella de marisco",
+  "cat": "platos",
+  "fdc": 2706711,
+  "usda": "Paella with seafood",
+  "kcal": 143,
+  "p": 8,
+  "f": 4.8,
+  "c": 15.7,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 0.9,
+  "serv": [
+   300,
+   "plato",
+   "platos"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "paella_usda",
+  "name": "Paella (receta media)",
+  "cat": "platos",
+  "fdc": 2706723,
+  "usda": "Paella, NFS",
+  "kcal": 169,
+  "p": 9.5,
+  "f": 7.2,
+  "c": 15.2,
+  "fib": 0.6,
+  "alc": 0,
+  "sug": 0.7,
+  "serv": [
+   300,
+   "plato",
+   "platos"
+  ],
+  "flags": "M P"
+ },
+ {
+  "id": "gazpacho_usda",
+  "name": "Gazpacho (receta tradicional)",
+  "cat": "platos",
+  "fdc": 2710106,
+  "usda": "Soup, gazpacho",
+  "kcal": 26,
+  "p": 0.8,
+  "f": 0.6,
+  "c": 3.5,
+  "fib": 1,
+  "alc": 0,
+  "sug": 2.8,
+  "serv": [
+   245,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "chorizo_usda",
+  "name": "Chorizo (curado)",
+  "cat": "prot",
+  "fdc": 2706179,
+  "usda": "Chorizo",
+  "kcal": 341,
+  "p": 19.3,
+  "f": 28.1,
+  "c": 2.6,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pan_espanol_cafe",
+  "name": "Pan de leche / bollo de café",
+  "cat": "hc",
+  "fdc": 2707683,
+  "usda": "Bread, Spanish coffee",
+  "kcal": 348,
+  "p": 7.9,
+  "f": 9.1,
+  "c": 56.9,
+  "fib": 1.9,
+  "alc": 0,
+  "sug": 12.1,
+  "serv": [
+   85,
+   "bollo",
+   "bollos"
+  ],
+  "flags": "V G L"
+ },
+ {
+  "id": "pulled_pork_salsa",
+  "name": "Pulled pork (cerdo desmigado) con salsa barbacoa",
+  "cat": "prot",
+  "fdc": 2706399,
+  "usda": "Barbecue pork, with sauce",
+  "kcal": 226,
+  "p": 17.6,
+  "f": 11.3,
+  "c": 11.9,
+  "fib": 0.3,
+  "alc": 0,
+  "sug": 10,
+  "serv": [
+   180,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pulled_pork",
+  "name": "Pulled pork (cerdo desmigado) sin salsa",
+  "cat": "prot",
+  "fdc": 2706400,
+  "usda": "Barbecue pork, no sauce",
+  "kcal": 249,
+  "p": 24.8,
+  "f": 15.9,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   85,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pulled_pork_bocadillo",
+  "name": "Bocadillo de pulled pork con salsa barbacoa",
+  "cat": "platos",
+  "fdc": 2706975,
+  "usda": "Barbecue pork sandwich, on white bun",
+  "kcal": 243,
+  "p": 15,
+  "f": 8.8,
+  "c": 24.1,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 9.1,
+  "serv": [
+   180,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "M G"
+ },
+ {
+  "id": "ternera_barbacoa",
+  "name": "Ternera desmigada a la barbacoa (pulled beef)",
+  "cat": "prot",
+  "fdc": 2706390,
+  "usda": "Barbecue beef, with sauce",
+  "kcal": 228,
+  "p": 19.8,
+  "f": 10.8,
+  "c": 11.9,
+  "fib": 0.3,
+  "alc": 0,
+  "sug": 10,
+  "serv": [
+   180,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "pollo_barbacoa",
+  "name": "Pollo a la barbacoa",
+  "cat": "prot",
+  "fdc": 2706434,
+  "usda": "Barbecue chicken",
+  "kcal": 167,
+  "p": 19,
+  "f": 4.6,
+  "c": 11.9,
+  "fib": 0.3,
+  "alc": 0,
+  "sug": 10,
+  "serv": [
+   180,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "costilla_barbacoa_bocadillo",
+  "name": "Bocadillo de costilla a la barbacoa",
+  "cat": "platos",
+  "fdc": 2706974,
+  "usda": "Barbecue rib sandwich",
+  "kcal": 223,
+  "p": 13.7,
+  "f": 6.5,
+  "c": 25.6,
+  "fib": 0.9,
+  "alc": 0,
+  "sug": 9.1,
+  "serv": [
+   190,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "M G"
+ }
+]

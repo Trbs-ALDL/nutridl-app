@@ -1,0 +1,1577 @@
+[
+ {
+  "name": "Chick&Share ( 9 tiras de pechuga CR)",
+  "kcal": 240,
+  "p": 19,
+  "f": 8.4,
+  "c": 12.9,
+  "sug": 0,
+  "g": 360
+ },
+ {
+  "name": "Chick&Share ( 9 tiras de pechuga OR)",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0.1,
+  "g": 360
+ },
+ {
+  "name": "Chick&Share ( 9 tiras de pechuga Mixtas)",
+  "kcal": 226.22,
+  "p": 21.67,
+  "f": 8.84,
+  "c": 10.72,
+  "sug": 0,
+  "g": 360
+ },
+ {
+  "name": "Chick&Share ( 12 Alitas picantes)",
+  "kcal": 319,
+  "p": 15.5,
+  "f": 22.5,
+  "c": 12.8,
+  "sug": 0,
+  "g": 336
+ },
+ {
+  "name": "Chick&Share cruji (6 piezas de pollo)",
+  "kcal": 270,
+  "p": 21.3,
+  "f": 15.9,
+  "c": 10.4,
+  "sug": 0,
+  "g": 678
+ },
+ {
+  "name": "Chick&Share original (6 piezas de pollo)",
+  "kcal": 241,
+  "p": 20,
+  "f": 14,
+  "c": 9,
+  "sug": 0,
+  "g": 582
+ },
+ {
+  "name": "Chick&Share mixto (3cruji+ 3 original)",
+  "kcal": 255.5,
+  "p": 20.65,
+  "f": 14.95,
+  "c": 9.7,
+  "sug": 0,
+  "g": 633
+ },
+ {
+  "name": "MenÃº 5 tiras de pechuga CR",
+  "kcal": 240,
+  "p": 19,
+  "f": 8.4,
+  "c": 12.9,
+  "sug": 0,
+  "g": 200
+ },
+ {
+  "name": "MenÃº 5 tiras de pechuga OR",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0,
+  "g": 200
+ },
+ {
+  "name": "MenÃº 5 tiras de pechuga Mixtas",
+  "kcal": 227.6,
+  "p": 21.4,
+  "f": 8.8,
+  "c": 10.94,
+  "sug": 0,
+  "g": 200
+ },
+ {
+  "name": "Cubo 4 tiras glaseadas",
+  "kcal": 259.28,
+  "p": 13.42,
+  "f": 8.78,
+  "c": 24.97,
+  "sug": 0,
+  "g": 235
+ },
+ {
+  "name": "Cubo 6 Alitas Glaseadas",
+  "kcal": 314.57,
+  "p": 12.17,
+  "f": 19.43,
+  "c": 21.83,
+  "sug": 0,
+  "g": 315
+ },
+ {
+  "name": "MenÃº para 2(12 tiras de pechuga CR)",
+  "kcal": 240,
+  "p": 19,
+  "f": 8.4,
+  "c": 12.9,
+  "sug": 1,
+  "g": 480
+ },
+ {
+  "name": "MenÃº para 2(12 tiras de pechuga OR)",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0,
+  "g": 480
+ },
+ {
+  "name": "MenÃº para 2(12 tiras de pechuga mixtas)",
+  "kcal": 224.5,
+  "p": 22,
+  "f": 8.9,
+  "c": 10.45,
+  "sug": 0,
+  "g": 480
+ },
+ {
+  "name": "MenÃº para 2(10 tiras de pechuga CR)",
+  "kcal": 240,
+  "p": 19,
+  "f": 8.4,
+  "c": 12.9,
+  "sug": 1,
+  "g": 400
+ },
+ {
+  "name": "MenÃº para 2(10 tiras de pechuga OR)",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0,
+  "g": 400
+ },
+ {
+  "name": "MenÃº para 2(10 tiras de pechuga Mixtas)",
+  "kcal": 224.5,
+  "p": 22,
+  "f": 8.9,
+  "c": 10.45,
+  "sug": 0,
+  "g": 400
+ },
+ {
+  "name": "Bucket para 3 per.(9 piezas OR)",
+  "kcal": 241,
+  "p": 20,
+  "f": 14,
+  "c": 9,
+  "sug": 1,
+  "g": 873
+ },
+ {
+  "name": "Bucket para 3 per.(9 piezasCruji)",
+  "kcal": 270,
+  "p": 21.3,
+  "f": 15.9,
+  "c": 10.4,
+  "sug": 0,
+  "g": 1017
+ },
+ {
+  "name": "Bucket para 3 per.(15 tiras de pechuga CR)",
+  "kcal": 240,
+  "p": 19,
+  "f": 8.4,
+  "c": 12.9,
+  "sug": 1,
+  "g": 600
+ },
+ {
+  "name": "Bucket para 3 per.(15 tiras de pechuga OR)",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0,
+  "g": 600
+ },
+ {
+  "name": "Bucket para 3 per.(15 tiras de pechuga Mixtas)",
+  "kcal": 225.53,
+  "p": 21.8,
+  "f": 8.87,
+  "c": 10.61,
+  "sug": 0,
+  "g": 600
+ },
+ {
+  "name": "Buckets para 4 (20 tiras de pechuga OR)",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0,
+  "g": 800
+ },
+ {
+  "name": "Buckets para 4 (20 tiras de pechuga Mitas)",
+  "kcal": 224.5,
+  "p": 22,
+  "f": 8.9,
+  "c": 10.45,
+  "sug": 0,
+  "g": 800
+ },
+ {
+  "name": "MenÃº Bucket para 2 6 tiras OR y 4 alitas",
+  "kcal": 268.24,
+  "p": 16.6,
+  "f": 15.24,
+  "c": 16.85,
+  "sug": 0,
+  "g": 608
+ },
+ {
+  "name": "MenÃº Bucket para 2 6 tiras CR y 4 alitas",
+  "kcal": 280.47,
+  "p": 14.23,
+  "f": 14.85,
+  "c": 18.78,
+  "sug": 0,
+  "g": 608
+ },
+ {
+  "name": "Mini Hot Dog",
+  "kcal": 223.08,
+  "p": 18.1,
+  "f": 8.45,
+  "c": 19.8,
+  "sug": 1.47,
+  "g": 130
+ },
+ {
+  "name": "Sandwich Coronel Club",
+  "kcal": 244.85,
+  "p": 13.46,
+  "f": 7.62,
+  "c": 21.91,
+  "sug": 3.78,
+  "g": 282
+ },
+ {
+  "name": "Burguer Pandilla Simple",
+  "kcal": 266.78,
+  "p": 17.51,
+  "f": 10.45,
+  "c": 7.76,
+  "sug": 2.97,
+  "g": 225
+ },
+ {
+  "name": "Burguer Pandilla Doble",
+  "kcal": 256.81,
+  "p": 18.84,
+  "f": 11.82,
+  "c": 8.25,
+  "sug": 1.89,
+  "g": 331
+ },
+ {
+  "name": "Doritos Loaded Bag Tex Mex",
+  "kcal": 313.52,
+  "p": 10.07,
+  "f": 16.47,
+  "c": 26.81,
+  "sug": 1.6,
+  "g": 310
+ },
+ {
+  "name": "Doritos Loaded Bag Picante",
+  "kcal": 292.67,
+  "p": 10,
+  "f": 14.08,
+  "c": 26.92,
+  "sug": 1.94,
+  "g": 306
+ },
+ {
+  "name": "Doritos Loaded Bag Zinger*",
+  "kcal": 306.72,
+  "p": 7.24,
+  "f": 16.46,
+  "c": 31.03,
+  "sug": 2.63,
+  "g": 226
+ },
+ {
+  "name": "Sobrada Simple burger",
+  "kcal": 252.19,
+  "p": 17.46,
+  "f": 8.91,
+  "c": 19.78,
+  "sug": 3.04,
+  "g": 220
+ },
+ {
+  "name": "Sobrada Double Burger",
+  "kcal": 239.47,
+  "p": 19.77,
+  "f": 8.79,
+  "c": 16.22,
+  "sug": 2.14,
+  "g": 312
+ },
+ {
+  "name": "Double Krunch OR",
+  "kcal": 209.31,
+  "p": 15.69,
+  "f": 7.46,
+  "c": 20.05,
+  "sug": 1.48,
+  "g": 160
+ },
+ {
+  "name": "BÃ¡sica Burger*",
+  "kcal": 226.51,
+  "p": 10.3,
+  "f": 10.02,
+  "c": 23.46,
+  "sug": 2.75,
+  "g": 142
+ },
+ {
+  "name": "BÃ¡sica doble Burger*",
+  "kcal": 223.54,
+  "p": 12.26,
+  "f": 10.52,
+  "c": 19.71,
+  "sug": 1.97,
+  "g": 198
+ },
+ {
+  "name": "BÃ¡sica BBQ *",
+  "kcal": 237.22,
+  "p": 11.2,
+  "f": 9.4,
+  "c": 26.81,
+  "sug": 5.34,
+  "g": 137
+ },
+ {
+  "name": "BÃ¡sica BBQ doble*",
+  "kcal": 231.06,
+  "p": 12.94,
+  "f": 10.09,
+  "c": 21.99,
+  "sug": 3.79,
+  "g": 193
+ },
+ {
+  "name": "Burger Glaseada simple",
+  "kcal": 287.01,
+  "p": 14.52,
+  "f": 10.18,
+  "c": 26.62,
+  "sug": 7.72,
+  "g": 260
+ },
+ {
+  "name": "Burger Glaseada doble",
+  "kcal": 263.81,
+  "p": 16.21,
+  "f": 9.13,
+  "c": 23.78,
+  "sug": 8.82,
+  "g": 377
+ },
+ {
+  "name": "Coronel Simple/Coronel simple Zinger*",
+  "kcal": 214.25,
+  "p": 13.01,
+  "f": 9.41,
+  "c": 18.6,
+  "sug": 3.35,
+  "g": 249
+ },
+ {
+  "name": "Coronel Doble/Coronel Doble Zinger*",
+  "kcal": 212.84,
+  "p": 16.32,
+  "f": 9.17,
+  "c": 15.66,
+  "sug": 2.45,
+  "g": 341
+ },
+ {
+  "name": "Kids burger",
+  "kcal": 233.32,
+  "p": 10.83,
+  "f": 7.72,
+  "c": 26.2,
+  "sug": 3.24,
+  "g": 110
+ },
+ {
+  "name": "Kids Mayo Burger",
+  "kcal": 251.35,
+  "p": 13.24,
+  "f": 7.79,
+  "c": 27.85,
+  "sug": 4.66,
+  "g": 107
+ },
+ {
+  "name": "Kids Cheese Burger",
+  "kcal": 262.65,
+  "p": 9.62,
+  "f": 12.13,
+  "c": 25.51,
+  "sug": 2.68,
+  "g": 115
+ },
+ {
+  "name": "Kids Mayo Wrap",
+  "kcal": 253.09,
+  "p": 9.63,
+  "f": 11.43,
+  "c": 24.31,
+  "sug": 1.48,
+  "g": 115
+ },
+ {
+  "name": "Kids Cheese Wrap",
+  "kcal": 205.06,
+  "p": 13.37,
+  "f": 7.67,
+  "c": 19.97,
+  "sug": 2.59,
+  "g": 233
+ },
+ {
+  "name": "La ClÃ¡sica",
+  "kcal": 205.42,
+  "p": 12.81,
+  "f": 7.75,
+  "c": 20.43,
+  "sug": 3.39,
+  "g": 231
+ },
+ {
+  "name": "BBQ Cheese Burger",
+  "kcal": 261.65,
+  "p": 13.8,
+  "f": 9.75,
+  "c": 25.32,
+  "sug": 4.04,
+  "g": 200
+ },
+ {
+  "name": "Double Krunch BBQ Cheese",
+  "kcal": 235.64,
+  "p": 20.07,
+  "f": 10.67,
+  "c": 16.46,
+  "sug": 1.82,
+  "g": 357
+ },
+ {
+  "name": "Burguer Sobrada BBQ",
+  "kcal": 242.21,
+  "p": 16.69,
+  "f": 8.53,
+  "c": 24.16,
+  "sug": 7.48,
+  "g": 220
+ },
+ {
+  "name": "Burguer Sobrada BBQ Doble",
+  "kcal": 240.28,
+  "p": 19.26,
+  "f": 10.06,
+  "c": 17.73,
+  "sug": 4.26,
+  "g": 325
+ },
+ {
+  "name": "Ensalada Original",
+  "kcal": 220.05,
+  "p": 12.73,
+  "f": 9.4,
+  "c": 19.77,
+  "sug": 2.13,
+  "g": 241
+ },
+ {
+  "name": "Ensalada Emmental",
+  "kcal": 262.85,
+  "p": 11.38,
+  "f": 15.33,
+  "c": 20.21,
+  "sug": 1.72,
+  "g": 231
+ },
+ {
+  "name": "Arroz AsiÃ¡tico",
+  "kcal": 159.52,
+  "p": 4.8,
+  "f": 4.81,
+  "c": 21.75,
+  "sug": 4.61,
+  "g": 270
+ },
+ {
+  "name": "Arroz Ranchero",
+  "kcal": 156.39,
+  "p": 5.03,
+  "f": 9.28,
+  "c": 16.96,
+  "sug": 1.52,
+  "g": 295
+ },
+ {
+  "name": "Wrap Coronel",
+  "kcal": 211.14,
+  "p": 11.58,
+  "f": 10.31,
+  "c": 18.19,
+  "sug": 1.57,
+  "g": 270
+ },
+ {
+  "name": "Wrap Sobrado",
+  "kcal": 209.82,
+  "p": 13.21,
+  "f": 10.16,
+  "c": 16.59,
+  "sug": 1.44,
+  "g": 286
+ },
+ {
+  "name": "Wrap Sobrada BBQ",
+  "kcal": 270.69,
+  "p": 17.22,
+  "f": 12.42,
+  "c": 23.24,
+  "sug": 1.02,
+  "g": 201
+ },
+ {
+  "name": "Wrap ClÃ¡sico",
+  "kcal": 242.64,
+  "p": 16.63,
+  "f": 10.42,
+  "c": 20.03,
+  "sug": 4.35,
+  "g": 308
+ },
+ {
+  "name": "3 tiras de pechuga CR",
+  "kcal": 240,
+  "p": 19,
+  "f": 8.4,
+  "c": 12.9,
+  "sug": 1,
+  "g": 120
+ },
+ {
+  "name": "3 tiras de pechuga OR",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0.1,
+  "g": 120
+ },
+ {
+  "name": "5 tiras de pechuga CR",
+  "kcal": 240,
+  "p": 19,
+  "f": 8.4,
+  "c": 12.9,
+  "sug": 1,
+  "g": 200
+ },
+ {
+  "name": "5 tiras de pechuga OR",
+  "kcal": 209,
+  "p": 25,
+  "f": 9.4,
+  "c": 8,
+  "sug": 0.1,
+  "g": 200
+ },
+ {
+  "name": "1 pieza pollo OR",
+  "kcal": 241,
+  "p": 20,
+  "f": 14,
+  "c": 9,
+  "sug": 1,
+  "g": 97
+ },
+ {
+  "name": "2 piezas pollo OR",
+  "kcal": 241,
+  "p": 20,
+  "f": 14,
+  "c": 9,
+  "sug": 1,
+  "g": 194
+ },
+ {
+  "name": "3 piezas pollo OR",
+  "kcal": 241,
+  "p": 20,
+  "f": 14,
+  "c": 9,
+  "sug": 1,
+  "g": 291
+ },
+ {
+  "name": "1 pieza pollo cruji",
+  "kcal": 270,
+  "p": 21.3,
+  "f": 15.9,
+  "c": 10.4,
+  "sug": 1,
+  "g": 113
+ },
+ {
+  "name": "2 piezas pollo cruji",
+  "kcal": 270,
+  "p": 21.3,
+  "f": 15.9,
+  "c": 10.4,
+  "sug": 1,
+  "g": 226
+ },
+ {
+  "name": "3 piezas pollo cruji",
+  "kcal": 270,
+  "p": 21.3,
+  "f": 15.9,
+  "c": 10.4,
+  "sug": 1,
+  "g": 339
+ },
+ {
+  "name": "2 alitas picantes",
+  "kcal": 319,
+  "p": 15.5,
+  "f": 22.5,
+  "c": 12.8,
+  "sug": 0.1,
+  "g": 56
+ },
+ {
+  "name": "3 alitas picantes",
+  "kcal": 319,
+  "p": 15.5,
+  "f": 22.5,
+  "c": 12.8,
+  "sug": 0.1,
+  "g": 84
+ },
+ {
+  "name": "5 alitas picantes",
+  "kcal": 319,
+  "p": 15.5,
+  "f": 22.5,
+  "c": 12.8,
+  "sug": 0.1,
+  "g": 140
+ },
+ {
+  "name": "8 alitas picantes",
+  "kcal": 319,
+  "p": 15.5,
+  "f": 22.5,
+  "c": 12.8,
+  "sug": 0.1,
+  "g": 224
+ },
+ {
+  "name": "2 tiras glaseadas",
+  "kcal": 266.5,
+  "p": 13.27,
+  "f": 9.56,
+  "c": 25.28,
+  "sug": 0,
+  "g": 120
+ },
+ {
+  "name": "3 alitas glaseadas",
+  "kcal": 319.13,
+  "p": 12.08,
+  "f": 19.84,
+  "c": 22.11,
+  "sug": 0,
+  "g": 160
+ },
+ {
+  "name": "5 Aros de cebolla",
+  "kcal": 215,
+  "p": 3,
+  "f": 10.5,
+  "c": 26,
+  "sug": 4.5,
+  "g": 15
+ },
+ {
+  "name": "10 Popcorn",
+  "kcal": 351,
+  "p": 17.1,
+  "f": 21.7,
+  "c": 21.3,
+  "sug": 0.2,
+  "g": 70
+ },
+ {
+  "name": "15 Popcorn",
+  "kcal": 278,
+  "p": 17.1,
+  "f": 15.75,
+  "c": 17.1,
+  "sug": 0.18,
+  "g": 105
+ },
+ {
+  "name": "25 Popcorn",
+  "kcal": 278,
+  "p": 17.1,
+  "f": 15.75,
+  "c": 17.1,
+  "sug": 0.18,
+  "g": 175
+ },
+ {
+  "name": "70 Popcorn",
+  "kcal": 278,
+  "p": 17.1,
+  "f": 15.75,
+  "c": 17.1,
+  "sug": 0.18,
+  "g": 490
+ },
+ {
+  "name": "Pollipapas",
+  "kcal": 231.18,
+  "p": 10.1,
+  "f": 11.2,
+  "c": 21.88,
+  "sug": 2.24,
+  "g": 205
+ },
+ {
+  "name": "4 Emmental bites",
+  "kcal": 350.4,
+  "p": 12,
+  "f": 18,
+  "c": 32,
+  "sug": 2.4,
+  "g": 80
+ },
+ {
+  "name": "Patatas fritas 11x11 pequeÃ±as",
+  "kcal": 219,
+  "p": 3.4,
+  "f": 8.9,
+  "c": 29.9,
+  "sug": 0,
+  "g": 92
+ },
+ {
+  "name": "Patatas fritas 11x11 medianas",
+  "kcal": 288,
+  "p": 4.3,
+  "f": 13.7,
+  "c": 37.9,
+  "sug": 0.5,
+  "g": 92
+ },
+ {
+  "name": "Patatas fritas 11x11 grandes",
+  "kcal": 219,
+  "p": 3.4,
+  "f": 8.9,
+  "c": 29.9,
+  "sug": 0,
+  "g": 127
+ },
+ {
+  "name": "Kentucky Fries Cheese",
+  "kcal": 271.35,
+  "p": 9.83,
+  "f": 14.6,
+  "c": 27.12,
+  "sug": 0,
+  "g": 230
+ },
+ {
+  "name": "Kentucky Fries Bacon",
+  "kcal": 247,
+  "p": 3.94,
+  "f": 11.25,
+  "c": 29.1,
+  "sug": 0,
+  "g": 230
+ },
+ {
+  "name": "Ensalada Side",
+  "kcal": 33.53,
+  "p": 1.59,
+  "f": 0.65,
+  "c": 4.42,
+  "sug": 1.71,
+  "g": 75
+ },
+ {
+  "name": "Tarrina Arroz",
+  "kcal": 127,
+  "p": 2.7,
+  "f": 0.3,
+  "c": 28.2,
+  "sug": 0.1,
+  "g": 100
+ },
+ {
+  "name": "Tarrina Salsa Queso XXL",
+  "kcal": 196,
+  "p": 9.1,
+  "f": 15.3,
+  "c": 5.4,
+  "sug": 3.8,
+  "g": 200
+ },
+ {
+  "name": "Tarrina Salsa BBQ XXL",
+  "kcal": 156,
+  "p": 0.7,
+  "f": 0.5,
+  "c": 38,
+  "sug": 32,
+  "g": 200
+ },
+ {
+  "name": "Tarrina Salsa Pandilla XXL",
+  "kcal": 351,
+  "p": 4,
+  "f": 32,
+  "c": 16,
+  "sug": 7.8,
+  "g": 200
+ },
+ {
+  "name": "Mazorca",
+  "kcal": 106.1,
+  "p": 3.8,
+  "f": 1.6,
+  "c": 21.6,
+  "sug": 0,
+  "g": 79
+ },
+ {
+  "name": "Ensalada col",
+  "kcal": 209,
+  "p": 1.1,
+  "f": 18,
+  "c": 8.9,
+  "sug": 8,
+  "g": 150
+ },
+ {
+  "name": "Actimel",
+  "kcal": 75,
+  "p": 2.7,
+  "f": 1.5,
+  "c": 11.8,
+  "sug": 0,
+  "g": 100
+ },
+ {
+  "name": "Kentucky Shake Nocilla nata",
+  "kcal": 148,
+  "p": 2.5,
+  "f": 3.19,
+  "c": 16.91,
+  "sug": 14.76,
+  "g": 270
+ },
+ {
+  "name": "Kentucky Shake Oreo nata",
+  "kcal": 157.04,
+  "p": 2.41,
+  "f": 3.08,
+  "c": 19.13,
+  "sug": 14.91,
+  "g": 280
+ },
+ {
+  "name": "Kentucky Shake Fresa nata",
+  "kcal": 140.43,
+  "p": 2.42,
+  "f": 3.09,
+  "c": 18.08,
+  "sug": 14.29,
+  "g": 279
+ },
+ {
+  "name": "Kentucky Shake Licor del Polo Nata*",
+  "kcal": 137.89,
+  "p": 2.5,
+  "f": 3.19,
+  "c": 17.32,
+  "sug": 14.91,
+  "g": 270
+ },
+ {
+  "name": "Kentucky Shake Pistacho Nata",
+  "kcal": 162.36,
+  "p": 2.42,
+  "f": 3.09,
+  "c": 17.64,
+  "sug": 15.51,
+  "g": 279
+ },
+ {
+  "name": "Kentucky Shake Nocilla",
+  "kcal": 127.5,
+  "p": 2.81,
+  "f": 3.59,
+  "c": 17.54,
+  "sug": 15.12,
+  "g": 240
+ },
+ {
+  "name": "Kentucky Shake Oreo",
+  "kcal": 138.44,
+  "p": 2.7,
+  "f": 3.45,
+  "c": 19.99,
+  "sug": 15.27,
+  "g": 250
+ },
+ {
+  "name": "Kentucky Shake Fresa",
+  "kcal": 114.92,
+  "p": 2.81,
+  "f": 3.59,
+  "c": 17.46,
+  "sug": 14.04,
+  "g": 240
+ },
+ {
+  "name": "Kentucky Shake Licor del Polo*",
+  "kcal": 116.13,
+  "p": 2.81,
+  "f": 3.59,
+  "c": 17.99,
+  "sug": 15.29,
+  "g": 240
+ },
+ {
+  "name": "Kentucky Shake Fini cola",
+  "kcal": 136.19,
+  "p": 2.5,
+  "f": 3.19,
+  "c": 16.95,
+  "sug": 14.5,
+  "g": 270
+ },
+ {
+  "name": "Kentucky Shake Fini fresa",
+  "kcal": 134.7,
+  "p": 2.5,
+  "f": 3.19,
+  "c": 16.58,
+  "sug": 14.21,
+  "g": 270
+ },
+ {
+  "name": "Kentucky Shake Pistacho",
+  "kcal": 128.33,
+  "p": 2.81,
+  "f": 3.59,
+  "c": 17.19,
+  "sug": 14.79,
+  "g": 240
+ },
+ {
+  "name": "Fresisuis",
+  "kcal": 117.41,
+  "p": 2.76,
+  "f": 3.58,
+  "c": 18.46,
+  "sug": 15.76,
+  "g": 340
+ },
+ {
+  "name": "Gofre con Nocilla, Oreo y helado",
+  "kcal": 366.82,
+  "p": 3.71,
+  "f": 15.27,
+  "c": 45.45,
+  "sug": 26.09,
+  "g": 165
+ },
+ {
+  "name": "Sundae Caramelo",
+  "kcal": 165.97,
+  "p": 2.51,
+  "f": 4.48,
+  "c": 27.69,
+  "sug": 21.96,
+  "g": 145
+ },
+ {
+  "name": "Sundae Nocilla",
+  "kcal": 190.59,
+  "p": 3.03,
+  "f": 5.04,
+  "c": 26.52,
+  "sug": 22.72,
+  "g": 145
+ },
+ {
+  "name": "Sundae Chocolate Blanco",
+  "kcal": 193.79,
+  "p": 2.51,
+  "f": 4.48,
+  "c": 26.33,
+  "sug": 22.73,
+  "g": 145
+ },
+ {
+  "name": "Sundae Fresa",
+  "kcal": 159.34,
+  "p": 2.51,
+  "f": 4.48,
+  "c": 26.33,
+  "sug": 20.03,
+  "g": 145
+ },
+ {
+  "name": "Sundae Licor del Polo*",
+  "kcal": 163.33,
+  "p": 2.49,
+  "f": 4.44,
+  "c": 28,
+  "sug": 23.44,
+  "g": 135
+ },
+ {
+  "name": "Sundae Fini Fresa",
+  "kcal": 153.78,
+  "p": 2.49,
+  "f": 4.44,
+  "c": 25.78,
+  "sug": 21.33,
+  "g": 135
+ },
+ {
+  "name": "Sundae Fini cola",
+  "kcal": 158.22,
+  "p": 2.49,
+  "f": 4.44,
+  "c": 26.89,
+  "sug": 22.22,
+  "g": 135
+ },
+ {
+  "name": "Sundae Pistacho",
+  "kcal": 192.66,
+  "p": 2.51,
+  "f": 4.48,
+  "c": 25.66,
+  "sug": 21.9,
+  "g": 145
+ },
+ {
+  "name": "Mini Sundae Caramelo",
+  "kcal": 163.91,
+  "p": 2.77,
+  "f": 4.68,
+  "c": 27.12,
+  "sug": 21.6,
+  "g": 88
+ },
+ {
+  "name": "Mini Sundae Nocilla",
+  "kcal": 185.55,
+  "p": 3,
+  "f": 5.04,
+  "c": 26.09,
+  "sug": 22.27,
+  "g": 88
+ },
+ {
+  "name": "Mini Sundae Fresa",
+  "kcal": 158.09,
+  "p": 2.55,
+  "f": 4.55,
+  "c": 25.93,
+  "sug": 19.91,
+  "g": 88
+ },
+ {
+  "name": "Mini Sundae Licor del Polo*",
+  "kcal": 160.73,
+  "p": 2.55,
+  "f": 4.55,
+  "c": 27.09,
+  "sug": 22.64,
+  "g": 88
+ },
+ {
+  "name": "Mini Sundae Fini fresa",
+  "kcal": 152.91,
+  "p": 2.55,
+  "f": 4.55,
+  "c": 25.27,
+  "sug": 20.91,
+  "g": 88
+ },
+ {
+  "name": "Mini Sundae Fini cola",
+  "kcal": 156.55,
+  "p": 2.55,
+  "f": 4.55,
+  "c": 26.18,
+  "sug": 21.64,
+  "g": 88
+ },
+ {
+  "name": "Mini Sundae Pistacho",
+  "kcal": 187.36,
+  "p": 2.55,
+  "f": 4.55,
+  "c": 25.34,
+  "sug": 21.55,
+  "g": 88
+ },
+ {
+  "name": "Mini Sundae Chocolate Blanco",
+  "kcal": 193.79,
+  "p": 2.51,
+  "f": 4.48,
+  "c": 26.33,
+  "sug": 22.73,
+  "g": 145
+ },
+ {
+  "name": "Cubo Helado Oreo",
+  "kcal": 223.49,
+  "p": 2.82,
+  "f": 6.29,
+  "c": 30.9,
+  "sug": 24.15,
+  "g": 175
+ },
+ {
+  "name": "Cubo Helado Nocilla",
+  "kcal": 203.71,
+  "p": 3.07,
+  "f": 4.88,
+  "c": 31.94,
+  "sug": 22.12,
+  "g": 170
+ },
+ {
+  "name": "Cubo Helado Conguitos Blancos",
+  "kcal": 233.09,
+  "p": 3.66,
+  "f": 7.9,
+  "c": 28.73,
+  "sug": 24.72,
+  "g": 175
+ },
+ {
+  "name": "Cubo Helado Fresa",
+  "kcal": 187.74,
+  "p": 2.98,
+  "f": 4.74,
+  "c": 32.5,
+  "sug": 20.83,
+  "g": 175
+ },
+ {
+  "name": "Cubo Helado Licor del Polo*",
+  "kcal": 169.34,
+  "p": 2.5,
+  "f": 4.42,
+  "c": 29.38,
+  "sug": 24.97,
+  "g": 160
+ },
+ {
+  "name": "Cubo Helado Fini Fresa",
+  "kcal": 161.28,
+  "p": 2.45,
+  "f": 4.38,
+  "c": 27.5,
+  "sug": 23.19,
+  "g": 160
+ },
+ {
+  "name": "Cubo Helado Fini Cola",
+  "kcal": 165.03,
+  "p": 2.46,
+  "f": 4.38,
+  "c": 28.44,
+  "sug": 23.94,
+  "g": 160
+ },
+ {
+  "name": "Cubo Helado Pistacho",
+  "kcal": 215.34,
+  "p": 2.98,
+  "f": 4.74,
+  "c": 31.95,
+  "sug": 22.37,
+  "g": 175
+ },
+ {
+  "name": "7 up free mediano",
+  "kcal": 0.6,
+  "p": 0.1,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 40
+ },
+ {
+  "name": "7up free grande",
+  "kcal": 0.6,
+  "p": 0.1,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 50
+ },
+ {
+  "name": "7up free pequeÃ±o",
+  "kcal": 0.6,
+  "p": 0.1,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 20
+ },
+ {
+  "name": "Bifrutas",
+  "kcal": 10,
+  "p": 41.84,
+  "f": 0.3,
+  "c": 0,
+  "sug": 1.8,
+  "g": 200
+ },
+ {
+  "name": "Kas naranja grande",
+  "kcal": 45,
+  "p": 0.1,
+  "f": 0,
+  "c": 8.6,
+  "sug": 8.6,
+  "g": 50
+ },
+ {
+  "name": "Kas naranja mediana",
+  "kcal": 45,
+  "p": 0.1,
+  "f": 0,
+  "c": 8.6,
+  "sug": 8.6,
+  "g": 40
+ },
+ {
+  "name": "Kas naranja pequeÃ±a",
+  "kcal": 45,
+  "p": 0.1,
+  "f": 0,
+  "c": 8.6,
+  "sug": 8.6,
+  "g": 20
+ },
+ {
+  "name": "Kas Naranja Zero grande",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": null
+ },
+ {
+  "name": "Kas Naranja Zero mediano",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 40
+ },
+ {
+  "name": "Kas Naranja Zero pequeÃ±o",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 25
+ },
+ {
+  "name": "Kas LimÃ³n Zero grande",
+  "kcal": 2,
+  "p": 0,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 50
+ },
+ {
+  "name": "Kas LimÃ³n Zero mediano",
+  "kcal": 2,
+  "p": 0,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 40
+ },
+ {
+  "name": "Kas LimÃ³n Zero pequeÃ±o",
+  "kcal": 2,
+  "p": 0,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 25
+ },
+ {
+  "name": "Lipton grande",
+  "kcal": 30,
+  "p": 0.5,
+  "f": 0.5,
+  "c": 6.8,
+  "sug": 6.7,
+  "g": 50
+ },
+ {
+  "name": "Lipton mediano",
+  "kcal": 30,
+  "p": 0.5,
+  "f": 0.5,
+  "c": 6.8,
+  "sug": 6.7,
+  "g": 40
+ },
+ {
+  "name": "Lipton pequeÃ±o",
+  "kcal": 25,
+  "p": 0.5,
+  "f": 0.5,
+  "c": 6.6,
+  "sug": 6.5,
+  "g": 20
+ },
+ {
+  "name": "Aquarade grande",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 40
+ },
+ {
+  "name": "Aquarade mediano",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 40
+ },
+ {
+  "name": "Aquarade pequeÃ±o",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "sug": 0,
+  "g": 25
+ },
+ {
+  "name": "Pepsi regular Grande",
+  "kcal": 28,
+  "p": 0,
+  "f": 0,
+  "c": 7,
+  "sug": 7,
+  "g": 50
+ },
+ {
+  "name": "Pepsi regular mediana",
+  "kcal": 28,
+  "p": 0,
+  "f": 0,
+  "c": 7,
+  "sug": 7,
+  "g": 40
+ },
+ {
+  "name": "Pepsi regular pequeÃ±a",
+  "kcal": 28,
+  "p": 0,
+  "f": 0,
+  "c": 7,
+  "sug": 7,
+  "g": 25
+ },
+ {
+  "name": "Pepsi Light grande",
+  "kcal": 0.3,
+  "p": 0,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 437
+ },
+ {
+  "name": "Pepsi Light mediana",
+  "kcal": 0.3,
+  "p": 0,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 330
+ },
+ {
+  "name": "Pepsi Light pequeÃ±a",
+  "kcal": 0.3,
+  "p": 0,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 200
+ },
+ {
+  "name": "Pepsi Max Zero cafeÃ­na grande",
+  "kcal": 0.4,
+  "p": 0.1,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 50
+ },
+ {
+  "name": "Pepsi Max Zero cafeÃ­na Mediana",
+  "kcal": 0.4,
+  "p": 0.1,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 40
+ },
+ {
+  "name": "Pepsi Max zero cafeÃ­na pequeÃ±a",
+  "kcal": 0.4,
+  "p": 0.1,
+  "f": 0,
+  "c": 0.1,
+  "sug": 0,
+  "g": 20
+ },
+ {
+  "name": "Mayonesa",
+  "kcal": 278,
+  "p": 1,
+  "f": 27,
+  "c": 8.2,
+  "sug": 3.8,
+  "g": 10
+ },
+ {
+  "name": "Ketchup",
+  "kcal": 103,
+  "p": 1,
+  "f": 0,
+  "c": 23,
+  "sug": 23,
+  "g": 10
+ },
+ {
+  "name": "Salsa 2Hot4U",
+  "kcal": 140,
+  "p": 1,
+  "f": 1,
+  "c": 33,
+  "sug": 0,
+  "g": 23
+ },
+ {
+  "name": "Salsa Aceite-Vinagre",
+  "kcal": 323,
+  "p": 1.8,
+  "f": 19,
+  "c": 26,
+  "sug": 0,
+  "g": 5
+ },
+ {
+  "name": "Salsa Barbacoa",
+  "kcal": 160,
+  "p": 1,
+  "f": 1,
+  "c": 40,
+  "sug": 0,
+  "g": 25
+ },
+ {
+  "name": "Salsa Caesar",
+  "kcal": 461,
+  "p": 1.2,
+  "f": 46,
+  "c": 10,
+  "sug": 9.1,
+  "g": 50
+ },
+ {
+  "name": "Salsa Fesh Pepper",
+  "kcal": 330,
+  "p": 1,
+  "f": 34,
+  "c": 6,
+  "sug": 3.3,
+  "g": 23
+ },
+ {
+  "name": "Salsa mostaza",
+  "kcal": 402,
+  "p": 5,
+  "f": 5.8,
+  "c": 4.2,
+  "sug": 1.1,
+  "g": 4
+ },
+ {
+  "name": "Salsa queso",
+  "kcal": 257,
+  "p": 34.8,
+  "f": 19.5,
+  "c": 15.2,
+  "sug": 3,
+  "g": 50
+ },
+ {
+  "name": "Salsa Sweet Imperial",
+  "kcal": 154,
+  "p": 1,
+  "f": 1,
+  "c": 36,
+  "sug": 0,
+  "g": 23
+ }
+]

@@ -152,25 +152,6 @@
   "d": "Watermelon, raw"
  },
  {
-  "id": "anacardos",
-  "name": "Anacardos",
-  "app": [
-   595,
-   18,
-   44,
-   30,
-   3.3
-  ],
-  "usda": [
-   553,
-   18.2,
-   43.9,
-   26.9,
-   3.3
-  ],
-  "d": "Nuts, cashew nuts, raw"
- },
- {
   "id": "chia",
   "name": "Semillas de chía",
   "app": [
@@ -245,5 +226,24 @@
    6.3
   ],
   "d": "Beans, white, mature seeds, cooked, boiled, without salt"
+ },
+ {
+  "id": "pasas",
+  "name": "Uvas pasas",
+  "app": [
+   326,
+   3.1,
+   0.5,
+   75.4,
+   3.7
+  ],
+  "usda": [
+   299,
+   3.3,
+   0.3,
+   74.8,
+   4.5
+  ],
+  "d": "Raisins, dark, seedless (Includes foods for USDA's Food Distribution Program)"
  }
 ]

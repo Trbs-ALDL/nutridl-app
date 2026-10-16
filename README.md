@@ -68,7 +68,7 @@ En local el modo sin conexión está desactivado para no ver versiones antiguas;
 
 ## Datos y licencias
 
-- Alimentos genéricos: USDA FoodData Central y BEDCA. Productos de marca: [Open Food Facts](https://world.openfoodfacts.org), licencia [ODbL](https://opendatacommons.org/licenses/odbl/1-0/).
+- Alimentos genéricos: USDA FoodData Central (SR Legacy y, para platos de España y Latinoamérica, FNDDS; dominio público) y BEDCA. Productos de marca: [Open Food Facts](https://world.openfoodfacts.org), licencia [ODbL](https://opendatacommons.org/licenses/odbl/1-0/). Comida rápida: valores oficiales publicados por McDonald's (mcdonalds.es), Burger King (burgerking.es) y KFC (kfc.es) en España; las marcas pertenecen a sus dueños y solo se citan para identificar el producto.
 - Iconos: Font Awesome Free (CC BY 4.0 / SIL OFL 1.1 / MIT). Fuente: Plus Jakarta Sans (SIL OFL 1.1).
 
 ## Aviso
