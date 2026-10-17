@@ -466,3 +466,6 @@ html:not(.nd-ready) [data-panel]:not(.hidden) { animation: none; }
 .nd-sess-time { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; line-height: 1.05; color: #f2ede6; font-variant-numeric: lining-nums tabular-nums; }
 .nd-sess.is-paused .nd-sess-time { color: #aea396; }
 .nd-sess .nd-mbtn { min-height: 2.5rem; padding: .5rem .7rem; }
+
+/* Pie de página: zona táctil mínima de 32 px de alto en sus enlaces (WCAG 2.2, tamaño del objetivo) */
+.nd-foot-links > a, .nd-foot-links > button { display: inline-flex; align-items: center; gap: .35rem; min-height: 32px; }

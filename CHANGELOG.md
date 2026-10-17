@@ -1,5 +1,11 @@
 # Cambios de nutriDL
 
+## 3.7.1 · 18 de octubre de 2026
+
+- **Abre antes**: las fuentes se declaran dentro de la página (una petición menos antes del primer pintado). `npm run build` las copia siempre de `css/fonts.css`.
+- **Accesibilidad**: los enlaces del pie (Instalar, Privacidad, Informe de errores…) tienen ahora una zona táctil de 32 px (antes 18 px).
+- Auditoría: 34/34 pruebas, gitleaks y semgrep sin hallazgos; Lighthouse móvil 94 · 96 · 100 · 100. Quedan 2 avisos en herramientas de desarrollo (braces, postcss-selector-parser) que no llegan a la app y solo se arreglan cambiando a Tailwind 4.
+
 ## 3.7.0 · 18 de octubre de 2026
 
 **Gym**

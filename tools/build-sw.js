@@ -11,6 +11,11 @@ const idxPath = path.join(root, 'index.html');
 let idx = fs.readFileSync(idxPath, 'utf8');
 idx = idx.replace(/(<(?:link rel="stylesheet" href|script src)=")((?:css|js)\/[^"?]+)(?:\?v=[0-9a-f]+)?(")/g,
     (m, a, file, b) => `${a}${file}?v=${hashOf(fs.readFileSync(path.join(root, file)))}${b}`);
+// Las @font-face (1 KB) van dentro de index.html: una petición menos que bloquee el primer pintado.
+// Se copian siempre de css/fonts.css (rutas ../fonts → fonts), así nunca se desincronizan.
+const fontsCss = fs.readFileSync(path.join(root, 'css', 'fonts.css'), 'utf8').trim().replace(/\.\.\/fonts\//g, 'fonts/');
+idx = idx.replace(/<link rel="stylesheet" href="css\/fonts\.css(?:\?v=[0-9a-f]+)?">|<style id="fonts-inline">[\s\S]*?<\/style>/,
+    () => `<style id="fonts-inline">${fontsCss}</style>`);
 fs.writeFileSync(idxPath, idx);
 
 // --- 2. Lista de archivos y versión global ---
