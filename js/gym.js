@@ -210,18 +210,35 @@ function addGymEx(id, name) {
 }
 function addTypedEx() {
     const q = ($('gym-q').value || '').trim(); if (!q) return;
-    const m = EX.find(e => norm(e.name) === norm(q));
-    addGymEx(m ? m.id : '', m ? m.name : q);
+    const m = EX.find(e => norm(e.name) === norm(q)), mine = m ? null : myExercises().find(n => norm(n) === norm(q));
+    addGymEx(m ? m.id : '', m ? m.name : mine || q);
 }
+// Tus ejercicios: los que escribiste tú (no están en la lista), sacados de tus días y de tus entrenos guardados; los más recientes primero
+let myExShown = [];
+function myExercises() {
+    const seen = new Set(), out = [];
+    const add = name => { name = String(name || '').trim(); const k = norm(name); if (name && !seen.has(k)) { seen.add(k); out.push(name); } };
+    const list = a => Array.isArray(a) ? a : [];
+    for (let i = state.workouts.length - 1; i >= 0; i--) list(state.workouts[i] && state.workouts[i].ex).forEach(e => { if (e && !e.id) add(e.name); });
+    myGym().plan.forEach(d => list(d && d.ex).forEach(e => { if (e && !e.id) add(e.n); }));
+    return out;
+}
+function addMyEx(i) { const n = myExShown[i]; if (n) addGymEx('', n); }
+const myExBtn = (n, i, big) => big
+    ? `<button onclick="addMyEx(${i})" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(n)}</span><span class="text-[11px] font-semibold text-mint-300 whitespace-nowrap"><i class="fa-solid fa-user"></i> Tuyo</span></button>`
+    : `<button onclick="addMyEx(${i})" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(n)}</button>`;
 // Buscador de ejercicios + recomendaciones opcionales (multiarticulares básicos primero)
 function renderGymSearch() {
     const qi = $('gym-q'); if (!qi) return;
     const q = norm(qi.value.trim()), d = curDay(), have = new Set(d.ex.map(exKey));
     const pool = EX.filter(e => e.eq.includes('g') && !have.has(e.id));
+    const mine = myExercises().filter(n => !have.has('n:' + norm(n)));
     if (q) {
+        myExShown = mine.filter(n => norm(n).includes(q)).slice(0, 5);
+        const exact = myExShown.some(n => norm(n) === q);
         const hits = pool.filter(e => norm(e.name).includes(q) || norm(e.group).includes(q)).slice(0, 8);
-        $('gym-results').innerHTML = hits.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(e.name)}</span><span class="text-[11px] font-semibold text-neutral-400 whitespace-nowrap">${e.group}</span></button>`).join('') +
-            `<button onclick="addTypedEx()" class="text-left px-3 py-2.5 rounded-xl border border-dashed border-mint-500/40 text-sm font-bold text-mint-300 hover:bg-mint-500/10"><i class="fa-solid fa-plus"></i> Añadir «${esc(qi.value.trim())}»</button>`;
+        $('gym-results').innerHTML = myExShown.map((n, i) => myExBtn(n, i, 1)).join('') + hits.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(e.name)}</span><span class="text-[11px] font-semibold text-neutral-400 whitespace-nowrap">${e.group}</span></button>`).join('') +
+            (exact ? '' : `<button onclick="addTypedEx()" class="text-left px-3 py-2.5 rounded-xl border border-dashed border-mint-500/40 text-sm font-bold text-mint-300 hover:bg-mint-500/10"><i class="fa-solid fa-plus"></i> Añadir «${esc(qi.value.trim())}»</button>`);
         $('gym-sugg').innerHTML = '';
         return;
     }
@@ -229,8 +246,10 @@ function renderGymSearch() {
     const top = pool.filter(e => e.top);
     const off = (gymDay * 5) % Math.max(1, top.length);
     const sugg = [...top.slice(off), ...top.slice(0, off)].slice(0, 6);
-    $('gym-sugg').innerHTML = sugg.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">Recomendados</div>
-        <div class="flex flex-wrap gap-2">${sugg.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(e.name)}</button>`).join('')}</div>` : '';
+    myExShown = mine.slice(0, 8);
+    $('gym-sugg').innerHTML = (myExShown.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">Tus ejercicios</div>
+        <div class="flex flex-wrap gap-2 mb-3">${myExShown.map((n, i) => myExBtn(n, i)).join('')}</div>` : '') + (sugg.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">Recomendados</div>
+        <div class="flex flex-wrap gap-2">${sugg.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(e.name)}</button>`).join('')}</div>` : '');
 }
 function saveGymDay() {
     const d = curDay();
@@ -264,7 +283,7 @@ function saveGymDay() {
 const durTxt = s => { const m = Math.round(s / 60); return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')} min` : `${m} min`; };
 const clockTxt = s => { const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ':' + String(m).padStart(2, '0') : m) + ':' + String(x).padStart(2, '0'); };
 function sessSeconds() {
-    const S = myGym().sess; if (!S || !S.start) return 0;
+    const S = myGym().sess; if (!S || !S.start || !Number.isFinite(+S.start)) return 0;
     const end = S.pausedAt || Date.now();
     return Math.max(0, Math.round((end - S.start - (S.pausedMs || 0)) / 1000));
 }

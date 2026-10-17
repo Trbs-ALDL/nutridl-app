@@ -1,5 +1,18 @@
 # Cambios de nutriDL
 
+## 3.7.0 · 18 de octubre de 2026
+
+**Gym**
+- **Tus ejercicios en el buscador**: al escribir un ejercicio salen también los que creaste tú (marcados «Tuyo»), y sin escribir nada aparecen como atajos en «Tus ejercicios». Al elegir uno se usa el mismo nombre de siempre, así su historial y «Última vez» siguen juntos.
+
+**Comida**
+- **26 alimentos y platos colombianos** con los valores oficiales de la Tabla de Composición de Alimentos Colombianos (ICBF, 2018), con su energía oficial: almojábana (bogotana y vallecaucana), pandebono, pandeyuca, pan de queso, arepas colombianas, envuelto de mazorca, bollo limpio, carimañola, empanada de pipián, ajiaco, bandeja paisa, lechona, tamal tolimense, sancochos, mote de queso, mute, mazamorra chiquita, arroz atollado y clavado, cuy, friche y viudo de bocachico.
+- **Salchipapa**: calculada como receta con dos alimentos de esa misma tabla ya cocinados (2/3 papa frita a la francesa + 1/3 salchicha), sin salsas.
+- El buñuelo no está en ninguna tabla oficial (Colombia, Perú ni USDA): no se añade para no inventar cifras. Se puede crear con «Crear alimento» o escanear el paquete.
+
+**Seguridad**
+- Los nombres de producto que llegan al escanear un código de barras se guardan como texto limpio, igual que las copias importadas, y el código se limita a 14 números.
+
 ## 3.6.0 · 17 de octubre de 2026
 
 **Gym**

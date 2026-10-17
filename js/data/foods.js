@@ -447,8 +447,8 @@ CHAIN_FOODS.forEach(([id, name, brand, kcal, p, c, f, fib, sug, serv, ml, src]) 
     FOODS.push({ id, name, brand, cat: 'marca', fast: 1, role, meals: 'BSLD', p, f, c, fib, kcal, min: 0, max: 0, flags: '', diaryOnly: 1, ...(serv ? { serv } : {}), ...(sug != null ? { sug } : {}), ...(ml ? { ml: 1 } : {}), src });
 });
 // </cadenas>
-// <usda> (lo genera tools/genericos/embed.js · USDA FoodData Central: SR Legacy y FNDDS, dominio público · 2026-10-16)
-// Alimentos crudos y cocinados con su ficha oficial (fdc = número de la ficha). HC sin fibra, como las etiquetas de la UE.
+// <usda> (lo genera tools/genericos/embed.js · USDA FoodData Central: SR Legacy y FNDDS, dominio público · ICBF: Tabla de Composición de Alimentos Colombianos 2018 · 2026-10-17)
+// Alimentos crudos y cocinados con su ficha oficial (fdc = ficha del USDA · icbf = código de la tabla colombiana). HC sin fibra, como las etiquetas de la UE.
 D("u_pollo_asado_sin", "Pechuga de pollo asada (sin piel)", 'prot', 31, 3.6, 0, 0, [120,"filete","filetes"], '', 'M', {"sug":0,"fdc":171477});
 D("u_pollo_guisado", "Pechuga de pollo guisada / hervida", 'prot', 29, 3, 0, 0, [120,"filete","filetes"], '', 'M', {"sug":0,"fdc":171478});
 D("u_pollo_frito_sin", "Pechuga de pollo frita (sin rebozar)", 'prot', 33.4, 4.7, 0.5, 0, [120,"filete","filetes"], '', 'M', {"sug":0,"fdc":171078});
@@ -826,6 +826,32 @@ D("u_pulled_pork_bocadillo", "Bocadillo de pulled pork con salsa barbacoa", 'pla
 D("u_ternera_barbacoa", "Ternera desmigada a la barbacoa (pulled beef)", 'prot', 19.8, 10.8, 11.9, 0.3, [180,"ración","raciones"], '', 'M', {"sug":10,"fdc":2706390});
 D("u_pollo_barbacoa", "Pollo a la barbacoa", 'prot', 19, 4.6, 11.9, 0.3, [180,"ración","raciones"], '', 'M', {"sug":10,"fdc":2706434});
 D("u_costilla_barbacoa_bocadillo", "Bocadillo de costilla a la barbacoa", 'platos', 13.7, 6.5, 25.6, 0.9, [190,"bocadillo","bocadillos"], '', 'MG', {"sug":9.1,"fdc":2706974});
+D("u_co_almojabana", "Almojábana (bogotana, horneada)", 'hc', 13, 12.3, 30.6, 0, [60,"almojábana","almojábanas"], '', 'VL', {"icbf":"A002","kcal":285});
+D("u_co_almojabana_valle", "Almojábana vallecaucana (horneada)", 'hc', 17.5, 14.7, 34.6, 0, [60,"almojábana","almojábanas"], '', 'VL', {"icbf":"A003","kcal":341});
+D("u_co_pandebono", "Pandebono (horneado)", 'hc', 15.8, 10.1, 50.7, 0, [50,"pandebono","pandebonos"], '', 'VL', {"icbf":"A070","kcal":357});
+D("u_co_pandeyuca", "Pandeyuca / pan de yuca colombiano (horneado)", 'hc', 15.8, 12.2, 45.5, 0, [50,"pandeyuca","pandeyucas"], '', 'VL', {"icbf":"A067","kcal":355});
+D("u_co_pan_queso", "Pan de queso (horneado)", 'hc', 10.4, 20.8, 31.4, 2.1, [50,"pan","panes"], '', 'VGL', {"icbf":"A065","kcal":367});
+D("u_co_arepa_queso", "Arepa de maíz con queso, asada (colombiana)", 'hc', 4.8, 8.4, 29, 0, [120,"arepa","arepas"], '', 'VL', {"icbf":"A007","kcal":211});
+D("u_co_arepa_asada", "Arepa de maíz asada (colombiana)", 'hc', 4.1, 0, 36.3, 0, [100,"arepa","arepas"], '', 'N', {"icbf":"A006","kcal":162});
+D("u_co_envuelto_mazorca", "Envuelto de mazorca", 'hc', 4.8, 7.9, 22.7, 0.8, [120,"envuelto","envueltos"], '', 'VL', {"icbf":"A019","kcal":186});
+D("u_co_bollo_limpio", "Bollo limpio (de maíz)", 'hc', 3.3, 4.8, 26.7, 2.4, [150,"bollo","bollos"], '', 'N', {"icbf":"S005","kcal":178});
+D("u_co_salchipapa", "Salchipapa (papas fritas con salchicha, sin salsas)", 'platos', 6.9, 17.2, 25, 2.5, [300,"ración","raciones"], '', 'M', {"icbf":"receta: 2/3 B069 papa frita a la francesa + 1/3 F125 salchicha de cerdo y res","kcal":297});
+D("u_co_carimanola", "Carimañola de queso", 'platos', 5.8, 17.4, 28.6, 0, [80,"carimañola","carimañolas"], '', 'VL', {"icbf":"S006","kcal":295});
+D("u_co_empanada_pipian", "Empanada de pipián (frita)", 'platos', 4.7, 26.3, 33.5, 1.1, [60,"empanada","empanadas"], '', 'V', {"icbf":"S011","kcal":396});
+D("u_co_ajiaco", "Ajiaco santafereño", 'platos', 6.4, 0.8, 9.1, 2.2, [450,"plato","platos"], '', 'M', {"icbf":"S001","kcal":82});
+D("u_co_bandeja_paisa", "Bandeja paisa", 'platos', 11.7, 11, 13, 2.3, [700,"plato","platos"], '', 'M', {"icbf":"S004","kcal":212});
+D("u_co_arroz_atollado", "Arroz atollado", 'platos', 10.1, 4.3, 7.5, 1.7, [350,"plato","platos"], '', 'M', {"icbf":"S002","kcal":119});
+D("u_co_arroz_clavado", "Arroz clavado", 'platos', 6.4, 5.5, 25.9, 0.5, [300,"plato","platos"], '', 'L', {"icbf":"S003","kcal":182});
+D("u_co_lechona", "Lechona tolimense", 'platos', 21.8, 12, 7.3, 2.9, [350,"ración","raciones"], '', 'M', {"icbf":"S018","kcal":242});
+D("u_co_tamal_tolimense", "Tamal tolimense", 'platos', 5.7, 3.8, 12.7, 4, [400,"tamal","tamales"], '', 'M', {"icbf":"S032","kcal":132});
+D("u_co_sancocho_gallina", "Sancocho valluno de gallina", 'platos', 16.4, 4, 2.9, 1.3, [500,"plato","platos"], '', 'M', {"icbf":"S025","kcal":121});
+D("u_co_sancocho_bagre", "Sancocho de bagre", 'platos', 16.9, 6.3, 0.1, 1.5, [500,"plato","platos"], '', 'P', {"icbf":"S024","kcal":134});
+D("u_co_mote_queso", "Mote de queso", 'platos', 5.4, 3.9, 8, 2.2, [400,"plato","platos"], '', 'VL', {"icbf":"S020","kcal":102});
+D("u_co_mute", "Mute santandereano", 'platos', 8.1, 6.1, 3.5, 1.9, [450,"plato","platos"], '', 'M', {"icbf":"S021","kcal":113});
+D("u_co_mazamorra_chiquita", "Mazamorra chiquita", 'platos', 9.8, 5, 3.1, 3, [400,"plato","platos"], '', 'M', {"icbf":"S019","kcal":115});
+D("u_co_cuy_asado", "Cuy asado", 'platos', 24.4, 7.8, 13.7, 1.1, [250,"ración","raciones"], '', 'M', {"icbf":"S010","kcal":229});
+D("u_co_friche", "Friche de chivo", 'platos', 29.7, 12.9, 0.8, 0.8, [250,"ración","raciones"], '', 'M', {"icbf":"S015","kcal":243});
+D("u_co_viudo_bocachico", "Viudo de bocachico", 'platos', 13.2, 4.1, 6.7, 1.1, [450,"plato","platos"], '', 'P', {"icbf":"S033","kcal":123});
 // </usda>
 // <marcas> (lo genera tools/marcas/off_embed.js · datos: Open Food Facts, licencia ODbL · 2026-10-16)
 const BRAND_FOODS = [

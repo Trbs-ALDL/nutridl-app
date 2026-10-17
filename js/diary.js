@@ -72,7 +72,7 @@ async function offProduct(code) {
     } finally { OFF_LIMIT.busy = false; if (timer) clearTimeout(timer); }
 }
 async function lookupBarcode(raw) {
-    const code = String(raw || '').replace(/\D/g, '');
+    const code = String(raw || '').replace(/\D/g, '').slice(0, 14);
     if (code.length < 8) { toast('Escribe un código de 8 a 14 números'); return; }
     if (scan) { scan.stop = true; if (scan.stream) scan.stream.getTracks().forEach(t => t.stop()); }
     const slot = (scan && scan.slot) || slotByHour();
@@ -88,8 +88,10 @@ async function lookupBarcode(raw) {
         const P = +n.proteins_100g || 0, G = +n.fat_100g || 0, C = +n.carbohydrates_100g || 0, Fi = +n.fiber_100g || 0;
         const Su = n.sugars_100g != null && isFinite(+n.sugars_100g) ? +n.sugars_100g : null;
         if (kcal < 0 || kcal > 950 || P + G + C > 101) throw new Error('datos raros');
-        const name = String(p.product_name_es || p.product_name || 'Producto ' + code).trim().slice(0, 60);
-        const brand = String(p.brands || '').split(',')[0].trim().slice(0, 30);
+        // Seguridad: lo que llega de Internet se guarda como texto limpio (sin < > " ' ` \), igual que las copias importadas
+        const clean = v => String(v || '').replace(/[<>"'`\\]/g, '').trim();
+        const name = (clean(p.product_name_es) || clean(p.product_name) || 'Producto ' + code).slice(0, 60);
+        const brand = clean(String(p.brands || '').split(',')[0]).slice(0, 30);
         const food = { id: 'b_' + code, name, brand, cat: 'custom', role: P * 4 >= Math.max(C * 4, G * 9) ? 'protein' : G * 9 > C * 4 ? 'fat' : 'carb', meals: 'BSLD', p: round1(P), f: round1(G), c: round1(C), fib: round1(Fi), kcal: Math.round(kcal), min: 0, max: 0, flags: '', custom: 1, barcode: code, off: code };
         if (Su != null && Su <= C + 0.5) food.sug = round1(Su);
         const sq = +p.serving_quantity; if (sq > 0 && sq < 1000) food.serv = [sq, 'ración', 'raciones'];
@@ -335,7 +337,7 @@ function fsRender() {
             <button type="button" onclick="fs.mode='create';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-plus text-mint-400"></i> Crear alimento</button>
             <button type="button" onclick="fs.mode='quick';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-bolt text-mint-400"></i> Apuntar solo calorías</button>
         </div>
-        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">Alimentos genéricos y platos: USDA FoodData Central (dominio público). Productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comida rápida: información nutricional oficial de cada cadena en España. Comprueba la etiqueta: las recetas cambian.</p>' : ''}`;
+        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">Alimentos genéricos y platos: USDA FoodData Central (dominio público) y, para Colombia, la Tabla de Composición de Alimentos Colombianos del ICBF (2018). Productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comida rápida: información nutricional oficial de cada cadena en España. Comprueba la etiqueta: las recetas cambian.</p>' : ''}`;
     $('fs-body').scrollTop = 0;
 }
 function fsQuickAdd(id) {
