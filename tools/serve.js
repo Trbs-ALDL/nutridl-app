@@ -7,7 +7,8 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; ch
 const ZIP = new Set(['.html', '.js', '.css', '.json', '.webmanifest', '.svg', '.md']);
 http.createServer((req, res) => {
     const url = decodeURIComponent(req.url.split('?')[0]);
-    const file = path.normalize(path.join(ROOT, url === '/' ? 'index.html' : url));
+    // Como GitHub Pages: una carpeta (acaba en /) sirve su index.html
+    const file = path.normalize(path.join(ROOT, url.endsWith('/') ? url + 'index.html' : url));
     if (file !== ROOT && !file.startsWith(ROOT + path.sep)) { res.writeHead(403); return res.end(); }
     fs.readFile(file, (err, data) => {
         if (err) { res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' }); return res.end('No encontrado'); }

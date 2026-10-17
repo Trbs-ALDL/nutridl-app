@@ -1,7 +1,7 @@
 // nutriDL · service worker (generado por tools/build-sw.js; no editar a mano)
 // Se abre al instante con la copia guardada y se refresca desde la red por detrás. Sin internet: la copia guardada.
 // Las consultas a Open Food Facts no pasan por aquí.
-const CACHE = 'nutridl-a6c1e75e13';
+const CACHE = 'nutridl-fcdb19846e';
 const FILES = [
   "./css/app.css",
   "./css/fonts.css",
@@ -57,6 +57,8 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
     const req = e.request, url = new URL(req.url);
     if (req.method !== 'GET' || url.origin !== location.origin) return;
+    // Las páginas públicas «Calorías de…» (alimentos/) van siempre por la red: no son la app ni se guardan en el móvil
+    if (url.pathname.includes('/alimentos/')) return;
     // Abre AL INSTANTE con la copia guardada de esta versión y, a la vez, la refresca desde la red.
     // (Antes esperaba a la red hasta 4 s en cada apertura.) Las versiones nuevas llegan con un sw.js nuevo:
     // se instala por detrás y la app se recarga sola una vez (main.js), con todo lo apuntado ya guardado.

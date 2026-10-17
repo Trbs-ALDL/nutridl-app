@@ -17,6 +17,7 @@ function closeWizard() {
     wz.timers.forEach(clearTimeout); wz.timers = []; $('wizard').classList.add('hidden'); document.body.style.overflow = '';
     // Si se cancela la creación de una persona nueva, se vuelve al perfil que había
     if (wz.mode === 'create' && !wz.done && wz.prevProfile) { const prev = wz.prevProfile; wz.prevProfile = null; switchProfile(prev, true); }
+    if (wz.done && typeof pendingFoodLink === 'function') pendingFoodLink();
 }
 function wzSet(k, v) { state[k] = v; wzNext(); }
 // Entrenamiento de fuerza: si aún no has elegido tus días de gym, se preparan con ese número

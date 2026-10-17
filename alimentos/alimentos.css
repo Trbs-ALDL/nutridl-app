@@ -1,0 +1,17 @@
+/* Generado por tools/seo/paginas.js: estilos de las páginas «Calorías de…» */
+.kcal { font: 600 3.4rem/1 'Newsreader', Georgia, serif; color: #faf7f3; margin: 18px 0 2px; }
+.kcal small { font: 600 1rem 'Plus Jakarta Sans', sans-serif; color: #aea396; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #2a231c; }
+th { color: #aea396; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; }
+td + td, th + th { text-align: right; }
+td + td { white-space: nowrap; }
+.bar { display: flex; height: 12px; border-radius: 99px; overflow: hidden; margin: 10px 0 6px; background: #2a231c; }
+.bar span:nth-child(1) { background: #a0714b; } .bar span:nth-child(2) { background: #e6d3b3; } .bar span:nth-child(3) { background: #f59e0b; }
+.cta { display: block; text-align: center; margin: 26px 0; padding: 16px; border-radius: 16px; background: #9a6b40; color: #fff; font-weight: 800; text-decoration: none; }
+.cta:hover { background: #855c36; color: #fff; }
+.rel { list-style: none; padding: 0; display: grid; gap: 8px; }
+.rel li { margin: 0; } .rel a { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #1a1612; text-decoration: none; }
+.rel span { color: #aea396; white-space: nowrap; }
+.idx { columns: 2 16rem; column-gap: 24px; padding-left: 1em; } .idx li { break-inside: avoid; }
+nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; } nav.toc a { padding: 6px 10px; border-radius: 99px; background: #1a1612; text-decoration: none; font-size: .9rem; }

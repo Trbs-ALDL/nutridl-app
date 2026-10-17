@@ -7,6 +7,7 @@ App de calorías, comidas y gym. HTML + JS sin framework, Tailwind 3 precompilad
 - `npm run build` — iconos + CSS + service worker (ejecutar tras añadir clases de Tailwind o iconos)
 - `npm run css` — solo regenerar el CSS
 - `npm test` — pruebas (`node --test`)
+- `npm run seo` — regenera las páginas públicas «Calorías de…» (`alimentos/`, una por alimento con fuente) y `sitemap.xml`. **Ejecutarlo siempre que cambie `js/data/foods.js`.**
 
 ## Reglas
 - Secciones quitadas por orden de Ángel (calibrar TDEE, base científica, hábitos, FAQ): no volver a añadirlas.

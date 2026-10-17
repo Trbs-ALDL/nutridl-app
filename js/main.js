@@ -38,6 +38,10 @@ function init() {
     else if (accion === 'voz') { showTab('food'); openVoiceLog(); }
     else if (accion === 'coach') showTab('coach');
     else if (accion === 'nevera') { showTab('coach'); openFridge(); }
+    const alimento = new URLSearchParams(location.search).get('alimento');
+    if (alimento) openFoodFromLink(alimento);
+    // Se limpia la dirección para que al recargar no se repita la acción
+    if (accion || alimento) try { history.replaceState(null, '', location.pathname); } catch (e) { }
     renderInstall();
     track('visit'); renderLocks();
     // Copia automática del día y petición al navegador para que NO borre los datos de la app por falta de espacio

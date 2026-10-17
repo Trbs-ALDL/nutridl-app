@@ -1,5 +1,13 @@
 # Cambios de nutriDL
 
+## 3.8.0 · 18 de octubre de 2026
+
+- **1.911 páginas públicas «Calorías de…»** (`alimentos/`), una por cada alimento con fuente comprobable (etiqueta de Open Food Facts, USDA, ICBF o web oficial del restaurante): calorías y macros por 100 g y por ración, reparto de calorías, fuente enlazada, alimentos parecidos e índice por marcas y grupos. Lighthouse móvil de una ficha: 99 · 100 · 100 · 100. Se generan con `npm run seo`.
+- **Botón «Apúntalo en nutriDL»** en cada ficha: abre la app con ese alimento listo para añadir (`?alimento=id`). Si aún no hay perfil, avisa y lo abre al terminar de crearlo.
+- El modo sin conexión deja pasar las páginas de `alimentos/` (no se guardan en el móvil ni se confunden con la app).
+- Pie de la app: enlace «Calorías de los alimentos». `sitemap.xml` con todas las páginas.
+- Servidor local: una carpeta abre su `index.html`, como en GitHub Pages.
+
 ## 3.7.1 · 18 de octubre de 2026
 
 - **Abre antes**: las fuentes se declaran dentro de la página (una petición menos antes del primer pintado). `npm run build` las copia siempre de `css/fonts.css`.

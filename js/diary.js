@@ -292,6 +292,21 @@ function openFoodSheet(slot) {
     fsRender();
     setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 60);
 }
+// Enlace desde las páginas «Calorías de…» (?alimento=id): abre ese alimento listo para apuntar.
+// Sin perfil, se guarda y se abre al terminar de crearlo (ver closeWizard).
+const FOOD_LINK_KEY = 'nd_food_link';
+function openFoodFromLink(id) {
+    if (!getFood(id)) return;
+    if (!profiles.current) {
+        try { sessionStorage.setItem(FOOD_LINK_KEY, id); } catch (e) { }
+        toast(`Crea tu perfil (2 minutos) y te abro «${getFood(id).name}» para apuntarlo`); return;
+    }
+    showTab('food'); openFoodSheet(); fsOpen(id); track('food_link');
+}
+function pendingFoodLink() {
+    let id = null; try { id = sessionStorage.getItem(FOOD_LINK_KEY); sessionStorage.removeItem(FOOD_LINK_KEY); } catch (e) { }
+    if (id && profiles.current) setTimeout(() => openFoodFromLink(id), 350);
+}
 function closeFoodSheet() { $('food-sheet').classList.add('hidden'); document.body.style.overflow = ''; }
 function fsBack() { fs.mode = 'list'; fs.food = null; fs.editId = null; fsRender(); setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 30); }
 function fsRenderTitle() {
