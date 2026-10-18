@@ -1,5 +1,9 @@
 # Cambios de nutriDL
 
+## 3.8.1 · 19 de octubre de 2026
+
+- **Seguridad de PRO:** la app comprueba que el código guardado es uno válido (antes bastaba con que hubiera algo guardado) y que una prueba gratis no dure más de 7 días. Quien ya activó PRO con su código o está en su prueba no nota nada.
+
 ## 3.8.0 · 18 de octubre de 2026
 
 - **1.911 páginas públicas «Calorías de…»** (`alimentos/`), una por cada alimento con fuente comprobable (etiqueta de Open Food Facts, USDA, ICBF o web oficial del restaurante): calorías y macros por 100 g y por ración, reparto de calorías, fuente enlazada, alimentos parecidos e índice por marcas y grupos. Lighthouse móvil de una ficha: 99 · 100 · 100 · 100. Se generan con `npm run seo`.

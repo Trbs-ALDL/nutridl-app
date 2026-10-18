@@ -118,6 +118,12 @@ test('PRO: lo de pago no se puede usar sin PRO; la prueba de 7 días lo abre', (
     assert.equal(run("canUse('shop') && canUse('voice') && canUse('menu')"), true);
     run("localStorage.setItem('nutridl_pro', JSON.stringify({ trialUsed: 1, trialEnd: Date.now() - 1000 }))");
     assert.equal(run("isPro()"), false, 'la prueba caduca');
+    run("localStorage.setItem('nutridl_pro', JSON.stringify({ trialUsed: 1, trialEnd: Date.now() + 365 * 86400000 }))");
+    assert.equal(run("isPro()"), false, 'una prueba inventada de un año no cuela');
+    run("localStorage.setItem('nutridl_pro', JSON.stringify({ code: 'cualquier-cosa' }))");
+    assert.equal(run("isPro()"), false, 'un código inventado no activa PRO');
+    run("localStorage.setItem('nutridl_pro', JSON.stringify({ code: PRO_CODES[0] }))");
+    assert.equal(run("isPro()"), true, 'quien ya canjeó un código válido sigue siendo PRO');
 });
 
 test('Mi nevera: solo propone platos con lo que tienes (o dice qué falta)', () => {

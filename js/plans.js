@@ -46,10 +46,13 @@ const PLAN_FEATURES = [
 
 function proData() { try { return JSON.parse(localStorage.getItem(PRO_KEY) || '{}') || {}; } catch (e) { return {}; } }
 function setProData(d) { try { localStorage.setItem(PRO_KEY, JSON.stringify(d)); } catch (e) { } }
+const TRIAL_MS = 7 * 86400000;
 function isPro() {
     const d = proData();
-    if (d.code) return true;
-    return !!(d.trialEnd && Date.now() < d.trialEnd);
+    // El código guardado tiene que ser una huella válida: escribir cualquier cosa en el almacenamiento no basta
+    if (d.code && PRO_CODES.includes(d.code)) return true;
+    // Una prueba nunca dura más de 7 días desde ahora (evita fechas de fin inventadas a años vista)
+    return !!(d.trialEnd && Date.now() < d.trialEnd && d.trialEnd - Date.now() <= TRIAL_MS + 3600000);
 }
 const trialDaysLeft = () => { const d = proData(); return d.trialEnd && !d.code ? Math.max(0, Math.ceil((d.trialEnd - Date.now()) / 86400000)) : 0; };
 const canUse = feature => !PRO_FEATURES[feature] || isPro();
@@ -104,7 +107,7 @@ function openPaywall(feature) {
 function afterProChange() { closeSheet(); renderDashboard(); renderDiary(); if (state.tab === 'coach') renderCoach(); if (state.tab === 'progress') renderProgress(); }
 function startTrial() {
     const d = proData(); if (d.trialUsed) return;
-    setProData({ ...d, trialUsed: 1, trialEnd: Date.now() + 7 * 86400000 });
+    setProData({ ...d, trialUsed: 1, trialEnd: Date.now() + TRIAL_MS });
     track('pro_trial'); afterProChange(); celebrate('👑', 'PRO activado 7 días', 'Prueba todo sin límites');
 }
 function payPro() {
