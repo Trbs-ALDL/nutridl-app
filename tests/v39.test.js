@@ -97,3 +97,21 @@ test('Coach: una pregunta nunca se apunta sola en el diario', () => {
     run("coachReply('He comido arroz')");
     assert.equal(run("state.diary[todayISO()].length"), 1, 'apuntar sigue funcionando');
 });
+
+test('Coach: un alimento con apóstrofo o comillas no rompe ni cuela código en los botones', () => {
+    const { run, json } = loadApp();
+    conPlan(run);
+    // Nombre legítimo con apóstrofo, y uno con un intento de colar código
+    run(`state.customFoods = [
+        { id: 'c_test1', name: "Yogur O'Brien", cat: 'custom', role: 'protein', meals: 'BSLD', p: 10, f: 3, c: 5, fib: 0, min: 0, max: 0, flags: '', custom: 1 },
+        { id: 'c_test2', name: "Tarta '); alert(1);//", cat: 'custom', role: 'carb', meals: 'BSLD', p: 2, f: 10, c: 40, fib: 0, min: 0, max: 0, flags: '', custom: 1 }];
+        syncCustomFoods();`);
+    const h = String(json(`coachReply("¿mmm el o'brien ese?")`).html);
+    assert.match(h, /O&#39;Brien|O\u0027Brien|O&#x27;Brien/, 'el apóstrofo va escapado dentro del onclick');
+    // Lo decisivo: al decodificar el atributo como hace el navegador, el argumento sigue siendo UNA cadena cerrada
+    const arg = h.match(/onclick="coachSend\((.*?)\)"/);
+    assert.ok(arg, 'el botón se genera');
+    const decoded = arg[1].replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+    assert.doesNotThrow(() => JSON.parse(decoded), 'el argumento es una cadena JSON válida, no código suelto');
+    assert.doesNotMatch(decoded, /alert\(/);
+});

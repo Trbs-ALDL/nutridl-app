@@ -74,3 +74,6 @@ Marca cada fase como HECHA aquí al terminarla.
 - Tras tocar `js/data/foods.js`: `npm run seo`. Tras tocar clases o iconos: `npm run build`.
 - Publicar: subir `APP_VERSION` (js/core.js), `package.json` y `CHANGELOG.md`, luego commit y push a `main`.
 - Los códigos PRO están **fuera del repo**, en `Desktop/Trbs-aldl/Nutri versions/`. Nunca mostrarlos.
+- **Texto dentro de un `onclick`**: `esc()` solo vale para el contenido HTML. Dentro de un atributo
+  `onclick` hay que hacer `esc(JSON.stringify(texto))`, porque el navegador deshace `&#39;` antes de
+  leer el JavaScript y un nombre con apóstrofo (o con código) se saldría de la cadena.

@@ -289,11 +289,14 @@ if (RX.menu.test(q)) { if (!canUse('menu')) return proReply('menu'); setTimeout(
     const guess = foodIn(q, /\b(que|como|cuanto|cuanta|sobre|dime|oye|cosa|rara|raro|ese|esa|esto)\b/g)
         || q.replace(/[?¿!¡.,;]/g, ' ').replace(RELLENO, ' ').split(/\s+/).filter(w => w.length > 3)
             .sort((a, b) => b.length - a.length).map(w => matchFoods(w, 1)[0]).find(Boolean);
-    if (guess) return { r: 'c', tags: ['base'], html: `<p>No estoy seguro de qué me preguntas, pero veo que hablas de ${emo(guess)} <b>${esc(guess.name)}</b>. ¿Te refieres a esto?</p>
+    if (guess) {
+        const ask = t => `onclick="coachSend(${esc(JSON.stringify(t))})"`;
+        return { r: 'c', tags: ['base'], html: `<p>No estoy seguro de qué me preguntas, pero veo que hablas de ${emo(guess)} <b>${esc(guess.name)}</b>. ¿Te refieres a esto?</p>
         <div class="flex flex-wrap gap-2 mt-3">
-        <button onclick="coachSend('¿Cuántas calorías tiene ${esc(guess.name)}?')" class="px-3 py-2 rounded-xl bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100">Sus calorías</button>
-        <button onclick="coachSend('¿Puedo comer ${esc(guess.name)}?')" class="px-3 py-2 rounded-xl bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100">Si me cabe hoy</button>
-        <button onclick="coachSend('He comido ${esc(guess.name)}')" class="px-3 py-2 rounded-xl bg-mint-600 text-white text-xs font-extrabold">Apuntarlo</button></div>` };
+        <button ${ask(`¿Cuántas calorías tiene ${guess.name}?`)} class="px-3 py-2 rounded-xl bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100">Sus calorías</button>
+        <button ${ask(`¿Puedo comer ${guess.name}?`)} class="px-3 py-2 rounded-xl bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100">Si me cabe hoy</button>
+        <button ${ask(`He comido ${guess.name}`)} class="px-3 py-2 rounded-xl bg-mint-600 text-white text-xs font-extrabold">Apuntarlo</button></div>` };
+    }
     return { r: 'c', tags: ['rec'], html: `<p>No estoy seguro de haberte entendido. Puedo:</p><ul class="nd-list"><li>Apuntar lo que has comido: «200 g de pollo y una ensalada»</li><li>Decirte cuánto te queda hoy</li><li>Proponerte qué comer: «¿Qué ceno con 600 kcal?»</li><li>Darte ideas para comer fuera</li><li>Contarte cómo vas esta semana</li></ul>` };
 }
 function replyLeft() {
