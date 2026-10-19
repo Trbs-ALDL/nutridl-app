@@ -26,6 +26,12 @@ function loadApp() {
 const setupDay = run => run(`state.gym = { myDays: 1, plan: [{ name: 'Pierna', ex: [{ id: 'sq_barra', n: 'Sentadilla', s: [{ kg: '100', r: '8' }, { kg: '80', r: '10', t: 'drop', d: [{ kg: '60', r: '8' }, { kg: '40', r: '6' }] }] }] }] }; state.workouts = []; gymDay = 0;`);
 
 
+// Reloj de mentira: cada prueba fija su hora y su día para no depender de cuándo se ejecute
+// (en GitHub corren en UTC, y un lunes salía un momento distinto).
+const RELOJ = { h: Date.prototype.getHours, d: Date.prototype.getDay };
+const reloj = (run, hora, dia) => run(`Date.prototype.getHours = () => ${hora}; Date.prototype.getDay = () => ${dia};`);
+test.afterEach(() => { Date.prototype.getHours = RELOJ.h; Date.prototype.getDay = RELOJ.d; });
+
 const planHecho = run => run("Object.assign(state, { gender:'male', age:30, height:178, weight:75, activity:1.55, calcOk:true, goalType:'lose' }); compute(); state.diary={}; state.weights=[]; state.workouts=[]; state.moments={};");
 // Apunta una comida en un día concreto (para fabricar rachas y semanas)
 const apunta = (run, iso) => run(`pushDiary(${JSON.stringify({ fid: 'pollo', g: 150, kcal: 250, p: 45, c: 0, f: 5, fib: 0, slot: 'L' })}, '${iso}')`);
@@ -33,6 +39,7 @@ const apunta = (run, iso) => run(`pushDiary(${JSON.stringify({ fid: 'pollo', g: 
 test('Momento: vuelve después de días fuera, sin regañar', () => {
     const { run, json } = loadApp();
     planHecho(run);
+    reloj(run, 12, 5);
     apunta(run, run("shiftISO(todayISO(), -5)"));
     const m = json('dayMoment()');
     assert.equal(m.k, 'back');
@@ -46,13 +53,13 @@ test('Momento: vuelve después de días fuera, sin regañar', () => {
 test('Momento: la racha en peligro solo avisa por la tarde y si es verdad', () => {
     const { run, json } = loadApp();
     planHecho(run);
+    reloj(run, 9, 5); // viernes por la mañana: fuera de la ventana del resumen semanal
     [3, 2, 1].forEach(n => apunta(run, run(`shiftISO(todayISO(), -${n})`)));
     assert.equal(json('streakInfo()').cur, 3);
     // Por la mañana no molesta
-    run("Date.prototype.getHours = () => 9;");
     assert.notEqual((json('dayMoment()') || {}).k, 'risk');
     // Por la tarde sí, porque hoy aún no hay nada
-    run("Date.prototype.getHours = () => 20;");
+    reloj(run, 20, 5);
     const m = json('dayMoment()');
     assert.equal(m.k, 'risk');
     assert.match(m.kicker, /3 días/);
@@ -64,7 +71,7 @@ test('Momento: la racha en peligro solo avisa por la tarde y si es verdad', () =
 test('Momento: resumen de la semana pasada, una sola vez por semana', () => {
     const { run, json } = loadApp();
     planHecho(run);
-    run("Date.prototype.getDay = () => 1;"); // hacemos que hoy sea lunes
+    reloj(run, 12, 1); // lunes a mediodía: toca resumen y la racha no corre peligro
     // Lunes de esta semana y 5 días apuntados de la semana anterior
     const lunes = run("mondayOf(todayISO())");
     for (let i = 1; i <= 5; i++) apunta(run, run(`shiftISO('${lunes}', -${i})`));
@@ -82,7 +89,7 @@ test('Momento: resumen de la semana pasada, una sola vez por semana', () => {
 test('Momento: el recordatorio se ofrece una vez y solo tras usar la app', () => {
     const { run, json } = loadApp();
     planHecho(run);
-    run("Date.prototype.getHours = () => 12;");
+    reloj(run, 12, 5);
     apunta(run, run("shiftISO(todayISO(), -1)"));
     assert.notEqual((json('dayMoment()') || {}).k, 'remind', 'con un solo día no se ofrece');
     apunta(run, run("shiftISO(todayISO(), -2)"));
@@ -95,6 +102,7 @@ test('Momento: el recordatorio se ofrece una vez y solo tras usar la app', () =>
 
 test('Momento: sin plan hecho no se enseña ninguno', () => {
     const { run, json } = loadApp();
+    reloj(run, 12, 5);
     run("state.diary={}; state.moments={}; state.calcOk=false; calc={};");
     assert.equal(json('dayMoment()'), null);
 });
@@ -102,10 +110,24 @@ test('Momento: sin plan hecho no se enseña ninguno', () => {
 test('Momento: como mucho un aviso al día, sin encadenar uno tras otro', () => {
     const { run, json } = loadApp();
     planHecho(run);
-    run("Date.prototype.getHours = () => 12;");
+    reloj(run, 12, 5);
     [2, 1, 0].forEach(n => apunta(run, run(`shiftISO(todayISO(), -${n})`)));
     assert.equal(json('dayMoment()').k, 'remind');
     // Si hoy ya has atendido otro aviso, el recordatorio espera a mañana
     run("state.moments = { last: todayISO() }");
     assert.equal(json('dayMoment()'), null);
+});
+
+test('Momento: la racha que caduca hoy gana al resumen semanal', () => {
+    const { run, json } = loadApp();
+    planHecho(run);
+    // Lunes por la tarde: podrían salir los dos. El resumen aguanta hasta el miércoles; la racha no.
+    reloj(run, 20, 1);
+    const lunes = run("mondayOf(todayISO())");
+    for (let i = 1; i <= 5; i++) apunta(run, run(`shiftISO('${lunes}', -${i})`));
+    assert.equal(json('streakInfo()').cur >= 2, true);
+    assert.equal(json('dayMoment()').k, 'risk', 'primero lo que caduca hoy');
+    // Al apuntar algo hoy, la racha deja de correr peligro y entonces sí toca el resumen
+    apunta(run, run('todayISO()'));
+    assert.equal(json('dayMoment()').k, 'week');
 });

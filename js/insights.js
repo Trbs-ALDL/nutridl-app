@@ -83,7 +83,15 @@ function dayMoment() {
         sub: `Tu plan sigue donde lo dejaste: ${fmt(calc.target)} kcal y ${fmt(calc.prot)} g de proteína. No hay nada que recuperar, se empieza por la comida de hoy.`,
         btn: ['Apuntar algo', 'openFoodSheet()'], btn2: ['Ahora no', "dismissMoment('back')"] };
 
-    // 2. Resumen de la semana pasada: lunes, martes o miércoles, una vez por semana
+    // 2. La racha se pierde esta noche: solo a partir de las 17 h y solo si es verdad.
+    //    Va antes que el resumen semanal: el resumen aguanta hasta el miércoles, la racha no.
+    if (S.cur >= 2 && !S.today && new Date().getHours() >= 17 && M.risk !== today) return {
+        k: 'risk', ic: '🔥', kicker: `Racha de ${S.cur} días`,
+        title: 'Hoy aún no has apuntado nada',
+        sub: `Con apuntar una comida la mantienes. ${S.cur === S.best ? 'Además es tu mejor racha hasta ahora.' : `Tu récord está en ${S.best} días.`}`,
+        btn: ['Apuntar en 10 segundos', 'openFoodSheet()'], btn2: ['Hoy no', "dismissMoment('risk')"] };
+
+    // 3. Resumen de la semana pasada: lunes, martes o miércoles, una vez por semana
     const lunes = mondayOf(today);
     if (new Date(today + 'T12:00:00').getDay() <= 3 && M.week !== lunes) {
         const W = weekStats(shiftISO(lunes, -1));
@@ -98,13 +106,6 @@ function dayMoment() {
                 btn2: ['Compartirla', `momentSeen('week','${lunes}'); shareProgress()`] };
         }
     }
-
-    // 3. La racha se pierde esta noche: solo a partir de las 17 h y solo si es verdad
-    if (S.cur >= 2 && !S.today && new Date().getHours() >= 17 && M.risk !== today) return {
-        k: 'risk', ic: '🔥', kicker: `Racha de ${S.cur} días`,
-        title: 'Hoy aún no has apuntado nada',
-        sub: `Con apuntar una comida la mantienes. ${S.cur === S.best ? 'Además es tu mejor racha hasta ahora.' : `Tu récord está en ${S.best} días.`}`,
-        btn: ['Apuntar en 10 segundos', 'openFoodSheet()'], btn2: ['Hoy no', "dismissMoment('risk')"] };
 
     // 4. Ofrecer el recordatorio diario una sola vez, cuando ya se sabe que la app le sirve
     if (S.total >= 3 && !M.remind && M.last !== today) return {

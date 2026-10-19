@@ -1,5 +1,10 @@
 # Cambios de nutriDL
 
+## 3.10.1 · 20 de octubre de 2026
+
+- **El aviso de racha manda sobre el resumen semanal.** Un lunes por la tarde podían salir los dos; ahora sale primero el que caduca hoy (la racha), porque el resumen aguanta hasta el miércoles.
+- Pruebas: ya no dependen del día ni del huso horario en el que se ejecuten (47, comprobadas en cuatro husos).
+
 ## 3.10.0 · 20 de octubre de 2026
 
 **La pestaña «Hoy» te dice lo que toca**
