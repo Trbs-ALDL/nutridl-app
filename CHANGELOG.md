@@ -1,5 +1,19 @@
 # Cambios de nutriDL
 
+## 3.9.0 · 20 de octubre de 2026
+
+**El Coach entiende mucho más**
+- **Se acuerda de lo que acabas de decir.** Si te propone cenas y escribes «otra», te da otras tres. Si escribes «¿y de desayuno?», cambia de comida sin repetir la pregunta. Si preguntas por un alimento, «¿y el arroz?» sigue hablando del arroz. La memoria dura 20 minutos.
+- **13 temas nuevos** que antes caían en «no te he entendido»: si puedes comer algo («¿puedo comer pizza?»), comparar dos alimentos («¿arroz o pasta?»), cuánta agua, alcohol, ayuno intermitente, suplementos, cuándo se ven resultados, estancamientos, haberse pasado un día, no tener hambre, qué sabe hacer, quién es y dar las gracias. Todas las respuestas usan tus números: tus calorías, tu proteína y lo que te queda hoy.
+- **Dice la verdad sobre lo que es**: si le preguntas si es una IA, responde que no, que funciona con reglas y con tus datos dentro de tu móvil. Por eso va sin cobertura y nada sale de tu teléfono.
+- **Si no entiende pero reconoce un alimento**, en vez de rendirse te ofrece sus calorías, si te cabe hoy o apuntarlo.
+- **Las frases ya no se repiten** palabra por palabra.
+- **Arreglado**: preguntar «¿y el arroz?» apuntaba arroz en el diario sin querer. Una pregunta ya nunca se apunta sola (si lleva cantidad, como «2 huevos», sí se apunta).
+
+**Por dentro**
+- 39 pruebas automáticas (5 nuevas).
+- `docs/ESTADO.md`: estado medido de la app y plan por fases.
+
 ## 3.8.1 · 19 de octubre de 2026
 
 - **Seguridad de PRO:** la app comprueba que el código guardado es uno válido (antes bastaba con que hubiera algo guardado) y que una prueba gratis no dure más de 7 días. Quien ya activó PRO con su código o está en su prueba no nota nada.

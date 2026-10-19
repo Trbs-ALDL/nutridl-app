@@ -1,7 +1,7 @@
 // nutriDL · service worker (generado por tools/build-sw.js; no editar a mano)
 // Se abre al instante con la copia guardada y se refresca desde la red por detrás. Sin internet: la copia guardada.
 // Las consultas a Open Food Facts no pasan por aquí.
-const CACHE = 'nutridl-6776de211f';
+const CACHE = 'nutridl-46aa39f6d7';
 const FILES = [
   "./css/app.css",
   "./css/fonts.css",
