@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.9.0';
+const APP_VERSION = '3.10.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -16,6 +16,8 @@ const DEFAULT_STATE = {
     gym: { level: 'beginner', days: 3, eq: 'gym' }, workouts: [], diary: {},
     // 3.0: preferencias para «¿Qué como?», menú del día, lista de la compra, logros y conversación con el Coach
     prefs: { diet: 'omni', allergies: [], dislikes: [], meals: 4, budget: 'normal', pantry: [] }, menu: null, shop: null, ach: {}, cel: {}, chat: [],
+    // 3.10: qué «momentos» (resumen semanal, racha en peligro…) ya se han enseñado, para no repetirlos
+    moments: {},
 };
 let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 let calc = {};
@@ -54,7 +56,7 @@ const EMOJI_IC = {
     '⛏': 'fa-helmet-safety', '🍗': 'fa-drumstick-bite', '🐟': 'fa-fish', '🥚': 'fa-egg', '🥪': 'fa-bread-slice', '🍎': 'fa-apple-whole',
     '🏅': 'fa-medal', '👑': 'fa-crown', '📏': 'fa-ruler', '🔒': 'fa-lock', '🛒': 'fa-cart-shopping', '🍚': 'fa-bowl-rice',
     '🥛': 'fa-glass-water', '🥦': 'fa-carrot', '❤': 'fa-heart', '🚫': 'fa-ban', '✏': 'fa-pen', '🥫': 'fa-jar', '🧂': 'fa-mortar-pestle',
-    '🍫': 'fa-cookie', '🥤': 'fa-bottle-water', '☕': 'fa-mug-hot', '🍺': 'fa-beer-mug-empty', '🍷': 'fa-wine-glass', '🧊': 'fa-snowflake',
+    '🍫': 'fa-cookie', '🥤': 'fa-bottle-water', '☕': 'fa-mug-hot', '🍺': 'fa-beer-mug-empty', '🍷': 'fa-wine-glass', '🧊': 'fa-snowflake', '🔔': 'fa-bell',
 };
 const icon = (e, cls = '') => { const k = String(e || '').replace(/️/g, ''); return EMOJI_IC[k] ? `<i class="fa-solid ${EMOJI_IC[k]} ${cls}" aria-hidden="true"></i>` : esc(e || ''); };
 

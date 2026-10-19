@@ -469,3 +469,7 @@ html:not(.nd-ready) [data-panel]:not(.hidden) { animation: none; }
 
 /* Pie de página: zona táctil mínima de 32 px de alto en sus enlaces (WCAG 2.2, tamaño del objetivo) */
 .nd-foot-links > a, .nd-foot-links > button { display: inline-flex; align-items: center; gap: .35rem; min-height: 32px; }
+
+/* 3.10 · Momentos: la tarjeta de arriba de «Hoy» (resumen semanal, racha en peligro, vuelta tras unos días) */
+.nd-moment { background: radial-gradient(130% 120% at 0% 0%, rgba(196, 154, 108, .18), transparent 62%), var(--nd-card); border: 1px solid rgba(197, 154, 109, .34); border-radius: 1.5rem; }
+@media (prefers-contrast: more) { .nd-moment { background: var(--nd-card); border-color: rgba(197, 154, 109, .6); } }

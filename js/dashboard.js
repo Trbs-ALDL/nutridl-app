@@ -69,7 +69,22 @@ function renderDashboard() {
     const quick = (fn, ic, l, pro) => `<button onclick="${fn}" class="nd-quick"><i class="fa-solid ${ic}"></i><span>${l}</span>${pro && !canUse(pro) ? '<b class="nd-lock" aria-label="PRO"><i class="fa-solid fa-lock"></i></b>' : ''}</button>`;
     const tile = (onclick, l, v, sub) => `<button onclick="${onclick}" class="nd-tile text-left"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${l}</div><div class="text-xl font-extrabold text-neutral-50 mt-1">${v}</div>${sub ? `<div class="text-xs text-neutral-400 mt-0.5">${sub}</div>` : ''}</button>`;
     const lastW = W.length ? W[W.length - 1] : null;
-    box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
+    // 3.10: el «momento» del día (resumen semanal, racha en peligro, vuelta…). Como mucho uno, y solo si toca.
+    const MO = typeof dayMoment === 'function' ? dayMoment() : null;
+    const moHtml = MO ? `<div class="nd-moment p-5 sm:p-6">
+        <div class="flex items-start gap-3">
+            <span class="nd-ic">${icon(MO.ic)}</span>
+            <div class="min-w-0 flex-1">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-mint-300">${esc(MO.kicker)}</div>
+                <div class="text-lg font-extrabold text-neutral-50 leading-snug mt-0.5">${esc(MO.title)}</div>
+                <p class="text-sm text-neutral-300 mt-1">${esc(MO.sub)}</p>
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <button onclick="${MO.btn[1]}" class="nd-mbtn nd-mbtn-main">${esc(MO.btn[0])}</button>
+                    ${MO.btn2 ? `<button onclick="${MO.btn2[1]}" class="nd-mbtn">${esc(MO.btn2[0])}</button>` : ''}
+                </div>
+            </div>
+        </div></div>` : '';
+    box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}${moHtml}
         <button onclick="showTab('calc')" class="nd-goal"><span class="text-mint-400">${icon(gIc)}</span> ${gTxt} <span class="text-neutral-500">·</span> <span class="text-neutral-300">${fmt(c.target)} kcal/día</span> <i class="fa-solid fa-chevron-right text-[10px] text-neutral-500"></i></button>
         <div class="grid lg:grid-cols-5 gap-4">
             <div class="lg:col-span-3 nd-card p-5 sm:p-6 space-y-5">

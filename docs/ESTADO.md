@@ -40,8 +40,8 @@ funciones 9 · base de alimentos 8,5 · diseño 8 · primera vez 8 · legal 7,5
 | Cobrar | 3 | 7 | Códigos a mano ahora; Stripe cuando llegue el momento |
 | Guardar datos en la nube | 4 | 8 | **Supabase gratis**: cuentas, sincronización y PRO no falseable |
 | ~~Coach «inteligente»~~ | ~~5~~ **7,5** | ✅ | Hecho en la 3.9.0 · reglas, sin IA |
-| Que la gente vuelva | 5,5 | 7,5 | Avisos y resumen semanal |
-| Pruebas automáticas | 6,5 → 7 | 7,5 | 39 pruebas (5 nuevas en la 3.9.0). Faltan diario y perfiles |
+| ~~Que la gente vuelva~~ | ~~5,5~~ **7,5** | ✅ | Hecho en la 3.10.0 · push real queda para la F5 |
+| Pruebas automáticas | 6,5 → **7,5** | 7,5 | 46 pruebas. Faltan diario y perfiles para un 8 |
 
 ## 3. Plan por fases
 
@@ -53,7 +53,11 @@ Marca cada fase como HECHA aquí al terminarla.
   Pruebas en `tests/v39.test.js`. Pendiente si se quiere subir más: notas de voz y
   que recuerde entre días (ahora el chat se borra cada día, a propósito).
 - [ ] **F2 · Analítica** · Ángel crea cuenta en Cloudflare → una línea en `index.html`.
-- [ ] **F3 · Enganche** · resumen semanal, avisos para apuntar, rachas más visibles.
+- [x] **F3 · Enganche** — HECHA en la 3.10.0 (20-10-2026). Nota 5,5 → 7,5.
+  `dayMoment()` en `js/insights.js` + tarjeta `.nd-moment` arriba de «Hoy»: racha en peligro,
+  resumen semanal (lunes a miércoles), vuelta tras 3+ días y oferta del recordatorio `.ics`.
+  Como mucho un aviso al día (`state.moments`). Pruebas en `tests/v310.test.js`.
+  **Lo que falta para un 9**: avisos de verdad al móvil (push), y eso necesita servidor → va con la F5.
 - [ ] **F4 · Pruebas** · subir de 34 a ~55 cubriendo Coach, diario y perfiles.
 - [ ] **F5 · Nube (Supabase)** · la más grande, en 3 pasos: cuentas → sincronizar → PRO real.
 - [ ] **F6 · Inglés** · interfaz + nombres de alimentos genéricos.

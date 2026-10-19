@@ -1,5 +1,20 @@
 # Cambios de nutriDL
 
+## 3.10.0 · 20 de octubre de 2026
+
+**La pestaña «Hoy» te dice lo que toca**
+Arriba del todo aparece, como mucho, **un aviso al día**, y solo cuando de verdad viene a cuento:
+
+- **Tu racha se pierde esta noche.** A partir de las 17 h, si llevas 2 días o más seguidos y hoy no has apuntado nada, te avisa con un botón para apuntar en 10 segundos. Si ya has apuntado, no aparece.
+- **El resumen de la semana pasada**, los lunes (y hasta el miércoles si no lo has visto): días apuntados, media de calorías y proteína, entrenos y cómo se movió tu peso. Con botones para ver tu progreso o compartirlo. No desaparece al refrescarse la pantalla: se va cuando lo usas.
+- **Si vuelves después de 3 días o más**, te recibe sin regañarte: tu plan sigue donde lo dejaste y se empieza por la comida de hoy.
+- **El recordatorio diario** (el del calendario, que ya existía escondido en el Coach) ahora se te ofrece una sola vez, cuando ya llevas 3 días usando la app.
+
+Todos se pueden apartar y ninguno se repite. Si hoy ya has atendido un aviso, el siguiente espera a mañana.
+
+**Por dentro**
+- 46 pruebas automáticas (6 nuevas).
+
 ## 3.9.0 · 20 de octubre de 2026
 
 **El Coach entiende mucho más**

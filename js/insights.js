@@ -57,6 +57,65 @@ function insightsList() {
 }
 
 // =====================================================================
+//  MOMENTOS (3.10): lo que te encuentras al abrir «Hoy» cuando toca
+//  Nunca se inventa nada ni se mete prisa: todo sale de lo que ya has apuntado.
+// =====================================================================
+const moments = () => (state.moments && typeof state.moments === 'object') ? state.moments : (state.moments = {});
+const momentSeen = (k, v) => { const M = moments(); M[k] = v == null ? todayISO() : v; M.last = todayISO(); save(); };
+function dismissMoment(k) { momentSeen(k); renderDashboard(); }
+// El lunes de la semana a la que pertenece una fecha (para enseñar el resumen una vez por semana)
+function mondayOf(iso) { const d = new Date(iso + 'T12:00:00'); return shiftISO(iso, -((d.getDay() + 6) % 7)); }
+// El último día con algo apuntado
+function lastLoggedDay() {
+    const days = Object.keys(state.diary).filter(loggedOn).sort();
+    return days.length ? days[days.length - 1] : null;
+}
+// Devuelve COMO MUCHO un momento, el más importante. Si no toca ninguno, null.
+function dayMoment() {
+    if (!calc.target) return null;
+    const M = moments(), today = todayISO(), S = streakInfo();
+    const last = lastLoggedDay(), fuera = last ? dayNum(today) - dayNum(last) : 0;
+
+    // 1. Vuelve después de unos días: ni regañar ni fingir que no ha pasado
+    if (last && fuera >= 3 && M.back !== today) return {
+        k: 'back', ic: '🌱', kicker: `${fuera} días sin apuntar`,
+        title: 'Me alegra verte de vuelta',
+        sub: `Tu plan sigue donde lo dejaste: ${fmt(calc.target)} kcal y ${fmt(calc.prot)} g de proteína. No hay nada que recuperar, se empieza por la comida de hoy.`,
+        btn: ['Apuntar algo', 'openFoodSheet()'], btn2: ['Ahora no', "dismissMoment('back')"] };
+
+    // 2. Resumen de la semana pasada: lunes, martes o miércoles, una vez por semana
+    const lunes = mondayOf(today);
+    if (new Date(today + 'T12:00:00').getDay() <= 3 && M.week !== lunes) {
+        const W = weekStats(shiftISO(lunes, -1));
+        if (W.logged >= 3) {
+            const T = weightTrend();
+            const peso = T && T.week != null && Math.abs(T.week) >= 0.1
+                ? ` Tu peso medio ${T.week < 0 ? 'bajó' : 'subió'} ${fmt(Math.abs(T.week), 1)} kg.` : '';
+            return { k: 'week', ic: '⭐', kicker: 'La semana pasada',
+                title: `${W.logged} de 7 días apuntados`,
+                sub: `Media de ${fmt(W.avgKcal)} kcal y ${fmt(W.avgP)} g de proteína.${W.protOk ? ` Cumpliste tu proteína ${W.protOk} ${W.protOk === 1 ? 'día' : 'días'}.` : ` Esta semana, apunta a ${fmt(calc.prot)} g de proteína al día.`}${W.workouts ? ` Guardaste ${W.workouts} entreno${W.workouts === 1 ? '' : 's'}.` : ''}${peso}`,
+                btn: ['Ver mi progreso', `momentSeen('week','${lunes}'); showTab('progress')`],
+                btn2: ['Compartirla', `momentSeen('week','${lunes}'); shareProgress()`] };
+        }
+    }
+
+    // 3. La racha se pierde esta noche: solo a partir de las 17 h y solo si es verdad
+    if (S.cur >= 2 && !S.today && new Date().getHours() >= 17 && M.risk !== today) return {
+        k: 'risk', ic: '🔥', kicker: `Racha de ${S.cur} días`,
+        title: 'Hoy aún no has apuntado nada',
+        sub: `Con apuntar una comida la mantienes. ${S.cur === S.best ? 'Además es tu mejor racha hasta ahora.' : `Tu récord está en ${S.best} días.`}`,
+        btn: ['Apuntar en 10 segundos', 'openFoodSheet()'], btn2: ['Hoy no', "dismissMoment('risk')"] };
+
+    // 4. Ofrecer el recordatorio diario una sola vez, cuando ya se sabe que la app le sirve
+    if (S.total >= 3 && !M.remind && M.last !== today) return {
+        k: 'remind', ic: '🔔', kicker: 'Para no olvidarte',
+        title: 'Ponte un recordatorio diario',
+        sub: 'Se añade a tu calendario y te avisa a la hora que elijas. Funciona aunque no abras la app.',
+        btn: ['Ponerlo', "momentSeen('remind', 1); openReminder()"], btn2: ['No, gracias', "dismissMoment('remind')"] };
+
+    return null;
+}
+// =====================================================================
 //  LOGROS
 // =====================================================================
 const ACHIEVEMENTS = [

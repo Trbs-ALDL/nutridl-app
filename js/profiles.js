@@ -13,6 +13,7 @@ function mergeState(s) {
     if (!s.prefs) m.tab = 'home'; // perfiles de la 2.x: la app abre en «Hoy», no en la calculadora
     m.prefs = { ...d.prefs, ...(s.prefs || {}) };
     m.ach = (s.ach && typeof s.ach === 'object') ? s.ach : {}; m.cel = (s.cel && typeof s.cel === 'object') ? s.cel : {};
+    m.moments = (s.moments && typeof s.moments === 'object') ? s.moments : {};
     m.chat = arr(s.chat).slice(-40); m.measures = arr(s.measures); m.meals = arr(s.meals);
     m.gym.eq = 'gym'; // la rutina es solo de gimnasio
     if (s.calcOk === undefined) m.calcOk = PAIRS_OK(m);
