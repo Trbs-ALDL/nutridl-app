@@ -5,7 +5,7 @@
 //  INPUTS
 // =====================================================================
 const PAIRS = { age: [18, 90], weight: [35, 250], height: [130, 220] };
-const PAIR_NAME = { age: 'edad', weight: 'peso', height: 'estatura' };
+const PAIR_NAME = { age: tk('edad'), weight: tk('peso'), height: tk('estatura') };
 function PAIRS_OK(s) { return Object.entries(PAIRS).every(([k, [mn, mx]]) => s[k] >= mn && s[k] <= mx); }
 const calcReady = () => !!state.calcOk && PAIRS_OK(state);
 // Aceptar: con edad, peso y estatura válidos se calcula todo (IMC, kcal, macros…)
@@ -32,7 +32,7 @@ function acceptData() {
     const bad = Object.keys(PAIRS).filter(k => !(state[k] >= PAIRS[k][0] && state[k] <= PAIRS[k][1]));
     Object.keys(PAIRS).forEach(k => $('n-' + k).classList.toggle('nd-invalid', bad.includes(k)));
     if (bad.length) {
-        $('calc-err').innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + bad.map(k => `${PAIR_NAME[k][0].toUpperCase() + PAIR_NAME[k].slice(1)}: entre ${PAIRS[k][0]} y ${PAIRS[k][1]}`).join(' · ');
+        $('calc-err').innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + bad.map(k => { const nm = tr(PAIR_NAME[k]); return tr('{x}: entre {a} y {b}', { x: nm[0].toUpperCase() + nm.slice(1), a: PAIRS[k][0], b: PAIRS[k][1] }); }).join(' · ');
         $('calc-err').classList.remove('hidden');
         $('n-' + bad[0]).focus();
         return;
@@ -111,17 +111,17 @@ function bmrFormulas(w, h, a, male, ffm) {
 // Perder grasa: déficit del 10-25 % según tu IMC y tu estrés diario, sin pasar del 1 % del peso por semana
 //   (ritmo 0,5-1 %/sem: Garthe 2011, Helms 2014). Ganar músculo: superávit moderado según tu experiencia
 //   entrenando (mayor si empiezas, menor si eres avanzado: Iraki et al., 2019).
-const GOAL_TYPES = { lose: ['Perder grasa', 'fa-fire'], maintain: ['Mantener', 'fa-scale-balanced'], gain: ['Ganar músculo', 'fa-dumbbell'] };
+const GOAL_TYPES = { lose: [tk('Perder grasa'), 'fa-fire'], maintain: [tk('Mantener'), 'fa-scale-balanced'], gain: [tk('Ganar músculo'), 'fa-dumbbell'] };
 function goalTypeOf() { return state.goalType || (state.goal < 0 ? 'lose' : state.goal > 0 ? 'gain' : 'maintain'); }
 function personalGoal(bmi, w, tdee) {
     const t = goalTypeOf(), adj = state.goalAdj || 0;
     if (!state.goalType) state.goalType = t; // perfiles anteriores: se fija el tipo de objetivo
-    if (t === 'maintain') return { t, pct: 0, why: 'Comes lo mismo que gastas: tu peso se mantiene y, entrenando fuerza, mejoras tu composición corporal.' };
+    if (t === 'maintain') return { t, pct: 0, why: tr('Comes lo mismo que gastas: tu peso se mantiene y, entrenando fuerza, mejoras tu composición corporal.') };
     if (t === 'gain') {
         const exp = state.exp || state.gym.level || 'beginner';
         const base = { beginner: 0.15, intermediate: 0.10, advanced: 0.05 }[exp];
         const pct = Math.min(0.20, Math.max(0.03, base + adj * 0.05));
-        return { t, exp, pct, why: exp === 'beginner' ? 'Si empiezas, el músculo crece más rápido: un superávit algo mayor lo aprovecha.' : exp === 'intermediate' ? 'Con experiencia el músculo crece más despacio: un superávit moderado evita ganar grasa de más.' : 'Cerca de tu potencial, el músculo crece lento: un superávit pequeño basta.' };
+        return { t, exp, pct, why: exp === 'beginner' ? tr('Si empiezas, el músculo crece más rápido: un superávit algo mayor lo aprovecha.') : exp === 'intermediate' ? tr('Con experiencia el músculo crece más despacio: un superávit moderado evita ganar grasa de más.') : tr('Cerca de tu potencial, el músculo crece lento: un superávit pequeño basta.') };
     }
     const stress = state.stress || 'mid';
     let base = bmi >= 30 ? 0.25 : bmi >= 25 ? 0.20 : 0.15;
@@ -131,9 +131,9 @@ function personalGoal(bmi, w, tdee) {
     const maxDef = 0.01 * w * KCAL_PER_KG / 7;
     let capped = false;
     if (pct * tdee > maxDef) { pct = maxDef / tdee; capped = true; }
-    const why = (bmi >= 30 ? 'Con tu IMC puedes permitirte un déficit mayor' : bmi >= 25 ? 'Con tu IMC, un déficit moderado' : 'Con un IMC en rango saludable conviene un déficit suave para no perder músculo')
-        + (stress === 'high' ? ', y como llevas un día a día exigente lo hemos suavizado.' : stress === 'low' ? '.' : ', algo suavizado para que sea llevadero.')
-        + (capped ? ' Limitado para no perder más del 1 % de tu peso por semana.' : '');
+    const why = tr(bmi >= 30 ? 'Con tu IMC puedes permitirte un déficit mayor' : bmi >= 25 ? 'Con tu IMC, un déficit moderado' : 'Con un IMC en rango saludable conviene un déficit suave para no perder músculo')
+        + (stress === 'high' ? tr(', y como llevas un día a día exigente lo hemos suavizado.') : stress === 'low' ? '.' : tr(', algo suavizado para que sea llevadero.'))
+        + (capped ? tr(' Limitado para no perder más del 1 % de tu peso por semana.') : '');
     return { t, stress, pct: -pct, why, capped };
 }
 function setGoalType(t) {
@@ -144,16 +144,16 @@ function setGoalType(t) {
 function renderGoalPanel() {
     const c = calc, G = c.G, t = G.t;
     const chip = (on, onclick, label) => `<button type="button" onclick="${onclick}" class="px-3 py-2 rounded-xl border text-xs font-bold ${on ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-800 hover:bg-neutral-700'}">${label}</button>`;
-    const types = Object.entries(GOAL_TYPES).map(([k, [l, ic]]) => `<button type="button" onclick="setGoalType('${k}')" class="py-3 px-2 rounded-2xl border text-xs font-extrabold flex flex-col items-center gap-1 ${t === k ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-800 hover:bg-neutral-700'}"><i class="fa-solid ${ic} text-base"></i>${l}</button>`).join('');
+    const types = Object.entries(GOAL_TYPES).map(([k, [l, ic]]) => `<button type="button" onclick="setGoalType('${k}')" class="py-3 px-2 rounded-2xl border text-xs font-extrabold flex flex-col items-center gap-1 ${t === k ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-800 hover:bg-neutral-700'}"><i class="fa-solid ${ic} text-base"></i>${tr(l)}</button>`).join('');
     let ctx = '';
-    if (t === 'lose') ctx = `<div class="space-y-2"><div class="text-xs font-bold text-neutral-300">¿Cómo es tu día a día?</div><div class="flex flex-wrap gap-2">${chip(G.stress === 'low', "setField('stress','low')", 'Tranquilo')}${chip(G.stress === 'mid', "setField('stress','mid')", 'Normal')}${chip(G.stress === 'high', "setField('stress','high')", 'Mucho estrés')}</div></div>`;
-    if (t === 'gain') ctx = `<div class="space-y-2"><div class="text-xs font-bold text-neutral-300">¿Cuánto llevas entrenando fuerza?</div><div class="flex flex-wrap gap-2">${chip(G.exp === 'beginner', "setField('exp','beginner')", 'Menos de 1 año')}${chip(G.exp === 'intermediate', "setField('exp','intermediate')", '1-3 años')}${chip(G.exp === 'advanced', "setField('exp','advanced')", 'Más de 3 años')}</div></div>`;
+    if (t === 'lose') ctx = `<div class="space-y-2"><div class="text-xs font-bold text-neutral-300">${tr('¿Cómo es tu día a día?')}</div><div class="flex flex-wrap gap-2">${chip(G.stress === 'low', "setField('stress','low')", tr('Tranquilo'))}${chip(G.stress === 'mid', "setField('stress','mid')", tr('Normal'))}${chip(G.stress === 'high', "setField('stress','high')", tr('Mucho estrés'))}</div></div>`;
+    if (t === 'gain') ctx = `<div class="space-y-2"><div class="text-xs font-bold text-neutral-300">${tr('¿Cuánto llevas entrenando fuerza?')}</div><div class="flex flex-wrap gap-2">${chip(G.exp === 'beginner', "setField('exp','beginner')", tr('Menos de 1 año'))}${chip(G.exp === 'intermediate', "setField('exp','intermediate')", tr('1-3 años'))}${chip(G.exp === 'advanced', "setField('exp','advanced')", tr('Más de 3 años'))}</div></div>`;
     const adj = state.goalAdj || 0;
     const kcal = Math.round(c.target - c.tdee);
-    const res = t === 'lose' && c.goal === 0 ? '<div class="text-sm font-extrabold text-neutral-100">Sin déficit: con tu IMC no se recomienda perder peso</div>'
-        : t === 'maintain' ? `<div class="text-sm font-extrabold text-neutral-100">${fmt(c.target)} kcal/día · mantenimiento</div>`
-        : `<div class="flex flex-wrap items-baseline justify-between gap-2"><div class="text-sm font-extrabold text-neutral-100">${t === 'lose' ? 'Déficit' : 'Superávit'} recomendado: <span class="text-mint-400">${G.pct > 0 ? '+' : '−'}${fmt(Math.abs(c.goal) * 100, 0)} %</span></div><div class="text-xs font-bold text-neutral-400">${kcal > 0 ? '+' : '−'}${fmt(Math.abs(kcal))} kcal/día</div></div>
-           <div class="flex flex-wrap gap-2">${chip(adj === -1, "setField('goalAdj',-1)", t === 'lose' ? 'Más suave' : 'Más limpio')}${chip(adj === 0, "setField('goalAdj',0)", 'Recomendado')}${chip(adj === 1, "setField('goalAdj',1)", 'Más rápido')}</div>`;
+    const res = t === 'lose' && c.goal === 0 ? '<div class="text-sm font-extrabold text-neutral-100">' + tr('Sin déficit: con tu IMC no se recomienda perder peso') + '</div>'
+        : t === 'maintain' ? `<div class="text-sm font-extrabold text-neutral-100">${fmt(c.target)} ${tr('kcal/día')} · ${tr('mantenimiento')}</div>`
+        : `<div class="flex flex-wrap items-baseline justify-between gap-2"><div class="text-sm font-extrabold text-neutral-100">${t === 'lose' ? tr('Déficit recomendado:') : tr('Superávit recomendado:')} <span class="text-mint-400">${G.pct > 0 ? '+' : '−'}${pctTxt(fmt(Math.abs(c.goal) * 100, 0))}</span></div><div class="text-xs font-bold text-neutral-400">${kcal > 0 ? '+' : '−'}${fmt(Math.abs(kcal))} ${tr('kcal/día')}</div></div>
+           <div class="flex flex-wrap gap-2">${chip(adj === -1, "setField('goalAdj',-1)", t === 'lose' ? tr('Más suave') : tr('Más limpio'))}${chip(adj === 0, "setField('goalAdj',0)", tr('Recomendado'))}${chip(adj === 1, "setField('goalAdj',1)", tr('Más rápido'))}</div>`;
     $('goal-list').innerHTML = `<div class="grid grid-cols-3 gap-2">${types}</div>${ctx}
         <div class="p-3 rounded-2xl bg-mint-500/10 border border-mint-500/30 space-y-2">${res}</div>`;
 }
@@ -176,7 +176,7 @@ function compute() {
     let goal = G.pct;
     if (bmi < 18.5 && goal < 0) {
         goal = 0;
-        alerts.push({ t: 'danger', m: 'Tu IMC indica bajo peso. No recomendamos hacer déficit calórico: te mostramos calorías de mantenimiento. Consulta con un profesional.' });
+        alerts.push({ t: 'danger', m: tr('Tu IMC indica bajo peso. No recomendamos hacer déficit calórico: te mostramos calorías de mantenimiento. Consulta con un profesional.') });
     }
     let target = tdee * (1 + goal);
     const floor = male ? 1500 : 1200;
@@ -184,16 +184,16 @@ function compute() {
         const newT = Math.min(floor, tdee);
         if (newT > target) {
             target = newT;
-            alerts.push({ t: 'warn', m: `Hemos subido tus calorías al mínimo seguro de ${fmt(floor)} kcal (sin supervisión médica no se recomienda comer menos). Para perder más, aumenta tu actividad diaria (pasos).` });
+            alerts.push({ t: 'warn', m: tr('Hemos subido tus calorías al mínimo seguro de {k} kcal (sin supervisión médica no se recomienda comer menos). Para perder más, aumenta tu actividad diaria (pasos).', { k: fmt(floor) }) });
         }
     }
-    if (goal <= -0.25 && bmi < 27) alerts.push({ t: 'warn', m: 'Con tu IMC, un déficit del 25 % aumenta el riesgo de perder músculo. Recomendamos −20 % o menos.' });
+    if (goal <= -0.25 && bmi < 27) alerts.push({ t: 'warn', m: tr('Con tu IMC, un déficit del 25 % aumenta el riesgo de perder músculo. Recomendamos −20 % o menos.') });
     target = Math.round(target);
 
     const weeklyKg = (target - tdee) * 7 / KCAL_PER_KG;
     const weeklyPct = weeklyKg / w * 100;
-    if (weeklyPct < -1) alerts.push({ t: 'warn', m: `Ritmo previsto: ${fmt(weeklyPct, 1)} % de tu peso por semana. Por encima del 1 % semanal aumenta la pérdida de masa muscular.` });
-    if (a >= 65) alerts.push({ t: 'info', m: 'A partir de 65 años las necesidades de proteína son mayores (≥ 1,2 g/kg) y el IMC saludable se desplaza algo hacia arriba. Valida el plan con un profesional.' });
+    if (weeklyPct < -1) alerts.push({ t: 'warn', m: tr('Ritmo previsto: {p} % de tu peso por semana. Por encima del 1 % semanal aumenta la pérdida de masa muscular.', { p: fmt(weeklyPct, 1) }) });
+    if (a >= 65) alerts.push({ t: 'info', m: tr('A partir de 65 años las necesidades de proteína son mayores (≥ {g} g/kg) y el IMC saludable se desplaza algo hacia arriba. Valida el plan con un profesional.', { g: fmt(1.2, 1) }) });
 
     // Macros
     const refWeight = bmi >= 30 ? 25 * h * h : w;
@@ -229,8 +229,8 @@ function renderResults() {
     $('res-target-kcal').innerText = fmt(c.target);
     renderGoalPanel();
     const wk = c.weeklyKg;
-    $('res-rate').innerHTML = Math.abs(wk) < 0.01 ? 'Peso estable.' :
-        `${wk < 0 ? 'Pérdida' : 'Ganancia'} estimada: <strong class="text-white">${fmt(Math.abs(wk), 2)} kg/semana</strong> (${fmt(Math.abs(c.weeklyPct), 1)} % del peso)`;
+    $('res-rate').innerHTML = Math.abs(wk) < 0.01 ? tr('Peso estable.') :
+        tr(wk < 0 ? 'Pérdida estimada: {k} ({p} % del peso)' : 'Ganancia estimada: {k} ({p} % del peso)', { k: `<strong class="text-white">${fmt(Math.abs(wk), 2)} ${tr('kg/semana')}</strong>`, p: fmt(Math.abs(c.weeklyPct), 1) });
 
     const alertCls = { danger: 'bg-roseAccent-50 border-roseAccent-200 text-roseAccent-800', warn: 'bg-amber-500/10 border-amber-500/30 text-amber-200', info: 'bg-blue-500/10 border-blue-500/30 text-blue-200' };
     const alertIcon = { danger: 'fa-circle-exclamation', warn: 'fa-triangle-exclamation', info: 'fa-circle-info' };
@@ -238,9 +238,9 @@ function renderResults() {
 
     // IMC exacto (OMS, adultos ≥ 18 años)
     const b = c.bmi;
-    const WHO = [[16, 'Delgadez severa', 'blue'], [17, 'Delgadez moderada', 'blue'], [18.5, 'Delgadez leve', 'blue'], [25, 'Peso normal', 'mint'], [30, 'Sobrepeso (preobesidad)', 'amber'], [35, 'Obesidad de grado I', 'rose'], [40, 'Obesidad de grado II', 'rose'], [999, 'Obesidad de grado III', 'rose']];
+    const WHO = [[16, tk('Delgadez severa'), 'blue'], [17, tk('Delgadez moderada'), 'blue'], [18.5, tk('Delgadez leve'), 'blue'], [25, tk('Peso normal'), 'mint'], [30, tk('Sobrepeso (preobesidad)'), 'amber'], [35, tk('Obesidad de grado I'), 'rose'], [40, tk('Obesidad de grado II'), 'rose'], [999, tk('Obesidad de grado III'), 'rose']];
     const who = WHO.find(x => b < x[0]);
-    const cat = b < 18.5 ? tr('Bajo peso') : b < 25 ? tr('Peso saludable') : b < 30 ? tr('Sobrepeso') : who[1].replace('Obesidad de grado', 'Obesidad grado');
+    const cat = b < 18.5 ? tr('Bajo peso') : b < 25 ? tr('Peso saludable') : b < 30 ? tr('Sobrepeso') : b < 35 ? tr('Obesidad grado I') : b < 40 ? tr('Obesidad grado II') : tr('Obesidad grado III');
     const CLS = { blue: 'bg-blue-500/20 text-blue-300 border-blue-500/30', mint: 'bg-mint-500/15 text-mint-300 border-mint-500/30', amber: 'bg-amber-500/20 text-amber-300 border-amber-500/30', rose: 'bg-roseAccent-100 text-roseAccent-800 border-roseAccent-200' };
     c.bmiCat = cat;
     $('res-bmi-val').innerText = fmt(b, 1);
@@ -248,13 +248,13 @@ function renderResults() {
     badge.className = 'px-3 py-1 rounded-full text-xs font-extrabold border whitespace-nowrap ' + CLS[who[2]];
     $('bmi-marker').style.left = ((Math.min(40, Math.max(15, b)) - 15) / 25 * 100) + '%';
     $('res-ideal-weight').innerText = `${fmt(c.minIdeal, 1)} – ${fmt(c.maxIdeal, 1)} kg`;
-    $('res-bmi-gap').innerHTML = b < 18.5 ? `<span class="text-blue-300">Ganar ${fmt(c.minIdeal - c.w, 1)} kg</span>` : b > 24.9 ? `<span class="text-amber-300">Perder ${fmt(c.w - c.maxIdeal, 1)} kg</span>` : '<span class="text-mint-400">Ya estás dentro ✓</span>';
+    $('res-bmi-gap').innerHTML = b < 18.5 ? `<span class="text-blue-300">${tr('Ganar {k} kg', { k: fmt(c.minIdeal - c.w, 1) })}</span>` : b > 24.9 ? `<span class="text-amber-300">${tr('Perder {k} kg', { k: fmt(c.w - c.maxIdeal, 1) })}</span>` : '<span class="text-mint-400">' + tr('Ya estás dentro ✓') + '</span>';
     $('res-bmi-prime').innerText = fmt(c.bmiRaw / 25, 2);
-    $('res-bmi-who').innerText = who[1];
-    $('bmi-table').innerHTML = WHO.map((x, i) => { const lo = i ? WHO[i - 1][0] : null; const rng = lo === null ? '< 16,0' : x[0] === 999 ? '≥ 40,0' : `${fmt(lo, 1)} – ${fmt(x[0] - 0.1, 1)}`; const on = x === who; return `<span class="${on ? 'font-extrabold text-mint-400' : ''}">${x[1]}${on ? ' ← tú' : ''}</span><span class="text-right ${on ? 'font-extrabold text-mint-400' : 'text-neutral-400'}">${rng}</span>`; }).join('');
-    const notes = ['El IMC no distingue músculo de grasa: si entrenas fuerza y tienes mucha masa muscular puede salir alto sin que sobre grasa.'];
-    if (c.a >= 65) notes.push('Mayor de 65 años: el menor riesgo de mortalidad se observa con un IMC algo más alto, en torno a 24-30 (Winter et al., 2014); por debajo de 23 conviene vigilar la pérdida de músculo.');
-    notes.push('En población de origen asiático la OMS propone puntos de acción más bajos: 23 (riesgo aumentado) y 27,5 (riesgo alto).');
+    $('res-bmi-who').innerText = tr(who[1]);
+    $('bmi-table').innerHTML = WHO.map((x, i) => { const lo = i ? WHO[i - 1][0] : null; const rng = lo === null ? '< ' + fmt(16, 1) : x[0] === 999 ? '≥ ' + fmt(40, 1) : `${fmt(lo, 1)} – ${fmt(x[0] - 0.1, 1)}`; const on = x === who; return `<span class="${on ? 'font-extrabold text-mint-400' : ''}">${tr(x[1])}${on ? ' ← ' + tr('tú') : ''}</span><span class="text-right ${on ? 'font-extrabold text-mint-400' : 'text-neutral-400'}">${rng}</span>`; }).join('');
+    const notes = [tr('El IMC no distingue músculo de grasa: si entrenas fuerza y tienes mucha masa muscular puede salir alto sin que sobre grasa.')];
+    if (c.a >= 65) notes.push(tr('Mayor de 65 años: el menor riesgo de mortalidad se observa con un IMC algo más alto, en torno a 24-30 (Winter et al., 2014); por debajo de 23 conviene vigilar la pérdida de músculo.'));
+    notes.push(tr('En población de origen asiático la OMS propone puntos de acción más bajos: 23 (riesgo aumentado) y {x} (riesgo alto).', { x: fmt(27.5, 1) }));
 
     // Macros
     const pk = c.prot * 4, fk = c.fat * 9, ck = c.carbs * 4, tot = c.target;
@@ -262,23 +262,23 @@ function renderResults() {
     $('res-prot-grams').innerText = `${c.prot} g`; $('res-prot-kcal').innerText = `${fmt(pk)} kcal`; $('pct-prot').innerText = `${pp} %`; $('bar-prot').style.width = pp + '%';
     $('res-fats-grams').innerText = `${c.fat} g`; $('res-fats-kcal').innerText = `${fmt(fk)} kcal`; $('pct-fats').innerText = `${fp} %`; $('bar-fats').style.width = fp + '%';
     $('res-carbs-grams').innerText = `${c.carbs} g`; $('res-carbs-kcal').innerText = `${fmt(ck)} kcal`; $('pct-carbs').innerText = `${cp} %`; $('bar-carbs').style.width = cp + '%';
-    $('res-fiber').innerText = `${c.fiber} g/día (${fmt(c.fiber * 2)} kcal)`;
-    $('res-water').innerText = `≈ ${fmt(c.water, 1)} L/día + 0,5 L por hora de ejercicio`;
+    $('res-fiber').innerText = `${c.fiber} ${tr('g/día')} (${fmt(c.fiber * 2)} kcal)`;
+    $('res-water').innerText = tr('≈ {l} L/día + {m} L por hora de ejercicio', { l: fmt(c.water, 1), m: fmt(0.5, 1) });
     renderExplain();
 }
 // «Cómo se ha calculado»: los pasos del plan con tus números (también en el asistente)
-const ACT_NAME = { 1.2: 'sedentaria', 1.375: 'ligera', 1.55: 'moderada', 1.725: 'alta', 1.9: 'muy alta' };
+const ACT_NAME = { 1.2: tk('sedentaria|actividad'), 1.375: tk('ligera|actividad'), 1.55: tk('moderada|actividad'), 1.725: tk('alta|actividad'), 1.9: tk('muy alta|actividad') };
 function explainLines() {
     const c = calc;
     return [
-        `<b>Gasto basal:</b> ${fmt(c.bmr)} kcal, con la ecuación de Mifflin-St Jeor (sexo, edad, peso y estatura).`,
-        `<b>Mantenimiento:</b> ${fmt(c.bmr)} × ${fmt(state.activity, 3).replace(/,?0+$/, '')} por tu actividad ${ACT_NAME[state.activity] || ''} = ${fmt(c.tdee)} kcal.`,
-        `<b>Objetivo:</b> ${c.goal === 0 ? 'mantenimiento' : `${c.goal < 0 ? 'déficit' : 'superávit'} del ${fmt(Math.abs(c.goal) * 100, 0)} %`} → <b>${fmt(c.target)} kcal/día</b>${c.goal < 0 ? `, sin bajar nunca de ${fmt(c.male ? 1500 : 1200)} kcal` : ''}.`,
-        `<b>Proteína:</b> ${fmt(c.gkg, 1)} g por kg de ${c.bmi >= 30 ? 'tu peso de referencia' : 'peso'} → ${c.prot} g. <b>Grasa:</b> ${c.fat} g (${Math.round(c.fat * 9 / c.target * 100)} % de las calorías). <b>Hidratos:</b> el resto, ${c.carbs} g.`,
+        tr('<b>Gasto basal:</b> {b} kcal, con la ecuación de Mifflin-St Jeor (sexo, edad, peso y estatura).', { b: fmt(c.bmr) }),
+        tr('<b>Mantenimiento:</b> {b} × {f} por tu actividad {a} = {t} kcal.', { b: fmt(c.bmr), f: fmt(state.activity, 3).replace(/[,.]?0+$/, ''), a: tr(ACT_NAME[state.activity] || ''), t: fmt(c.tdee) }),
+        tr('<b>Objetivo:</b> {g} → <b>{t} kcal/día</b>{m}.', { g: c.goal === 0 ? tr('mantenimiento') : tr(c.goal < 0 ? 'déficit del {p} %' : 'superávit del {p} %', { p: fmt(Math.abs(c.goal) * 100, 0) }), t: fmt(c.target), m: c.goal < 0 ? tr(', sin bajar nunca de {k} kcal', { k: fmt(c.male ? 1500 : 1200) }) : '' }),
+        tr('<b>Proteína:</b> {g} g por kg de {r} → {p} g. <b>Grasa:</b> {f} g ({fp} % de las calorías). <b>Hidratos:</b> el resto, {c} g.', { g: fmt(c.gkg, 1), r: tr(c.bmi >= 30 ? 'tu peso de referencia' : 'peso|referencia'), p: c.prot, f: c.fat, fp: Math.round(c.fat * 9 / c.target * 100), c: c.carbs }),
     ];
 }
 function renderExplain() {
     const box = $('calc-explain'); if (!box || !calc.target) return;
-    box.innerHTML = `<details class="rounded-2xl border border-neutral-800"><summary class="p-3 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-circle-info text-mint-400"></i> Cómo se ha calculado</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+    box.innerHTML = `<details class="rounded-2xl border border-neutral-800"><summary class="p-3 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-circle-info text-mint-400"></i> ${tr('Cómo se ha calculado')}</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
         <div class="px-3 pb-3 space-y-1.5 text-xs text-neutral-300 leading-relaxed">${explainLines().map(l => `<p>${l}</p>`).join('')}</div></details>`;
 }

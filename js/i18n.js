@@ -30,6 +30,14 @@ function tr(s, v) {
     if (v) for (const k in v) out = out.split('{' + k + '}').join(v[k]);
     return out;
 }
+// tk('texto'): no hace nada, devuelve el mismo texto. Sirve para listas de datos (nombres de comida,
+// objetivos, unidades…) que se guardan en español y se traducen con tr() justo al enseñarlas.
+// Así tools/i18n-check.js sabe que ese texto es traducible y comprueba que tiene su inglés.
+const tk = s => s;
+// Nombre de un alimento en el idioma activo (f.en lo traen los genéricos; las marcas se llaman igual)
+// Porcentaje: «13 %» en español, «13%» en inglés
+const pctTxt = v => LANG === 'es' ? v + ' %' : v + '%';
+const foodName = f => (f && LANG === 'en' && f.en) || (f && f.name) || '';
 // Plural sencillo: tp(2, 'día', 'días') → «2 días» · en inglés usa el diccionario de cada forma
 const tp = (n, uno, varios) => `${typeof fmt === 'function' ? fmt(n) : n} ${tr(n === 1 ? uno : varios)}`;
 

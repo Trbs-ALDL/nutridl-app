@@ -23,7 +23,7 @@ let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 let calc = {};
 // Los errores se guardan solo en este dispositivo (últimos 30) para el «Informe de errores»
 // Antes de guardarlo se limpia: sin correos, teléfonos, números largos ni texto entre comillas (podría ser lo que escribiste)
-const scrubLog = m => String(m).replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[correo]').replace(/\+?\d[\d\s-]{7,}\d/g, '[número]')
+const scrubLog = m => String(m).replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[correo]').replace(/\+?\d[\d\s-]{7,}\d/g, '[número]') // i18n-ignore (registro interno)
     .replace(/(["'«])[^"'»]{3,}(["'»])/g, '$1…$2').replace(/https?:\/\/[^\s)]+/g, u => u.split('?')[0]).slice(0, 300);
 function logErr(m) { try { const L = JSON.parse(localStorage.getItem(ERR_KEY) || '[]'); L.push({ t: new Date().toISOString(), m: scrubLog(m), v: APP_VERSION }); localStorage.setItem(ERR_KEY, JSON.stringify(L.slice(-30))); } catch (e) { } }
 // Cierres inesperados: al abrir se marca «en marcha»; al salir bien (cambiar de app, cerrar), «cerrada bien».
@@ -32,7 +32,7 @@ const RUN_KEY = 'nutridl_run';
 (function watchCrashes() {
     try {
         const prev = JSON.parse(localStorage.getItem(RUN_KEY) || 'null');
-        if (prev && prev.open && Date.now() - prev.t < 7 * 864e5) logErr(`Cierre inesperado detectado (versión ${prev.v}, ${new Date(prev.t).toISOString().slice(0, 16)})`);
+        if (prev && prev.open && Date.now() - prev.t < 7 * 864e5) logErr(`Cierre inesperado detectado (versión ${prev.v}, ${new Date(prev.t).toISOString().slice(0, 16)})`); // i18n-ignore (registro interno)
         const mark = open => { try { localStorage.setItem(RUN_KEY, JSON.stringify({ open, t: Date.now(), v: APP_VERSION })); } catch (e) { } };
         mark(true);
         addEventListener('pagehide', () => mark(false));
@@ -252,7 +252,7 @@ function lineChart(el, o) {
         const goal = o.goal && o.goal.y > mn && o.goal.y < mx ? `<line x1="${L}" x2="${W - R}" y1="${Y(o.goal.y).toFixed(1)}" y2="${Y(o.goal.y).toFixed(1)}" stroke="#f59e0b" stroke-dasharray="6 5"/><text x="${W - R}" y="${(Y(o.goal.y) - 6).toFixed(1)}" font-size="12" fill="#f59e0b" font-weight="700" text-anchor="end">${o.goal.label}</text>` : '';
         const r = W < 480 ? 4.5 : 4;
         const dots = o.points.map(p => `<circle cx="${X(p.x).toFixed(1)}" cy="${Y(p.y).toFixed(1)}" r="${r}" fill="${o.dotColor || '#dcc19c'}"><title>${p.tip || ''}</title></circle>`).join('');
-        el.innerHTML = `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria || 'Gráfica'}" style="display:block">
+        el.innerHTML = `<svg width="100%" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria || tr('Gráfica')}" style="display:block">
             <text x="${L}" y="16" font-size="12" fill="#c49a6c" font-weight="700">${o.legend || ''}</text>
             ${grid}${goal}${line}${dots}
             <text x="${L}" y="${H - 8}" font-size="12" fill="#aea396">${(o.xLabels || [])[0] || ''}</text>

@@ -5,19 +5,19 @@
 // =====================================================================
 //  PREFERENCIAS (dieta, alergias, alimentos que no gustan, nº de comidas, presupuesto, despensa)
 // =====================================================================
-const DIETS = { omni: 'Como de todo', pesc: 'Pescetariana', veg: 'Vegetariana', vegan: 'Vegana' };
+const DIETS = { omni: tk('Como de todo'), pesc: tk('Pescetariana'), veg: tk('Vegetariana'), vegan: tk('Vegana') };
 const EGG_IDS = new Set(['huevo', 'claras', 'tortilla', 'huevofrito', 'revuelto', 'tortillafr', 'mayonesa', 'flan']);
 const NUT_IDS = new Set(['almendras', 'nueces', 'cacahuete', 'pistachos', 'anacardos', 'avellanas', 'cacahuetes', 'macadamia', 'cremaalmendra', 'cremacacao']);
 const SOY_IDS = new Set(['tofu', 'tempeh', 'bebsoja', 'sojatex', 'edamame', 'soja', 'salsasoja']);
 const SHELL_IDS = new Set(['gambas', 'mejillones', 'calamares', 'almejas', 'pulpo', 'sepia', 'surimi', 'calamaresrom']);
 const ALLERGENS = {
-    gluten: ['Gluten', f => /G/.test(f.flags || '')],
-    lactosa: ['Lactosa', f => /L/.test(f.flags || '')],
-    huevo: ['Huevo', f => EGG_IDS.has(f.id)],
-    frutos: ['Frutos secos', f => NUT_IDS.has(f.id)],
-    pescado: ['Pescado', f => /P/.test(f.flags || '') && !SHELL_IDS.has(f.id)],
-    marisco: ['Marisco', f => SHELL_IDS.has(f.id)],
-    soja: ['Soja', f => SOY_IDS.has(f.id)],
+    gluten: [tk('Gluten'), f => /G/.test(f.flags || '')],
+    lactosa: [tk('Lactosa'), f => /L/.test(f.flags || '')],
+    huevo: [tk('Huevo'), f => EGG_IDS.has(f.id)],
+    frutos: [tk('Frutos secos'), f => NUT_IDS.has(f.id)],
+    pescado: [tk('Pescado'), f => /P/.test(f.flags || '') && !SHELL_IDS.has(f.id)],
+    marisco: [tk('Marisco'), f => SHELL_IDS.has(f.id)],
+    soja: [tk('Soja'), f => SOY_IDS.has(f.id)],
 };
 const EXPENSIVE = new Set(['salmon', 'gambas', 'dorada', 'ternera', 'tempeh', 'quinoa', 'atunfresco', 'entrecot']);
 const DEFAULT_PREFS = { diet: 'omni', allergies: [], dislikes: [], meals: 4, budget: 'normal', pantry: [] };
@@ -47,7 +47,7 @@ function foodOk(f, p = myPrefs()) {
 // =====================================================================
 const SLOT_SHARE = { 3: { B: .30, L: .40, D: .30 }, 4: { B: .25, L: .35, S: .12, D: .28 }, 5: { B: .22, M: .10, L: .33, S: .10, D: .25 } };
 const SLOT_ORDER = ['B', 'M', 'L', 'S', 'D', 'X'];
-const SLOT_NAME = { B: 'Desayuno', M: 'Media mañana', L: 'Comida', S: 'Merienda', D: 'Cena', X: 'Otros' };
+const SLOT_NAME = { B: tk('Desayuno'), M: tk('Media mañana'), L: tk('Comida'), S: tk('Merienda'), D: tk('Cena'), X: tk('Otros') };
 const planSlots = () => Object.keys(SLOT_SHARE[myPrefs().meals]);
 
 // Lo que queda hoy y cuánto toca en la próxima comida (las comidas ya pasadas sin apuntar se dan por saltadas)
@@ -209,20 +209,34 @@ function fitMeal(t, tg, p, o = {}) {
 }
 
 // Si un ingrediente se ha cambiado (dieta, alergia, lo que tienes en casa…), el nombre y los pasos se rehacen con lo que lleva
-const shortName = f => f.name.replace(/\s*\(.*?\)/g, '').replace(/ \/.*$/, '').replace(/ a la plancha$/, '').toLowerCase();
+const shortName = f => foodName(f).replace(/\s*\(.*?\)/g, '').replace(/ \/.*$/, '').replace(/ a la plancha$/, '').toLowerCase();
 function mealNaming(items) {
     const P = items.find(i => i.kind === 'P'), C = items.find(i => i.kind === 'C'), V = items.find(i => i.kind === 'V');
     const X = items.filter(i => i.kind === 'X').map(i => shortName(i.f));
     const parts = [P, C].filter(Boolean).map(i => shortName(i.f));
-    let name = parts.join(' con ') + (V ? ' y ' + shortName(V.f) : X.length ? ' y ' + X[0] : '');
+    let name = parts.length === 2 ? tr('{a} con {b}', { a: parts[0], b: parts[1] }) : (parts[0] || '');
+    const extra = V ? shortName(V.f) : X.length ? X[0] : '';
+    if (extra) name = name ? tr('{a} y {b}', { a: name, b: extra }) : extra;
     name = name.charAt(0).toUpperCase() + name.slice(1);
-    const steps = [];
-    if (P) steps.push(`Prepara ${shortName(P.f)} como más te guste (plancha, horno o cocido).`);
-    if (C) steps.push(C.f.raw ? `Cuece ${shortName(C.f)} según el paquete (el peso indicado es en crudo).` : `Añade ${shortName(C.f)}.`);
-    if (V) steps.push(`Acompaña con ${shortName(V.f)}${items.some(i => i.f.id === 'aove') ? ' y aliña con el aceite' : ''}.`);
-    else if (items.some(i => i.f.id === 'aove')) steps.push('Aliña con el aceite.');
-    X.slice(V ? 0 : 1).forEach(x => steps.push(`Completa con ${x}.`));
+    const steps = [], oil = items.some(i => i.f.id === 'aove');
+    if (P) steps.push(tr('Prepara {x} como más te guste (plancha, horno o cocido).', { x: shortName(P.f) }));
+    if (C) steps.push(C.f.raw ? tr('Cuece {x} según el paquete (el peso indicado es en crudo).', { x: shortName(C.f) }) : tr('Añade {x}.', { x: shortName(C.f) }));
+    if (V) steps.push(oil ? tr('Acompaña con {x} y aliña con el aceite.', { x: shortName(V.f) }) : tr('Acompaña con {x}.', { x: shortName(V.f) }));
+    else if (oil) steps.push(tr('Aliña con el aceite.'));
+    X.slice(V ? 0 : 1).forEach(x => steps.push(tr('Completa con {x}.', { x })));
     return { name, steps };
+}
+// Nombre y pasos de un plato en el idioma activo, para enseñarlo.
+// Los platos base se traducen por su clave. Los que se rehicieron al cambiar un ingrediente se vuelven a
+// componer con sus ingredientes, así un menú guardado también cambia de idioma. En español se usa
+// siempre el texto guardado, para que salga exactamente igual que antes.
+function mealText(ml) {
+    if (!ml) return { name: '', steps: [] };
+    const t = MEALS.find(x => x.id === ml.id);
+    if (t && ml.name === t.name) return { name: tr(t.name), steps: (t.steps || []).map(x => tr(x)) };
+    if (LANG === 'es') return { name: ml.name, steps: ml.steps || [] };
+    const items = (ml.items || []).map(it => ({ f: getFood(it.fid), kind: it.kind })).filter(x => x.f && x.kind);
+    return items.length ? mealNaming(items) : { name: ml.name, steps: ml.steps || [] };
 }
 // Generador pseudoaleatorio con semilla (para «Regenerar» sin repetir siempre lo mismo)
 function seeded(seed) { let a = (seed >>> 0) || 1; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -311,9 +325,9 @@ function amountText(f, g) {
     const unit = f.ml ? 'ml' : 'g';
     if (f.u && g >= f.u[0] * .99 && Math.abs(g / f.u[0] - Math.round(g / f.u[0])) < .01) {
         const n = Math.round(g / f.u[0]);
-        return `${n} ${n === 1 ? f.u[1] : f.u[2]}${f.u[0] >= 20 ? ` (${fmt(g)} ${unit})` : ''}`;
+        return `${n} ${tr(n === 1 ? f.u[1] : f.u[2])}${f.u[0] >= 20 ? ` (${fmt(g)} ${unit})` : ''}`;
     }
-    return `${fmt(g)} ${unit}${f.raw ? ' en crudo' : ''}`;
+    return `${fmt(g)} ${unit}${f.raw ? ' ' + tr('en crudo') : ''}`;
 }
 function mealIngredients(meal) { return meal.items.map(it => { const f = getFood(it.fid); return f ? { f, g: it.g, txt: amountText(f, it.g) } : null; }).filter(Boolean); }
 
@@ -334,7 +348,7 @@ function mealToDiary(meal, slot, date) {
 // =====================================================================
 //  LISTA DE LA COMPRA (agrupada y con lo que ya has comprado marcado)
 // =====================================================================
-const SHOP_GROUPS = [['prot', 'Proteínas', '🍗'], ['hc', 'Carbohidratos', '🍚'], ['fruta', 'Frutas', '🍎'], ['verdura', 'Verduras', '🥦'], ['lacteo', 'Lácteos', '🥛'], ['otros', 'Otros', '🛒']];
+const SHOP_GROUPS = [['prot', tk('Proteínas'), '🍗'], ['hc', tk('Carbohidratos'), '🍚'], ['fruta', tk('Frutas'), '🍎'], ['verdura', tk('Verduras'), '🥦'], ['lacteo', tk('Lácteos'), '🥛'], ['otros', tk('Otros'), '🛒']];
 function shopGroupOf(f) {
     if (f.cat === 'prot' || f.cat === 'vprot') return 'prot';
     if (f.cat === 'hc' || f.cat === 'legum') return 'hc';
@@ -349,11 +363,11 @@ function buildShopping(menus) {
     return Object.entries(tot).map(([fid, g]) => {
         const f = getFood(fid); if (!f) return null;
         return { fid, g: Math.round(g), group: shopGroupOf(f) };
-    }).filter(Boolean).sort((a, b) => getFood(a.fid).name.localeCompare(getFood(b.fid).name, 'es'));
+    }).filter(Boolean).sort((a, b) => foodName(getFood(a.fid)).localeCompare(foodName(getFood(b.fid)), locale()));
 }
 // Cantidad para comprar: unidades si es algo que se cuenta, si no kilos, gramos o mililitros redondeados
 function shopQty(f, g) {
-    if (f.u && f.u[0] >= 20) { const n = Math.ceil(g / f.u[0] - .05); return `${n} ${n === 1 ? f.u[1] : f.u[2]}`; }
+    if (f.u && f.u[0] >= 20) { const n = Math.ceil(g / f.u[0] - .05); return `${n} ${tr(n === 1 ? f.u[1] : f.u[2])}`; }
     const unit = f.ml ? 'ml' : 'g', r = g >= 200 ? Math.ceil(g / 50) * 50 : Math.ceil(g / 10) * 10;
     if (r >= 1000) return `${fmt(r / 1000, r % 1000 ? 1 : 0)} ${f.ml ? 'l' : 'kg'}`;
     return `${fmt(r)} ${unit}`;

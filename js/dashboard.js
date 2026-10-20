@@ -21,7 +21,7 @@ function macroBar(label, val, target, color) {
         <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:${color}"></div></div></div>`;
 }
 // «Hoy»: objetivo, lo que llevas y lo que te queda, qué hacer ahora, accesos rápidos y cómo vas
-const GOAL_LABEL = { lose: ['🔥', 'Perder grasa'], maintain: ['⚖️', 'Mantener peso'], gain: ['💪', 'Ganar músculo'] };
+const GOAL_LABEL = { lose: ['🔥', tk('Perder grasa')], maintain: ['⚖️', tk('Mantener peso')], gain: ['💪', tk('Ganar músculo')] };
 function kcalBar(v, t) {
     const pct = t > 0 ? Math.min(100, v / t * 100) : 0, over = v > t * 1.05;
     return `<div class="nd-kbar" role="progressbar" aria-valuemin="0" aria-valuemax="${Math.round(t)}" aria-valuenow="${Math.round(v)}" aria-label="${tr('Calorías de hoy')}"><div style="width:${pct}%;${over ? 'background:#c2603f' : ''}"></div></div>`;
@@ -56,8 +56,8 @@ function renderDashboard() {
         </div>`;
     if (!calc.target) {
         box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
-            <div class="nd-card p-6 sm:p-8 space-y-4 text-center"><div class="nd-ic-lg mx-auto">${icon('🎯')}</div><h2 class="text-xl font-extrabold text-neutral-50">Termina tu plan para empezar</h2><p class="text-sm text-neutral-400">Necesitamos tu edad, peso y estatura para calcular tus calorías y macros.</p>
-            <button onclick="openWizard('edit')" class="nd-btn-primary mx-auto">Completar mi plan <i class="fa-solid fa-arrow-right"></i></button></div></div>`;
+            <div class="nd-card p-6 sm:p-8 space-y-4 text-center"><div class="nd-ic-lg mx-auto">${icon('🎯')}</div><h2 class="text-xl font-extrabold text-neutral-50">${tr('Termina tu plan para empezar')}</h2><p class="text-sm text-neutral-400">${tr('Necesitamos tu edad, peso y estatura para calcular tus calorías y macros.')}</p>
+            <button onclick="openWizard('edit')" class="nd-btn-primary mx-auto">${tr('Completar mi plan')} <i class="fa-solid fa-arrow-right"></i></button></div></div>`;
         return;
     }
     const c = calc, t = diaryTotals(todayISO()), left = c.target - t.kcal;

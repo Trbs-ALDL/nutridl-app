@@ -58,10 +58,12 @@ function bootRescue(err) {
     const box = document.createElement('div');
     box.setAttribute('role', 'alert');
     box.style.cssText = 'position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:24px;background:#110f0d;color:#f2ede6;font-family:system-ui,sans-serif';
-    box.innerHTML = `<div style="max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 10px">nutriDL no ha podido abrirse bien</h1>
-        <p style="color:#cfc5b8;line-height:1.5;margin:0 0 18px">Tus datos siguen guardados en este dispositivo. Descarga una copia por seguridad y vuelve a cargar la app.</p>
-        <button id="rescue-dl" style="width:100%;padding:14px;border-radius:12px;border:0;background:#9a6b40;color:#fff;font-weight:700;font-size:16px;margin-bottom:10px">Descargar mis datos</button>
-        <button id="rescue-reload" style="width:100%;padding:14px;border-radius:12px;border:1px solid #463f38;background:transparent;color:#f2ede6;font-weight:700;font-size:16px">Volver a cargar</button></div>`;
+    // Si el arranque falló, puede que el idioma no llegara a cargarse: se usa el texto tal cual
+    const T = s => typeof tr === 'function' ? tr(s) : s;
+    box.innerHTML = `<div style="max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 10px">${T('nutriDL no ha podido abrirse bien')}</h1>
+        <p style="color:#cfc5b8;line-height:1.5;margin:0 0 18px">${T('Tus datos siguen guardados en este dispositivo. Descarga una copia por seguridad y vuelve a cargar la app.')}</p>
+        <button id="rescue-dl" style="width:100%;padding:14px;border-radius:12px;border:0;background:#9a6b40;color:#fff;font-weight:700;font-size:16px;margin-bottom:10px">${T('Descargar mis datos')}</button>
+        <button id="rescue-reload" style="width:100%;padding:14px;border-radius:12px;border:1px solid #463f38;background:transparent;color:#f2ede6;font-weight:700;font-size:16px">${T('Volver a cargar')}</button></div>`;
     document.body.appendChild(box);
     box.querySelector('#rescue-dl').onclick = () => {
         let raw = ''; try { raw = localStorage.getItem(PROFILES_KEY) || localStorage.getItem(PROFILES_KEY + '_rescate') || ''; } catch (e) { }
@@ -108,12 +110,12 @@ async function installApp() {
     }
     // iPhone/iPad y navegadores sin botón de instalar: instrucciones
     const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    openSheet('<i class="fa-solid fa-mobile-screen-button text-mint-400"></i> Instalar nutriDL', `
+    openSheet('<i class="fa-solid fa-mobile-screen-button text-mint-400"></i> ' + tr('Instalar nutriDL'), `
         <ol class="space-y-3 text-sm text-neutral-200 list-decimal pl-5">
-            ${ios ? `<li>Abre esta página en <b>Safari</b>.</li><li>Pulsa el botón <b>Compartir</b> <i class="fa-solid fa-arrow-up-from-bracket text-mint-400"></i>.</li><li>Elige <b>«Añadir a pantalla de inicio»</b> y pulsa <b>Añadir</b>.</li>`
-                : `<li>Abre el menú del navegador <i class="fa-solid fa-ellipsis-vertical text-mint-400"></i>.</li><li>Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b>.</li>`}
+            ${ios ? `<li>${tr('Abre esta página en <b>Safari</b>.')}</li><li>${tr('Pulsa el botón <b>Compartir</b> {i}.', { i: '<i class="fa-solid fa-arrow-up-from-bracket text-mint-400"></i>' })}</li><li>${tr('Elige <b>«Añadir a pantalla de inicio»</b> y pulsa <b>Añadir</b>.')}</li>`
+                : `<li>${tr('Abre el menú del navegador {i}.', { i: '<i class="fa-solid fa-ellipsis-vertical text-mint-400"></i>' })}</li><li>${tr('Elige <b>«Instalar aplicación»</b> o <b>«Añadir a pantalla de inicio»</b>.')}</li>`}
         </ol>
-        <p class="mt-4 text-xs text-neutral-400">Así se abre como una app, a pantalla completa, y funciona sin conexión.</p>`);
+        <p class="mt-4 text-xs text-neutral-400">${tr('Así se abre como una app, a pantalla completa, y funciona sin conexión.')}</p>`);
 }
 
 try { init(); } catch (e) { bootRescue(e); }

@@ -31,8 +31,9 @@ function evMetrics() {
         counts: E.n,
     };
 }
-function evReport() {
+// Resumen de uso para el informe técnico (para quien desarrolla la app): en español a propósito
+function evReport() { // i18n-ignore-start
     const M = evMetrics(); if (!M) return 'Sin datos de uso todavía.';
     const yes = b => b ? 'sí' : 'no';
     return `Primer uso: ${M.first} · días activos: ${M.activeDays} · días con comidas: ${M.foodDays}\nPlan completado: ${yes(M.onboarding)} · primera comida: ${M.firstFood || 'no'}\nVolvió al día siguiente: ${yes(M.d1)} · a los 7 días: ${yes(M.d7)} · a los 30 días: ${yes(M.d30)}\nMétrica clave (apunta y vuelve 7+ días): ${yes(M.northStar)} · interés en PRO: ${yes(M.proInterest)}`;
-}
+} // i18n-ignore-end

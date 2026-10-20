@@ -58,13 +58,13 @@ function switchProfile(id, silent) {
     persistProfiles();
     closeProfileMenu();
     refreshAll(); showTab('home');
-    if (!silent) toast(`Perfil de ${profiles.list[id].name}`);
+    if (!silent) toast(tr('Perfil de {n}', { n: profiles.list[id].name }));
 }
 async function deleteProfile(id) {
     id = id || profiles.current;
     const target = profiles.list[id]; if (!target) return;
     closeProfileMenu();
-    if (!(await askConfirm(`¿Borrar el perfil de ${target.name}? Se borrarán sus datos, su diario, sus pesos y sus entrenamientos. No se puede deshacer.`, 'Borrar perfil'))) return;
+    if (!(await askConfirm(tr('¿Borrar el perfil de {n}? Se borrarán sus datos, su diario, sus pesos y sus entrenamientos. No se puede deshacer.', { n: target.name }), 'Borrar perfil'))) return;
     const wasCurrent = id === profiles.current;
     if (!wasCurrent) save();
     delete profiles.list[id];
@@ -75,15 +75,15 @@ async function deleteProfile(id) {
     }
     persistProfiles(); save();
     if (wasCurrent) { refreshAll(); showTab('home'); } else renderProfileChip();
-    toast(`Perfil de ${target.name} borrado`);
+    toast(tr('Perfil de {n} borrado', { n: target.name }));
 }
 const initial = n => { const m = String(n || '').match(/\p{L}|\p{N}/u); return esc(m ? m[0].toUpperCase() : '?'); };
 function renderProfileChip() {
     const box = $('profile-chip'); if (!box) return;
     const cur = profiles.list[profiles.current];
     if (!cur) {
-        box.innerHTML = `<div class="flex items-center gap-2"><button onclick="newProfile()" class="px-4 py-2 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-sm font-extrabold flex items-center gap-2"><i class="fa-solid fa-user-plus"></i><span class="whitespace-nowrap">Crear perfil</span></button>
-            <button onclick="importProfiles()" class="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 hover:border-mint-500/50" title="Cargar una copia de seguridad" aria-label="Cargar una copia de seguridad"><i class="fa-solid fa-upload"></i></button></div>`;
+        box.innerHTML = `<div class="flex items-center gap-2"><button onclick="newProfile()" class="px-4 py-2 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-sm font-extrabold flex items-center gap-2"><i class="fa-solid fa-user-plus"></i><span class="whitespace-nowrap">${tr('Crear perfil')}</span></button>
+            <button onclick="importProfiles()" class="w-10 h-10 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 hover:border-mint-500/50" title="${tr('Cargar una copia de seguridad')}" aria-label="${tr('Cargar una copia de seguridad')}"><i class="fa-solid fa-upload"></i></button></div>`;
         return;
     }
     const others = Object.entries(profiles.list);
@@ -93,12 +93,12 @@ function renderProfileChip() {
             <i class="fa-solid fa-chevron-down text-[10px] text-neutral-500"></i>
         </button>
         <div id="profile-menu" class="hidden absolute right-0 mt-2 w-64 rounded-2xl bg-neutral-900 border border-neutral-800 shadow-2xl p-2 text-sm z-50">
-            <div class="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-neutral-500">Perfiles en este dispositivo</div>
+            <div class="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-neutral-500">${tr('Perfiles en este dispositivo')}</div>
             ${others.map(([id, p]) => `<div class="flex items-center gap-1 rounded-xl hover:bg-neutral-800">
                 <button onclick="switchProfile('${id}')" class="flex-1 min-w-0 flex items-center gap-3 px-3 py-2 text-left">
                     <span class="w-7 h-7 rounded-lg ${id === profiles.current ? 'bg-mint-600 text-white' : 'bg-neutral-800 text-neutral-300'} font-extrabold grid place-items-center text-xs">${initial(p.name)}</span>
                     <span class="flex-1 truncate font-semibold" title="${esc(p.name)}">${esc(p.name)}</span>${id === profiles.current ? '<i class="fa-solid fa-check text-mint-500"></i>' : ''}</button>
-                <button onclick="event.stopPropagation();deleteProfile('${id}')" class="w-9 h-9 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-600 hover:bg-neutral-700" aria-label="Borrar el perfil de ${esc(p.name)}" title="Borrar este perfil"><i class="fa-solid fa-trash text-xs"></i></button>
+                <button onclick="event.stopPropagation();deleteProfile('${id}')" class="w-9 h-9 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-600 hover:bg-neutral-700" aria-label="${tr('Borrar el perfil de {n}', { n: esc(p.name) })}" title="${tr('Borrar este perfil')}"><i class="fa-solid fa-trash text-xs"></i></button>
             </div>`).join('')}
             <div class="my-2 border-t border-neutral-800"></div>
             <button onclick="closeProfileMenu();openWizard('edit')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-pen w-7 text-center text-neutral-400"></i>${tr('Editar mis datos')}</button>
@@ -132,11 +132,11 @@ function closeProfileMenu() { const m = $('profile-menu'); if (m) m.classList.ad
 // ----- Usar nutriDL en varios dispositivos: hoy con copia de seguridad; la sincronización llegará con las cuentas -----
 function openSync() {
     closeProfileMenu();
-    openSheet('<i class="fa-solid fa-rotate text-mint-400"></i> Móvil y ordenador', `<div class="space-y-4 text-sm text-neutral-300">
-        <p>Tus datos viven en este dispositivo. Para pasarlos a otro:</p>
-        <ol class="nd-steps"><li>Aquí: <b>Guardar copia de seguridad</b> (descarga un archivo).</li><li>Envíate ese archivo (correo, nube, WhatsApp…).</li><li>En el otro dispositivo: <b>Cargar una copia</b>.</li></ol>
-        <div class="grid grid-cols-2 gap-2"><button onclick="closeSheet();exportProfiles()" class="py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-download"></i> Guardar copia</button><button onclick="closeSheet();importProfiles()" class="py-3 rounded-xl border border-neutral-700 font-bold"><i class="fa-solid fa-upload"></i> Cargar copia</button></div>
-        <div class="p-3 rounded-xl bg-neutral-800/60 border border-neutral-800 text-xs text-neutral-400"><b class="text-neutral-200">Próximamente:</b> sincronización automática con una cuenta opcional (PRO). Seguirás pudiendo usar nutriDL sin cuenta.</div>
+    openSheet('<i class="fa-solid fa-rotate text-mint-400"></i> ' + tr('Móvil y ordenador'), `<div class="space-y-4 text-sm text-neutral-300">
+        <p>${tr('Tus datos viven en este dispositivo. Para pasarlos a otro:')}</p>
+        <ol class="nd-steps"><li>${tr('Aquí: <b>Guardar copia de seguridad</b> (descarga un archivo).')}</li><li>${tr('Envíate ese archivo (correo, nube, WhatsApp…).')}</li><li>${tr('En el otro dispositivo: <b>Cargar una copia</b>.')}</li></ol>
+        <div class="grid grid-cols-2 gap-2"><button onclick="closeSheet();exportProfiles()" class="py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-download"></i> ${tr('Guardar copia')}</button><button onclick="closeSheet();importProfiles()" class="py-3 rounded-xl border border-neutral-700 font-bold"><i class="fa-solid fa-upload"></i> ${tr('Cargar copia')}</button></div>
+        <div class="p-3 rounded-xl bg-neutral-800/60 border border-neutral-800 text-xs text-neutral-400">${tr('<b class="text-neutral-200">Próximamente:</b> sincronización automática con una cuenta opcional (PRO). Seguirás pudiendo usar nutriDL sin cuenta.')}</div>
     </div>`);
     track('sync_open');
 }
@@ -158,21 +158,21 @@ function autoBackup(force) {
         if (data.length > 1500000) return; // muy grande para guardar 3 copias aquí: mejor el archivo de copia
         const next = [{ d, t: new Date().toISOString(), n: Object.keys(profiles.list).length, data }, ...L.filter(x => x.d !== d)].slice(0, 3);
         localStorage.setItem(AUTO_KEY, JSON.stringify(next));
-    } catch (e) { logErr('Copia automática: ' + e.message); }
+    } catch (e) { logErr('Copia automática: ' + e.message); } // i18n-ignore (registro interno)
 }
 function openAutoBackups() {
     closeProfileMenu();
     const L = autoList();
-    openSheet('<i class="fa-solid fa-clock-rotate-left text-mint-400"></i> Copias automáticas', `
+    openSheet('<i class="fa-solid fa-clock-rotate-left text-mint-400"></i> ' + tr('Copias automáticas'), `
         <div class="space-y-4">
-            <p class="text-sm text-neutral-300">Cada día se guarda sola una copia de todo en este dispositivo (las 3 últimas). Si borras algo sin querer, vuelve a como estaba ese día.</p>
-            ${L.length ? `<div class="divide-y divide-neutral-800 border border-neutral-800 rounded-xl">${L.map((b, i) => `<div class="flex items-center gap-3 p-3"><div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100">${esc(new Date(b.t).toLocaleString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }))}</div><div class="text-xs text-neutral-400">${b.n} perfil${b.n === 1 ? '' : 'es'}</div></div><button onclick="restoreAutoBackup(${i})" class="nd-mbtn">Restaurar</button></div>`).join('')}</div>` : '<p class="text-sm text-neutral-400">Aún no hay copias. Se crea la primera hoy mismo.</p>'}
-            <p class="text-xs text-neutral-400">Para no perder nada si cambias de móvil o borras el navegador, guarda también de vez en cuando una copia en archivo (menú del perfil → «Guardar copia de seguridad»).</p>
+            <p class="text-sm text-neutral-300">${tr('Cada día se guarda sola una copia de todo en este dispositivo (las 3 últimas). Si borras algo sin querer, vuelve a como estaba ese día.')}</p>
+            ${L.length ? `<div class="divide-y divide-neutral-800 border border-neutral-800 rounded-xl">${L.map((b, i) => `<div class="flex items-center gap-3 p-3"><div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100">${esc(new Date(b.t).toLocaleString(locale(), { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }))}</div><div class="text-xs text-neutral-400">${tp(b.n, 'perfil', 'perfiles')}</div></div><button onclick="restoreAutoBackup(${i})" class="nd-mbtn">${tr('Restaurar')}</button></div>`).join('')}</div>` : '<p class="text-sm text-neutral-400">' + tr('Aún no hay copias. Se crea la primera hoy mismo.') + '</p>'}
+            <p class="text-xs text-neutral-400">${tr('Para no perder nada si cambias de móvil o borras el navegador, guarda también de vez en cuando una copia en archivo (menú del perfil → «Guardar copia de seguridad»).')}</p>
         </div>`);
 }
 async function restoreAutoBackup(i) {
     const b = autoList()[i]; if (!b) return;
-    if (!(await askConfirm(`¿Volver a como estaba todo el ${new Date(b.t).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}? Lo que hayas apuntado después se perderá (antes guardamos una copia de cómo está ahora).`, 'Restaurar'))) return;
+    if (!(await askConfirm(tr('¿Volver a como estaba todo el {d}? Lo que hayas apuntado después se perderá (antes guardamos una copia de cómo está ahora).', { d: new Date(b.t).toLocaleDateString(locale(), { day: 'numeric', month: 'long' }) }), 'Restaurar'))) return;
     let p; try { p = JSON.parse(b.data); } catch (e) { toast('Esa copia está dañada'); return; }
     if (!p || !p.list || typeof p.list !== 'object') { toast('Esa copia está dañada'); return; }
     save(); autoBackup(true); // la situación actual queda guardada como copia de hoy
@@ -249,7 +249,7 @@ function importProfiles() {
                 .map(([id, p], i) => [/^[\w-]{1,40}$/.test(id) ? id : 'p' + Date.now().toString(36) + i, p]);
             // Mismo perfil (mismo id) ya en este dispositivo: solo se sustituye si lo confirmas
             const clash = entries.filter(([id]) => profiles.list[id]);
-            const replace = clash.length ? await askConfirm(`La copia trae datos de ${clash.map(([id]) => profiles.list[id].name).join(', ')}, que ya ${clash.length === 1 ? 'existe' : 'existen'} en este dispositivo. ¿Sustituirlos por los de la copia? Si eliges no, solo se añadirán los perfiles nuevos.`, 'Sustituir') : false;
+            const replace = clash.length ? await askConfirm(tr(clash.length === 1 ? 'La copia trae datos de {n}, que ya existe en este dispositivo. ¿Sustituirlos por los de la copia? Si eliges no, solo se añadirán los perfiles nuevos.' : 'La copia trae datos de {n}, que ya existen en este dispositivo. ¿Sustituirlos por los de la copia? Si eliges no, solo se añadirán los perfiles nuevos.', { n: clash.map(([id]) => profiles.list[id].name).join(', ') }), 'Sustituir') : false;
             let added = 0, updated = 0;
             entries.forEach(([id, p]) => {
                 if (profiles.list[id] && !replace) return;
@@ -263,7 +263,7 @@ function importProfiles() {
             state = mergeState(profiles.list[profiles.current].state);
             profiles.list[profiles.current].state = state;
             persistProfiles(); refreshAll(); showTab('home');
-            toast(`Copia cargada: ${added} perfil${added === 1 ? '' : 'es'} nuevo${added === 1 ? '' : 's'}${updated ? `, ${updated} actualizado${updated === 1 ? '' : 's'}` : ''}`);
+            toast(tr('Copia cargada: {a}', { a: tr(added === 1 ? '{k} perfil nuevo' : '{k} perfiles nuevos', { k: added }) }) + (updated ? ', ' + tr(updated === 1 ? '{k} actualizado' : '{k} actualizados', { k: updated }) : ''));
         };
         r.readAsText(file);
     };

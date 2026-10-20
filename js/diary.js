@@ -84,17 +84,17 @@ async function lookupBarcode(raw) {
     try {
         const p = await offProduct(code), n = p && p.nutriments;
         const kcal = n && (n['energy-kcal_100g'] ?? (n.energy_100g ? n.energy_100g / 4.184 : null));
-        if (!p || !n || kcal == null) throw new Error('sin datos');
+        if (!p || !n || kcal == null) throw new Error('sin datos'); // i18n-ignore (error interno)
         const P = +n.proteins_100g || 0, G = +n.fat_100g || 0, C = +n.carbohydrates_100g || 0, Fi = +n.fiber_100g || 0;
         const Su = n.sugars_100g != null && isFinite(+n.sugars_100g) ? +n.sugars_100g : null;
-        if (kcal < 0 || kcal > 950 || P + G + C > 101) throw new Error('datos raros');
+        if (kcal < 0 || kcal > 950 || P + G + C > 101) throw new Error('datos raros'); // i18n-ignore (error interno)
         // Seguridad: lo que llega de Internet se guarda como texto limpio (sin < > " ' ` \), igual que las copias importadas
         const clean = v => String(v || '').replace(/[<>"'`\\]/g, '').trim();
         const name = (clean(p.product_name_es) || clean(p.product_name) || tr('Producto {c}', { c: code })).slice(0, 60);
         const brand = clean(String(p.brands || '').split(',')[0]).slice(0, 30);
         const food = { id: 'b_' + code, name, brand, cat: 'custom', role: P * 4 >= Math.max(C * 4, G * 9) ? 'protein' : G * 9 > C * 4 ? 'fat' : 'carb', meals: 'BSLD', p: round1(P), f: round1(G), c: round1(C), fib: round1(Fi), kcal: Math.round(kcal), min: 0, max: 0, flags: '', custom: 1, barcode: code, off: code };
         if (Su != null && Su <= C + 0.5) food.sug = round1(Su);
-        const sq = +p.serving_quantity; if (sq > 0 && sq < 1000) food.serv = [sq, 'ración', 'raciones'];
+        const sq = +p.serving_quantity; if (sq > 0 && sq < 1000) food.serv = [sq, tk('ración'), tk('raciones')];
         if (!FOODS.some(f => f.id === food.id)) { registerCustom(food); state.customFoods.push(food); save(); }
         track('scan_found');
         scanOpenFood(getFood(food.id), slot);
@@ -114,7 +114,7 @@ const myMeals = () => (state.meals = Array.isArray(state.meals) ? state.meals : 
 function saveMealPrompt(slot) {
     const list = (state.diary[diaryDate || todayISO()] || []).filter(e => e.slot === slot);
     if (!list.length) return;
-    const def = (DSLOTS.find(s => s[0] === slot) || [, 'Comida'])[1];
+    const def = (DSLOTS.find(s => s[0] === slot) || [, tk('Comida')])[1];
     openSheet('<i class="fa-solid fa-bookmark text-mint-400"></i> ' + tr('Guardar comida'), `
         <form onsubmit="event.preventDefault(); saveMeal('${slot}')" class="space-y-4">
             <div class="space-y-1.5"><label for="sm-name" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">${tr('Nombre')}</label>
@@ -155,7 +155,7 @@ function savedMealsHtml() {
 // =====================================================================
 //  DIARIO DE COMIDAS
 // =====================================================================
-const DSLOTS = [['B', 'Desayuno', 'fa-mug-hot'], ['M', 'Media mañana', 'fa-sun'], ['L', 'Comida', 'fa-bowl-rice'], ['S', 'Merienda', 'fa-apple-whole'], ['D', 'Cena', 'fa-moon'], ['X', 'Otros', 'fa-cookie-bite']];
+const DSLOTS = [['B', tk('Desayuno'), 'fa-mug-hot'], ['M', tk('Media mañana'), 'fa-sun'], ['L', tk('Comida'), 'fa-bowl-rice'], ['S', tk('Merienda'), 'fa-apple-whole'], ['D', tk('Cena'), 'fa-moon'], ['X', tk('Otros'), 'fa-cookie-bite']];
 let diaryDate = null, diarySel = null;
 function diaryTotals(d) {
     return (state.diary[d] || []).reduce((a, e) => { a.kcal += e.kcal; a.p += e.p; a.f += e.f; a.c += e.c; a.fib += e.fib || 0; if (e.sug != null) { a.sug += e.sug; a.sugN++; } return a; }, { kcal: 0, p: 0, f: 0, c: 0, fib: 0, sug: 0, sugN: 0 });
@@ -276,7 +276,7 @@ function unitsOf(f) {
     const g = f.ml ? 'ml' : 'g', out = [{ key: 'g', label: g, plural: g, g: 1 }];
     if (f.serv) out.push({ key: 's', label: f.serv[1], plural: f.serv[2] || f.serv[1], g: f.serv[0] });
     if (f.u && !(f.serv && f.serv[0] === f.u[0] && f.serv[1] === f.u[1])) out.push({ key: 'u', label: f.u[1], plural: f.u[2], g: f.u[0] });
-    if (f.fixed && !f.u && !f.serv) out.push({ key: 'r', label: 'ración', plural: 'raciones', g: f.fixed });
+    if (f.fixed && !f.u && !f.serv) out.push({ key: 'r', label: tk('ración'), plural: tk('raciones'), g: f.fixed });
     return out;
 }
 const defUnit = f => unitsOf(f).find(u => u.key !== 'g') || null;
@@ -311,7 +311,7 @@ function closeFoodSheet() { $('food-sheet').classList.add('hidden'); document.bo
 function fsBack() { fs.mode = 'list'; fs.food = null; fs.editId = null; fsRender(); setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 30); }
 function fsRenderTitle() {
     const n = (DSLOTS.find(s => s[0] === fs.slot) || [])[1] || '';
-    $('fs-title').innerText = tr(fs.editId ? 'Editar en' : fs.mode === 'create' ? 'Crear alimento' : fs.mode === 'quick' ? 'Solo calorías en' : 'Añadir a');
+    $('fs-title').innerText = fs.editId ? tr('Editar en') : fs.mode === 'create' ? tr('Crear alimento') : fs.mode === 'quick' ? tr('Solo calorías en') : tr('Añadir a');
     $('fs-slot').value = fs.slot;
     const btn = $('fs-detail-add'); if (btn && !fs.editId) btn.innerHTML = `<i class="fa-solid fa-plus"></i> ${tr('Añadir a {x}', { x: tr(n).toLowerCase() })}`;
 }
@@ -325,7 +325,7 @@ function fsRender() {
     if (fs.mode === 'create') return fsRenderCreate();
     if (fs.mode === 'quick') return fsRenderQuick();
     const mine = FOODS.filter(f => f.custom);
-    const tabs = [['recent', 'Recientes'], ['freq', 'Frecuentes'], ['meals', 'Comidas guardadas'], ['all', 'Todos'], ...(mine.length ? [['mine', 'Mis alimentos']] : [])];
+    const tabs = [['recent', tk('Recientes')], ['freq', tk('Frecuentes')], ['meals', tk('Comidas guardadas')], ['all', tk('Todos')], ...(mine.length ? [['mine', tk('Mis alimentos')]] : [])];
     $('fs-tabs').innerHTML = tabs.map(([k, l]) => `<button type="button" onclick="fs.tab='${k}';fsRender()" class="px-3 py-1.5 rounded-xl border ${fs.tab === k ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-700'}">${tr(l)}</button>`).join('');
     let items, empty;
     const q = fs.q.trim();
@@ -499,7 +499,7 @@ function fsCreateSave() {
     const food = { id: 'c_' + Date.now().toString(36), name, brand, cat: 'custom', role, meals: 'BSLD', p, f, c, fib, min: role === 'fat' ? 5 : 30, max: role === 'fat' ? 60 : 300, flags: '', custom: true };
     if (kcal != null && kcal > 0) food.kcal = Math.round(kcal); // las kcal de la etiqueta mandan
     if (sug != null) food.sug = sug;
-    if (serv && serv > 0) food.serv = [serv, 'ración', 'raciones'];
+    if (serv && serv > 0) food.serv = [serv, tk('ración'), tk('raciones')];
     registerCustom(food); state.customFoods.push(food); save();
     fsOpen(food.id);
     toast(tr('«{n}» creado', { n: name }));
