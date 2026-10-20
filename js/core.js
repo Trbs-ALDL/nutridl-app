@@ -127,7 +127,7 @@ function ndAnim(el, frames, ms) {
 }
 let toastTimer;
 function toast(msg) {
-    const t = $('toast'); t.innerText = msg; t.style.pointerEvents = ''; undoFn = null;
+    const t = $('toast'); t.innerText = typeof tr === 'function' ? tr(msg) : msg; t.style.pointerEvents = ''; undoFn = null;
     t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)';
     clearTimeout(toastTimer);
     t.style.transitionDuration = '';
@@ -228,7 +228,7 @@ function deEmoji(html) {
     });
 }
 // Línea de macros con su punto de color: P (proteína) · HC (hidratos) · G (grasa)
-const macroLine = (p, c, f) => `<span class="nd-m nd-m-p">P ${fmt(p)}</span> <span class="nd-m nd-m-c">HC ${fmt(c)}</span> <span class="nd-m nd-m-f">G ${fmt(f)}</span>`;
+const macroLine = (p, c, f) => `<span class="nd-m nd-m-p">${tr('P')} ${fmt(p)}</span> <span class="nd-m nd-m-c">${tr('HC')} ${fmt(c)}</span> <span class="nd-m nd-m-f">${tr('G')} ${fmt(f)}</span>`;
 const emo = f => `<span class="nd-fi" aria-hidden="true"><i class="fa-solid ${foodIcon(f)}"></i></span>`;
 
 // =====================================================================

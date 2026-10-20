@@ -7,7 +7,8 @@ const root = path.join(__dirname, '..');
 const rd = f => fs.readFileSync(path.join(root, f), 'utf8');
 
 // 1. Claves ya marcadas: t('…') en el JS y data-t="…" en el HTML
-const KEY_JS = /(?<![\w$.])tr\(\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g;
+// tr('…') y también los textos fijos de toast / toastUndo / askConfirm, que se traducen dentro de esas funciones
+const KEY_JS = /(?<![\w$.])(?:tr|toast|toastUndo|askConfirm)\(\s*(['"])((?:\\.|(?!\1)[^\\])*)\1/g;
 const KEY_HTML = /data-t(?:-ph|-al|-ti)?="([^"]+)"/g;
 const claves = new Set();
 const archivos = fs.readdirSync(path.join(root, 'js')).filter(f => f.endsWith('.js')).map(f => 'js/' + f);

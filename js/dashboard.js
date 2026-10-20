@@ -7,12 +7,12 @@
 function ring(value, target, size = 132) {
     const r = size / 2 - 10, C = 2 * Math.PI * r, pct = target > 0 ? Math.min(1, value / target) : 0;
     const over = value > target * 1.05;
-    return `<svg viewBox="0 0 ${size} ${size}" class="w-full h-auto max-w-[150px]" role="img" aria-label="${fmt(value)} de ${fmt(target)} kcal">
+    return `<svg viewBox="0 0 ${size} ${size}" class="w-full h-auto max-w-[150px]" role="img" aria-label="${tr('{a} de {b} kcal', { a: fmt(value), b: fmt(target) })}">
         <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="#2a2521" stroke-width="12"/>
         <circle class="ring-prog" cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${over ? '#c2603f' : '#dcc19c'}" stroke-width="12" stroke-linecap="round"
             stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - pct)).toFixed(1)}" transform="rotate(-90 ${size / 2} ${size / 2})"/>
         <text x="50%" y="47%" text-anchor="middle" font-size="22" font-weight="800" fill="#f2ede6">${fmt(value)}</text>
-        <text x="50%" y="62%" text-anchor="middle" font-size="10" fill="#aea396">de ${fmt(target)} kcal</text>
+        <text x="50%" y="62%" text-anchor="middle" font-size="10" fill="#aea396">${tr('de {b} kcal', { b: fmt(target) })}</text>
     </svg>`;
 }
 function macroBar(label, val, target, color) {
@@ -24,7 +24,7 @@ function macroBar(label, val, target, color) {
 const GOAL_LABEL = { lose: ['🔥', 'Perder grasa'], maintain: ['⚖️', 'Mantener peso'], gain: ['💪', 'Ganar músculo'] };
 function kcalBar(v, t) {
     const pct = t > 0 ? Math.min(100, v / t * 100) : 0, over = v > t * 1.05;
-    return `<div class="nd-kbar" role="progressbar" aria-valuemin="0" aria-valuemax="${Math.round(t)}" aria-valuenow="${Math.round(v)}" aria-label="Calorías de hoy"><div style="width:${pct}%;${over ? 'background:#c2603f' : ''}"></div></div>`;
+    return `<div class="nd-kbar" role="progressbar" aria-valuemin="0" aria-valuemax="${Math.round(t)}" aria-valuenow="${Math.round(v)}" aria-label="${tr('Calorías de hoy')}"><div style="width:${pct}%;${over ? 'background:#c2603f' : ''}"></div></div>`;
 }
 function macroRow(label, val, target, color) {
     const pct = target > 0 ? Math.min(100, val / target * 100) : 0, ok = val >= target * .95;

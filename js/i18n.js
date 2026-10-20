@@ -24,7 +24,9 @@ const locale = () => LOCALES[LANG] || LOCALES.es;
 // y una local tapando a la global haría que la traducción reventara dentro de esa función.
 function tr(s, v) {
     let out = s == null ? '' : String(s);
-    if (LANG !== 'es') { const d = (typeof LANG_EN !== 'undefined' && LANG === 'en') ? LANG_EN : null; if (d && d[out] != null) out = d[out]; }
+    const d = LANG !== 'es' && typeof LANG_EN !== 'undefined' && LANG === 'en' ? LANG_EN : null;
+    if (d && d[out] != null) out = d[out];
+    else if (out.includes('|')) out = out.slice(0, out.indexOf('|')); // clave con contexto: sin traducción, la parte española
     if (v) for (const k in v) out = out.split('{' + k + '}').join(v[k]);
     return out;
 }

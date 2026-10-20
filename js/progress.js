@@ -20,7 +20,7 @@ function addWeight() {
 function askConfirm(msg, okLabel = 'Aceptar') {
     return new Promise(resolve => {
         const m = $('confirm-modal'), ok = $('confirm-ok'), cancel = $('confirm-cancel');
-        $('confirm-msg').textContent = msg; ok.textContent = okLabel;
+        $('confirm-msg').textContent = tr(msg); ok.textContent = tr(okLabel);
         m.classList.remove('hidden');
         const done = v => { m.classList.add('hidden'); ok.onclick = cancel.onclick = m.onclick = null; document.removeEventListener('keydown', onKey); resolve(v); };
         const onKey = e => { if (e.key === 'Escape') done(false); };

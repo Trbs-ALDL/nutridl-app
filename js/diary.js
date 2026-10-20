@@ -14,19 +14,19 @@ function stopScan() {
 }
 async function openScanner(slot) {
     const canCam = 'BarcodeDetector' in window && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
-    openSheet('<i class="fa-solid fa-barcode text-mint-400"></i> Escanear producto', `
+    openSheet('<i class="fa-solid fa-barcode text-mint-400"></i> ' + tr('Escanear producto'), `
         <div class="space-y-4">
             ${canCam ? `<div class="relative rounded-2xl overflow-hidden bg-black aspect-[4/3]">
                 <video id="sc-video" class="w-full h-full object-cover" playsinline muted></video>
                 <div class="absolute inset-x-8 top-1/2 -translate-y-1/2 h-24 rounded-2xl border-2 border-mint-400/80 shadow-[0_0_0_9999px_rgba(0,0,0,.35)]"></div>
-                <div id="sc-status" class="absolute bottom-3 inset-x-3 text-center text-xs font-bold text-white/90">Apunta al código de barras</div>
-            </div>` : `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 text-sm text-neutral-300"><i class="fa-solid fa-camera text-mint-400"></i> Este navegador no puede leer códigos con la cámara. Escribe los números que hay debajo de las barras.</div>`}
+                <div id="sc-status" class="absolute bottom-3 inset-x-3 text-center text-xs font-bold text-white/90">${tr('Apunta al código de barras')}</div>
+            </div>` : `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 text-sm text-neutral-300"><i class="fa-solid fa-camera text-mint-400"></i> ${tr('Este navegador no puede leer códigos con la cámara. Escribe los números que hay debajo de las barras.')}</div>`}
             <form onsubmit="event.preventDefault(); lookupBarcode($('sc-code').value)" class="flex gap-2">
-                <input id="sc-code" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="Ej: 8480000123457" class="flex-1 min-w-0 p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold tracking-wider" aria-label="Número del código de barras">
-                <button class="px-4 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-sm">Buscar</button>
+                <input id="sc-code" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="${tr('Ej: {x}', { x: '8480000123457' })}" class="flex-1 min-w-0 p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold tracking-wider" aria-label="${tr('Número del código de barras')}">
+                <button class="px-4 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-sm">${tr('Buscar')}</button>
             </form>
             <div id="sc-result"></div>
-            <p class="text-[11px] text-neutral-500">Datos de Open Food Facts (licencia ODbL). Comprueba siempre la etiqueta.</p>
+            <p class="text-[11px] text-neutral-500">${tr('Datos de Open Food Facts (licencia ODbL). Comprueba siempre la etiqueta.')}</p>
         </div>`, stopScan);
     scan = { slot: slot || (fs && fs.slot) || slotByHour(), stop: false };
     track('scan_open');
@@ -47,7 +47,7 @@ async function openScanner(slot) {
         };
         loop();
     } catch (e) {
-        const st = $('sc-status'); if (st) st.textContent = 'Sin permiso para la cámara: escribe el código abajo';
+        const st = $('sc-status'); if (st) st.textContent = tr('Sin permiso para la cámara: escribe el código abajo');
     }
 }
 // Consultas a Open Food Facts con freno: como mucho 8 por minuto, una a la vez, 8 s de espera máxima
@@ -79,8 +79,8 @@ async function lookupBarcode(raw) {
     const local = FOODS.find(f => f.off === code || f.barcode === code);
     if (local) return scanOpenFood(local, slot);
     const box = $('sc-result');
-    if (!navigator.onLine) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> Sin conexión: no se puede buscar este producto ahora.</p>'; return; }
-    box.innerHTML = '<p class="text-sm text-neutral-400"><i class="fa-solid fa-circle-notch fa-spin"></i> Buscando el producto…</p>';
+    if (!navigator.onLine) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> ' + tr('Sin conexión: no se puede buscar este producto ahora.') + '</p>'; return; }
+    box.innerHTML = '<p class="text-sm text-neutral-400"><i class="fa-solid fa-circle-notch fa-spin"></i> ' + tr('Buscando el producto…') + '</p>';
     try {
         const p = await offProduct(code), n = p && p.nutriments;
         const kcal = n && (n['energy-kcal_100g'] ?? (n.energy_100g ? n.energy_100g / 4.184 : null));
@@ -90,7 +90,7 @@ async function lookupBarcode(raw) {
         if (kcal < 0 || kcal > 950 || P + G + C > 101) throw new Error('datos raros');
         // Seguridad: lo que llega de Internet se guarda como texto limpio (sin < > " ' ` \), igual que las copias importadas
         const clean = v => String(v || '').replace(/[<>"'`\\]/g, '').trim();
-        const name = (clean(p.product_name_es) || clean(p.product_name) || 'Producto ' + code).slice(0, 60);
+        const name = (clean(p.product_name_es) || clean(p.product_name) || tr('Producto {c}', { c: code })).slice(0, 60);
         const brand = clean(String(p.brands || '').split(',')[0]).slice(0, 30);
         const food = { id: 'b_' + code, name, brand, cat: 'custom', role: P * 4 >= Math.max(C * 4, G * 9) ? 'protein' : G * 9 > C * 4 ? 'fat' : 'carb', meals: 'BSLD', p: round1(P), f: round1(G), c: round1(C), fib: round1(Fi), kcal: Math.round(kcal), min: 0, max: 0, flags: '', custom: 1, barcode: code, off: code };
         if (Su != null && Su <= C + 0.5) food.sug = round1(Su);
@@ -99,10 +99,10 @@ async function lookupBarcode(raw) {
         track('scan_found');
         scanOpenFood(getFood(food.id), slot);
     } catch (e) {
-        if (e && e.limit) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-hourglass-half"></i> Has buscado muchos productos seguidos. Espera un minuto y vuelve a probar.</p>'; return; }
-        if (e && (e.name === 'AbortError' || /^HTTP|Failed to fetch|NetworkError/.test(e.message))) { logErr('Open Food Facts: ' + (e.name === 'AbortError' ? 'tiempo agotado' : e.message)); box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> El servicio de productos no responde ahora. Prueba en un momento o crea el alimento con su etiqueta.</p>'; return; }
-        box.innerHTML = `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 space-y-3 text-sm text-neutral-300"><p>No hemos encontrado ese producto (${esc(code)}).</p>
-            <button onclick="closeSheet(); openFoodSheet('${slot}'); fs.mode='create'; fsRender()" class="w-full py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-plus"></i> Crear el alimento con su etiqueta</button></div>`;
+        if (e && e.limit) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-hourglass-half"></i> ' + tr('Has buscado muchos productos seguidos. Espera un minuto y vuelve a probar.') + '</p>'; return; }
+        if (e && (e.name === 'AbortError' || /^HTTP|Failed to fetch|NetworkError/.test(e.message))) { logErr('Open Food Facts: ' + (e.name === 'AbortError' ? 'tiempo agotado' : e.message)); box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> ' + tr('El servicio de productos no responde ahora. Prueba en un momento o crea el alimento con su etiqueta.') + '</p>'; return; }
+        box.innerHTML = `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 space-y-3 text-sm text-neutral-300"><p>${tr('No hemos encontrado ese producto ({c}).', { c: esc(code) })}</p>
+            <button onclick="closeSheet(); openFoodSheet('${slot}'); fs.mode='create'; fsRender()" class="w-full py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-plus"></i> ${tr('Crear el alimento con su etiqueta')}</button></div>`;
     }
 }
 function scanOpenFood(f, slot) { closeSheet(); openFoodSheet(slot); fsOpen(f.id); }
@@ -115,12 +115,12 @@ function saveMealPrompt(slot) {
     const list = (state.diary[diaryDate || todayISO()] || []).filter(e => e.slot === slot);
     if (!list.length) return;
     const def = (DSLOTS.find(s => s[0] === slot) || [, 'Comida'])[1];
-    openSheet('<i class="fa-solid fa-bookmark text-mint-400"></i> Guardar comida', `
+    openSheet('<i class="fa-solid fa-bookmark text-mint-400"></i> ' + tr('Guardar comida'), `
         <form onsubmit="event.preventDefault(); saveMeal('${slot}')" class="space-y-4">
-            <div class="space-y-1.5"><label for="sm-name" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Nombre</label>
-                <input id="sm-name" maxlength="40" value="Mi ${esc(def.toLowerCase())}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></div>
+            <div class="space-y-1.5"><label for="sm-name" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">${tr('Nombre')}</label>
+                <input id="sm-name" maxlength="40" value="${esc(tr('Mi {x}', { x: tr(def).toLowerCase() }))}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></div>
             <div class="rounded-2xl bg-neutral-800/60 border border-neutral-800 divide-y divide-neutral-800 text-sm">${list.map(e => `<div class="flex justify-between gap-3 px-3 py-2"><span class="truncate">${esc(e.name)}</span><span class="text-neutral-400 whitespace-nowrap">${fmt(e.kcal)} kcal</span></div>`).join('')}</div>
-            <button class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">Guardar comida</button>
+            <button class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr('Guardar comida')}</button>
         </form>`);
     setTimeout(() => { const i = $('sm-name'); if (i) { i.focus(); i.select(); } }, 50);
 }
@@ -128,27 +128,27 @@ function saveMeal(slot) {
     const name = ($('sm-name').value || '').trim().slice(0, 40); if (!name) { toast('Ponle un nombre'); return; }
     const items = (state.diary[diaryDate || todayISO()] || []).filter(e => e.slot === slot).map(({ id, slot: s, ...rest }) => rest);
     myMeals().push({ id: 'm' + Date.now().toString(36), name, items });
-    save(); closeSheet(); toast(`«${name}» guardada en tus comidas`);
+    save(); closeSheet(); toast(tr('«{n}» guardada en tus comidas', { n: name }));
 }
 function addSavedMeal(id) {
     const m = myMeals().find(x => x.id === id); if (!m) return;
     const ids = m.items.map(it => pushDiary({ ...it, slot: fs.slot }));
     save(); renderDiary(); renderDashboard(); closeFoodSheet(); track('food_logged'); checkDayMoments(); checkAchievements();
-    toastUndo(`${m.name} añadida`, () => { const d = diaryDate || todayISO(); state.diary[d] = (state.diary[d] || []).filter(e => !ids.includes(e.id)); save(); renderDiary(); renderDashboard(); });
+    toastUndo(tr('{n} añadida', { n: m.name }), () => { const d = diaryDate || todayISO(); state.diary[d] = (state.diary[d] || []).filter(e => !ids.includes(e.id)); save(); renderDiary(); renderDashboard(); });
 }
 async function delSavedMeal(id) {
     const m = myMeals().find(x => x.id === id); if (!m) return;
-    if (!(await askConfirm(`¿Borrar la comida guardada «${m.name}»?`, 'Borrar'))) return;
+    if (!(await askConfirm(tr('¿Borrar la comida guardada «{n}»?', { n: m.name }), 'Borrar'))) return;
     state.meals = myMeals().filter(x => x.id !== id); save(); fsRender();
 }
 function savedMealsHtml() {
     const L = myMeals();
-    if (!L.length) return '<p class="text-sm text-neutral-400 py-6 text-center">Guarda una comida desde tu diario con el botón <i class="fa-solid fa-bookmark"></i> y aparecerá aquí.</p>';
+    if (!L.length) return '<p class="text-sm text-neutral-400 py-6 text-center">' + tr('Guarda una comida desde tu diario con el botón {i} y aparecerá aquí.', { i: '<i class="fa-solid fa-bookmark"></i>' }) + '</p>';
     return `<div class="divide-y divide-neutral-800">${L.map(m => { const k = m.items.reduce((a, e) => a + e.kcal, 0); return `<div class="flex items-center gap-2 py-2.5">
         <button type="button" onclick="addSavedMeal('${m.id}')" class="flex-1 min-w-0 text-left"><div class="text-sm font-semibold text-neutral-100 truncate">${esc(m.name)}</div>
-            <div class="text-xs text-neutral-400 truncate">${m.items.length} alimento${m.items.length === 1 ? '' : 's'} · ${fmt(k)} kcal · ${esc(m.items.map(e => e.name).join(', '))}</div></button>
-        <button type="button" onclick="delSavedMeal('${m.id}')" class="w-9 h-9 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="Borrar ${esc(m.name)}"><i class="fa-solid fa-trash-can"></i></button>
-        <button type="button" onclick="addSavedMeal('${m.id}')" class="w-9 h-9 shrink-0 rounded-full bg-neutral-800 hover:bg-mint-600 text-mint-400 hover:text-white" aria-label="Añadir ${esc(m.name)}"><i class="fa-solid fa-plus"></i></button>
+            <div class="text-xs text-neutral-400 truncate">${tp(m.items.length, 'alimento', 'alimentos')} · ${fmt(k)} kcal · ${esc(m.items.map(e => e.name).join(', '))}</div></button>
+        <button type="button" onclick="delSavedMeal('${m.id}')" class="w-9 h-9 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="${tr('Borrar {n}', { n: esc(m.name) })}"><i class="fa-solid fa-trash-can"></i></button>
+        <button type="button" onclick="addSavedMeal('${m.id}')" class="w-9 h-9 shrink-0 rounded-full bg-neutral-800 hover:bg-mint-600 text-mint-400 hover:text-white" aria-label="${tr('Añadir {n}', { n: esc(m.name) })}"><i class="fa-solid fa-plus"></i></button>
     </div>`; }).join('')}</div>`;
 }
 
@@ -171,19 +171,19 @@ function renderDiary() {
     // El botón dice qué día estás viendo: «Hoy» resaltado, o «Volver a hoy» si estás en otro día
     const tb = $('dia-today');
     if (tb) {
-        tb.innerHTML = isToday ? 'Hoy' : '<i class="fa-solid fa-rotate-left"></i><span class="hidden sm:inline"> Volver a</span> hoy';
+        tb.innerHTML = isToday ? tr('Hoy') : '<i class="fa-solid fa-rotate-left"></i><span class="hidden sm:inline"> ' + tr('Volver a') + '</span> ' + tr('hoy');
         tb.className = 'px-3 h-10 shrink-0 rounded-xl text-xs font-bold whitespace-nowrap ' + (isToday ? 'bg-mint-600 text-white' : 'bg-neutral-800 hover:bg-neutral-700 text-neutral-300');
-        tb.setAttribute('aria-pressed', isToday); tb.setAttribute('aria-label', isToday ? 'Estás viendo hoy' : 'Volver a hoy');
+        tb.setAttribute('aria-pressed', isToday); tb.setAttribute('aria-label', isToday ? tr('Estás viendo hoy') : tr('Volver a hoy'));
     }
-    const dayRel = isToday ? 'Hoy' : diaryDate === shiftISO(todayISO(), -1) ? 'Ayer' : diaryDate === shiftISO(todayISO(), 1) ? 'Mañana' : '';
+    const dayRel = isToday ? tr('Hoy') : diaryDate === shiftISO(todayISO(), -1) ? tr('Ayer') : diaryDate === shiftISO(todayISO(), 1) ? tr('Mañana') : '';
     $('diary-summary').innerHTML = !c.target ? `<div class="md:col-span-12 flex flex-wrap items-center justify-between gap-3 p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800">
-            <div><div class="text-3xl font-extrabold text-neutral-100">${fmt(t.kcal)} <span class="text-sm text-neutral-400">kcal</span></div><div class="text-xs text-neutral-400">P ${fmt(t.p)} · G ${fmt(t.f)} · HC ${fmt(t.c)} g</div></div>
-            <button onclick="showTab('calc')" class="px-4 py-2.5 rounded-xl bg-mint-600 text-white text-xs font-extrabold"><i class="fa-solid fa-calculator"></i> Calcular mi objetivo</button></div>` : `
+            <div><div class="text-3xl font-extrabold text-neutral-100">${fmt(t.kcal)} <span class="text-sm text-neutral-400">kcal</span></div><div class="text-xs text-neutral-400">${tr('P')} ${fmt(t.p)} · ${tr('G')} ${fmt(t.f)} · ${tr('HC')} ${fmt(t.c)} g</div></div>
+            <button onclick="showTab('calc')" class="px-4 py-2.5 rounded-xl bg-mint-600 text-white text-xs font-extrabold"><i class="fa-solid fa-calculator"></i> ${tr('Calcular mi objetivo')}</button></div>` : `
         <div class="md:col-span-3 flex flex-col items-center gap-1">${ring(t.kcal, c.target, 120)}
-            <div class="text-xs font-bold ${left >= 0 ? 'text-mint-400' : 'text-roseAccent-400'}">${left >= 0 ? `Quedan ${fmt(left)} kcal` : `+${fmt(-left)} kcal sobre tu objetivo`}</div></div>
+            <div class="text-xs font-bold ${left >= 0 ? 'text-mint-400' : 'text-roseAccent-400'}">${left >= 0 ? tr('Quedan {k} kcal', { k: fmt(left) }) : tr('+{k} kcal sobre tu objetivo', { k: fmt(-left) })}</div></div>
         <div class="md:col-span-9 space-y-3">
-            <div class="text-xs text-neutral-400">${dayRel || new Date(diaryDate + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })} · objetivo ${fmt(c.target)} kcal · fibra ${fmt(t.fib)} / ${c.fiber} g${t.sugN ? ` · azúcares ${fmt(t.sug)} g` : ''}</div>
-            ${macroBar('Proteína', t.p, c.prot, '#a0714b')}${macroBar('Grasa', t.f, c.fat, '#f59e0b')}${macroBar('Hidratos', t.c, c.carbs, '#e6d3b3')}
+            <div class="text-xs text-neutral-400">${dayRel || new Date(diaryDate + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' })} · ${tr('objetivo {k} kcal', { k: fmt(c.target) })} · ${tr('fibra {a} / {b} g', { a: fmt(t.fib), b: c.fiber })}${t.sugN ? ` · ${tr('azúcares {k} g', { k: fmt(t.sug) })}` : ''}</div>
+            ${macroBar(tr('Proteína'), t.p, c.prot, '#a0714b')}${macroBar(tr('Grasa'), t.f, c.fat, '#f59e0b')}${macroBar(tr('Hidratos'), t.c, c.carbs, '#e6d3b3')}
         </div>`;
     // Todas las comidas siempre visibles, cada una con su «+ Añadir» (como FatSecret)
     const entries = state.diary[diaryDate] || [];
@@ -197,23 +197,23 @@ function renderDiary() {
             <div class="flex items-center gap-3 p-3.5">
                 <div class="w-9 h-9 shrink-0 rounded-xl bg-mint-500/15 text-mint-400 grid place-items-center"><i class="fa-solid ${ic}"></i></div>
                 <div class="flex-1 min-w-0">
-                    <div class="text-sm font-extrabold text-neutral-100">${n}</div>
-                    <div class="text-xs text-neutral-400">${list.length ? `${fmt(tot.kcal)} kcal · P ${fmt(tot.p)} · G ${fmt(tot.f)} · HC ${fmt(tot.c)}` : 'Sin apuntar'}</div>
+                    <div class="text-sm font-extrabold text-neutral-100">${tr(n)}</div>
+                    <div class="text-xs text-neutral-400">${list.length ? `${fmt(tot.kcal)} kcal · ${tr('P')} ${fmt(tot.p)} · ${tr('G')} ${fmt(tot.f)} · ${tr('HC')} ${fmt(tot.c)}` : tr('Sin apuntar')}</div>
                 </div>
-                ${list.length ? `<button type="button" onclick="saveMealPrompt('${k}')" class="w-9 h-9 shrink-0 rounded-xl text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="Guardar ${n.toLowerCase()} como comida" title="Guardar esta comida para repetirla"><i class="fa-solid fa-bookmark"></i></button>` : ''}
-                ${canCopy ? `<button type="button" onclick="copyMealFromYesterday('${k}')" class="px-2.5 py-2 rounded-xl text-xs font-bold text-neutral-300 hover:bg-neutral-800" title="Copiar lo que comiste ayer en ${n.toLowerCase()}"><i class="fa-regular fa-copy"></i> Ayer</button>` : ''}
-                <button type="button" onclick="openFoodSheet('${k}')" class="px-3 py-2 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-xs font-extrabold shrink-0" aria-label="Añadir alimento a ${n}"><i class="fa-solid fa-plus"></i> Añadir</button>
+                ${list.length ? `<button type="button" onclick="saveMealPrompt('${k}')" class="w-9 h-9 shrink-0 rounded-xl text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="${tr('Guardar {x} como comida', { x: tr(n).toLowerCase() })}" title="${tr('Guardar esta comida para repetirla')}"><i class="fa-solid fa-bookmark"></i></button>` : ''}
+                ${canCopy ? `<button type="button" onclick="copyMealFromYesterday('${k}')" class="px-2.5 py-2 rounded-xl text-xs font-bold text-neutral-300 hover:bg-neutral-800" title="${tr('Copiar lo que comiste ayer en {x}', { x: tr(n).toLowerCase() })}"><i class="fa-regular fa-copy"></i> ${tr('Ayer')}</button>` : ''}
+                <button type="button" onclick="openFoodSheet('${k}')" class="px-3 py-2 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-xs font-extrabold shrink-0" aria-label="${tr('Añadir alimento a {x}', { x: tr(n) })}"><i class="fa-solid fa-plus"></i> ${tr('Añadir')}</button>
             </div>
             ${list.length ? `<div class="border-t border-neutral-800 divide-y divide-neutral-800/70">${list.map(e => {
                 const f = e.fid && getFood(e.fid);
                 return `<div class="flex items-center gap-2 px-3.5 py-2.5" data-entry="${e.id}">
-                    <button type="button" onclick="editDiaryEntry('${e.id}')" class="flex-1 min-w-0 text-left" aria-label="Editar ${esc(e.name)}">
+                    <button type="button" onclick="editDiaryEntry('${e.id}')" class="flex-1 min-w-0 text-left" aria-label="${tr('Editar {n}', { n: esc(e.name) })}">
                         <div class="text-sm font-semibold text-neutral-100 break-words leading-snug">${f ? emo(f) + ' ' : ''}${esc(e.name)}</div>
-                        <div class="text-xs text-neutral-400">${e.brand ? esc(e.brand) + ' · ' : ''}${e.g ? entryAmount(e) : 'Solo calorías'}${e.est ? ' · <span class="nd-est">≈ estimado</span>' : ''}</div>
-                        <div class="text-[11px] text-neutral-400 tabular-nums flex flex-wrap gap-x-2.5 mt-0.5">${macroLine(e.p, e.c, e.f)}${e.sug != null ? `<span class="nd-m">azúc. ${fmt(e.sug, e.sug < 10 ? 1 : 0)}</span>` : ''}</div>
+                        <div class="text-xs text-neutral-400">${e.brand ? esc(e.brand) + ' · ' : ''}${e.g ? entryAmount(e) : tr('Solo calorías')}${e.est ? ' · <span class="nd-est">' + tr('≈ estimado') + '</span>' : ''}</div>
+                        <div class="text-[11px] text-neutral-400 tabular-nums flex flex-wrap gap-x-2.5 mt-0.5">${macroLine(e.p, e.c, e.f)}${e.sug != null ? `<span class="nd-m">${tr('azúc.')} ${fmt(e.sug, e.sug < 10 ? 1 : 0)}</span>` : ''}</div>
                     </button>
                     <span class="text-sm font-extrabold text-neutral-100 shrink-0">${fmt(e.kcal)}<span class="text-xs font-semibold text-neutral-500"> kcal</span></span>
-                    <button type="button" onclick="diaryDel('${e.id}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-600 hover:bg-neutral-800" aria-label="Quitar ${esc(e.name)}"><i class="fa-solid fa-xmark"></i></button>
+                    <button type="button" onclick="diaryDel('${e.id}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-600 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(e.name) })}"><i class="fa-solid fa-xmark"></i></button>
                 </div>`;
             }).join('')}</div>` : ''}
         </div>`;
@@ -223,7 +223,7 @@ const shiftISO = (iso, n) => { const d = new Date(iso + 'T12:00:00'); d.setDate(
 // "2 huevos (110 g)", "1 ración (80 g)", "150 g"
 function entryAmount(e) {
     const unit = e.ml ? 'ml' : 'g';
-    if (e.u && e.n) return `${fmt(e.n, e.n % 1 ? 1 : 0)} ${e.n === 1 ? e.u : (e.up || e.u)} (${fmt(e.g)} ${unit})`;
+    if (e.u && e.n) return `${fmt(e.n, e.n % 1 ? 1 : 0)} ${tr(e.n === 1 ? e.u : (e.up || e.u))} (${fmt(e.g)} ${unit})`;
     return `${fmt(e.g)} ${unit}`;
 }
 function copyMealFromYesterday(slot) {
@@ -231,7 +231,7 @@ function copyMealFromYesterday(slot) {
     if (!prev.length) return;
     prev.forEach(e => { const { id, ...rest } = e; pushDiary(rest); });
     save(); renderDiary(); renderDashboard(); track('food_logged'); checkDayMoments(); checkAchievements();
-    toast(`Copiado de ayer: ${prev.length} alimento${prev.length === 1 ? '' : 's'}`);
+    toast(tr('Copiado de ayer: {x}', { x: tp(prev.length, 'alimento', 'alimentos') }));
 }
 
 // ---------- Hoja de búsqueda y registro ----------
@@ -281,12 +281,12 @@ function unitsOf(f) {
 }
 const defUnit = f => unitsOf(f).find(u => u.key !== 'g') || null;
 function defaultPortion(f) { const u = defUnit(f); return u ? { unit: u, n: 1, g: u.g } : { unit: unitsOf(f)[0], n: 100, g: 100 }; }
-const portionLabel = (u, n, f) => u.key === 'g' ? `${fmt(n)} ${u.label}` : `${fmt(n, n % 1 ? 1 : 0)} ${n === 1 ? u.label : u.plural} (${fmt(u.g * n)} ${f && f.ml ? 'ml' : 'g'})`;
+const portionLabel = (u, n, f) => u.key === 'g' ? `${fmt(n)} ${u.label}` : `${fmt(n, n % 1 ? 1 : 0)} ${tr(n === 1 ? u.label : u.plural)} (${fmt(u.g * n)} ${f && f.ml ? 'ml' : 'g'})`;
 
 function openFoodSheet(slot) {
     fs.slot = slot || slotByHour(); fs.mode = 'list'; fs.food = null; fs.editId = null; fs.q = '';
     fs.tab = recentFoods().length ? 'recent' : 'all';
-    $('fs-slot').innerHTML = DSLOTS.map(([k, n]) => `<option value="${k}">${n}</option>`).join('');
+    $('fs-slot').innerHTML = DSLOTS.map(([k, n]) => `<option value="${k}">${tr(n)}</option>`).join('');
     $('fs-q').value = '';
     $('food-sheet').classList.remove('hidden'); document.body.style.overflow = 'hidden';
     fsRender();
@@ -299,7 +299,7 @@ function openFoodFromLink(id) {
     if (!getFood(id)) return;
     if (!profiles.current) {
         try { sessionStorage.setItem(FOOD_LINK_KEY, id); } catch (e) { }
-        toast(`Crea tu perfil (2 minutos) y te abro «${getFood(id).name}» para apuntarlo`); return;
+        toast(tr('Crea tu perfil (2 minutos) y te abro «{n}» para apuntarlo', { n: getFood(id).name })); return;
     }
     showTab('food'); openFoodSheet(); fsOpen(id); track('food_link');
 }
@@ -311,9 +311,9 @@ function closeFoodSheet() { $('food-sheet').classList.add('hidden'); document.bo
 function fsBack() { fs.mode = 'list'; fs.food = null; fs.editId = null; fsRender(); setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 30); }
 function fsRenderTitle() {
     const n = (DSLOTS.find(s => s[0] === fs.slot) || [])[1] || '';
-    $('fs-title').innerText = fs.editId ? 'Editar en' : fs.mode === 'create' ? 'Crear alimento' : fs.mode === 'quick' ? 'Solo calorías en' : 'Añadir a';
+    $('fs-title').innerText = tr(fs.editId ? 'Editar en' : fs.mode === 'create' ? 'Crear alimento' : fs.mode === 'quick' ? 'Solo calorías en' : 'Añadir a');
     $('fs-slot').value = fs.slot;
-    const btn = $('fs-detail-add'); if (btn && !fs.editId) btn.innerHTML = `<i class="fa-solid fa-plus"></i> Añadir a ${n.toLowerCase()}`;
+    const btn = $('fs-detail-add'); if (btn && !fs.editId) btn.innerHTML = `<i class="fa-solid fa-plus"></i> ${tr('Añadir a {x}', { x: tr(n).toLowerCase() })}`;
 }
 function fsRender() {
     const list = fs.mode === 'list';
@@ -326,13 +326,13 @@ function fsRender() {
     if (fs.mode === 'quick') return fsRenderQuick();
     const mine = FOODS.filter(f => f.custom);
     const tabs = [['recent', 'Recientes'], ['freq', 'Frecuentes'], ['meals', 'Comidas guardadas'], ['all', 'Todos'], ...(mine.length ? [['mine', 'Mis alimentos']] : [])];
-    $('fs-tabs').innerHTML = tabs.map(([k, l]) => `<button type="button" onclick="fs.tab='${k}';fsRender()" class="px-3 py-1.5 rounded-xl border ${fs.tab === k ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-700'}">${l}</button>`).join('');
+    $('fs-tabs').innerHTML = tabs.map(([k, l]) => `<button type="button" onclick="fs.tab='${k}';fsRender()" class="px-3 py-1.5 rounded-xl border ${fs.tab === k ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-800/60 text-neutral-300 border-neutral-700'}">${tr(l)}</button>`).join('');
     let items, empty;
     const q = fs.q.trim();
-    if (q) { items = searchFoods(q); empty = `No hay resultados para «${esc(q)}».`; }
-    else if (fs.tab === 'recent') { items = recentFoods(); empty = 'Aún no has apuntado nada. Busca arriba con la lupa.'; }
-    else if (fs.tab === 'freq') { const fr = foodFreq(); items = Object.keys(fr).sort((a, b) => fr[b] - fr[a]).map(getFood).filter(Boolean).slice(0, 40); empty = 'Aquí saldrá lo que más apuntas.'; }
-    else if (fs.tab === 'mine') { items = mine; empty = 'Aún no has creado alimentos.'; }
+    if (q) { items = searchFoods(q); empty = tr('No hay resultados para «{q}».', { q: esc(q) }); }
+    else if (fs.tab === 'recent') { items = recentFoods(); empty = tr('Aún no has apuntado nada. Busca arriba con la lupa.'); }
+    else if (fs.tab === 'freq') { const fr = foodFreq(); items = Object.keys(fr).sort((a, b) => fr[b] - fr[a]).map(getFood).filter(Boolean).slice(0, 40); empty = tr('Aquí saldrá lo que más apuntas.'); }
+    else if (fs.tab === 'mine') { items = mine; empty = tr('Aún no has creado alimentos.'); }
     else { items = FOODS.filter(f => f.brand).concat(FOODS.filter(f => !f.brand)).slice(0, 80); empty = ''; }
     const row = f => {
         const d = defaultPortion(f), kc = macrosOf(f, d.g).kcal;
@@ -341,18 +341,18 @@ function fsRender() {
                 <div class="text-sm font-semibold text-neutral-100 break-words leading-snug">${emo(f)} ${esc(f.name)}</div>
                 <div class="text-xs text-neutral-400">${f.brand ? `<span class="text-mint-300/90">${esc(f.brand)}</span> · ` : ''}${portionLabel(d.unit, d.n, f)} · ${fmt(kc)} kcal</div>
             </button>
-            <button type="button" onclick="fsQuickAdd('${f.id}')" class="w-9 h-9 shrink-0 rounded-full bg-neutral-800 hover:bg-mint-600 text-mint-400 hover:text-white" aria-label="Añadir ${esc(f.name)} (${portionLabel(d.unit, d.n, f)})"><i class="fa-solid fa-plus"></i></button>
+            <button type="button" onclick="fsQuickAdd('${f.id}')" class="w-9 h-9 shrink-0 rounded-full bg-neutral-800 hover:bg-mint-600 text-mint-400 hover:text-white" aria-label="${tr('Añadir {n}', { n: `${esc(f.name)} (${portionLabel(d.unit, d.n, f)})` })}"><i class="fa-solid fa-plus"></i></button>
         </div>`;
     };
-    const scanBtn = `<button type="button" onclick="openScanner(fs.slot)" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-barcode text-mint-400"></i> Escanear código de barras</button>`;
+    const scanBtn = `<button type="button" onclick="openScanner(fs.slot)" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-barcode text-mint-400"></i> ${tr('Escanear código de barras')}</button>`;
     if (!q && fs.tab === 'meals') { $('fs-body').innerHTML = savedMealsHtml(); $('fs-body').scrollTop = 0; return; }
     $('fs-body').innerHTML = (items.length ? `<div class="divide-y divide-neutral-800">${items.map(row).join('')}</div>` : `<p class="text-sm text-neutral-400 py-6 text-center">${empty}</p>`) +
         `<div class="mt-4 pt-4 border-t border-neutral-800 grid grid-cols-1 sm:grid-cols-2 gap-2">
             ${scanBtn}
-            <button type="button" onclick="fs.mode='create';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-plus text-mint-400"></i> Crear alimento</button>
-            <button type="button" onclick="fs.mode='quick';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-bolt text-mint-400"></i> Apuntar solo calorías</button>
+            <button type="button" onclick="fs.mode='create';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-plus text-mint-400"></i> ${tr('Crear alimento')}</button>
+            <button type="button" onclick="fs.mode='quick';fsRender()" class="py-3 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-bolt text-mint-400"></i> ${tr('Apuntar solo calorías')}</button>
         </div>
-        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">Alimentos genéricos y platos: USDA FoodData Central (dominio público) y, para Colombia, la Tabla de Composición de Alimentos Colombianos del ICBF (2018). Productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comida rápida: información nutricional oficial de cada cadena en España. Comprueba la etiqueta: las recetas cambian.</p>' : ''}`;
+        ${FOODS.some(f => f.off) ? '<p class="mt-3 text-[11px] text-neutral-500">' + tr('Alimentos genéricos y platos: USDA FoodData Central (dominio público) y, para Colombia, la Tabla de Composición de Alimentos Colombianos del ICBF (2018). Productos de marca: Open Food Facts (openfoodfacts.org), licencia ODbL. Comida rápida: información nutricional oficial de cada cadena en España. Comprueba la etiqueta: las recetas cambian.') + '</p>' : ''}`;
     $('fs-body').scrollTop = 0;
 }
 function fsQuickAdd(id) {
@@ -360,7 +360,7 @@ function fsQuickAdd(id) {
     const d = defaultPortion(f);
     const newId = logFood(f, d.unit, d.n, fs.slot);
     const n = (DSLOTS.find(s => s[0] === fs.slot) || [])[1] || '';
-    toast(`✓ ${f.name} → ${n.toLowerCase()}`);
+    toast(`✓ ${f.name} → ${tr(n).toLowerCase()}`);
     animDiaryRow(newId);
 }
 function logFood(f, unit, n, slot, replaceId) {
@@ -396,19 +396,19 @@ function fsRenderDetail() {
         <div>
             <div class="text-xl font-extrabold text-neutral-100 leading-tight">${emo(f)} ${esc(f.name)}</div>
             ${f.brand ? `<div class="text-sm font-semibold text-mint-300/90">${esc(f.brand)}</div>` : ''}
-            <div class="text-xs text-neutral-400 mt-1">Por 100 ${f.ml ? 'ml' : 'g'}: ${fmt(k)} kcal · P ${fmt(f.p, 1)} · G ${fmt(f.f, 1)} · HC ${fmt(f.c, 1)}${f.sug != null ? ` (azúcares ${fmt(f.sug, 1)})` : ''}${f.raw ? ' · peso en crudo' : ''}</div>
+            <div class="text-xs text-neutral-400 mt-1">${tr('Por 100 {u}:', { u: f.ml ? 'ml' : 'g' })} ${fmt(k)} kcal · ${tr('P')} ${fmt(f.p, 1)} · ${tr('G')} ${fmt(f.f, 1)} · ${tr('HC')} ${fmt(f.c, 1)}${f.sug != null ? ` ${tr('(azúcares {k})', { k: fmt(f.sug, 1) })}` : ''}${f.raw ? ' · ' + tr('peso en crudo') : ''}</div>
         </div>
         <div class="grid grid-cols-5 gap-2">
-            <label class="col-span-2 block"><span class="text-xs font-bold text-neutral-400">Cantidad</span>
+            <label class="col-span-2 block"><span class="text-xs font-bold text-neutral-400">${tr('Cantidad')}</span>
                 <input id="fs-n" type="number" inputmode="decimal" min="0" step="${u.key === 'g' ? 1 : 0.5}" value="${fs.n}" oninput="fs.n=this.value;fsUpdateDetail()" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-extrabold"></label>
-            <label class="col-span-3 block"><span class="text-xs font-bold text-neutral-400">Medida</span>
-                <select id="fs-unit" onchange="fsSetUnit(this.value)" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold">${units.map(x => `<option value="${x.key}" ${x.key === u.key ? 'selected' : ''}>${x.key === 'g' ? x.label : `${x.label} (${fmt(x.g)} ${f.ml ? 'ml' : 'g'})`}</option>`).join('')}</select></label>
+            <label class="col-span-3 block"><span class="text-xs font-bold text-neutral-400">${tr('Medida')}</span>
+                <select id="fs-unit" onchange="fsSetUnit(this.value)" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold">${units.map(x => `<option value="${x.key}" ${x.key === u.key ? 'selected' : ''}>${x.key === 'g' ? x.label : `${tr(x.label)} (${fmt(x.g)} ${f.ml ? 'ml' : 'g'})`}</option>`).join('')}</select></label>
         </div>
         <div id="fs-macros" class="grid grid-cols-4 gap-2 text-center"></div>
         <div class="grid ${fs.editId ? 'grid-cols-3' : 'grid-cols-1'} gap-2">
-            ${fs.editId ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();diaryDel(id)" class="py-3.5 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-solid fa-trash"></i> Quitar</button>` : ''}
-            ${fs.editId ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();dupEntry(id)" class="py-3.5 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-regular fa-copy"></i> Duplicar</button>` : ''}
-            <button id="fs-detail-add" type="button" onclick="fsConfirm()" class="py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${fs.editId ? '<i class="fa-solid fa-check"></i> Guardar cambios' : ''}</button>
+            ${fs.editId ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();diaryDel(id)" class="py-3.5 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-solid fa-trash"></i> ${tr('Quitar')}</button>` : ''}
+            ${fs.editId ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();dupEntry(id)" class="py-3.5 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-regular fa-copy"></i> ${tr('Duplicar')}</button>` : ''}
+            <button id="fs-detail-add" type="button" onclick="fsConfirm()" class="py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${fs.editId ? '<i class="fa-solid fa-check"></i> ' + tr('Guardar cambios') : ''}</button>
         </div>
     </div>`;
     fsRenderTitle(); fsUpdateDetail();
@@ -423,8 +423,8 @@ function fsSetUnit(key) {
 function fsUpdateDetail() {
     const f = fs.food, u = unitsOf(f).find(x => x.key === fs.unit), g = u.g * (num(fs.n) || 0), m = macrosOf(f, g);
     const box = (l, v, unit, col) => `<div class="p-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800"><div class="text-[11px] font-bold text-neutral-400">${l}</div><div class="text-lg font-extrabold" style="color:${col}">${fmt(v, v < 10 && v % 1 ? 1 : 0)}<span class="text-xs text-neutral-400 font-semibold">${unit}</span></div></div>`;
-    $('fs-macros').innerHTML = box('Kcal', m.kcal, '', '#f2ede6') + box('Proteína', m.p, ' g', '#c49a6c') + box('Grasa', m.f, ' g', '#f59e0b') + box('Hidratos', m.c, ' g', '#e6d3b3')
-        + (m.sug != null ? `<div class="col-span-4 text-xs text-neutral-400 text-right -mt-1">de los cuales azúcares <b class="text-neutral-200">${fmt(m.sug, m.sug < 10 ? 1 : 0)} g</b></div>` : '');
+    $('fs-macros').innerHTML = box('Kcal', m.kcal, '', '#f2ede6') + box(tr('Proteína'), m.p, ' g', '#c49a6c') + box(tr('Grasa'), m.f, ' g', '#f59e0b') + box(tr('Hidratos'), m.c, ' g', '#e6d3b3')
+        + (m.sug != null ? `<div class="col-span-4 text-xs text-neutral-400 text-right -mt-1">${tr('de los cuales azúcares')} <b class="text-neutral-200">${fmt(m.sug, m.sug < 10 ? 1 : 0)} g</b></div>` : '');
 }
 function fsConfirm() {
     const f = fs.food, u = unitsOf(f).find(x => x.key === fs.unit), n = num(fs.n);
@@ -432,7 +432,7 @@ function fsConfirm() {
     const editing = fs.editId;
     const id = logFood(f, u, n, fs.slot, editing);
     closeFoodSheet(); animDiaryRow(id);
-    toast(editing ? 'Cambios guardados' : `✓ Apuntado: ${f.name}`);
+    toast(editing ? 'Cambios guardados' : tr('✓ Apuntado: {n}', { n: f.name }));
 }
 function editDiaryEntry(id) {
     const e = (state.diary[diaryDate || todayISO()] || []).find(x => x.id === id); if (!e) return;
@@ -445,15 +445,15 @@ function fsRenderQuick() {
     const e = fs.editId && (state.diary[diaryDate || todayISO()] || []).find(x => x.id === fs.editId);
     const inp = (id, label, v, extra = '') => `<label class="block"><span class="text-xs font-bold text-neutral-400">${label}</span><input id="${id}" ${extra} value="${v ?? ''}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></label>`;
     $('fs-body').innerHTML = `<div class="space-y-3">
-        ${inp('fq-name', 'Nombre', e ? esc(e.name) : '', 'type="text" maxlength="40" placeholder="Ej: Menú del día"')}
+        ${inp('fq-name', tr('Nombre'), e ? esc(e.name) : '', `type="text" maxlength="40" placeholder="${tr('Ej: Menú del día')}"`)}
         <div class="grid grid-cols-2 gap-2">
             ${inp('fq-kcal', 'Kcal', e ? e.kcal : '', 'type="number" inputmode="decimal" min="0"')}
-            ${inp('fq-p', 'Proteína (g)', e ? e.p : '', 'type="number" inputmode="decimal" min="0" placeholder="opcional"')}
-            ${inp('fq-f', 'Grasa (g)', e ? e.f : '', 'type="number" inputmode="decimal" min="0" placeholder="opcional"')}
-            ${inp('fq-c', 'Hidratos (g)', e ? e.c : '', 'type="number" inputmode="decimal" min="0" placeholder="opcional"')}
+            ${inp('fq-p', tr('Proteína (g)'), e ? e.p : '', `type="number" inputmode="decimal" min="0" placeholder="${tr('opcional')}"`)}
+            ${inp('fq-f', tr('Grasa (g)'), e ? e.f : '', `type="number" inputmode="decimal" min="0" placeholder="${tr('opcional')}"`)}
+            ${inp('fq-c', tr('Hidratos (g)'), e ? e.c : '', `type="number" inputmode="decimal" min="0" placeholder="${tr('opcional')}"`)}
         </div>
-        <button type="button" onclick="fsQuickSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${e ? 'Guardar cambios' : 'Apuntar'}</button>
-        ${e ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();dupEntry(id)" class="w-full py-3 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-regular fa-copy"></i> Duplicar</button>` : ''}
+        <button type="button" onclick="fsQuickSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr(e ? 'Guardar cambios' : 'Apuntar')}</button>
+        ${e ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();dupEntry(id)" class="w-full py-3 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-regular fa-copy"></i> ${tr('Duplicar')}</button>` : ''}
     </div>`;
     setTimeout(() => { const el = $('fq-name'); if (el) el.focus(); }, 30);
 }
@@ -465,25 +465,25 @@ function fsQuickSave() {
     if (id) { const list = state.diary[diaryDate || todayISO()] || [], i = list.findIndex(x => x.id === id); if (i >= 0) list[i] = { id, ...entry }; else id = null; }
     if (!id) { id = pushDiary(entry); track('food_logged'); }
     save(); renderDiary(); renderDashboard(); closeFoodSheet(); animDiaryRow(id); checkDayMoments(); checkAchievements();
-    toast(`✓ Apuntado: ${name}`);
+    toast(tr('✓ Apuntado: {n}', { n: name }));
 }
 // Crear un alimento propio con los datos de su etiqueta (queda en «Mis alimentos» y también sirve para el menú)
 function fsRenderCreate() {
     const inp = (id, label, extra = '') => `<label class="block"><span class="text-xs font-bold text-neutral-400">${label}</span><input id="${id}" ${extra} class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></label>`;
     $('fs-body').innerHTML = `<div class="space-y-3">
-        ${inp('fc-name', 'Nombre', 'type="text" maxlength="40" placeholder="Ej: Wrap de pollo"')}
-        ${inp('fc-brand', 'Marca (opcional)', 'type="text" maxlength="30" placeholder="Ej: Hacendado"')}
-        <div class="text-xs font-bold text-neutral-300 pt-1">Por cada 100 g (tabla nutricional)</div>
+        ${inp('fc-name', tr('Nombre'), `type="text" maxlength="40" placeholder="${tr('Ej: Wrap de pollo')}"`)}
+        ${inp('fc-brand', tr('Marca (opcional)'), `type="text" maxlength="30" placeholder="${tr('Ej: {x}', { x: 'Hacendado' })}"`)}
+        <div class="text-xs font-bold text-neutral-300 pt-1">${tr('Por cada 100 g (tabla nutricional)')}</div>
         <div class="grid grid-cols-2 gap-2">
-            ${inp('fc-kcal', 'Energía (kcal)', 'type="number" inputmode="decimal" min="0" max="950" placeholder="Opcional"')}
-            ${inp('fc-f', 'Grasas (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-c', 'Hidratos (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-sug', 'de los cuales azúcares (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-p', 'Proteínas (g)', 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-fib', 'Fibra (g, opcional)', 'type="number" inputmode="decimal" min="0" max="100" value="0"')}
+            ${inp('fc-kcal', tr('Energía (kcal)'), `type="number" inputmode="decimal" min="0" max="950" placeholder="${tr('Opcional')}"`)}
+            ${inp('fc-f', tr('Grasas (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
+            ${inp('fc-c', tr('Hidratos (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
+            ${inp('fc-sug', tr('de los cuales azúcares (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
+            ${inp('fc-p', tr('Proteínas (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
+            ${inp('fc-fib', tr('Fibra (g, opcional)'), 'type="number" inputmode="decimal" min="0" max="100" value="0"')}
         </div>
-        ${inp('fc-serv', 'Peso de una ración (g, opcional)', 'type="number" inputmode="decimal" min="1" max="2000" placeholder="Ej: 60"')}
-        <button type="button" onclick="fsCreateSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">Crear y elegir cantidad</button>
+        ${inp('fc-serv', tr('Peso de una ración (g, opcional)'), `type="number" inputmode="decimal" min="1" max="2000" placeholder="${tr('Ej: {x}', { x: '60' })}"`)}
+        <button type="button" onclick="fsCreateSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr('Crear y elegir cantidad')}</button>
     </div>`;
     setTimeout(() => { const el = $('fc-name'); if (el) el.focus(); }, 30);
 }
@@ -502,7 +502,7 @@ function fsCreateSave() {
     if (serv && serv > 0) food.serv = [serv, 'ración', 'raciones'];
     registerCustom(food); state.customFoods.push(food); save();
     fsOpen(food.id);
-    toast(`"${name}" creado`);
+    toast(tr('«{n}» creado', { n: name }));
 }
 function pushDiary(entry, date) {
     const d = date || diaryDate || todayISO();
@@ -514,13 +514,13 @@ function round1(x) { return Math.round(x * 10) / 10; }
 // Duplicar un alimento del diario en otra comida y/o en otro día
 function dupEntry(id) {
     const from = diaryDate || todayISO(), e = (state.diary[from] || []).find(x => x.id === id); if (!e) return;
-    openSheet('<i class="fa-regular fa-copy text-mint-400"></i> Duplicar', `<div class="space-y-4">
-        <div class="p-3 rounded-xl bg-neutral-800/60 border border-neutral-800 text-sm"><b>${esc(e.name)}</b> · ${e.g ? entryAmount(e) : 'Solo calorías'} · ${fmt(e.kcal)} kcal</div>
+    openSheet('<i class="fa-regular fa-copy text-mint-400"></i> ' + tr('Duplicar'), `<div class="space-y-4">
+        <div class="p-3 rounded-xl bg-neutral-800/60 border border-neutral-800 text-sm"><b>${esc(e.name)}</b> · ${e.g ? entryAmount(e) : tr('Solo calorías')} · ${fmt(e.kcal)} kcal</div>
         <div class="grid grid-cols-2 gap-2">
-            <label class="block"><span class="text-xs font-bold text-neutral-400">Comida</span><select id="dup-slot" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold">${DSLOTS.map(([k, n]) => `<option value="${k}" ${k === e.slot ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
-            <label class="block"><span class="text-xs font-bold text-neutral-400">Día</span><input id="dup-date" type="date" value="${todayISO()}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></label>
+            <label class="block"><span class="text-xs font-bold text-neutral-400">${tr('Comida|etiqueta')}</span><select id="dup-slot" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold">${DSLOTS.map(([k, n]) => `<option value="${k}" ${k === e.slot ? 'selected' : ''}>${tr(n)}</option>`).join('')}</select></label>
+            <label class="block"><span class="text-xs font-bold text-neutral-400">${tr('Día')}</span><input id="dup-date" type="date" value="${todayISO()}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></label>
         </div>
-        <button onclick="dupConfirm('${id}','${from}')" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-regular fa-copy"></i> Duplicar</button></div>`);
+        <button onclick="dupConfirm('${id}','${from}')" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-regular fa-copy"></i> ${tr('Duplicar')}</button></div>`);
 }
 function dupConfirm(id, from) {
     const e = (state.diary[from] || []).find(x => x.id === id); if (!e) return;
@@ -528,7 +528,7 @@ function dupConfirm(id, from) {
     const { id: _, ...rest } = e;
     pushDiary({ ...rest, slot }, d);
     save(); renderDiary(); renderDashboard(); closeSheet(); track('food_logged'); checkDayMoments(); checkAchievements();
-    toast(`Duplicado en ${(DSLOTS.find(s => s[0] === slot) || [, ''])[1].toLowerCase()}${d === from ? '' : ' · ' + new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}`);
+    toast(tr('Duplicado en {x}', { x: tr((DSLOTS.find(s => s[0] === slot) || [, ''])[1]).toLowerCase() }) + (d === from ? '' : ' · ' + new Date(d + 'T12:00:00').toLocaleDateString(locale(), { day: 'numeric', month: 'short' })));
 }
 function animDiaryRow(id) {
     ndAnim(document.querySelector(`#diary-meals [data-entry="${id}"]`), [{ opacity: 0, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }], 180);
@@ -539,7 +539,7 @@ function diaryDel(id) {
     state.diary[d] = list.filter(e => e.id !== id);
     if (!state.diary[d].length) delete state.diary[d];
     save(); renderDiary(); renderDashboard();
-    if (removed) toastUndo(`Quitado: ${removed.name}`, () => {
+    if (removed) toastUndo(tr('Quitado: {n}', { n: removed.name }), () => {
         const cur = state.diary[d] || [];
         cur.splice(Math.min(idx, cur.length), 0, removed);
         state.diary[d] = cur;
@@ -551,7 +551,7 @@ let undoFn = null;
 function toastUndo(msg, fn) {
     undoFn = fn;
     const t = $('toast');
-    t.innerHTML = `<span>${esc(msg)}</span><button type="button" onclick="runUndo()" class="ml-3 underline font-extrabold">Deshacer</button>`;
+    t.innerHTML = `<span>${esc(tr(msg))}</span><button type="button" onclick="runUndo()" class="ml-3 underline font-extrabold">${tr('Deshacer')}</button>`;
     t.style.pointerEvents = 'auto'; t.style.transitionDuration = '';
     t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)';
     clearTimeout(toastTimer);

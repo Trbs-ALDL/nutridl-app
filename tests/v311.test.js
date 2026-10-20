@@ -59,3 +59,24 @@ test('Idioma: el selector no se enseña hasta que la traducción esté COMPLETA'
         assert.ok(sinEn.length + totalFaltan > 0, 'si ya no falta nada, pon I18N_READY = true');
     }
 });
+
+test('Idioma: una palabra con dos sentidos usa clave con contexto («Comida» = Lunch / Meal)', () => {
+    const es = cargar('es'), en = cargar('en');
+    assert.equal(es("tr('Comida|etiqueta')"), 'Comida', 'en español se ve sin el contexto');
+    assert.equal(en("tr('Comida|etiqueta')"), 'Meal');
+    assert.equal(en("tr('Comida')"), 'Lunch', 'la franja sigue siendo Lunch');
+    assert.equal(en("tr('Algo sin traducir|contexto')"), 'Algo sin traducir', 'sin traducción tampoco enseña el contexto');
+});
+
+test('Idioma: el diccionario no tiene claves repetidas ni traducciones vacías', () => {
+    const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'data', 'lang-en.js'), 'utf8');
+    const claves = [...src.matchAll(/^\s{4}(['"])((?:\.|(?!\1).)*)\1\s*:/gm)].map(m => m[2]);
+    const rep = claves.filter((k, i) => claves.indexOf(k) !== i);
+    assert.deepEqual(rep, [], 'claves repetidas: ' + rep.join(' · '));
+    const en = cargar('en');
+    const vacias = JSON.parse(en("JSON.stringify(Object.entries(LANG_EN).filter(([k, v]) => !String(v).trim()).map(([k]) => k))"));
+    assert.deepEqual(vacias, []);
+    // Cada {hueco} del español existe también en el inglés (si no, saldría un número perdido)
+    const malos = JSON.parse(en("JSON.stringify(Object.entries(LANG_EN).filter(([k, v]) => (k.match(/\{\w+\}/g) || []).some(h => !String(v).includes(h))).map(([k]) => k))"));
+    assert.deepEqual(malos, [], 'huecos perdidos en: ' + malos.join(' · '));
+});
