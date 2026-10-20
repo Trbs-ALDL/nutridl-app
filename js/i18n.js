@@ -35,6 +35,8 @@ function tr(s, v) {
 // Así tools/i18n-check.js sabe que ese texto es traducible y comprueba que tiene su inglés.
 const tk = s => s;
 // Nombre de un alimento en el idioma activo (f.en lo traen los genéricos; las marcas se llaman igual)
+// Precio en euros con el formato de cada idioma: «4,99 €» / «€4.99»
+const eur = v => new Intl.NumberFormat(locale(), { style: 'currency', currency: 'EUR' }).format(v);
 // Porcentaje: «13 %» en español, «13%» en inglés
 const pctTxt = v => LANG === 'es' ? v + ' %' : v + '%';
 const foodName = f => (f && LANG === 'en' && f.en) || (f && f.name) || '';
@@ -58,7 +60,7 @@ const dowShort = () => Array.from({ length: 7 }, (_, i) => {
 function applyStaticI18n(root) {
     const r = root || document;
     r.querySelectorAll('[data-t]').forEach(el => { const k = el.getAttribute('data-t'); if (k) el.textContent = tr(k); });
-    [['data-t-ph', 'placeholder'], ['data-t-al', 'aria-label'], ['data-t-ti', 'title']].forEach(([a, p]) => {
+    [['data-t-ph', 'placeholder'], ['data-t-al', 'aria-label'], ['data-t-ti', 'title'], ['data-t-co', 'content'], ['data-t-alt', 'alt']].forEach(([a, p]) => {
         r.querySelectorAll('[' + a + ']').forEach(el => { const k = el.getAttribute(a); if (k) el.setAttribute(p, tr(k)); });
     });
 }

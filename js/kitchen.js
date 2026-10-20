@@ -14,13 +14,13 @@ function openFridge(slot) {
     if (needPro('fridge')) return;
     if (!calc.target) { toast('Primero completa tu plan'); return; }
     fr.slot = slot || (nextMeal() || {}).slot || slotByHour();
-    openSheet('<i class="fa-solid fa-snowflake text-mint-400"></i> Mi nevera', `<div class="space-y-4">
-        <label class="nd-photo" id="fr-drop"><input type="file" accept="image/*" capture="environment" class="sr-only" onchange="fridgePhoto(this)"><span id="fr-prev" class="flex flex-col items-center gap-2 text-neutral-400"><i class="fa-solid fa-camera text-3xl text-mint-400"></i><span class="text-sm font-bold">Foto de tu nevera (opcional)</span><span class="text-xs">Te sirve de guía para marcar lo que tienes. No sale de tu móvil.</span></span></label>
-        <form onsubmit="event.preventDefault(); fridgeText()" class="flex gap-2"><input id="fr-q" autocomplete="off" placeholder="Escribe lo que tienes: pollo, huevos, arroz…" class="flex-1 min-w-0 px-3 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Lo que tienes en la nevera"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold">Añadir</button></form>
+    openSheet('<i class="fa-solid fa-snowflake text-mint-400"></i> ' + tr('Mi nevera'), `<div class="space-y-4">
+        <label class="nd-photo" id="fr-drop"><input type="file" accept="image/*" capture="environment" class="sr-only" onchange="fridgePhoto(this)"><span id="fr-prev" class="flex flex-col items-center gap-2 text-neutral-400"><i class="fa-solid fa-camera text-3xl text-mint-400"></i><span class="text-sm font-bold">${tr('Foto de tu nevera (opcional)')}</span><span class="text-xs">${tr('Te sirve de guía para marcar lo que tienes. No sale de tu móvil.')}</span></span></label>
+        <form onsubmit="event.preventDefault(); fridgeText()" class="flex gap-2"><input id="fr-q" autocomplete="off" placeholder="${tr('Escribe lo que tienes: pollo, huevos, arroz…')}" class="flex-1 min-w-0 px-3 py-3 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="${tr('Lo que tienes en la nevera')}"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold">${tr('Añadir')}</button></form>
         <div id="fr-have"></div>
-        <details class="nd-faq" ${pantry().length < 3 ? 'open' : ''}><summary>Toca lo que tienes<i class="fa-solid fa-chevron-down chev"></i></summary><div id="fr-chips" class="px-3 pb-3 flex flex-wrap gap-1.5"></div></details>
-        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">¿Para qué comida?</div><div id="fr-slots" class="flex gap-2 overflow-x-auto nd-noscroll"></div></div>
-        <button onclick="fridgeCook()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-utensils"></i> ¿Qué cocino?</button>
+        <details class="nd-faq" ${pantry().length < 3 ? 'open' : ''}><summary>${tr('Toca lo que tienes')}<i class="fa-solid fa-chevron-down chev"></i></summary><div id="fr-chips" class="px-3 pb-3 flex flex-wrap gap-1.5"></div></details>
+        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('¿Para qué comida?')}</div><div id="fr-slots" class="flex gap-2 overflow-x-auto nd-noscroll"></div></div>
+        <button onclick="fridgeCook()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-utensils"></i> ${tr('¿Qué cocino?')}</button>
         <div id="fr-out" class="space-y-3"></div>
     </div>`, () => { if (fr.url) URL.revokeObjectURL(fr.url); fr.url = null; });
     renderFridge(); track('fridge_open');
@@ -29,17 +29,17 @@ function fridgePhoto(inp) {
     const file = inp.files && inp.files[0]; if (!file) return;
     if (fr.url) URL.revokeObjectURL(fr.url);
     fr.url = URL.createObjectURL(file);
-    $('fr-prev').innerHTML = `<img src="${fr.url}" alt="Foto de tu nevera" class="w-full max-h-72 object-contain rounded-2xl">`;
+    $('fr-prev').innerHTML = `<img src="${fr.url}" alt="${tr('Foto de tu nevera')}" class="w-full max-h-72 object-contain rounded-2xl">`;
     $('fr-drop').classList.add('has');
 }
 function renderFridge() {
     const P = pantry();
     const have = $('fr-have'); if (!have) return;
-    have.innerHTML = P.length ? `<div class="flex items-center justify-between gap-2 mb-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">Tienes (${P.length})</div><button type="button" onclick="fridgeClear()" class="text-xs font-bold text-neutral-400 underline">Vaciar</button></div>
-        <div class="flex flex-wrap gap-1.5">${P.map(getFood).filter(Boolean).map(f => `<span class="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg bg-mint-600/20 border border-mint-500/40 text-xs font-bold text-neutral-100">${emo(f)} ${esc(f.name)}<button type="button" onclick="fridgeToggle('${f.id}')" class="w-6 h-6 rounded text-neutral-400 hover:text-roseAccent-400" aria-label="Quitar ${esc(f.name)}"><i class="fa-solid fa-xmark"></i></button></span>`).join('')}</div>`
-        : '<p class="text-sm text-neutral-400">Aún no has marcado nada.</p>';
-    $('fr-chips').innerHTML = FRIDGE_QUICK.map(getFood).filter(f => f && !inPantry(f.id, P)).map(f => `<button type="button" onclick="fridgeToggle('${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(f.name.replace(/ \(.*\)$/, ''))}</button>`).join('');
-    $('fr-slots').innerHTML = planSlots().map(s => `<button type="button" onclick="fr.slot='${s}';renderFridge()" class="shrink-0 px-3.5 py-2 rounded-full text-xs font-extrabold border ${s === fr.slot ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${SLOT_NAME[s]}</button>`).join('');
+    have.innerHTML = P.length ? `<div class="flex items-center justify-between gap-2 mb-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Tienes ({k})', { k: P.length })}</div><button type="button" onclick="fridgeClear()" class="text-xs font-bold text-neutral-400 underline">${tr('Vaciar')}</button></div>
+        <div class="flex flex-wrap gap-1.5">${P.map(getFood).filter(Boolean).map(f => `<span class="inline-flex items-center gap-1 pl-2.5 pr-1 py-1 rounded-lg bg-mint-600/20 border border-mint-500/40 text-xs font-bold text-neutral-100">${emo(f)} ${esc(foodName(f))}<button type="button" onclick="fridgeToggle('${f.id}')" class="w-6 h-6 rounded text-neutral-400 hover:text-roseAccent-400" aria-label="${tr('Quitar {n}', { n: esc(foodName(f)) })}"><i class="fa-solid fa-xmark"></i></button></span>`).join('')}</div>`
+        : '<p class="text-sm text-neutral-400">' + tr('Aún no has marcado nada.') + '</p>';
+    $('fr-chips').innerHTML = FRIDGE_QUICK.map(getFood).filter(f => f && !inPantry(f.id, P)).map(f => `<button type="button" onclick="fridgeToggle('${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(foodName(f).replace(/ \(.*\)$/, ''))}</button>`).join('');
+    $('fr-slots').innerHTML = planSlots().map(s => `<button type="button" onclick="fr.slot='${s}';renderFridge()" class="shrink-0 px-3.5 py-2 rounded-full text-xs font-extrabold border ${s === fr.slot ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${tr(SLOT_NAME[s])}</button>`).join('');
 }
 function fridgeToggle(id) { const p = myPrefs(); p.pantry = p.pantry.includes(id) ? p.pantry.filter(x => x !== id) : p.pantry.concat(id); save(); renderFridge(); }
 function fridgeClear() { myPrefs().pantry = []; save(); renderFridge(); $('fr-out').innerHTML = ''; }
@@ -62,16 +62,16 @@ function fridgeMeals(slot, ids, n = 3) {
 function fridgeCook() {
     const P = pantry(); if (!P.length) { toast('Marca primero lo que tienes'); return; }
     const { tg, opts } = fridgeMeals(fr.slot, P); frOpts = opts;
-    $('fr-out').innerHTML = opts.length ? `<div class="nd-card p-4 flex items-center justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Para ${slotArt(fr.slot)}</div><div class="text-lg font-extrabold text-neutral-50">${fmt(tg.kcal)} kcal · ${fmt(tg.p)} g de proteína</div></div>${tagPill('rec')}</div>
+    $('fr-out').innerHTML = opts.length ? `<div class="nd-card p-4 flex items-center justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Para {x}', { x: slotArt(fr.slot) })}</div><div class="text-lg font-extrabold text-neutral-50">${tr('{k} kcal · {p} g de proteína', { k: fmt(tg.kcal), p: fmt(tg.p) })}</div></div>${tagPill('rec')}</div>
         ${opts.map((o, i) => mealCard(o, { key: 'fr' + i + o.id, add: `fridgeAdd(${i})` })).join('')}`
-        : '<p class="text-sm text-neutral-300">Con eso no me sale un plato completo. Añade alguna proteína (huevos, pollo, atún, legumbres…) y algún hidrato (arroz, pasta, patata, pan…).</p>';
+        : '<p class="text-sm text-neutral-300">' + tr('Con eso no me sale un plato completo. Añade alguna proteína (huevos, pollo, atún, legumbres…) y algún hidrato (arroz, pasta, patata, pan…).') + '</p>';
     track('fridge_cook');
     const first = $('fr-out').firstElementChild; if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function fridgeAdd(i) {
     const o = frOpts[i]; if (!o) return;
     mealToDiary(o, fr.slot, todayISO()); track('food_logged'); afterLog();
-    toast(`✓ ${o.name} → ${slotLow(fr.slot)}`);
+    toast(`✓ ${mealText(o).name} → ${slotLow(fr.slot)}`);
 }
 
 // =====================================================================
@@ -131,7 +131,7 @@ function shopCreate(req) {
     const old = state.shop && state.shop.v === 2 ? state.shop : null;
     state.shop = { v: 2, req, days: req.days, start: todayISO(), at: Date.now(), menus, add: old ? old.add || [] : [], done: old ? old.done : {}, extra: old ? old.extra : [] };
     shopBuild(state.shop); save(); renderShopView(); track('shop_generated');
-    toast(`Compra para ${req.days} día${req.days === 1 ? '' : 's'} lista`);
+    toast(tr('Compra para {x} lista', { x: tp(req.days, 'día', 'días') }));
 }
 function shopAsk(text) {
     const t = String(text != null ? text : ($('shop-q') && $('shop-q').value) || '').trim();
@@ -147,18 +147,18 @@ function shopEdit(text) {
         const from = foodIdsIn(m[1]), to = matchFoods(m[2].replace(/^(el|la|los|las|unos|unas)\s+/, ''), 6).find(f => !f.brand);
         if (!from.length || !to) { toast('No he entendido qué cambiar'); return; }
         const n = shopReplace(from, to.id);
-        msg = n ? `Cambiado por ${to.name.toLowerCase()} en ${n} comida${n === 1 ? '' : 's'}` : 'Eso no estaba en tu compra';
+        msg = n ? tr('Cambiado por {x} en {y}', { x: foodName(to).toLowerCase(), y: tp(n, 'comida|plato', 'comidas|plato') }) : tr('Eso no estaba en tu compra');
     } else if (/^(quita\w*|sin|elimina\w*|no quiero|nada de|fuera|borra\w*)\b/.test(q)) {
         const ids = foodIdsIn(q.replace(/^(quita\w*|sin|elimina\w*|no quiero|nada de|fuera|borra\w*)\s*/, ''));
         if (!ids.length) { toast('No he entendido qué quitar'); return; }
         const n = shopAvoid(ids);
-        msg = `Quitado de la compra${n ? ` (${n} comida${n === 1 ? '' : 's'} cambiada${n === 1 ? '' : 's'})` : ''}`;
+        msg = tr('Quitado de la compra') + (n ? ' ' + tr(n === 1 ? '({k} comida cambiada)' : '({k} comidas cambiadas)', { k: n }) : '');
     } else if (/^(añade|anade|agrega|pon|mete|incluye|compra|mas)\b/.test(q)) {
         const daily = /al dia|cada dia|diari|por dia/.test(q);
         const P = parseFoodText(q.replace(/^(añade|anade|agrega|pon|mete|incluye|compra|mas)\s*/, '').replace(/al dia|cada dia|diarios?|por dia/g, ''));
         if (!P.items.length) { toast('No he entendido qué añadir'); return; }
         P.items.forEach(it => { const g = it.est ? it.g * S.days : daily ? it.g * S.days : it.g; S.add.push({ fid: it.food.id, g: Math.round(g) }); });
-        msg = `Añadido: ${P.items.map(i => i.food.name.toLowerCase()).join(', ')}`;
+        msg = tr('Añadido: {x}', { x: P.items.map(i => foodName(i.food).toLowerCase()).join(', ') });
     } else {
         const req = parseShopRequest(q, S.req);
         if (req.days !== S.days || req.diet !== S.req.diet || req.budget !== S.req.budget || req.allergies.length !== (S.req.allergies || []).length || req.like.length !== (S.req.like || []).length || req.avoid.length !== (S.req.avoid || []).length) { shopCreate(req); return; }
@@ -201,26 +201,26 @@ function shopAvoid(ids) {
 }
 function shopSwapItem(fid) {
     const f = getFood(fid); if (!f) return;
-    openSheet('<i class="fa-solid fa-right-left text-mint-400"></i> Cambiar ' + esc(f.name.toLowerCase()), `<div class="space-y-3">
-        <p class="text-sm text-neutral-300">Se cambia en todas las comidas de la semana, con cantidades equivalentes.</p>
-        <input id="sw-q" type="search" autocomplete="off" placeholder="¿Por qué lo cambio? (p. ej. merluza)" oninput="shopSwapSearch('${fid}', this.value)" class="w-full px-3 py-3 rounded-xl bg-neutral-800 border border-neutral-700 font-semibold">
+    openSheet('<i class="fa-solid fa-right-left text-mint-400"></i> ' + esc(tr('Cambiar {x}', { x: foodName(f).toLowerCase() })), `<div class="space-y-3">
+        <p class="text-sm text-neutral-300">${tr('Se cambia en todas las comidas de la semana, con cantidades equivalentes.')}</p>
+        <input id="sw-q" type="search" autocomplete="off" placeholder="${tr('¿Por qué lo cambio? (p. ej. merluza)')}" oninput="shopSwapSearch('${fid}', this.value)" class="w-full px-3 py-3 rounded-xl bg-neutral-800 border border-neutral-700 font-semibold">
         <div id="sw-res" class="flex flex-wrap gap-1.5"></div></div>`);
     setTimeout(() => { const i = $('sw-q'); if (i) i.focus(); }, 60);
 }
 function shopSwapSearch(fid, q) {
-    $('sw-res').innerHTML = q.trim().length < 2 ? '' : matchFoods(q, 8).filter(f => !f.brand && f.id !== fid).map(f => `<button type="button" onclick="shopSwapDo('${fid}','${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(f.name)}</button>`).join('');
+    $('sw-res').innerHTML = q.trim().length < 2 ? '' : matchFoods(q, 8).filter(f => !f.brand && f.id !== fid).map(f => `<button type="button" onclick="shopSwapDo('${fid}','${f.id}')" class="px-2.5 py-1.5 rounded-lg bg-neutral-800 border border-neutral-700 text-xs font-bold text-neutral-200 hover:border-mint-500/60">${emo(f)} ${esc(foodName(f))}</button>`).join('');
 }
 function shopSwapDo(fid, toId) {
     const S = state.shop, inAdd = (S.add || []).some(a => a.fid === fid);
     const n = shopReplace([fid], toId);
     shopBuild(S); save(); closeSheet(); renderShopView();
-    toast(n || inAdd ? `Cambiado por ${getFood(toId).name.toLowerCase()}` : 'Cambiado');
+    toast(n || inAdd ? tr('Cambiado por {x}', { x: foodName(getFood(toId)).toLowerCase() }) : 'Cambiado');
 }
 function shopRemoveItem(fid) {
     const S = state.shop;
     if ((S.add || []).some(a => a.fid === fid) && !S.menus.some(mn => mn.meals.some(ml => ml.items.some(it => it.fid === fid)))) S.add = S.add.filter(a => a.fid !== fid);
     else shopAvoid([fid]);
-    shopBuild(S); save(); renderShopView(); toast(`Quitado: ${getFood(fid).name.toLowerCase()}`);
+    shopBuild(S); save(); renderShopView(); toast(tr('Quitado: {n}', { n: foodName(getFood(fid)).toLowerCase() }));
 }
 function shopTick(fid, on) { state.shop.done[fid] = on; save(); renderShopView(); }
 function shopTickExtra(i, on) { state.shop.extra[i].done = on; save(); renderShopView(); }
@@ -228,65 +228,65 @@ function shopAddExtra() { const t = ($('shop-extra').value || '').trim(); if (!t
 function shopDelExtra(i) { state.shop.extra.splice(i, 1); save(); renderShopView(); }
 function shopClearDone() { const S = state.shop; S.items = S.items.filter(x => !S.done[x.fid]); S.extra = (S.extra || []).filter(x => !x.done); save(); renderShopView(); }
 async function shopReset() { if (await askConfirm('¿Empezar una compra nueva? Se borra la lista actual.', 'Nueva compra')) { state.shop = null; save(); renderShopView(); } }
-const dayLabel = (start, i) => { const d = new Date(start + 'T12:00:00'); d.setDate(d.getDate() + i); return d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'short' }); };
+const dayLabel = (start, i) => { const d = new Date(start + 'T12:00:00'); d.setDate(d.getDate() + i); return d.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'short' }); };
 function renderShopView() {
     const box = $('cv-shop'); if (!box) return;
     if (!canUse('shop')) { box.innerHTML = proTeaser('shop'); return; }
-    if (!calc.target) { box.innerHTML = emptyPlan('crear tu compra'); return; }
+    if (!calc.target) { box.innerHTML = emptyPlan(tk('crear tu compra')); return; }
     const S = state.shop;
     const ask = `<div class="nd-card p-5 space-y-3">
-        <div class="flex items-center justify-between gap-2"><h3 class="text-lg font-extrabold text-neutral-50">${S && S.v === 2 ? 'Nueva compra' : '¿Qué compra quieres?'}</h3>${S && S.v === 2 ? '<button onclick="shopReset()" class="text-xs font-bold text-neutral-400 underline">Empezar de cero</button>' : ''}</div>
-        <form onsubmit="event.preventDefault(); shopAsk()" class="space-y-2"><textarea id="shop-q" rows="2" maxlength="300" placeholder="Ej: compra fitness para 7 días, me gusta el salmón y el arroz, sin lactosa" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-semibold text-[15px]" aria-label="Qué compra quieres"></textarea>
-        <button class="w-full py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-basket-shopping"></i> Crear mi compra</button></form>
-        <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${['Compra fitness para la semana', 'Para 3 días', 'Económica para la semana', 'Vegetariana para 5 días'].map(s => `<button type="button" onclick="shopAsk(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-bold text-neutral-200 hover:border-mint-500/50">${s}</button>`).join('')}</div>
-        <button type="button" onclick="openFridge()" class="w-full py-2.5 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-snowflake text-mint-400"></i> Marcar lo que ya tengo en la nevera</button>
+        <div class="flex items-center justify-between gap-2"><h3 class="text-lg font-extrabold text-neutral-50">${S && S.v === 2 ? tr('Nueva compra') : tr('¿Qué compra quieres?')}</h3>${S && S.v === 2 ? '<button onclick="shopReset()" class="text-xs font-bold text-neutral-400 underline">' + tr('Empezar de cero') + '</button>' : ''}</div>
+        <form onsubmit="event.preventDefault(); shopAsk()" class="space-y-2"><textarea id="shop-q" rows="2" maxlength="300" placeholder="${tr('Ej: compra fitness para 7 días, me gusta el salmón y el arroz, sin lactosa')}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-semibold text-[15px]" aria-label="${tr('Qué compra quieres')}"></textarea>
+        <button class="w-full py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-basket-shopping"></i> ${tr('Crear mi compra')}</button></form>
+        <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${[tk('Compra fitness para la semana'), tk('Para 3 días'), tk('Económica para la semana'), tk('Vegetariana para 5 días')].map(s => `<button type="button" onclick="shopAsk(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-bold text-neutral-200 hover:border-mint-500/50">${esc(tr(s))}</button>`).join('')}</div>
+        <button type="button" onclick="openFridge()" class="w-full py-2.5 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-snowflake text-mint-400"></i> ${tr('Marcar lo que ya tengo en la nevera')}</button>
     </div>`;
     if (!S || !S.items) { box.innerHTML = ask; return; }
     const P = pantry(), all = S.items.length + (S.extra || []).length, done = S.items.filter(x => S.done[x.fid]).length + (S.extra || []).filter(x => x.done).length;
     const v2 = S.v === 2, days = S.days || 1;
     const row = x => { const f = getFood(x.fid); if (!f) return ''; const on = !!S.done[x.fid], home = inPantry(x.fid, P); return `<div class="nd-shop ${on ? 'on' : ''}">
-        <input type="checkbox" ${on ? 'checked' : ''} onchange="shopTick('${x.fid}',this.checked)" aria-label="Comprado: ${esc(f.name)}">
-        <span class="flex-1 min-w-0"><span class="block leading-snug">${emo(f)} ${esc(f.name)}${home ? ' <span class="nd-tag nd-tag-dato" style="margin:0 0 0 4px">en casa</span>' : ''}</span>${v2 && days > 1 ? `<span class="block text-[11px] text-neutral-500">≈ ${fmt(x.g / days)} ${f.ml ? 'ml' : 'g'} al día</span>` : ''}</span>
+        <input type="checkbox" ${on ? 'checked' : ''} onchange="shopTick('${x.fid}',this.checked)" aria-label="${tr('Comprado: {n}', { n: esc(foodName(f)) })}">
+        <span class="flex-1 min-w-0"><span class="block leading-snug">${emo(f)} ${esc(foodName(f))}${home ? ' <span class="nd-tag nd-tag-dato" style="margin:0 0 0 4px">' + tr('en casa') + '</span>' : ''}</span>${v2 && days > 1 ? `<span class="block text-[11px] text-neutral-500">${tr('≈ {k} {u} al día', { k: fmt(x.g / days), u: f.ml ? 'ml' : 'g' })}</span>` : ''}</span>
         <span class="text-sm font-bold text-neutral-200 whitespace-nowrap">${shopQty(f, x.g)}</span>
-        ${v2 ? `<button type="button" onclick="shopSwapItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="Cambiar ${esc(f.name)}"><i class="fa-solid fa-right-left"></i></button><button type="button" onclick="shopRemoveItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Quitar ${esc(f.name)}"><i class="fa-solid fa-xmark"></i></button>` : ''}
+        ${v2 ? `<button type="button" onclick="shopSwapItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="${tr('Cambiar {x}', { x: esc(foodName(f)) })}"><i class="fa-solid fa-right-left"></i></button><button type="button" onclick="shopRemoveItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(foodName(f)) })}"><i class="fa-solid fa-xmark"></i></button>` : ''}
     </div>`; };
-    const groups = SHOP_GROUPS.map(([g, label, ic]) => { const L = S.items.filter(x => x.group === g); return L.length ? `<div class="space-y-0.5"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${icon(ic, "text-mint-400 mr-1")} ${label}</div>${L.map(row).join('')}</div>` : ''; }).join('');
-    const extra = (S.extra || []).map((x, i) => `<label class="nd-shop ${x.done ? 'on' : ''}"><input type="checkbox" ${x.done ? 'checked' : ''} onchange="shopTickExtra(${i},this.checked)"><span class="flex-1 min-w-0">${esc(x.t)}</span><button type="button" onclick="event.preventDefault();shopDelExtra(${i})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="Quitar ${esc(x.t)}"><i class="fa-solid fa-xmark"></i></button></label>`).join('');
+    const groups = SHOP_GROUPS.map(([g, label, ic]) => { const L = S.items.filter(x => x.group === g); return L.length ? `<div class="space-y-0.5"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${icon(ic, "text-mint-400 mr-1")} ${tr(label)}</div>${L.map(row).join('')}</div>` : ''; }).join('');
+    const extra = (S.extra || []).map((x, i) => `<label class="nd-shop ${x.done ? 'on' : ''}"><input type="checkbox" ${x.done ? 'checked' : ''} onchange="shopTickExtra(${i},this.checked)"><span class="flex-1 min-w-0">${esc(x.t)}</span><button type="button" onclick="event.preventDefault();shopDelExtra(${i})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="${tr('Quitar {n}', { n: esc(x.t) })}"><i class="fa-solid fa-xmark"></i></button></label>`).join('');
     const tot = v2 ? S.menus.map(menuTotals) : [], avgK = tot.length ? tot.reduce((a, t) => a + t.kcal, 0) / tot.length : 0, avgP = tot.length ? tot.reduce((a, t) => a + t.p, 0) / tot.length : 0;
     const R = S.req || {};
-    const chips = [...(R.like || []).map(id => getFood(id)).filter(Boolean).map(f => `${icon('❤️', 'text-mint-400')} ${esc(f.name.toLowerCase())}`), ...(R.avoid || []).map(id => getFood(id)).filter(Boolean).map(f => `${icon('🚫', 'text-neutral-400')} ${esc(f.name.toLowerCase())}`), ...(R.allergies || []).map(a => `sin ${ALLERGENS[a] ? ALLERGENS[a][0].toLowerCase() : a}`), R.diet ? DIETS[R.diet] : '', R.budget === 'low' ? 'económica' : ''].filter(Boolean);
-    const plan = v2 ? `<details class="nd-faq"><summary>Plan de comidas día a día<i class="fa-solid fa-chevron-down chev"></i></summary><div class="px-3 pb-3 space-y-3">${S.menus.map((mn, i) => { const t = menuTotals(mn); return `<div class="rounded-xl bg-neutral-900 border border-neutral-800 p-3 space-y-1.5">
-            <div class="flex items-baseline justify-between gap-2"><div class="text-sm font-extrabold text-neutral-100 first-letter:uppercase">${dayLabel(S.start, i)}</div><div class="text-xs font-bold text-neutral-400 whitespace-nowrap">${fmt(t.kcal)} kcal · P ${fmt(t.p)} g</div></div>
-            ${mn.meals.map(ml => `<div class="text-xs text-neutral-300"><b class="text-neutral-200">${SLOT_NAME[ml.slot]}:</b> ${esc(ml.name)} <span class="text-neutral-500">· ${fmt(ml.m.kcal)} kcal · ${mealIngredients(ml).map(x => esc(x.txt) + ' ' + esc(x.f.name.toLowerCase().replace(/ \(.*\)$/, ''))).join(', ')}</span></div>`).join('')}
+    const chips = [...(R.like || []).map(id => getFood(id)).filter(Boolean).map(f => `${icon('❤️', 'text-mint-400')} ${esc(foodName(f).toLowerCase())}`), ...(R.avoid || []).map(id => getFood(id)).filter(Boolean).map(f => `${icon('🚫', 'text-neutral-400')} ${esc(foodName(f).toLowerCase())}`), ...(R.allergies || []).map(a => tr('sin {x}', { x: ALLERGENS[a] ? tr(ALLERGENS[a][0]).toLowerCase() : a })), R.diet ? tr(DIETS[R.diet]) : '', R.budget === 'low' ? tr('económica') : ''].filter(Boolean);
+    const plan = v2 ? `<details class="nd-faq"><summary>${tr('Plan de comidas día a día')}<i class="fa-solid fa-chevron-down chev"></i></summary><div class="px-3 pb-3 space-y-3">${S.menus.map((mn, i) => { const t = menuTotals(mn); return `<div class="rounded-xl bg-neutral-900 border border-neutral-800 p-3 space-y-1.5">
+            <div class="flex items-baseline justify-between gap-2"><div class="text-sm font-extrabold text-neutral-100 first-letter:uppercase">${dayLabel(S.start, i)}</div><div class="text-xs font-bold text-neutral-400 whitespace-nowrap">${fmt(t.kcal)} kcal · ${tr('P')} ${fmt(t.p)} g</div></div>
+            ${mn.meals.map(ml => `<div class="text-xs text-neutral-300"><b class="text-neutral-200">${tr(SLOT_NAME[ml.slot])}:</b> ${esc(mealText(ml).name)} <span class="text-neutral-500">· ${fmt(ml.m.kcal)} kcal · ${mealIngredients(ml).map(x => esc(x.txt) + ' ' + esc(foodName(x.f).toLowerCase().replace(/ \(.*\)$/, ''))).join(', ')}</span></div>`).join('')}
         </div>`; }).join('')}</div></details>` : '';
     box.innerHTML = `<div class="nd-card p-5 space-y-3">
-            <div class="flex items-start justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Tu compra</div><div class="text-xl font-extrabold text-neutral-50">Para ${days === 1 ? 'hoy' : days + ' días'}</div>${v2 ? `<div class="text-xs text-neutral-400">≈ ${fmt(avgK)} kcal y ${fmt(avgP)} g de proteína al día (objetivo ${fmt(calc.target)} kcal)</div>` : ''}</div>${tagPill('rec')}</div>
+            <div class="flex items-start justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Tu compra')}</div><div class="text-xl font-extrabold text-neutral-50">${days === 1 ? tr('Para hoy') : tr('Para {k} días', { k: days })}</div>${v2 ? `<div class="text-xs text-neutral-400">${tr('≈ {k} kcal y {p} g de proteína al día (objetivo {t} kcal)', { k: fmt(avgK), p: fmt(avgP), t: fmt(calc.target) })}</div>` : ''}</div>${tagPill('rec')}</div>
             ${chips.length ? `<div class="flex flex-wrap gap-1.5">${chips.map(c => `<span class="px-2 py-1 rounded-lg bg-neutral-800 text-[11px] font-bold text-neutral-300">${c}</span>`).join('')}</div>` : ''}
-            ${v2 ? `<form onsubmit="event.preventDefault(); shopEdit()" class="flex gap-2"><input id="shop-edit" autocomplete="off" maxlength="200" placeholder="Cambia algo: «cambia el salmón por merluza»" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Cambiar algo de la compra"><button class="px-4 rounded-xl bg-mint-600 text-white text-sm font-extrabold" aria-label="Aplicar cambio"><i class="fa-solid fa-arrow-up"></i></button></form>
-            <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${['Quita la leche', 'Añade 1 plátano al día', 'Cambia el pollo por pavo', 'Me gusta el atún'].map(s => `<button type="button" onclick="shopEdit(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-[11px] font-bold text-neutral-300 hover:border-mint-500/50">${s}</button>`).join('')}</div>` : ''}
-            <div class="flex items-center justify-between gap-3 pt-1"><div class="text-sm font-extrabold text-neutral-100">${done}/${all} comprados</div></div>
+            ${v2 ? `<form onsubmit="event.preventDefault(); shopEdit()" class="flex gap-2"><input id="shop-edit" autocomplete="off" maxlength="200" placeholder="${tr('Cambia algo: «cambia el salmón por merluza»')}" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="${tr('Cambiar algo de la compra')}"><button class="px-4 rounded-xl bg-mint-600 text-white text-sm font-extrabold" aria-label="${tr('Aplicar cambio')}"><i class="fa-solid fa-arrow-up"></i></button></form>
+            <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${[tk('Quita la leche'), tk('Añade 1 plátano al día'), tk('Cambia el pollo por pavo'), tk('Me gusta el atún')].map(s => `<button type="button" onclick="shopEdit(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-[11px] font-bold text-neutral-300 hover:border-mint-500/50">${esc(tr(s))}</button>`).join('')}</div>` : ''}
+            <div class="flex items-center justify-between gap-3 pt-1"><div class="text-sm font-extrabold text-neutral-100">${tr('{a}/{b} comprados', { a: done, b: all })}</div></div>
             <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-500 gym-bar" style="width:${all ? done / all * 100 : 0}%"></div></div>
             ${groups}
-            ${extra ? `<div class="space-y-1"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${icon('✏️', 'mr-1')} Añadidos por ti</div>${extra}</div>` : ''}
-            <form onsubmit="event.preventDefault();shopAddExtra()" class="flex gap-2 pt-3"><input id="shop-extra" maxlength="40" placeholder="Apuntar otra cosa (p. ej. café, papel…)" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="Apuntar otra cosa"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold" aria-label="Apuntar"><i class="fa-solid fa-plus"></i></button></form>
+            ${extra ? `<div class="space-y-1"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${icon('✏️', 'mr-1')} ${tr('Añadidos por ti')}</div>${extra}</div>` : ''}
+            <form onsubmit="event.preventDefault();shopAddExtra()" class="flex gap-2 pt-3"><input id="shop-extra" maxlength="40" placeholder="${tr('Apuntar otra cosa (p. ej. café, papel…)')}" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="${tr('Apuntar otra cosa')}"><button class="px-4 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-extrabold" aria-label="${tr('Apuntar')}"><i class="fa-solid fa-plus"></i></button></form>
         </div>
         ${plan}
-        <div class="grid grid-cols-2 gap-2"><button onclick="shareShop()" class="nd-mbtn nd-mbtn-main"><i class="fa-solid fa-share-nodes"></i> Compartir lista</button><button onclick="shopClearDone()" class="nd-mbtn"><i class="fa-solid fa-broom"></i> Quitar comprados</button></div>
-        <p class="text-[11px] text-neutral-500">Cantidades totales en crudo, redondeadas hacia arriba. Calculado con la base de alimentos.</p>
+        <div class="grid grid-cols-2 gap-2"><button onclick="shareShop()" class="nd-mbtn nd-mbtn-main"><i class="fa-solid fa-share-nodes"></i> ${tr('Compartir lista')}</button><button onclick="shopClearDone()" class="nd-mbtn"><i class="fa-solid fa-broom"></i> ${tr('Quitar comprados')}</button></div>
+        <p class="text-[11px] text-neutral-500">${tr('Cantidades totales en crudo, redondeadas hacia arriba. Calculado con la base de alimentos.')}</p>
         ${ask}`;
 }
 function shopText() {
     const S = state.shop;
-    return `Lista de la compra · nutriDL (${S.days === 1 ? 'hoy' : S.days + ' días'})\n` + SHOP_GROUPS.map(([g, label]) => { const L = S.items.filter(x => x.group === g && !S.done[x.fid]); return L.length ? `\n${label}\n` + L.map(x => { const f = getFood(x.fid); return f ? `- ${f.name}: ${shopQty(f, x.g)}` : ''; }).join('\n') : ''; }).join('') + ((S.extra || []).filter(x => !x.done).length ? '\n\nOtros\n' + S.extra.filter(x => !x.done).map(x => '- ' + x.t).join('\n') : '');
+    return tr('Lista de la compra · nutriDL ({x})', { x: S.days === 1 ? tr('hoy') : tp(S.days, 'día', 'días') }) + '\n' + SHOP_GROUPS.map(([g, label]) => { const L = S.items.filter(x => x.group === g && !S.done[x.fid]); return L.length ? `\n${tr(label)}\n` + L.map(x => { const f = getFood(x.fid); return f ? `- ${foodName(f)}: ${shopQty(f, x.g)}` : ''; }).join('\n') : ''; }).join('') + ((S.extra || []).filter(x => !x.done).length ? '\n\n' + tr('Otros') + '\n' + S.extra.filter(x => !x.done).map(x => '- ' + x.t).join('\n') : '');
 }
 async function shareShop() {
     const t = shopText();
-    if (navigator.share) { try { await navigator.share({ title: 'Lista de la compra', text: t }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
+    if (navigator.share) { try { await navigator.share({ title: tr('Lista de la compra'), text: t }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
     try { await navigator.clipboard.writeText(t); toast('Lista copiada: pégala donde quieras'); } catch (e) { toast('No se pudo copiar'); }
 }
 // Tarjeta para funciones PRO cuando no hay PRO (en lugar de la función)
 function proTeaser(feature) {
     const [name, why] = PRO_FEATURES[feature];
-    return `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="nd-ic-xl mx-auto">${icon('👑')}</div><h3 class="text-xl font-extrabold text-neutral-50">${esc(name)} <span class="nd-pro-badge">PRO</span></h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${esc(why)}</p>
-        <button onclick="openPaywall('${feature}')" class="nd-btn-primary mx-auto">${proData().trialUsed ? 'Ver nutriDL PRO' : 'Probar 7 días gratis'}</button></div>`;
+    return `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="nd-ic-xl mx-auto">${icon('👑')}</div><h3 class="text-xl font-extrabold text-neutral-50">${esc(tr(name))} <span class="nd-pro-badge">PRO</span></h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${esc(tr(why))}</p>
+        <button onclick="openPaywall('${feature}')" class="nd-btn-primary mx-auto">${proData().trialUsed ? tr('Ver nutriDL PRO') : tr('Probar 7 días gratis')}</button></div>`;
 }

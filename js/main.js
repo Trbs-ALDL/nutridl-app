@@ -59,11 +59,11 @@ function bootRescue(err) {
     box.setAttribute('role', 'alert');
     box.style.cssText = 'position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:24px;background:#110f0d;color:#f2ede6;font-family:system-ui,sans-serif';
     // Si el arranque falló, puede que el idioma no llegara a cargarse: se usa el texto tal cual
-    const T = s => typeof tr === 'function' ? tr(s) : s;
-    box.innerHTML = `<div style="max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 10px">${T('nutriDL no ha podido abrirse bien')}</h1>
-        <p style="color:#cfc5b8;line-height:1.5;margin:0 0 18px">${T('Tus datos siguen guardados en este dispositivo. Descarga una copia por seguridad y vuelve a cargar la app.')}</p>
-        <button id="rescue-dl" style="width:100%;padding:14px;border-radius:12px;border:0;background:#9a6b40;color:#fff;font-weight:700;font-size:16px;margin-bottom:10px">${T('Descargar mis datos')}</button>
-        <button id="rescue-reload" style="width:100%;padding:14px;border-radius:12px;border:1px solid #463f38;background:transparent;color:#f2ede6;font-weight:700;font-size:16px">${T('Volver a cargar')}</button></div>`;
+    const trSafe = s => typeof tr === 'function' ? tr(s) : s;
+    box.innerHTML = `<div style="max-width:420px;text-align:center"><h1 style="font-size:22px;margin:0 0 10px">${trSafe('nutriDL no ha podido abrirse bien')}</h1>
+        <p style="color:#cfc5b8;line-height:1.5;margin:0 0 18px">${trSafe('Tus datos siguen guardados en este dispositivo. Descarga una copia por seguridad y vuelve a cargar la app.')}</p>
+        <button id="rescue-dl" style="width:100%;padding:14px;border-radius:12px;border:0;background:#9a6b40;color:#fff;font-weight:700;font-size:16px;margin-bottom:10px">${trSafe('Descargar mis datos')}</button>
+        <button id="rescue-reload" style="width:100%;padding:14px;border-radius:12px;border:1px solid #463f38;background:transparent;color:#f2ede6;font-weight:700;font-size:16px">${trSafe('Volver a cargar')}</button></div>`;
     document.body.appendChild(box);
     box.querySelector('#rescue-dl').onclick = () => {
         let raw = ''; try { raw = localStorage.getItem(PROFILES_KEY) || localStorage.getItem(PROFILES_KEY + '_rescate') || ''; } catch (e) { }
@@ -84,7 +84,7 @@ if ('serviceWorker' in navigator && location.protocol.startsWith('http') && (!/^
         navigator.serviceWorker.register('sw.js', { updateViaCache: 'none' }).then(reg => {
             // Al volver a la app (desde otra app o la pantalla de inicio) se busca versión nueva
             document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => { }); });
-        }).catch(e => logErr('Service worker: ' + e.message));
+        }).catch(e => logErr('Service worker: ' + e.message)); // i18n-ignore (registro interno)
     });
     // Cuando se instala una versión nueva con la app abierta, se recarga sola una vez (lo apuntado ya está guardado)
     const hadController = !!navigator.serviceWorker.controller;

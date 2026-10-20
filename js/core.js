@@ -77,7 +77,7 @@ function load() {
         catch (e) {
             // Datos ilegibles: se apartan tal cual ANTES de que nada los pise, para poder recuperarlos
             try { const raw = localStorage.getItem(PROFILES_KEY); if (raw && !localStorage.getItem(PROFILES_KEY + '_rescate')) localStorage.setItem(PROFILES_KEY + '_rescate', raw); } catch (e2) { }
-            logErr('Datos de perfiles ilegibles: copia apartada en ' + PROFILES_KEY + '_rescate');
+            logErr('Datos de perfiles ilegibles: copia apartada en ' + PROFILES_KEY + '_rescate'); // i18n-ignore (registro interno)
         }
         if (!profiles || typeof profiles !== 'object' || !profiles.list || typeof profiles.list !== 'object') profiles = { current: null, list: {} };
         const cur = profiles.current && profiles.list[profiles.current];

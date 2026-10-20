@@ -661,7 +661,7 @@ function renderWte() {
 function renderMenuView() {
     const box = $('cv-menu'); if (!box) return;
     if (!canUse('menu')) { box.innerHTML = proTeaser('menu'); return; }
-    if (!calc.target) { box.innerHTML = emptyPlan('generar tu menú'); return; }
+    if (!calc.target) { box.innerHTML = emptyPlan(tk('generar tu menú')); return; }
     const mn = state.menu;
     if (!mn || !mn.meals || !mn.meals.length) {
         box.innerHTML = `<div class="nd-card p-6 sm:p-8 text-center space-y-4"><div class="nd-ic-xl mx-auto">${icon('🍽️')}</div><h3 class="text-xl font-extrabold text-neutral-50">Tu día completo, con gramos exactos</h3><p class="text-sm text-neutral-400 max-w-sm mx-auto">${myPrefs().meals} comidas que suman tus ${fmt(calc.target)} kcal y tus ${calc.prot} g de proteína, según tus preferencias.</p><button onclick="genMenu()" class="nd-btn-primary mx-auto"><i class="fa-solid fa-wand-magic-sparkles"></i> Generar mi menú</button></div>`;
@@ -681,7 +681,7 @@ function renderMenuView() {
         ${mn.meals.map((ml, i) => mealCard(ml, { key: 'mn' + i + ml.id, slotLabel: SLOT_NAME[ml.slot], swap: `menuSwap(${i})`, add: `menuAdd(${i})`, added: (mn.added || []).includes(i) })).join('')}
         <p class="text-[11px] text-neutral-500">Generado el ${new Date(mn.at || Date.now()).toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}. Cantidades en crudo salvo que se indique. Calculado con la base de alimentos; las etiquetas pueden variar.</p>`;
 }
-const emptyPlan = what => `<div class="nd-card p-6 text-center space-y-3"><p class="text-sm text-neutral-300">Completa tu plan para ${what}.</p><button onclick="${profiles.current ? "showTab('calc')" : 'newProfile()'}" class="nd-btn-primary mx-auto">Completar mi plan</button></div>`;
+const emptyPlan = what => `<div class="nd-card p-6 text-center space-y-3"><p class="text-sm text-neutral-300">${tr('Completa tu plan para {x}.', { x: tr(what) })}</p><button onclick="${profiles.current ? "showTab('calc')" : 'newProfile()'}" class="nd-btn-primary mx-auto">${tr('Completar mi plan')}</button></div>`;
 function genMenu() {
     if (needPro('menu')) return;
     const mn = makeDayMenu(Date.now() % 1000000);

@@ -9,17 +9,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="nutriDL">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>nutriDL · Tu entrenador nutricional personal</title>
+    <title data-t="nutriDL · Tu entrenador nutricional personal">nutriDL · Tu entrenador nutricional personal</title>
     <link rel="canonical" href="https://trbs-aldl.github.io/nutridl-app/">
-    <meta name="description" content="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 1.400 alimentos, con casi 500 productos Hacendado.">
+    <meta data-t-co="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 1.400 alimentos, con casi 500 productos Hacendado." name="description" content="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 1.400 alimentos, con casi 500 productos Hacendado.">
     <!-- Seguridad: solo se cargan archivos propios y solo se conecta con Open Food Facts (escáner) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <!-- Añadido: SEO social, color de tema e icono -->
     <meta name="theme-color" content="#110f0d">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="es_ES">
-    <meta property="og:title" content="nutriDL · Tu entrenador nutricional personal">
-    <meta property="og:description" content="Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer. Escáner y macros gratis, sin anuncios ni registro.">
+    <meta data-t-co="nutriDL · Tu entrenador nutricional personal" property="og:title" content="nutriDL · Tu entrenador nutricional personal">
+    <meta data-t-co="Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer. Escáner y macros gratis, sin anuncios ni registro." property="og:description" content="Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer. Escáner y macros gratis, sin anuncios ni registro.">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="nutriDL · Tu entrenador nutricional personal">
     <meta name="twitter:description" content="Calorías, macros, comidas y progreso en un solo lugar, con un Coach que te dice qué comer.">
@@ -47,11 +47,11 @@
 
 </head>
 <body class="min-h-screen flex flex-col selection:bg-mint-500 selection:text-white">
-    <a href="#contenido" class="skip-link">Saltar al contenido</a>
+    <a data-t="Saltar al contenido" href="#contenido" class="skip-link">Saltar al contenido</a>
 
     <header class="sticky top-0 z-50 bg-neutral-950/85 backdrop-blur-md border-b border-neutral-800 no-print">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-            <button onclick="showTab('home')" class="flex items-center gap-2.5" aria-label="nutriDL, ir al inicio">
+            <button data-t-al="nutriDL, ir al inicio" onclick="showTab('home')" class="flex items-center gap-2.5" aria-label="nutriDL, ir al inicio">
                 <div class="nd-logo w-10 h-10 rounded-2xl flex items-center justify-center text-white">
                     <i class="fa-solid fa-leaf text-lg"></i>
                 </div>
@@ -78,17 +78,17 @@
             <div class="nd-hero relative overflow-hidden rounded-[2rem] px-6 py-10 sm:px-12 sm:py-16">
                 <div class="relative z-10 grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
                     <div class="space-y-6">
-                                                <h1 class="text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight text-neutral-50">Tu entrenador nutricional personal</h1>
-                        <p class="text-lg sm:text-xl text-neutral-300 max-w-xl">Controla tus calorías, macros, comidas y progreso en un solo lugar.</p>
+                                                <h1 data-t="Tu entrenador nutricional personal" class="text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight text-neutral-50">Tu entrenador nutricional personal</h1>
+                        <p data-t="Controla tus calorías, macros, comidas y progreso en un solo lugar." class="text-lg sm:text-xl text-neutral-300 max-w-xl">Controla tus calorías, macros, comidas y progreso en un solo lugar.</p>
                         <div class="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
-                            <button onclick="newProfile()" class="nd-btn-primary">Empezar gratis <i class="fa-solid fa-arrow-right"></i></button>
+                            <button onclick="newProfile()" class="nd-btn-primary"><span data-t="Empezar gratis">Empezar gratis</span> <i class="fa-solid fa-arrow-right"></i></button>
                             <button onclick="importProfiles()" class="nd-btn-ghost"><i class="fa-solid fa-upload"></i> <span data-t="Ya tengo una copia">Ya tengo una copia</span></button>
                         </div>
                         <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-neutral-400">
-                            <li><i class="fa-solid fa-check text-mint-400"></i> Gratis y sin anuncios</li>
-                            <li><i class="fa-solid fa-check text-mint-400"></i> Escáner y macros gratis</li>
-                            <li><i class="fa-solid fa-check text-mint-400"></i> Sin registro ni contraseñas</li>
-                            <li><i class="fa-solid fa-check text-mint-400"></i> Tus datos se quedan en tu móvil</li>
+                            <li><i class="fa-solid fa-check text-mint-400"></i> <span data-t="Gratis y sin anuncios">Gratis y sin anuncios</span></li>
+                            <li><i class="fa-solid fa-check text-mint-400"></i> <span data-t="Escáner y macros gratis">Escáner y macros gratis</span></li>
+                            <li><i class="fa-solid fa-check text-mint-400"></i> <span data-t="Sin registro ni contraseñas">Sin registro ni contraseñas</span></li>
+                            <li><i class="fa-solid fa-check text-mint-400"></i> <span data-t="Tus datos se quedan en tu móvil">Tus datos se quedan en tu móvil</span></li>
                         </ul>
                     </div>
                     <div class="nd-phone mx-auto w-full max-w-[330px]" aria-hidden="true">
@@ -98,53 +98,53 @@
                                 <div class="flex items-baseline justify-between"><span class="text-2xl font-extrabold text-neutral-50">1.640</span><span class="text-xs font-bold text-neutral-400">/ 2.100 kcal</span></div>
                                 <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-400" style="width:78%"></div></div>
                                 <div class="grid grid-cols-3 gap-2 text-[11px] font-bold text-neutral-400">
-                                    <div><div class="text-neutral-100">118/150 g</div>Proteína<div class="h-1 mt-1 rounded bg-neutral-800"><div class="h-1 rounded" style="width:79%;background:#c49a6c"></div></div></div>
+                                    <div><div class="text-neutral-100">118/150 g</div><span data-t="Proteína">Proteína</span><div class="h-1 mt-1 rounded bg-neutral-800"><div class="h-1 rounded" style="width:79%;background:#c49a6c"></div></div></div>
                                     <div><div class="text-neutral-100">170/220 g</div>Hidratos<div class="h-1 mt-1 rounded bg-neutral-800"><div class="h-1 rounded" style="width:77%;background:#e6d3b3"></div></div></div>
                                     <div><div class="text-neutral-100">51/65 g</div>Grasas<div class="h-1 mt-1 rounded bg-neutral-800"><div class="h-1 rounded" style="width:78%;background:#f59e0b"></div></div></div>
                                 </div>
                             </div>
                             <div class="rounded-2xl bg-mint-600/15 border border-mint-500/30 p-4 space-y-1">
-                                <div class="text-[11px] font-bold uppercase tracking-wider text-mint-300">¿Qué hago ahora?</div>
-                                <div class="text-sm font-extrabold text-neutral-50"><i class="fa-solid fa-utensils text-mint-400 mr-1"></i> Cena · 460 kcal y 32 g de proteína</div>
-                                <div class="text-xs text-neutral-300">Merluza con patata y judías verdes</div>
+                                <div data-t="¿Qué hago ahora?" class="text-[11px] font-bold uppercase tracking-wider text-mint-300">¿Qué hago ahora?</div>
+                                <div class="text-sm font-extrabold text-neutral-50"><i class="fa-solid fa-utensils text-mint-400 mr-1"></i> <span data-t="Cena · 460 kcal y 32 g de proteína">Cena · 460 kcal y 32 g de proteína</span></div>
+                                <div data-t="Merluza con patata y judías verdes" class="text-xs text-neutral-300">Merluza con patata y judías verdes</div>
                             </div>
-                            <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-3 text-xs text-neutral-300"><i class="fa-solid fa-trophy text-amber-300 mr-1"></i> Has cumplido tu proteína 6/7 días</div>
+                            <div class="rounded-2xl bg-neutral-900/90 border border-white/5 p-3 text-xs text-neutral-300"><i class="fa-solid fa-trophy text-amber-300 mr-1"></i> <span data-t="Has cumplido tu proteína 6/7 días">Has cumplido tu proteína 6/7 días</span></div>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="space-y-8">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-50 max-w-2xl">Todo lo que necesitas para llegar a tu objetivo</h2>
+                <h2 data-t="Todo lo que necesitas para llegar a tu objetivo" class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-50 max-w-2xl">Todo lo que necesitas para llegar a tu objetivo</h2>
                 <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <div class="nd-feature nd-feature-lead sm:col-span-2"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><h3>Un Coach que te responde</h3><p>«¿Qué ceno con 600 kcal?» Te propone platos con tus calorías y tu proteína, y te dice cuánto te queda.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-microphone"></i></span><h3>Apuntar es rapidísimo</h3><p>Dilo en voz alta, escanea el código de barras o busca entre más de 1.400 alimentos, con casi 500 productos Hacendado. Cada dato está comprobado: las calorías cuadran con la etiqueta.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-basket-shopping"></i></span><h3>Menú y lista de la compra</h3><p>Un día completo con gramos exactos para ti y la lista de la compra agrupada, en un toque.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span><h3>Progreso que se entiende</h3><p>Tendencia real de tu peso, medidas, rachas y logros. Sin números sueltos: te explica qué está pasando.</p></div>
-                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></span><h3>Tu gym incluido</h3><p>Apunta tus series y pesos, con descanso y tus mejores marcas por ejercicio.</p></div>
-                    <div class="nd-feature sm:col-span-2 lg:col-span-3"><div class="nd-feature-row"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-lock"></i></span><h3>Privacidad de verdad</h3></div><p>Sin cuentas ni anuncios. Todo se guarda en tu dispositivo y puedes borrarlo cuando quieras.</p></div>
+                    <div class="nd-feature nd-feature-lead sm:col-span-2"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-comments"></i></span><h3 data-t="Un Coach que te responde">Un Coach que te responde</h3><p data-t="«¿Qué ceno con 600 kcal?» Te propone platos con tus calorías y tu proteína, y te dice cuánto te queda.">«¿Qué ceno con 600 kcal?» Te propone platos con tus calorías y tu proteína, y te dice cuánto te queda.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-microphone"></i></span><h3 data-t="Apuntar es rapidísimo">Apuntar es rapidísimo</h3><p data-t="Dilo en voz alta, escanea el código de barras o busca entre más de 1.400 alimentos, con casi 500 productos Hacendado. Cada dato está comprobado: las calorías cuadran con la etiqueta.">Dilo en voz alta, escanea el código de barras o busca entre más de 1.400 alimentos, con casi 500 productos Hacendado. Cada dato está comprobado: las calorías cuadran con la etiqueta.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-basket-shopping"></i></span><h3 data-t="Menú y lista de la compra">Menú y lista de la compra</h3><p data-t="Un día completo con gramos exactos para ti y la lista de la compra agrupada, en un toque.">Un día completo con gramos exactos para ti y la lista de la compra agrupada, en un toque.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-chart-line"></i></span><h3 data-t="Progreso que se entiende">Progreso que se entiende</h3><p data-t="Tendencia real de tu peso, medidas, rachas y logros. Sin números sueltos: te explica qué está pasando.">Tendencia real de tu peso, medidas, rachas y logros. Sin números sueltos: te explica qué está pasando.</p></div>
+                    <div class="nd-feature"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-dumbbell"></i></span><h3 data-t="Tu gym incluido">Tu gym incluido</h3><p data-t="Apunta tus series y pesos, con descanso y tus mejores marcas por ejercicio.">Apunta tus series y pesos, con descanso y tus mejores marcas por ejercicio.</p></div>
+                    <div class="nd-feature sm:col-span-2 lg:col-span-3"><div class="nd-feature-row"><span class="nd-feature-ic" aria-hidden="true"><i class="fa-solid fa-lock"></i></span><h3 data-t="Privacidad de verdad">Privacidad de verdad</h3></div><p data-t="Sin cuentas ni anuncios. Todo se guarda en tu dispositivo y puedes borrarlo cuando quieras.">Sin cuentas ni anuncios. Todo se guarda en tu dispositivo y puedes borrarlo cuando quieras.</p></div>
                 </div>
             </div>
 
             <div class="grid lg:grid-cols-3 gap-6 lg:gap-10">
-                <div class="nd-step"><span>01</span><div><h3>Cuéntanos tu objetivo</h3><p>Dos minutos: objetivo, datos, actividad y cómo comes.</p></div></div>
-                <div class="nd-step"><span>02</span><div><h3>Recibe tu plan</h3><p>Calorías y macros calculados con Mifflin-St Jeor, explicados.</p></div></div>
-                <div class="nd-step"><span>03</span><div><h3>Te acompañamos cada día</h3><p>Qué comer ahora, cuánto te queda y cómo vas.</p></div></div>
+                <div class="nd-step"><span>01</span><div><h3 data-t="Cuéntanos tu objetivo">Cuéntanos tu objetivo</h3><p data-t="Dos minutos: objetivo, datos, actividad y cómo comes.">Dos minutos: objetivo, datos, actividad y cómo comes.</p></div></div>
+                <div class="nd-step"><span>02</span><div><h3 data-t="Recibe tu plan">Recibe tu plan</h3><p data-t="Calorías y macros calculados con Mifflin-St Jeor, explicados.">Calorías y macros calculados con Mifflin-St Jeor, explicados.</p></div></div>
+                <div class="nd-step"><span>03</span><div><h3 data-t="Te acompañamos cada día">Te acompañamos cada día</h3><p data-t="Qué comer ahora, cuánto te queda y cómo vas.">Qué comer ahora, cuánto te queda y cómo vas.</p></div></div>
             </div>
 
             <div id="landing-pro"></div>
 
             <div class="space-y-4 max-w-3xl">
-                <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-50">Preguntas frecuentes</h2>
-                <details class="nd-faq"><summary>¿Es gratis?<i class="fa-solid fa-chevron-down chev"></i></summary><p>Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, foto, nevera, menú del día y compra inteligente) y puedes probarlo 7 días gratis, sin tarjeta.</p></details>
-                <details class="nd-faq"><summary>¿Dónde se guardan mis datos?<i class="fa-solid fa-chevron-down chev"></i></summary><p>En tu propio dispositivo. No hay cuentas ni servidores con tus datos. Puedes guardar una copia de seguridad o borrarlo todo cuando quieras.</p></details>
-                <details class="nd-faq"><summary>¿Cómo se calculan mis calorías?<i class="fa-solid fa-chevron-down chev"></i></summary><p>Con la ecuación de Mifflin-St Jeor (la más precisa en población general), tu nivel de actividad y un ajuste según tu objetivo, sin bajar nunca de un mínimo seguro.</p></details>
-                <details class="nd-faq"><summary>¿Sustituye a un nutricionista?<i class="fa-solid fa-chevron-down chev"></i></summary><p>No. nutriDL es orientativa y educativa. Si tienes alguna enfermedad, estás embarazada o en lactancia, o tienes antecedentes de trastornos de la conducta alimentaria, consulta a un profesional sanitario.</p></details>
+                <h2 data-t="Preguntas frecuentes" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-50">Preguntas frecuentes</h2>
+                <details class="nd-faq"><summary><span data-t="¿Es gratis?">¿Es gratis?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, foto, nevera, menú del día y compra inteligente) y puedes probarlo 7 días gratis, sin tarjeta.">Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, foto, nevera, menú del día y compra inteligente) y puedes probarlo 7 días gratis, sin tarjeta.</p></details>
+                <details class="nd-faq"><summary><span data-t="¿Dónde se guardan mis datos?">¿Dónde se guardan mis datos?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="En tu propio dispositivo. No hay cuentas ni servidores con tus datos. Puedes guardar una copia de seguridad o borrarlo todo cuando quieras.">En tu propio dispositivo. No hay cuentas ni servidores con tus datos. Puedes guardar una copia de seguridad o borrarlo todo cuando quieras.</p></details>
+                <details class="nd-faq"><summary><span data-t="¿Cómo se calculan mis calorías?">¿Cómo se calculan mis calorías?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="Con la ecuación de Mifflin-St Jeor (la más precisa en población general), tu nivel de actividad y un ajuste según tu objetivo, sin bajar nunca de un mínimo seguro.">Con la ecuación de Mifflin-St Jeor (la más precisa en población general), tu nivel de actividad y un ajuste según tu objetivo, sin bajar nunca de un mínimo seguro.</p></details>
+                <details class="nd-faq"><summary><span data-t="¿Sustituye a un nutricionista?">¿Sustituye a un nutricionista?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="No. nutriDL es orientativa y educativa. Si tienes alguna enfermedad, estás embarazada o en lactancia, o tienes antecedentes de trastornos de la conducta alimentaria, consulta a un profesional sanitario.">No. nutriDL es orientativa y educativa. Si tienes alguna enfermedad, estás embarazada o en lactancia, o tienes antecedentes de trastornos de la conducta alimentaria, consulta a un profesional sanitario.</p></details>
             </div>
 
             <div class="nd-hero rounded-[2rem] p-8 sm:p-12 text-center space-y-5">
-                <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-50">Empieza hoy. Tarda 2 minutos.</h2>
-                <button onclick="newProfile()" class="nd-btn-primary mx-auto">Empezar gratis <i class="fa-solid fa-arrow-right"></i></button>
+                <h2 data-t="Empieza hoy. Tarda 2 minutos." class="text-3xl sm:text-4xl font-extrabold tracking-tight text-neutral-50">Empieza hoy. Tarda 2 minutos.</h2>
+                <button onclick="newProfile()" class="nd-btn-primary mx-auto"><span data-t="Empezar gratis">Empezar gratis</span> <i class="fa-solid fa-arrow-right"></i></button>
             </div>
         </section>
 
@@ -155,7 +155,7 @@
         <!-- ===== MI PLAN: la calculadora (datos, objetivo, IMC, macros) y preferencias ===== -->
         <div id="tab-calc" data-panel="calc" class="space-y-8 hidden">
         <div class="flex items-center justify-between gap-3">
-            <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight">Mi plan</h2>
+            <h2 data-t="Mi plan" class="text-3xl font-extrabold text-neutral-100 tracking-tight">Mi plan</h2>
             <button onclick="openWizard('edit')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-wand-magic-sparkles text-mint-400"></i> <span data-t="Asistente">Asistente</span></button>
         </div>
 
@@ -169,7 +169,7 @@
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-2xl bg-mint-500/15 text-mint-400 flex items-center justify-center text-lg"><i class="fa-solid fa-sliders"></i></div>
                             <div>
-                                <h2 class="text-lg font-bold text-neutral-100">1. Tus datos</h2>
+                                <h2 data-t="1. Tus datos" class="text-lg font-bold text-neutral-100">1. Tus datos</h2>
                             </div>
                         </div>
                         <button onclick="resetInputs()" class="text-xs font-semibold text-neutral-500 hover:text-roseAccent-500 transition flex items-center gap-1">
@@ -178,7 +178,7 @@
                     </div>
 
                     <div class="space-y-2">
-                        <label class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Sexo biológico</label>
+                        <label data-t="Sexo biológico" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Sexo biológico</label>
                         <div class="grid grid-cols-2 gap-3">
                             <button id="btn-gender-female" onclick="setGender('female')" class="py-3 px-4 rounded-2xl font-extrabold text-xs transition border flex items-center justify-center gap-2"><i class="fa-solid fa-venus text-sm"></i> <span data-t="Mujer">Mujer</span></button>
                             <button id="btn-gender-male" onclick="setGender('male')" class="py-3 px-4 rounded-2xl font-extrabold text-xs transition border flex items-center justify-center gap-2"><i class="fa-solid fa-mars text-sm"></i> <span data-t="Hombre">Hombre</span></button>
@@ -188,7 +188,7 @@
                     <!-- Pairs slider + number -->
                     <div class="space-y-2">
                         <div class="flex justify-between items-center text-xs">
-                            <label for="n-age" class="font-bold text-neutral-300 uppercase tracking-wider">Edad (años)</label>
+                            <label data-t="Edad (años)" for="n-age" class="font-bold text-neutral-300 uppercase tracking-wider">Edad (años)</label>
                             <input id="n-age" placeholder="0" type="number" inputmode="decimal" min="18" max="90" step="1" class="num-input text-right font-extrabold text-mint-400 bg-mint-500/10 px-2 py-1 rounded-lg border border-mint-500/30" oninput="onPair('age', this)" onblur="clampPair('age')">
                         </div>
                         <input type="range" id="r-age" min="18" max="90" step="1" oninput="onPair('age', this)" class="w-full h-2 bg-neutral-700 rounded-lg cursor-pointer" aria-label="Edad">
@@ -211,13 +211,13 @@
                     </div>
 
                     <div class="space-y-2">
-                        <label for="input-activity" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Actividad física (factor PAL)</label>
+                        <label data-t="Actividad física (factor PAL)" for="input-activity" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Actividad física (factor PAL)</label>
                         <select id="input-activity" onchange="setField('activity', parseFloat(this.value))" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-2xl text-xs font-bold text-neutral-100 focus:outline-none focus:ring-2 focus:ring-mint-500">
-                            <option value="1.2">Sedentario · trabajo sentado, &lt; 5.000 pasos, sin ejercicio (×1,2)</option>
-                            <option value="1.375">Ligero · 5-7.500 pasos o ejercicio 1-3 días/sem (×1,375)</option>
-                            <option value="1.55">Moderado · 7.500-10.000 pasos o ejercicio 3-5 días/sem (×1,55)</option>
-                            <option value="1.725">Alto · &gt; 10.000 pasos + entreno 6-7 días/sem (×1,725)</option>
-                            <option value="1.9">Muy alto · trabajo físico duro + entreno diario (×1,9)</option>
+                            <option data-t="Sedentario · trabajo sentado, &lt; 5.000 pasos, sin ejercicio (×1,2)" value="1.2">Sedentario · trabajo sentado, &lt; 5.000 pasos, sin ejercicio (×1,2)</option>
+                            <option data-t="Ligero · 5-7.500 pasos o ejercicio 1-3 días/sem (×1,375)" value="1.375">Ligero · 5-7.500 pasos o ejercicio 1-3 días/sem (×1,375)</option>
+                            <option data-t="Moderado · 7.500-10.000 pasos o ejercicio 3-5 días/sem (×1,55)" value="1.55">Moderado · 7.500-10.000 pasos o ejercicio 3-5 días/sem (×1,55)</option>
+                            <option data-t="Alto · &gt; 10.000 pasos + entreno 6-7 días/sem (×1,725)" value="1.725">Alto · &gt; 10.000 pasos + entreno 6-7 días/sem (×1,725)</option>
+                            <option data-t="Muy alto · trabajo físico duro + entreno diario (×1,9)" value="1.9">Muy alto · trabajo físico duro + entreno diario (×1,9)</option>
                         </select>
                     </div>
 
@@ -245,24 +245,24 @@
             <div class="lg:col-span-7 space-y-6 scroll-mt-24" id="sec-resultados">
                 <div id="calc-empty" class="calc-empty rounded-3xl p-8 sm:p-10 text-center space-y-4">
                     <div class="mx-auto w-16 h-16 rounded-3xl bg-mint-500/15 text-mint-400 grid place-items-center text-2xl"><i class="fa-solid fa-calculator"></i></div>
-                    <h2 class="text-xl sm:text-2xl font-extrabold text-neutral-100">Pon tu edad, peso y estatura</h2>
+                    <h2 data-t="Pon tu edad, peso y estatura" class="text-xl sm:text-2xl font-extrabold text-neutral-100">Pon tu edad, peso y estatura</h2>
                     <div class="grid grid-cols-3 gap-2 max-w-sm mx-auto text-xs font-bold text-neutral-400">
                         <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><span class="grid place-items-center gap-1.5"><i class="fa-solid fa-cake-candles text-mint-400 text-lg"></i>Edad</span></div>
                         <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><span class="grid place-items-center gap-1.5"><i class="fa-solid fa-weight-scale text-mint-400 text-lg"></i>Peso</span></div>
                         <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><span class="grid place-items-center gap-1.5"><i class="fa-solid fa-ruler-vertical text-mint-400 text-lg"></i>Estatura</span></div>
                     </div>
-                    <div class="text-sm font-bold text-mint-300">y pulsa <span class="px-2 py-0.5 rounded-lg bg-mint-600 text-white">Aceptar</span></div>
+                    <div class="text-sm font-bold text-mint-300"><span data-t="y pulsa">y pulsa</span> <span class="px-2 py-0.5 rounded-lg bg-mint-600 text-white">Aceptar</span></div>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     <div class="glass-card rounded-3xl p-5 border border-neutral-800 space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Gasto basal (BMR)</span>
+                            <span data-t="Gasto basal (BMR)" class="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Gasto basal (BMR)</span>
                             <span class="w-7 h-7 rounded-full bg-neutral-800 text-neutral-300 flex items-center justify-center text-xs"><i class="fa-solid fa-bed"></i></span>
                         </div>
                         <div class="flex items-baseline gap-1">
                             <span id="res-bmr" class="text-2xl font-extrabold text-neutral-100">–</span>
-                            <span class="text-xs text-neutral-400 font-bold">kcal/día</span>
+                            <span data-t="kcal/día" class="text-xs text-neutral-400 font-bold">kcal/día</span>
                         </div>
                     </div>
                     <div class="glass-card rounded-3xl p-5 border border-neutral-800 space-y-2">
@@ -272,17 +272,17 @@
                         </div>
                         <div class="flex items-baseline gap-1">
                             <span id="res-tdee" class="text-2xl font-extrabold text-mint-400">–</span>
-                            <span class="text-xs text-mint-400 font-bold">kcal/día</span>
+                            <span data-t="kcal/día" class="text-xs text-mint-400 font-bold">kcal/día</span>
                         </div>
                     </div>
                     <div class="glass-card-dark rounded-3xl p-5 space-y-2 text-white mint-glow">
                         <div class="flex items-center justify-between">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-mint-400">Calorías objetivo</span>
+                            <span data-t="Calorías objetivo" class="text-[10px] font-bold uppercase tracking-wider text-mint-400">Calorías objetivo</span>
                             <span class="w-7 h-7 rounded-full bg-mint-500/20 text-mint-400 flex items-center justify-center text-xs"><i class="fa-solid fa-bullseye"></i></span>
                         </div>
                         <div class="flex items-baseline gap-1">
                             <span id="res-target-kcal" class="text-3xl font-extrabold">–</span>
-                            <span class="text-xs text-mint-400 font-bold">kcal/día</span>
+                            <span data-t="kcal/día" class="text-xs text-mint-400 font-bold">kcal/día</span>
                         </div>
                         <p class="text-[10px] text-slate-300 leading-tight" id="res-rate">–</p>
                     </div>
@@ -296,7 +296,7 @@
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-2xl bg-mint-500/15 text-mint-400 flex items-center justify-center text-lg"><i class="fa-solid fa-weight-scale"></i></div>
                             <div>
-                                <h2 class="text-lg font-bold text-neutral-100">2. Índice de masa corporal (IMC)</h2>
+                                <h2 data-t="2. Índice de masa corporal (IMC)" class="text-lg font-bold text-neutral-100">2. Índice de masa corporal (IMC)</h2>
                             </div>
                         </div>
                         <span id="badge-bmi-category" class="px-3 py-1 rounded-full text-xs font-extrabold border whitespace-nowrap">–</span>
@@ -304,7 +304,7 @@
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-center">
                         <div class="text-center sm:text-left bg-neutral-800/60 p-4 rounded-2xl border border-neutral-800 space-y-1">
-                            <div class="text-xs text-neutral-400 font-semibold uppercase tracking-wider">Tu IMC</div>
+                            <div data-t="Tu IMC" class="text-xs text-neutral-400 font-semibold uppercase tracking-wider">Tu IMC</div>
                             <div class="text-3xl font-extrabold text-neutral-100" id="res-bmi-val">–</div>
                         </div>
                         <div class="sm:col-span-2 space-y-3">
@@ -323,11 +323,11 @@
                             </div>
                             <div class="grid grid-cols-2 gap-2 text-xs">
                                 <div class="p-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800">
-                                    <span class="text-neutral-400 block text-[10px] font-bold uppercase">Peso saludable para tu estatura</span>
+                                    <span data-t="Peso saludable para tu estatura" class="text-neutral-400 block text-[10px] font-bold uppercase">Peso saludable para tu estatura</span>
                                     <span class="font-bold text-neutral-100" id="res-ideal-weight">–</span>
                                 </div>
                                 <div class="p-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800">
-                                    <span class="text-neutral-400 block text-[10px] font-bold uppercase">Para estar en rango saludable</span>
+                                    <span data-t="Para estar en rango saludable" class="text-neutral-400 block text-[10px] font-bold uppercase">Para estar en rango saludable</span>
                                     <span class="font-bold text-neutral-100" id="res-bmi-gap">–</span>
                                 </div>
                                 <div class="p-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800">
@@ -335,14 +335,14 @@
                                     <span class="font-bold text-neutral-100" id="res-bmi-prime">–</span>
                                 </div>
                                 <div class="p-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800">
-                                    <span class="text-neutral-400 block text-[10px] font-bold uppercase">Clasificación OMS</span>
+                                    <span data-t="Clasificación OMS" class="text-neutral-400 block text-[10px] font-bold uppercase">Clasificación OMS</span>
                                     <span class="font-bold text-neutral-100" id="res-bmi-who">–</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <details class="rounded-2xl border border-neutral-800">
-                        <summary class="p-3 text-xs font-bold text-neutral-300 flex items-center justify-between"><span>Tabla de la OMS</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+                        <summary class="p-3 text-xs font-bold text-neutral-300 flex items-center justify-between"><span data-t="Tabla de la OMS">Tabla de la OMS</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
                         <div class="px-3 pb-3 space-y-2 text-xs text-neutral-300">
                             <div id="bmi-table" class="grid grid-cols-2 gap-x-3 gap-y-1"></div>
                         </div>
@@ -359,16 +359,16 @@
                             </div>
                         </div>
                         <div class="flex flex-wrap items-center gap-1 bg-neutral-800 p-1 rounded-2xl text-xs font-bold" id="strategy-btns">
-                            <button data-strat="highprotein" onclick="setField('strategy','highprotein')" class="px-3 py-1.5 rounded-xl">Alta en proteína</button>
+                            <button data-t="Alta en proteína" data-strat="highprotein" onclick="setField('strategy','highprotein')" class="px-3 py-1.5 rounded-xl">Alta en proteína</button>
                             <button data-strat="balanced" onclick="setField('strategy','balanced')" class="px-3 py-1.5 rounded-xl">Equilibrada</button>
-                            <button data-strat="lowcarb" onclick="setField('strategy','lowcarb')" class="px-3 py-1.5 rounded-xl">Baja en hidratos</button>
+                            <button data-t="Baja en hidratos" data-strat="lowcarb" onclick="setField('strategy','lowcarb')" class="px-3 py-1.5 rounded-xl">Baja en hidratos</button>
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div class="p-4 rounded-2xl bg-roseAccent-50/60 border border-roseAccent-200/80 space-y-2">
                             <div class="flex items-center justify-between">
-                                <span class="text-xs font-extrabold text-roseAccent-700 uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-drumstick-bite"></i> Proteínas</span>
+                                <span class="text-xs font-extrabold text-roseAccent-700 uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-drumstick-bite"></i> <span data-t="Proteínas">Proteínas</span></span>
                                 <span class="text-[10px] font-bold text-roseAccent-600 bg-neutral-900 px-2 py-0.5 rounded-full border border-roseAccent-200" id="pct-prot">–</span>
                             </div>
                             <div class="flex items-baseline justify-between">
@@ -405,11 +405,11 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                         <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800 flex items-center gap-3">
                             <i class="fa-solid fa-seedling text-mint-600 text-lg w-6 text-center"></i>
-                            <div><span class="block text-[10px] font-bold uppercase text-neutral-400">Fibra mínima</span><span class="font-bold" id="res-fiber">–</span></div>
+                            <div><span data-t="Fibra mínima" class="block text-[10px] font-bold uppercase text-neutral-400">Fibra mínima</span><span class="font-bold" id="res-fiber">–</span></div>
                         </div>
                         <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800 flex items-center gap-3">
                             <i class="fa-solid fa-glass-water text-blue-500 text-lg w-6 text-center"></i>
-                            <div><span class="block text-[10px] font-bold uppercase text-neutral-400">Agua de bebida (EFSA)</span><span class="font-bold" id="res-water">–</span></div>
+                            <div><span data-t="Agua de bebida (EFSA)" class="block text-[10px] font-bold uppercase text-neutral-400">Agua de bebida (EFSA)</span><span class="font-bold" id="res-water">–</span></div>
                         </div>
                     </div>
                 </div>
@@ -444,7 +444,7 @@
 
             <!-- Diario tipo FatSecret: buscador con lupa y comidas del día -->
             <div class="flex gap-2">
-            <button type="button" onclick="openFoodSheet()" class="flex-1 min-w-0 flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-left hover:border-mint-500/50" aria-label="Buscar un alimento para apuntar">
+            <button data-t-al="Buscar un alimento para apuntar" type="button" onclick="openFoodSheet()" class="flex-1 min-w-0 flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-left hover:border-mint-500/50" aria-label="Buscar un alimento para apuntar">
                 <i class="fa-solid fa-magnifying-glass text-mint-400"></i>
                 <span class="text-sm font-semibold text-neutral-400 truncate" data-t="Busca un alimento: «spaghetti hacendado», «yogur griego»…">Busca un alimento: «spaghetti hacendado», «yogur griego»…</span>
             </button>
@@ -468,9 +468,9 @@
                 <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight flex items-center gap-2">Coach <span class="nd-pro-badge">Beta</span></h2>
                 <button onclick="openPrefs()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-sliders text-mint-400"></i> <span data-t="Preferencias">Preferencias</span></button>
             </div>
-            <div id="coach-seg" class="nd-seg" role="tablist" aria-label="Vistas del Coach">
+            <div data-t-al="Vistas del Coach" id="coach-seg" class="nd-seg" role="tablist" aria-label="Vistas del Coach">
                 <button role="tab" data-cv="chat" onclick="coachView('chat')"><i class="fa-solid fa-comment-dots"></i> <span data-t="Coach">Coach</span></button>
-                <button role="tab" data-cv="menu" onclick="coachView('menu')"><i class="fa-solid fa-calendar-day"></i> Menú <i data-lock="menu" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
+                <button role="tab" data-cv="menu" onclick="coachView('menu')"><i class="fa-solid fa-calendar-day"></i> <span data-t="Menú">Menú</span> <i data-lock="menu" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
                 <button role="tab" data-cv="shop" onclick="coachView('shop')"><i class="fa-solid fa-basket-shopping"></i> Compra <i data-lock="shop" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
             </div>
             <div id="cv-chat" class="space-y-4">
@@ -491,7 +491,7 @@
         <!-- ===== PROGRESO: resumen semanal, tendencias, peso, medidas y logros ===== -->
         <div id="tab-progress" data-panel="progress" class="hidden space-y-6">
         <div class="flex items-center justify-between gap-3">
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-100 tracking-tight whitespace-nowrap">Mi progreso</h2>
+            <h2 data-t="Mi progreso" class="text-2xl sm:text-3xl font-extrabold text-neutral-100 tracking-tight whitespace-nowrap">Mi progreso</h2>
             <button onclick="openReminder()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-regular fa-bell text-mint-400"></i> <span data-t="Recordatorio">Recordatorio</span></button>
         </div>
         <div id="prog-summary" class="space-y-4"></div>
@@ -506,18 +506,18 @@
             <div class="flex flex-col sm:flex-row gap-3 items-stretch sm:items-end text-xs">
                 <div><label class="font-bold text-neutral-300" for="trk-date">Fecha</label><input id="trk-date" type="date" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
                 <div><label class="font-bold text-neutral-300" for="trk-w">Peso (kg)</label><input id="trk-w" type="number" inputmode="decimal" step="0.1" min="30" max="300" placeholder="Ej: 69,4" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
-                <button onclick="addWeight()" class="px-5 py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold cta-glow">+ Añadir registro</button>
-                <div class="sm:ml-auto"><label class="font-bold text-neutral-300" for="trk-goal">Peso objetivo</label><input id="trk-goal" type="number" inputmode="decimal" step="0.1" min="35" max="250" placeholder="Opcional" onchange="setGoalWeight(this.value)" class="w-full sm:w-32 p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
+                <button data-t="+ Añadir registro" onclick="addWeight()" class="px-5 py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold cta-glow">+ Añadir registro</button>
+                <div class="sm:ml-auto"><label data-t="Peso objetivo" class="font-bold text-neutral-300" for="trk-goal">Peso objetivo</label><input id="trk-goal" type="number" inputmode="decimal" step="0.1" min="35" max="250" placeholder="Opcional" onchange="setGoalWeight(this.value)" class="w-full sm:w-32 p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
             </div>
             <div id="trk-stats" class="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs"></div>
             <div id="trk-chart"></div>
             <div id="trk-actions" class="flex flex-wrap gap-2 text-xs font-bold"></div>
             <details class="rounded-2xl border border-neutral-800">
-                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span>Ver todos mis registros</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span data-t="Ver todos mis registros">Ver todos mis registros</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
                 <div id="trk-list" class="px-4 pb-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 text-xs"></div>
             </details>
             <details id="ms-box" class="rounded-2xl border border-neutral-800">
-                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-ruler text-mint-400"></i> Medidas corporales (cm)</span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
+                <summary class="p-4 text-xs font-bold text-neutral-300 flex items-center justify-between"><span><i class="fa-solid fa-ruler text-mint-400"></i> <span data-t="Medidas corporales (cm)">Medidas corporales (cm)</span></span><i class="fa-solid fa-chevron-down chev text-neutral-500"></i></summary>
                 <div class="px-4 pb-4 space-y-3">
                     <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-xs items-end">
                         <div class="col-span-2 sm:col-span-1"><label for="ms-date" class="font-bold text-neutral-300">Fecha</label><input id="ms-date" type="date" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl font-bold"></div>
@@ -555,9 +555,9 @@
 
     <footer class="no-print border-t border-neutral-800 bg-neutral-900">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-[11px] text-neutral-400 leading-relaxed space-y-1">
-            <p><strong>Aviso importante:</strong> nutriDL es una herramienta educativa y orientativa; no sustituye el consejo de un médico o dietista-nutricionista. No está indicada para embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria, diabetes con medicación, enfermedad renal u otras patologías: en esos casos consulta a un profesional sanitario.</p>
-            <p>Tus datos se guardan solo en tu navegador; no se envían a ningún servidor. Al escanear un producto solo se consulta su código de barras en Open Food Facts. Si usas la voz, tu navegador puede enviar el audio a su servicio de dictado (Google en Chrome, Apple en Safari) para convertirlo en texto. Las cantidades estimadas (foto, raciones por defecto) son aproximadas.</p>
-            <p class="nd-foot-links flex flex-wrap gap-x-4 gap-y-1 pt-1"><button data-install onclick="installApp()" class="underline underline-offset-2 hover:text-neutral-200 font-bold text-mint-300"><i class="fa-solid fa-mobile-screen-button"></i> <span data-t="Instalar la app">Instalar la app</span></button><a href="alimentos/" class="underline underline-offset-2 hover:text-neutral-200">Calorías de los alimentos</a><a href="privacidad.html" class="underline underline-offset-2 hover:text-neutral-200">Privacidad</a><a href="terminos.html" class="underline underline-offset-2 hover:text-neutral-200">Términos de uso</a><a href="mailto:aannggeelltrabajos@gmail.com" class="underline underline-offset-2 hover:text-neutral-200">Contacto</a><button onclick="openReport()" class="underline underline-offset-2 hover:text-neutral-200">Informe de errores</button><button onclick="openPro()" class="underline underline-offset-2 hover:text-neutral-200">nutriDL PRO</button><button onclick="wipeAll()" class="underline underline-offset-2 hover:text-neutral-200">Borrar todos mis datos</button><span>nutriDL <span id="app-version"></span></span></p>
+            <p><strong data-t="Aviso importante:">Aviso importante:</strong> <span data-t="nutriDL es una herramienta educativa y orientativa; no sustituye el consejo de un médico o dietista-nutricionista. No está indicada para embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria, diabetes con medicación, enfermedad renal u otras patologías: en esos casos consulta a un profesional sanitario.">nutriDL es una herramienta educativa y orientativa; no sustituye el consejo de un médico o dietista-nutricionista. No está indicada para embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria, diabetes con medicación, enfermedad renal u otras patologías: en esos casos consulta a un profesional sanitario.</span></p>
+            <p data-t="Tus datos se guardan solo en tu navegador; no se envían a ningún servidor. Al escanear un producto solo se consulta su código de barras en Open Food Facts. Si usas la voz, tu navegador puede enviar el audio a su servicio de dictado (Google en Chrome, Apple en Safari) para convertirlo en texto. Las cantidades estimadas (foto, raciones por defecto) son aproximadas.">Tus datos se guardan solo en tu navegador; no se envían a ningún servidor. Al escanear un producto solo se consulta su código de barras en Open Food Facts. Si usas la voz, tu navegador puede enviar el audio a su servicio de dictado (Google en Chrome, Apple en Safari) para convertirlo en texto. Las cantidades estimadas (foto, raciones por defecto) son aproximadas.</p>
+            <p class="nd-foot-links flex flex-wrap gap-x-4 gap-y-1 pt-1"><button data-install onclick="installApp()" class="underline underline-offset-2 hover:text-neutral-200 font-bold text-mint-300"><i class="fa-solid fa-mobile-screen-button"></i> <span data-t="Instalar la app">Instalar la app</span></button><a data-t="Calorías de los alimentos" href="alimentos/" class="underline underline-offset-2 hover:text-neutral-200">Calorías de los alimentos</a><a href="privacidad.html" class="underline underline-offset-2 hover:text-neutral-200"><span data-t="Privacidad">Privacidad</span></a><a data-t="Términos de uso" href="terminos.html" class="underline underline-offset-2 hover:text-neutral-200">Términos de uso</a><a href="mailto:aannggeelltrabajos@gmail.com" class="underline underline-offset-2 hover:text-neutral-200"><span data-t="Contacto">Contacto</span></a><button data-t="Informe de errores" onclick="openReport()" class="underline underline-offset-2 hover:text-neutral-200">Informe de errores</button><button onclick="openPro()" class="underline underline-offset-2 hover:text-neutral-200">nutriDL PRO</button><button data-t="Borrar todos mis datos" onclick="wipeAll()" class="underline underline-offset-2 hover:text-neutral-200">Borrar todos mis datos</button><span>nutriDL <span id="app-version"></span></span></p>
         </div>
     </footer>
 
@@ -585,7 +585,7 @@
     <div id="gym-records" class="no-print hidden fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-6" role="dialog" aria-modal="true" aria-labelledby="rec-title" onclick="if(event.target===this) closeRecords()">
         <div class="w-full sm:max-w-lg max-h-[90vh] flex flex-col rounded-t-3xl sm:rounded-3xl bg-neutral-900 border border-neutral-800 shadow-2xl" style="padding-bottom: env(safe-area-inset-bottom, 0px)">
             <div class="flex items-center justify-between gap-3 p-5 border-b border-neutral-800">
-                <h2 id="rec-title" class="text-lg font-extrabold text-neutral-100"><i class="fa-solid fa-trophy text-amber-300"></i> Mis pesos más altos</h2>
+                <h2 id="rec-title" class="text-lg font-extrabold text-neutral-100"><i class="fa-solid fa-trophy text-amber-300"></i> <span data-t="Mis pesos más altos">Mis pesos más altos</span></h2>
                 <button data-close onclick="closeRecords()" class="w-9 h-9 rounded-xl bg-neutral-800 text-neutral-300 hover:text-white" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div id="gym-records-list" class="p-4 space-y-2 overflow-y-auto overscroll-contain"></div>
@@ -626,18 +626,18 @@
         <div class="bg-neutral-900 border border-neutral-800 rounded-3xl p-6 max-w-md w-full space-y-4 shadow-2xl max-h-[90vh] overflow-y-auto">
             <div class="flex items-start justify-between gap-3">
                 <div>
-                    <h2 id="pdf-title" class="text-lg font-extrabold text-neutral-100"><i class="fa-solid fa-file-pdf text-mint-400"></i> Descargar plan en PDF</h2>
+                    <h2 id="pdf-title" class="text-lg font-extrabold text-neutral-100"><i class="fa-solid fa-file-pdf text-mint-400"></i> <span data-t="Descargar plan en PDF">Descargar plan en PDF</span></h2>
                 </div>
                 <button onclick="closePdfModal()" class="w-9 h-9 shrink-0 rounded-xl hover:bg-neutral-800 text-neutral-400" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="space-y-1.5">
-                <label for="pdf-name" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Nombre del cliente</label>
+                <label data-t="Nombre del cliente" for="pdf-name" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Nombre del cliente</label>
                 <input id="pdf-name" type="text" maxlength="40" placeholder="Ej: Laura García" data-t-ph="Ej: Laura García" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-mint-500">
             </div>
             <div class="space-y-2 text-sm font-semibold text-neutral-200">
-                <div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Qué incluir</div>
-                <label class="flex items-center gap-3 p-3 rounded-xl border border-neutral-800 bg-neutral-800/40 cursor-pointer"><input id="pdf-opt-summary" type="checkbox" class="accent-mint-600 w-4 h-4"> Resumen: calorías, macros e IMC</label>
-                <label class="flex items-center gap-3 p-3 rounded-xl border border-neutral-800 bg-neutral-800/40 cursor-pointer"><input id="pdf-opt-gym" type="checkbox" class="accent-mint-600 w-4 h-4"> Rutina de gimnasio</label>
+                <div data-t="Qué incluir" class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Qué incluir</div>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-neutral-800 bg-neutral-800/40 cursor-pointer"><input id="pdf-opt-summary" type="checkbox" class="accent-mint-600 w-4 h-4"> <span data-t="Resumen: calorías, macros e IMC">Resumen: calorías, macros e IMC</span></label>
+                <label class="flex items-center gap-3 p-3 rounded-xl border border-neutral-800 bg-neutral-800/40 cursor-pointer"><input id="pdf-opt-gym" type="checkbox" class="accent-mint-600 w-4 h-4"> <span data-t="Rutina de gimnasio">Rutina de gimnasio</span></label>
             </div>
             <div id="pdf-result"></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -654,7 +654,7 @@
             <div class="p-4 pb-3 border-b border-neutral-800 space-y-3 shrink-0">
                 <div class="flex items-center gap-2">
                     <button id="fs-back" type="button" onclick="fsBack()" class="hidden w-10 h-10 shrink-0 rounded-xl hover:bg-neutral-800 text-neutral-300" aria-label="Volver a la búsqueda" data-t-al="Volver a la búsqueda"><i class="fa-solid fa-chevron-left"></i></button>
-                    <h2 id="fs-title" class="min-w-0 text-base font-extrabold text-neutral-100 truncate">Añadir alimento</h2>
+                    <h2 data-t="Añadir alimento" id="fs-title" class="min-w-0 text-base font-extrabold text-neutral-100 truncate">Añadir alimento</h2>
                     <select id="fs-slot" onchange="fs.slot=this.value;fsRenderTitle()" class="mr-auto p-2 bg-neutral-800 border border-neutral-700 rounded-xl text-sm font-bold" aria-label="Comida del día" data-t-al="Comida del día"></select>
                     <button type="button" onclick="closeFoodSheet()" class="w-10 h-10 shrink-0 rounded-xl hover:bg-neutral-800 text-neutral-400" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
                 </div>

@@ -264,7 +264,7 @@ function saveGymDay() {
         return set;
     }).filter(s => s.reps > 0) })).filter(e => e.sets.length);
     if (!ex.length) { toast('Apunta al menos las repeticiones de una serie'); return; }
-    const t = todayISO(), title = d.name || `Día ${gymDay + 1}`; // dato: se traduce al enseñarlo (wTitle)
+    const t = todayISO(), title = d.name || `Día ${gymDay + 1}`; // i18n-ignore (dato: se traduce al enseñarlo con wTitle)
     const before = weekInfo().done;
     const dur = sessSeconds(), w = { id: Date.now(), d: t, t: title, di: gymDay, ex };
     if (dur >= 60 && dur <= 6 * 3600) w.dur = dur; // duración real del entreno (si se usó el cronómetro y es creíble)

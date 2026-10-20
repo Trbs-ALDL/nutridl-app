@@ -17,7 +17,7 @@ const rd = f => fs.readFileSync(path.join(root, f), 'utf8');
 // ---------------------------------------------------------------------
 // Lector de JavaScript: recorre el código y devuelve sus textos con su línea.
 // ---------------------------------------------------------------------
-const FN_KEY = new Set(['tr', 'tk', 'toast', 'toastUndo', 'askConfirm']);
+const FN_KEY = new Set(['tr', 'tk', 'trSafe', 'toast', 'toastUndo', 'askConfirm']);
 function scanJS(src) {
     const strings = [];   // { txt, line, key: bool, kind: 'q' | 't' }
     let i = 0, line = 1;
@@ -118,7 +118,8 @@ function pareceEspañol(txt) {
     if (v.length < 2 || !/[a-záéíóúñ]{2,}/i.test(v)) return false;
     if (/^(https?:|\/|\.\/|\.\.\/|#|data:|mailto:)/.test(v)) return false;
     if (/[áéíóúñÁÉÍÓÚÑ¿¡]/.test(v)) return !/^[\w$.-]+$/.test(v) || /[áéíóúñ]/i.test(v);
-    const palabras = v.split(/\s+/).map(w => w.toLowerCase().replace(/^[^a-z]+|[^a-z]+$/g, '')).filter(Boolean);
+    // Trozos de código (atributo="…", llamadas…) no son palabras
+    const palabras = v.split(/\s+/).filter(w => !/[="<>{}()]/.test(w)).map(w => w.toLowerCase().replace(/^[^a-z]+|[^a-z]+$/g, '')).filter(Boolean);
     if (palabras.length < 2) return false;                                  // una sola palabra sin tilde: casi siempre código
     return palabras.some(w => CORTAS.has(w)) || /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+\s[a-záéíóúñ]+/.test(v);
 }
@@ -158,8 +159,9 @@ function scanHTML(f) {
         .replace(/<style[\s\S]*?<\/style>/g, m => m.replace(/[^\n]/g, ' '))
         .replace(/<!--[\s\S]*?-->/g, m => m.replace(/[^\n]/g, ' '));
     const linea = idx => s.slice(0, idx).split('\n').length;
-    const KEY = /data-t(?:-ph|-al|-ti)?="([^"]+)"/g; let m;
-    while ((m = KEY.exec(s))) claves.add(m[1]);
+    const KEY = /data-t(?:-ph|-al|-ti|-co|-alt)?="([^"]+)"/g; let m;
+    const deco = v => v.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&amp;/g, '&');
+    while ((m = KEY.exec(s))) claves.add(deco(m[1]));
     const TXT = />([^<>]+)</g;
     while ((m = TXT.exec(s))) {
         const txt = m[1].replace(/\s+/g, ' ').trim();

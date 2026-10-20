@@ -12,36 +12,36 @@ function triggerPrintReport() {
         <div class="space-y-4">
             <div class="flex justify-between items-center border-b-2 border-mint-600 pb-3">
                 <div>
-                    <h1 class="text-2xl font-extrabold">nutri<span class="text-mint-600">DL</span> · Informe nutricional</h1>
-                    <p class="text-xs text-neutral-400">Estimación orientativa basada en ecuaciones validadas</p>
+                    <h1 class="text-2xl font-extrabold">nutri<span class="text-mint-600">DL</span> · ${tr('Informe nutricional')}</h1>
+                    <p class="text-xs text-neutral-400">${tr('Estimación orientativa basada en ecuaciones validadas')}</p>
                 </div>
-                <div class="text-right text-xs font-bold">${new Date().toLocaleDateString('es-ES')}</div>
+                <div class="text-right text-xs font-bold">${new Date().toLocaleDateString(locale())}</div>
             </div>
             <div class="grid grid-cols-2 gap-3 text-xs">
                 <div class="p-3 bg-neutral-800/60 rounded-xl border space-y-1">
-                    <div class="font-bold border-b pb-1">Datos</div>
-                    ${row('Sexo', c.male ? 'Hombre' : 'Mujer')}${row('Edad', state.age + ' años')}
-                    ${row('Peso / estatura', `${state.weight} kg · ${state.height} cm`)}
-                    ${row('IMC', `${fmt(c.bmi, 1)} (${c.bmiCat})`)}
-                    ${c.bf !== null ? row('% grasa', `${fmt(c.bf, 1)} % (${c.bfSrc}) · masa magra ${fmt(c.ffm, 1)} kg`) : ''}
-                    ${c.whtr ? row('Cintura/altura', fmt(c.whtr, 2)) : ''}
+                    <div class="font-bold border-b pb-1">${tr('Datos')}</div>
+                    ${row(tr('Sexo'), c.male ? tr('Hombre') : tr('Mujer'))}${row(tr('Edad'), tr('{k} años', { k: state.age }))}
+                    ${row(tr('Peso / estatura'), `${state.weight} kg · ${state.height} cm`)}
+                    ${row(tr('IMC'), `${fmt(c.bmi, 1)} (${c.bmiCat})`)}
+                    ${c.bf !== null ? row(tr('% grasa'), tr('{p} ({s}) · masa magra {k} kg', { p: pctTxt(fmt(c.bf, 1)), s: tr(c.bfSrc), k: fmt(c.ffm, 1) })) : ''}
+                    ${c.whtr ? row(tr('Cintura/altura'), fmt(c.whtr, 2)) : ''}
                 </div>
                 <div class="p-3 bg-neutral-800/60 rounded-xl border space-y-1">
-                    <div class="font-bold border-b pb-1">Metabolismo y objetivo</div>
-                    ${row('Gasto basal', `${fmt(c.bmr)} kcal (${{ mifflin: 'Mifflin-St Jeor', katch: 'Katch-McArdle', hb: 'Harris-Benedict' }[c.formula]})`)}
-                    ${row('Mantenimiento', `${fmt(c.tdee)} kcal`)}
-                    ${row('Calorías objetivo', `${fmt(c.target)} kcal/día`)}
-                    ${row('Ritmo estimado', `${fmt(c.weeklyKg, 2)} kg/semana`)}
-                    ${row('Agua de bebida', `≈ ${fmt(c.water, 1)} L/día`)}
+                    <div class="font-bold border-b pb-1">${tr('Metabolismo y objetivo')}</div>
+                    ${row(tr('Gasto basal'), `${fmt(c.bmr)} kcal (${{ mifflin: 'Mifflin-St Jeor', katch: 'Katch-McArdle', hb: 'Harris-Benedict' }[c.formula]})`)}
+                    ${row(tr('Mantenimiento'), `${fmt(c.tdee)} kcal`)}
+                    ${row(tr('Calorías objetivo'), tr('{k} kcal/día', { k: fmt(c.target) }))}
+                    ${row(tr('Ritmo estimado'), tr('{k} kg/semana', { k: fmt(c.weeklyKg, 2) }))}
+                    ${row(tr('Agua de bebida'), tr('≈ {k} L/día', { k: fmt(c.water, 1) }))}
                 </div>
             </div>
             <div class="grid grid-cols-4 gap-2 text-center text-xs">
-                <div class="p-2 border rounded-xl"><div class="font-bold">Proteínas</div><div class="font-extrabold text-sm">${c.prot} g</div></div>
-                <div class="p-2 border rounded-xl"><div class="font-bold">Grasas</div><div class="font-extrabold text-sm">${c.fat} g</div></div>
-                <div class="p-2 border rounded-xl"><div class="font-bold">Hidratos</div><div class="font-extrabold text-sm">${c.carbs} g</div></div>
-                <div class="p-2 border rounded-xl"><div class="font-bold">Fibra</div><div class="font-extrabold text-sm">≥ ${c.fiber} g</div></div>
+                <div class="p-2 border rounded-xl"><div class="font-bold">${tr('Proteínas')}</div><div class="font-extrabold text-sm">${c.prot} g</div></div>
+                <div class="p-2 border rounded-xl"><div class="font-bold">${tr('Grasas')}</div><div class="font-extrabold text-sm">${c.fat} g</div></div>
+                <div class="p-2 border rounded-xl"><div class="font-bold">${tr('Hidratos')}</div><div class="font-extrabold text-sm">${c.carbs} g</div></div>
+                <div class="p-2 border rounded-xl"><div class="font-bold">${tr('Fibra')}</div><div class="font-extrabold text-sm">≥ ${c.fiber} g</div></div>
             </div>
-            <div class="border-t pt-3 text-[10px] text-neutral-400 text-center">Documento orientativo generado por nutriDL. No sustituye el consejo de un profesional sanitario. Pesos de cereales, legumbre seca y carnes en crudo.</div>
+            <div class="border-t pt-3 text-[10px] text-neutral-400 text-center">${tr('Documento orientativo generado por nutriDL. No sustituye el consejo de un profesional sanitario. Pesos de cereales, legumbre seca y carnes en crudo.')}</div>
         </div>`;
     window.print();
 }
@@ -54,7 +54,7 @@ function triggerPrintReport() {
 const PDF_W = [278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556, 556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556, 1015, 667, 667, 722, 722, 667, 611, 778, 722, 278, 500, 667, 556, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469, 556, 333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556, 556, 556, 333, 500, 278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584];
 const PDF_WIN = { '€': 0x80, '‚': 0x82, '„': 0x84, '…': 0x85, '‰': 0x89, '‘': 0x91, '’': 0x92, '“': 0x93, '”': 0x94, '•': 0x95, '–': 0x96, '—': 0x97, '™': 0x99 };
 function pdfClean(s) {
-    return String(s ?? '').replace(/≈\s?/g, 'aprox. ').replace(/≥/g, '>=').replace(/≤/g, '<=').replace(/[→➜]/g, '->').replace(/−/g, '-').replace(/[   ]/g, ' ')
+    return String(s ?? '').replace(/≈\s?/g, tr('aprox.') + ' ').replace(/≥/g, '>=').replace(/≤/g, '<=').replace(/[→➜]/g, '->').replace(/−/g, '-').replace(/[   ]/g, ' ')
         .replace(/[^\x20-\x7e¡-ÿ€‚„…‰‘’“”•–—™]/gu, '').replace(/\s{2,}/g, ' ').trim();
 }
 function pdfCharW(ch) {
@@ -124,7 +124,7 @@ function pdfDoc() {
                 ops = p;
                 d.line(M, H - 30, W - M, H - 30, '#e4dcd2');
                 d.text(M, H - 18, meta.footer, { size: 7.5, color: '#8a8a8a' });
-                d.text(W - M, H - 18, `Página ${i + 1} de ${N}`, { size: 7.5, color: '#8a8a8a', align: 'right' });
+                d.text(W - M, H - 18, tr('Página {a} de {b}', { a: i + 1, b: N }), { size: 7.5, color: '#8a8a8a', align: 'right' });
             });
             const objs = [];
             objs[1] = '<< /Type /Catalog /Pages 2 0 R >>';
@@ -154,7 +154,7 @@ function pdfDoc() {
 }
 
 function buildPlanPdf(opt) {
-    const c = calc, d = pdfDoc(), name = pdfClean(opt.name) || 'Cliente';
+    const c = calc, d = pdfDoc(), name = pdfClean(opt.name) || tr('Cliente');
     d.page();
     // Cabecera
     d.rect(0, 0, d.W, 92, '#2a1d12');
@@ -162,27 +162,28 @@ function buildPlanPdf(opt) {
     d.text(d.M, 40, 'nutri', { size: 24, bold: 1, color: '#ffffff' });
     d.text(d.M + pdfTextW('nutri', 24, 1), 40, 'DL', { size: 24, bold: 1, color: '#dcc19c' });
     d.text(d.M, 62, opt.title, { size: 12, color: '#e6d3b3' });
-    d.text(d.M, 79, `Para: ${name}`, { size: 10, bold: 1, color: '#ffffff' });
-    d.text(d.W - d.M, 40, new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' }), { size: 10, color: '#e6d3b3', align: 'right' });
+    d.text(d.M, 79, tr('Para: {n}', { n: name }), { size: 10, bold: 1, color: '#ffffff' });
+    d.text(d.W - d.M, 40, new Date().toLocaleDateString(locale(), { day: 'numeric', month: 'long', year: 'numeric' }), { size: 10, color: '#e6d3b3', align: 'right' });
     d.y = 116;
 
     if (opt.summary) {
-        d.h1('Resumen y objetivo');
-        const goal = { t: GOAL_TYPES[c.G.t][0], tag: c.G.t === 'maintain' ? '0 %' : `${c.goal > 0 ? '+' : '−'}${fmt(Math.abs(c.goal) * 100, 0)} %` };
+        d.h1(tr('Resumen y objetivo'));
+        const goal = { t: tr(GOAL_TYPES[c.G.t][0]), tag: c.G.t === 'maintain' ? pctTxt(0) : (c.goal > 0 ? '+' : '−') + pctTxt(fmt(Math.abs(c.goal) * 100, 0)) };
+        const kcalDia = v => tr('{k} kcal/día', { k: fmt(v) });
         const kv = [
-            ['Datos', `${c.male ? 'Hombre' : 'Mujer'} · ${state.age} años · ${state.weight} kg · ${state.height} cm`],
-            ['IMC', `${fmt(c.bmi, 1)} (${c.bmiCat})${c.bf !== null ? ` · grasa ${fmt(c.bf, 1)} %` : ''}`],
-            ['Gasto basal', `${fmt(c.bmr)} kcal/día`],
-            ['Mantenimiento', `${fmt(c.tdee)} kcal/día`],
-            ['Objetivo', goal ? `${goal.t} · ${goal.tag}` : ''],
-            ['Calorías del plan', `${fmt(c.target)} kcal/día`],
-            ['Ritmo estimado', `${fmt(c.weeklyKg, 2)} kg/semana`],
-            ['Agua de bebida', `aprox. ${fmt(c.water, 1)} L/día`],
+            [tr('Datos'), `${c.male ? tr('Hombre') : tr('Mujer')} · ${tr('{k} años', { k: state.age })} · ${state.weight} kg · ${state.height} cm`],
+            [tr('IMC'), `${fmt(c.bmi, 1)} (${c.bmiCat})${c.bf !== null ? ' · ' + tr('grasa {p}', { p: pctTxt(fmt(c.bf, 1)) }) : ''}`],
+            [tr('Gasto basal'), kcalDia(c.bmr)],
+            [tr('Mantenimiento'), kcalDia(c.tdee)],
+            [tr('Objetivo'), `${goal.t} · ${goal.tag}`],
+            [tr('Calorías del plan'), kcalDia(c.target)],
+            [tr('Ritmo estimado'), tr('{k} kg/semana', { k: fmt(c.weeklyKg, 2) })],
+            [tr('Agua de bebida'), tr('≈ {k} L/día', { k: fmt(c.water, 1) })],
         ];
         kv.forEach(([k, v]) => { d.ensure(15); d.text(d.M + 8, d.y + 10, k, { size: 9.5, color: '#6b6b6b' }); d.text(d.M + 130, d.y + 10, v, { size: 9.5, bold: 1 }); d.y += 15; });
         d.gap(6); d.ensure(52);
         const bw = (d.cw - 18) / 4;
-        [['Proteínas', `${c.prot} g`], ['Grasas', `${c.fat} g`], ['Hidratos', `${c.carbs} g`], ['Fibra', `>= ${c.fiber} g`]].forEach(([k, v], i) => {
+        [[tr('Proteínas'), `${c.prot} g`], [tr('Grasas'), `${c.fat} g`], [tr('Hidratos'), `${c.carbs} g`], [tr('Fibra'), `>= ${c.fiber} g`]].forEach(([k, v], i) => {
             const x = d.M + i * (bw + 6);
             d.rect(x, d.y, bw, 44, '#f3ece3');
             d.text(x + bw / 2 - pdfTextW(k, 8.5) / 2, d.y + 16, k, { size: 8.5, color: '#7a5230' });
@@ -193,27 +194,27 @@ function buildPlanPdf(opt) {
     if (opt.gym) {
         const g = myGym(), N = gymDays();
         d.page();
-        d.h1(`Entrenamiento · ${N} ${N === 1 ? 'día' : 'días'}/semana`);
-        if (!N) d.para('Aún no se han elegido los días de entrenamiento.', { size: 9 });
+        d.h1(tr('Entrenamiento · {x}/semana', { x: tp(N, 'día', 'días') }));
+        if (!N) d.para(tr('Aún no se han elegido los días de entrenamiento.'), { size: 9 });
         g.plan.slice(0, N).forEach((p, i) => {
-            d.h2(p.name || `Día ${i + 1}`, `${p.ex.length} ejercicio${p.ex.length === 1 ? '' : 's'}`);
-            if (!p.ex.length) d.para('Sin ejercicios todavía.', { size: 9 });
+            d.h2(p.name ? wTitle(p.name) : tr('Día {k}', { k: i + 1 }), tp(p.ex.length, 'ejercicio', 'ejercicios'));
+            if (!p.ex.length) d.para(tr('Sin ejercicios todavía.'), { size: 9 });
             p.ex.forEach((e, k) => {
                 const lp = lastPerfOf(e);
                 const nd = e.s.filter(s => s.t === 'drop').length;
-                d.row(`${k + 1}. ${e.n}`, `${e.s.length} series${nd ? ` (${nd} dropset)` : ''}`, lp ? 'Última vez: ' + lp.map(s => setText(s, ' x ').replace(/↓/g, 'drop')).join(' · ') : '');
+                d.row(`${k + 1}. ${exLabel(e)}`, tp(e.s.length, 'serie', 'series') + (nd ? ` (${nd} dropset)` : ''), lp ? tr('Última vez: {x}', { x: lp.map(s => setText(s, ' x ').replace(/↓/g, 'drop')).join(' · ') }) : '');
             });
             d.gap(4);
         });
         const L = bestLifts();
         if (L.length) {
-            d.h2('Pesos más altos', '');
-            L.forEach(b => d.row(b.name, b.s.kg ? `${kgTxt(b.s.kg)} kg x ${b.s.reps}` : `${b.s.reps} reps`, `${b.n} series`));
+            d.h2(tr('Pesos más altos'), '');
+            L.forEach(b => d.row(exLabel(b), b.s.kg ? `${kgTxt(b.s.kg)} kg x ${b.s.reps}` : `${b.s.reps} reps`, tp(b.n, 'serie', 'series')));
         }
     }
     d.gap(10); d.ensure(40);
     d.line(d.M, d.y, d.M + d.cw, d.y, '#cccccc'); d.gap(6);
-    d.para('Documento orientativo generado con nutriDL. No sustituye el consejo de un médico o dietista-nutricionista. No indicado en embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria u otras patologías sin supervisión profesional.', { size: 7.5, color: '#8a8a8a' });
+    d.para(tr('Documento orientativo generado con nutriDL. No sustituye el consejo de un médico o dietista-nutricionista. No indicado en embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria u otras patologías sin supervisión profesional.'), { size: 7.5, color: '#8a8a8a' });
     return d.build({ title: `${opt.title} - ${name}`, footer: `nutriDL · ${opt.title} · ${name}` });
 }
 
@@ -236,9 +237,9 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('gym-rec
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('nd-sheet') && !$('nd-sheet').classList.contains('hidden') && $('confirm-modal').classList.contains('hidden')) closeSheet(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && $('food-sheet') && !$('food-sheet').classList.contains('hidden')) closeFoodSheet(); });
 function pdfOptions() {
-    const o = { name: $('pdf-name').value.trim() || (profiles.list[profiles.current] || {}).name || 'Cliente', summary: $('pdf-opt-summary').checked, gym: $('pdf-opt-gym').checked };
+    const o = { name: $('pdf-name').value.trim() || (profiles.list[profiles.current] || {}).name || tr('Cliente'), summary: $('pdf-opt-summary').checked, gym: $('pdf-opt-gym').checked };
     const food = o.summary;
-    o.title = food && o.gym ? 'Plan nutricional y de entrenamiento' : o.gym ? 'Plan de entrenamiento' : 'Plan nutricional';
+    o.title = food && o.gym ? tr('Plan nutricional y de entrenamiento') : o.gym ? tr('Plan de entrenamiento') : tr('Plan nutricional');
     return o;
 }
 async function makePdf(mode) {
@@ -246,7 +247,7 @@ async function makePdf(mode) {
     if (!o.summary && !o.gym) { toast('Marca al menos una parte del plan'); return; }
     let bytes;
     try { bytes = buildPlanPdf(o); } catch (e) { console.error(e); toast('No se pudo crear el PDF'); return; }
-    const slug = norm(o.name).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'cliente';
+    const slug = norm(o.name).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'cliente'; // i18n-ignore (nombre de archivo)
     const filename = `nutriDL-plan-${slug}-${todayISO()}.pdf`;
     const blob = new Blob([bytes], { type: 'application/pdf' });
     if (mode === 'share') {
@@ -261,8 +262,8 @@ async function makePdf(mode) {
     document.body.appendChild(a); a.click(); a.remove();
     // Por si el navegador no permite descargas (algunos navegadores dentro de apps): enlace para abrirlo
     $('pdf-result').innerHTML = `<div class="p-3 rounded-xl bg-mint-500/10 border border-mint-500/30 text-xs text-neutral-200 space-y-1">
-        <p><i class="fa-solid fa-circle-check text-mint-400"></i> <b>${esc(filename)}</b> creado (${Math.max(1, Math.round(bytes.length / 1024))} KB).</p>
-        <p>¿No se ha descargado? <a href="${pdfUrl}" target="_blank" rel="noopener" class="underline font-bold text-mint-300">Abrir el PDF</a> y guárdalo o compártelo desde ahí.</p></div>`;
+        <p><i class="fa-solid fa-circle-check text-mint-400"></i> ${tr('{n} creado ({k} KB).', { n: '<b>' + esc(filename) + '</b>', k: Math.max(1, Math.round(bytes.length / 1024)) })}</p>
+        <p>${tr('¿No se ha descargado? {a} y guárdalo o compártelo desde ahí.', { a: `<a href="${pdfUrl}" target="_blank" rel="noopener" class="underline font-bold text-mint-300">${tr('Abrir el PDF')}</a>` })}</p></div>`;
     toast('PDF descargado');
 }
 function printFromPdfModal() { closePdfModal(); triggerPrintReport(); }

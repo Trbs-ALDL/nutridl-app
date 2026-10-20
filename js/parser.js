@@ -19,6 +19,7 @@ const UNIT_WORDS = [
 ];
 const STOP = new Set(['de', 'del', 'la', 'el', 'los', 'las', 'al', 'a', 'en', 'mi', 'unos', 'unas', 'algo', 'poco', 'un', 'una', 'uno', 'y', 'tambien', 'hoy', 'esta', 'este', 'pues', 'luego', 'despues', 'con']);
 // Lo que la gente dice → como se llama en la base
+// i18n-ignore-start (frases que se ENTIENDEN, no se enseñan; las inglesas van en su propia lista)
 const PHRASES = [
     [/\bpechugas? de pollo\b/g, 'pechuga pollo'], [/\bfiletes? de pollo\b/g, 'pechuga pollo'], [/\bpollo a la plancha\b/g, 'pechuga pollo plancha hecha'],
     [/\bhuevos? (duros?|cocidos?|a la plancha)\b/g, 'huevo'], [/\bhuevos? fritos?\b/g, 'huevo frito'], [/\bhuevos? revueltos?\b/g, 'huevos revueltos'],
@@ -29,7 +30,7 @@ const PHRASES = [
     [/\b(bocadillo|bocata) de jamon( serrano)?\b/g, 'bocadillo jamon serrano'], [/\b(bocadillo|bocata) de (?!jamon)/g, 'pan barra y '],
     [/\bbocadillo\b(?! jamon)/g, 'pan barra'], [/\bbocata\b/g, 'pan barra'], [/\bcocacola\b|\bcoca cola\b|\bcoca-cola\b/g, 'coca-cola'],
     [/\bproteina en polvo\b|\bbatido de proteinas?\b/g, 'whey'], [/\byogures?\b/g, 'yogur'], [/\byogurt\b/g, 'yogur'],
-];
+]; // i18n-ignore-end
 // Palabra sola → el alimento que casi todo el mundo quiere decir («pan» = pan de barra, «atún» = lata al natural…)
 const CANON = { pollo: 'pollo', pechuga: 'pollo', arroz: 'arroz', pasta: 'pasta', macarrones: 'pasta', spaghetti: 'pasta', pan: 'pan', leche: 'leche', yogur: 'yognat',
     atun: 'atun', huevo: 'huevo', aceite: 'aove', patata: 'patata', ternera: 'ternera', galleta: 'galletas', galletas: 'galletas', cerveza: 'cerveza', vino: 'vino',
