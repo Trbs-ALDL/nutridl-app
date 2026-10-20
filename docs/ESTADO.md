@@ -60,7 +60,7 @@ Marca cada fase como HECHA aquí al terminarla.
   **Lo que falta para un 9**: avisos de verdad al móvil (push), y eso necesita servidor → va con la F5.
 - [ ] **F4 · Pruebas** · subir de 34 a ~55 cubriendo Coach, diario y perfiles.
 - [ ] **F5 · Nube (Supabase)** · la más grande, en 3 pasos: cuentas → sincronizar → PRO real.
-- [~] **F6 · Inglés (ES / EN)** — base HECHA en la 3.11.0, traducción EN CURSO.
+- [~] **F6 · Inglés (ES / EN)** — base HECHA en la 3.11.0; pestaña «Hoy» traducida en la 3.11.1. Cobertura: 17 % (91 de ~514 textos).
   Motor: `js/i18n.js` (`tr()`, `setLang()`, `locale()`, `dateTxt()`, `dowLetters()`, `applyStaticI18n()`),
   diccionario en `js/data/lang-en.js`, estilo `.nd-langsel`, selector en el menú de ajustes.
   **Medir siempre con `node tools/i18n-check.js`** (y `--faltan` / `--sin-en`).

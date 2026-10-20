@@ -1,5 +1,9 @@
 # Cambios de nutriDL
 
+## 3.11.1 · 20 de octubre de 2026
+
+- Inglés: la pestaña «Hoy» entera ya tiene su traducción (saludo, fechas, tarjetas, avisos, accesos rápidos y comidas). El selector sigue oculto hasta terminar.
+
 ## 3.11.0 · 20 de octubre de 2026
 
 **Base para el inglés (aún no visible)**
