@@ -17,7 +17,7 @@ const rd = f => fs.readFileSync(path.join(root, f), 'utf8');
 // ---------------------------------------------------------------------
 // Lector de JavaScript: recorre el código y devuelve sus textos con su línea.
 // ---------------------------------------------------------------------
-const FN_KEY = new Set(['tr', 'tk', 'trSafe', 'toast', 'toastUndo', 'askConfirm']);
+const FN_KEY = new Set(['tr', 'tk', 'trSafe', 'toast', 'toastUndo', 'askConfirm', 'coachAsk', 'askBtn']);
 function scanJS(src) {
     const strings = [];   // { txt, line, key: bool, kind: 'q' | 't' }
     let i = 0, line = 1;

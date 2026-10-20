@@ -112,6 +112,8 @@ test('Coach: un alimento con apóstrofo o comillas no rompe ni cuela código en 
     const arg = h.match(/onclick="coachSend\((.*?)\)"/);
     assert.ok(arg, 'el botón se genera');
     const decoded = arg[1].replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
-    assert.doesNotThrow(() => JSON.parse(decoded), 'el argumento es una cadena JSON válida, no código suelto');
+    // (lo que se ve y la frase que lee el Coach): cada uno es una cadena JSON cerrada, nada de código suelto
+    let args; assert.doesNotThrow(() => { args = JSON.parse('[' + decoded + ']'); }, 'los argumentos son cadenas JSON válidas, no código suelto');
+    assert.ok(args.length >= 1 && args.every(a => typeof a === 'string'), 'solo cadenas');
     assert.doesNotMatch(decoded, /alert\(/);
 });

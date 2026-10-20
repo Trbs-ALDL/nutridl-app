@@ -36,7 +36,7 @@ function nowAction() {
     const c = calc, d = todayISO(), t = diaryTotals(d), R = { kcal: c.target - t.kcal, p: c.prot - t.p }, nm = nextMeal();
     if (R.kcal < -100) return { ic: '🧘', title: tr('Hoy vas {k} kcal por encima', { k: fmt(-R.kcal) }), sub: tr('No pasa nada por un día: lo que cuenta es tu media de la semana.'), btn: [tr('Ver mi semana'), "showTab('progress')"] };
     if (nm && nm.slot && nm.tg.kcal >= 120) return { ic: '🍽️', kicker: tr('Próxima comida'), title: `${tr(SLOT_NAME[nm.slot])} · ${fmt(nm.tg.kcal)} kcal`, sub: tr('Recomendado: unos {g} g de proteína', { g: fmt(nm.tg.p) }), btn: [tr('Ver opciones'), `openWhatToEat('${nm.slot}')`], btn2: [tr('Apuntar'), `openFoodSheet('${nm.slot}')`] };
-    if (R.p > 15) return { ic: '🥩', title: tr('Te faltan {g} g de proteína', { g: fmt(R.p) }), sub: tr('Y te quedan {k} kcal. Un lácteo proteico o algo de pavo lo resuelve.', { k: fmt(Math.max(0, R.kcal)) }), btn: [tr('Ideas'), "showTab('coach');coachSend('¿Cómo llego a mis proteínas?')"] };
+    if (R.p > 15) return { ic: '🥩', title: tr('Te faltan {g} g de proteína', { g: fmt(R.p) }), sub: tr('Y te quedan {k} kcal. Un lácteo proteico o algo de pavo lo resuelve.', { k: fmt(Math.max(0, R.kcal)) }), btn: [tr('Ideas'), "showTab('coach');coachAsk('¿Cómo llego a mis proteínas?')"] }; // i18n-ignore (la frase ya es clave en chatSuggestions)
     if (t.kcal > 0) return { ic: '🔥', title: tr('Día prácticamente completado'), sub: tr('Buen trabajo. Mañana, a por otro.'), btn: [tr('Ver mi progreso'), "showTab('progress')"] };
     return { ic: '☀️', title: tr('Empieza tu día'), sub: tr('Apunta tu primera comida.'), btn: [tr('Apuntar'), 'openFoodSheet()'] };
 }

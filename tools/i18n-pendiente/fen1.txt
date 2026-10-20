@@ -1,0 +1,260 @@
+pollo|Chicken breast
+pavo|Turkey breast
+ternera|Lean beef (steak)
+picada|Beef mince 10%
+cerdo|Pork loin
+salmon|Salmon
+merluza|Hake / white fish
+atun|Tuna in water (can)
+gambas|Prawns / shrimp
+huevo|Egg
+claras|Egg whites
+jamon|Serrano ham (lean)
+fiambre|Turkey cold cuts (>90% meat)
+skyr|Skyr / 0% protein yogurt
+yogdes|Fat-free plain yogurt
+yoggr|Plain Greek yogurt
+batido|Fat-free quark 0%
+cottage|Cottage cheese
+burgos|Fresh cheese (Burgos style)
+curado|Cured cheese
+leche|Semi-skimmed milk
+bebsoja|Unsweetened soy drink
+whey|Whey protein (powder)
+guisante|Plant protein powder
+tofu|Firm tofu
+tempeh|Tempeh
+seitan|Seitan
+sojatex|Textured soy protein (dry)
+lentejas|Lentils (cooked/jar)
+garbanzos|Chickpeas (cooked/jar)
+alubias|Beans (cooked/jar)
+hummus|Hummus
+arroz|White rice
+arrozint|Brown rice
+pasta|Pasta
+pastaint|Wholemeal pasta
+quinoa|Quinoa
+cuscus|Couscous
+patata|Potato
+boniato|Sweet potato
+avena|Rolled oats
+panint|Wholemeal bread
+pan|White bread (baguette)
+tortitas|Rice or corn cakes
+wrap|Wheat tortilla (wrap)
+cereales|Corn flakes cereal
+aove|Extra virgin olive oil
+aguacate|Avocado
+almendras|Almonds
+nueces|Walnuts
+cacahuete|Peanut butter 100%
+chia|Chia seeds
+choco|Dark chocolate 85%
+aceitunas|Olives
+platano|Banana
+manzana|Apple
+naranja|Orange
+fresas|Strawberries
+arandanos|Blueberries
+kiwi|Kiwi
+pera|Pear
+pina|Pineapple
+mango|Mango
+brocoli|Broccoli
+espinacas|Spinach
+calabacin|Courgette (zucchini)
+ensalada|Salad (lettuce and tomato)
+judias|Green beans
+pimiento|Pepper
+champi|Mushrooms
+coliflor|Cauliflower
+esparragos|Green asparagus
+menestra|Mixed vegetables
+tomate|Tomato
+muslo|Chicken thigh (skinless)
+hamburguesa|Beef burger patty
+conejo|Rabbit
+jamoncocido|Cooked ham
+chorizo|Chorizo
+salchichas|Frankfurter sausages
+dorada|Sea bream / sea bass
+sardinas|Canned sardines (drained)
+atunaceite|Tuna in oil (drained)
+caballa|Mackerel
+calamares|Squid
+mejillones|Mussels
+lechentera|Whole milk
+lechedes|Skimmed milk
+yognat|Plain yogurt
+yogsab|Flavoured yogurt
+kefir|Kefir
+mozzarella|Mozzarella
+quesolonchas|Sliced cheese
+panmolde|Sliced bread
+biscotes|Crispbread / rusks
+galletas|Rich tea biscuits
+muesli|Muesli
+arrozcocido|White rice (cooked)
+pastacocida|Pasta (cooked)
+gnocchi|Gnocchi
+tortilla|Spanish omelette
+paella|Mixed paella
+pizza|Pizza
+croquetas|Croquettes
+ensaladilla|Russian salad
+lentguisadas|Lentil stew (dish)
+gazpacho|Gazpacho
+patatasbolsa|Potato crisps
+patatasfritas|Chips / fries (homemade)
+uvas|Grapes
+sandia|Watermelon
+melon|Melon
+melocoton|Peach
+mandarina|Mandarins
+cerezas|Cherries
+zumo|Fresh orange juice
+zanahoria|Carrot
+berenjena|Aubergine (eggplant)
+pepino|Cucumber
+alcachofas|Artichokes
+guisantes|Peas
+repollo|Cabbage
+cebolla|Onion
+pistachos|Pistachios
+anacardos|Cashews
+pipas|Sunflower seeds (shelled)
+mantequilla|Butter
+mayonesa|Mayonnaise
+girasol|Sunflower oil
+chocoleche|Milk chocolate
+cola|Cola soft drink
+colazero|Sugar-free soft drink
+cerveza|Beer
+vino|Red wine
+cafeleche|Coffee with milk
+colacao|Cocoa drink powder
+azucar|Sugar
+solomillocerdo|Pork tenderloin
+costillas|Pork ribs
+cordero|Lamb chops
+entrecot|Beef entrecôte
+higado|Beef liver
+polloasado|Roast chicken (with skin)
+pollopl|Grilled chicken breast (cooked)
+alitas|Chicken wings
+nuggets|Chicken nuggets
+escalope|Breaded chicken breast
+lomoembuchado|Cured pork loin
+salchichon|Salchichón (cured sausage)
+bacon|Bacon
+bacalao|Fresh cod
+atunfresco|Fresh tuna
+trucha|Trout
+rape|Monkfish
+boquerones|Anchovies (fresh)
+anchoas|Anchovies in oil (drained)
+salmonahumado|Smoked salmon
+pulpo|Octopus
+sepia|Cuttlefish
+almejas|Clams
+surimi|Surimi (crab sticks)
+huevofrito|Fried egg
+revuelto|Scrambled eggs
+tortillafr|Plain omelette (2 eggs)
+lechesinlac|Lactose-free semi-skimmed milk
+bebavena|Oat drink
+bebalmendra|Unsweetened almond drink
+ricotta|Ricotta / curd cheese
+quesocabra|Goat's cheese (log)
+parmesano|Parmesan cheese
+manchego|Semi-cured Manchego cheese
+quesocrema|Cream cheese (spread)
+emmental|Emmental / grated cheese
+natacocinar|Cooking cream (18%)
+natamontar|Whipping cream (35%)
+flan|Egg flan
+natillas|Custard
+arrozleche|Rice pudding
+helado|Vanilla ice cream
+batidochoco|Chocolate milkshake
+caseina|Casein (powder)
+barritaprot|Protein bar
+pancenteno|Rye bread
+panmulti|Seeded / multigrain bread
+croissant|Croissant
+magdalena|Magdalena (muffin)
+donut|Glazed doughnut
+bizcocho|Homemade sponge cake
+galletachoco|Chocolate biscuits
+palomitas|Popcorn (no oil)
+cremaarroz|Cream of rice (powder)
+harina|Wheat flour
+harinaavena|Oat flour
+maiz|Sweetcorn (canned, drained)
+fideosarroz|Rice noodles (dry)
+noodles|Instant noodles (ramen)
+pure|Mashed potato (with milk and butter)
+edamame|Edamame
+habas|Broad beans (cooked)
+soja|Soybeans (cooked)
+higos|Figs
+ciruelas|Plums
+albaricoque|Apricots
+frambuesas|Raspberries
+moras|Blackberries
+granada|Pomegranate
+papaya|Papaya
+nectarina|Nectarine
+caqui|Persimmon
+pomelo|Grapefruit
+datiles|Dates
+pasas|Raisins
+coco|Desiccated coconut
+compota|Unsweetened apple sauce
+lechuga|Lettuce
+rucula|Rocket (arugula)
+puerro|Leek
+ajo|Garlic
+calabaza|Pumpkin
+remolacha|Beetroot (cooked)
+coles|Brussels sprouts
+kale|Kale
+apio|Celery
+tomatefrito|Tomato sauce (fried)
+tomatetriturado|Crushed tomatoes (canned)
+pisto|Pisto (ratatouille)
+lasana|Beef lasagne
+macarronestom|Macaroni with tomato (dish)
+empanada|Tuna empanada
+hamburguesacomp|Burger in a bun (fast food)
+sushi|Sushi (assorted maki)
+sandwichmixto|Ham and cheese toastie
+arroz3|Special fried rice
+calamaresrom|Fried calamari rings
+bravas|Patatas bravas
+cocido|Madrid stew (full dish)
+fabada|Asturian bean stew
+salmorejo|Salmorejo
+churros|Churros
+albondigas|Meatballs in sauce
+polloajillo|Garlic chicken
+huevosrotos|Broken eggs with ham
+merluzaromana|Battered hake
+bocadillojamon|Serrano ham baguette
+pantomate|Toast with tomato and olive oil
+ensaladamixta|Mixed salad (with tuna, egg and olives)
+patatacocida|Boiled potato
+patataasada|Baked potato
+boniatoasado|Roasted sweet potato
+arrozintcocido|Brown rice (cooked)
+quinoacocida|Quinoa (cooked)
+cuscuscocido|Couscous (cooked)
+pastaintcocida|Wholemeal pasta (cooked)
+pavopl|Grilled turkey breast (cooked)
+terneraplancha|Grilled beef steak (cooked)
+salmonpl|Grilled salmon (cooked)
+merluzapl|Grilled hake (cooked)
+gambaspl|Grilled prawns (cooked)
+brocolicocido|Boiled broccoli
+verduraspl|Grilled vegetables

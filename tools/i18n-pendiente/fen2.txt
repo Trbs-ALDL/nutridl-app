@@ -1,0 +1,260 @@
+panpita|Pitta bread
+bagel|Bagel
+pancakes|Pancakes
+gofre|Waffle
+crepe|Crêpe
+granola|Granola
+napolitana|Chocolate croissant (napolitana)
+ensaimada|Ensaimada (Majorcan pastry)
+chocolatetaza|Thick hot chocolate
+cortado|Cortado coffee
+capuchino|Cappuccino
+te|Tea or herbal tea (unsweetened)
+agua|Water
+kebab|Kebab (pitta with meat)
+durum|Chicken dürüm wrap
+falafel|Falafel
+burrito|Beef burrito
+tacos|Beef tacos (corn tortilla)
+nachosqueso|Nachos with cheese
+fajitas|Chicken fajita
+chili|Chili con carne
+pollocurry|Chicken curry
+tikka|Chicken tikka masala
+padthai|Pad thai
+ramen|Ramen (noodle soup with meat)
+gyozas|Gyoza
+rollito|Spring roll
+nigiri|Salmon nigiri
+sashimi|Salmon sashimi
+poke|Salmon poke bowl
+ceviche|Ceviche
+hamburguesaveg|Veggie burger
+hamburguesaqueso|Cheeseburger (fast food)
+perrito|Hot dog
+pollofrito|Fried breaded chicken
+pizzamarg|Margherita pizza
+pizzabarb|Barbecue pizza
+pizza4q|Four-cheese pizza
+carbonara|Spaghetti carbonara
+bolonesa|Spaghetti bolognese
+pesto|Pasta with pesto
+risotto|Mushroom risotto
+ensaladacesar|Chicken Caesar salad
+ensaladapasta|Pasta salad
+quiche|Quiche
+acai|Açaí bowl
+smoothie|Fruit smoothie
+pulpogallega|Galician-style octopus (with potato)
+gambasajillo|Garlic prawns
+boquefritos|Fried anchovies
+arrozpollo|Rice with chicken
+arroznegro|Black rice (squid ink)
+fideua|Fideuà (noodle paella)
+estofado|Beef stew with potatoes
+callos|Madrid-style tripe
+rabotoro|Oxtail stew
+carrillada|Pork cheeks in sauce
+secreto|Iberian pork secreto (cooked)
+chuleton|Beef rib steak (cooked)
+costillasbbq|Barbecue ribs
+migas|Migas (fried breadcrumbs)
+pimientospadron|Padrón peppers
+empanadilla|Tuna pasty
+patatasalioli|Potatoes with aioli
+bocatortilla|Spanish omelette baguette
+bocalomo|Pork loin baguette
+montadito|Montadito (mini sandwich)
+sandpollo|Chicken sandwich
+cremaverduras|Vegetable soup (blended)
+sopafideos|Noodle soup
+caldo|Chicken broth
+purecalabaza|Pumpkin purée
+tartaqueso|Cheesecake
+tiramisu|Tiramisu
+brownie|Brownie
+barritacereal|Cereal bar
+frutossecos|Mixed nuts
+tinto|Tinto de verano (wine spritzer)
+sangria|Sangria
+gintonic|Gin and tonic
+vermut|Vermouth
+aquarius|Isotonic drink (Aquarius type)
+teefrio|Bottled iced tea (Nestea type)
+naranjada|Orange soft drink
+bebidaprot|Ready-to-drink protein shake
+ketchup|Ketchup
+mostaza|Mustard
+salsasoja|Soy sauce
+barbacoa|Barbecue sauce
+guacamole|Guacamole
+miel|Honey
+mermelada|Jam
+cremacacao|Chocolate hazelnut spread
+sirope|Maple syrup
+avellanas|Hazelnuts
+cacahuetes|Roasted peanuts
+macadamia|Macadamia nuts
+lino|Flaxseeds
+pipascalabaza|Pumpkin seeds (shelled)
+tahini|Tahini (sesame paste)
+cremaalmendra|Almond butter
+cafesolo|Black coffee
+nectar|Nectar / packaged juice
+isotonica|Sports drink
+energetica|Energy drink
+cerveza00|Alcohol-free beer
+lechecoco|Coconut milk (canned)
+destilado|Rum / whisky / gin (40%)
+gominolas|Gummy sweets
+u_pollo_asado_sin|Roast chicken breast (skinless)
+u_pollo_guisado|Stewed / boiled chicken breast
+u_pollo_frito_sin|Fried chicken breast (not breaded)
+u_muslo_crudo|Raw chicken drumstick (skinless)
+u_muslo_asado|Roast chicken drumstick (skinless)
+u_muslo_asado_piel|Roast chicken drumstick (with skin)
+u_contramuslo_crudo|Raw chicken thigh (with skin)
+u_alitas_crudas|Raw chicken wings
+u_pollo_entero_asado|Roast chicken (skinless meat, mixed)
+u_higado_pollo|Chicken liver (cooked)
+u_pavo_asado|Roast turkey breast
+u_pavo_picado|Turkey mince (raw)
+u_pavo_picado_hecho|Turkey mince (cooked)
+u_picada5|Beef mince 5% (raw)
+u_picada5_hecha|Beef mince 5% (cooked)
+u_picada10_hecha|Beef mince 10% (cooked)
+u_picada20|Beef mince 20% (raw)
+u_picada20_hecha|Beef mince 20% (cooked)
+u_solomillo_ternera|Beef tenderloin (raw)
+u_solomillo_ternera_hecho|Grilled beef tenderloin
+u_falda_ternera|Grilled flank steak
+u_lomo_alto|Ribeye / rib steak (raw)
+u_redondo|Roast beef eye of round
+u_ternera_guisada|Stewing beef (cooked)
+u_higado_ternera_hecho|Grilled beef liver
+u_lengua|Beef tongue (cooked)
+u_burger_casera|Grilled beef burger (85%)
+u_lomo_cerdo_hecho|Grilled pork loin
+u_solomillo_cerdo_asado|Roast pork tenderloin
+u_chuleta_cerdo|Fried pork chop
+u_chuleta_cerdo_hecha|Grilled pork chop
+u_cerdo_picado|Pork mince (raw)
+u_cerdo_picado_hecho|Pork mince (cooked)
+u_panceta|Pork belly / fresh bacon
+u_bacon_frito|Fried bacon
+u_paletilla_cerdo|Roast pork shoulder
+u_cordero_pierna|Roast leg of lamb
+u_cordero_chuleta_hecha|Grilled lamb chops
+u_conejo_hecho|Stewed rabbit
+u_pato|Roast duck (skinless)
+u_codorniz|Roast quail
+u_salmon_horno|Baked salmon
+u_salmon_salvaje|Wild salmon (raw)
+u_bacalao_hecho|Baked fresh cod
+u_bacalao_salado|Salt cod (dried, not desalted)
+u_atun_fresco_hecho|Grilled fresh tuna
+u_caballa_hecha|Grilled mackerel
+u_trucha_hecha|Grilled trout
+u_lenguado|Sole / megrim (raw)
+u_lenguado_hecho|Grilled sole / megrim
+u_panga|Pangasius / basa (raw)
+u_abadejo|Pollock / coley (raw)
+u_abadejo_hecho|Grilled pollock
+u_tilapia|Tilapia (raw)
+u_tilapia_hecha|Grilled tilapia
+u_merluza_hecha2|Baked hake / whiting
+u_emperador|Grilled swordfish
+u_anchoa_fresca|Fresh anchovies (raw)
+u_arenque|Herring (raw)
+u_gambas_crudas|Raw prawns / shrimp (peeled)
+u_gambas_cocidas|Cooked prawns / shrimp
+u_cangrejo|Crab (cooked)
+u_langosta|Lobster (cooked)
+u_mejillones_cocidos|Steamed mussels (shelled)
+u_almejas_cocidas|Steamed clams (shelled)
+u_vieiras|Scallops (raw)
+u_ostras|Oysters (raw)
+u_calamar_crudo|Squid / baby squid (raw)
+u_pulpo_cocido|Boiled octopus
+u_sepia_hecha|Grilled cuttlefish
+u_atun_natural_esc|Light tuna in water (drained)
+u_salmon_lata|Canned salmon
+u_caviar|Fish roe
+u_huevo_cocido|Boiled egg
+u_huevo_poche|Poached egg
+u_yema|Egg yolk
+u_huevo_pato|Duck egg
+u_huevo_codorniz|Quail eggs
+u_leche_entera_usda|Whole milk (3.25%)
+u_leche_2|Semi-skimmed milk (2%)
+u_leche_1|Light semi-skimmed milk (1%)
+u_leche_cabra|Goat's milk
+u_leche_condensada|Condensed milk
+u_leche_evaporada|Evaporated milk
+u_leche_polvo|Skimmed milk powder
+u_yogur_entero|Whole plain yogurt
+u_yogur_griego_0|0% Greek yogurt
+u_yogur_griego_2|Light Greek yogurt (2%)
+u_nata_agria|Sour cream
+u_queso_cheddar|Cheddar cheese
+u_queso_gouda|Gouda cheese
+u_queso_brie|Brie cheese
+u_queso_camembert|Camembert cheese
+u_queso_feta|Feta cheese
+u_queso_azul|Blue cheese
+u_queso_edam|Edam cheese
+u_queso_provolone|Provolone cheese
+u_queso_ricotta_semi|Part-skim ricotta
+u_mozzarella_light|Part-skim mozzarella
+u_queso_cottage_1|Cottage cheese 1%
+u_queso_fundir_lonchas|Processed cheese slices (American style)
+u_helado_chocolate|Chocolate ice cream
+u_nata_montada|Whipped cream (spray)
+u_arroz_blanco_crudo|Long-grain white rice (raw)
+u_arroz_blanco_cocido|Long-grain white rice (cooked)
+u_arroz_redondo_crudo|Short-grain rice (raw)
+u_arroz_redondo_cocido|Short-grain rice (cooked)
+u_arroz_integral_crudo|Brown rice (raw)
+u_arroz_glutinoso|Glutinous rice (cooked)
+u_arroz_salvaje|Wild rice (cooked)
+u_pasta_cruda|Dry pasta (raw)
+u_pasta_cocida2|Cooked pasta (unsalted)
+u_pasta_int_cruda|Dry wholemeal pasta (raw)
+u_pasta_huevo|Egg pasta (raw)
+u_pasta_huevo_cocida|Egg pasta (cooked)
+u_fideos_arroz_cocidos|Rice noodles (cooked)
+u_soba|Soba noodles (cooked)
+u_bulgur|Bulgur (cooked)
+u_bulgur_seco|Bulgur (dry)
+u_mijo|Millet (cooked)
+u_espelta|Spelt (cooked)
+u_trigo_sarraceno|Buckwheat (cooked)
+u_cebada|Pearl barley (cooked)
+u_quinoa_cruda|Quinoa (raw)
+u_cuscus_seco|Couscous (dry)
+u_polenta|Cornmeal / polenta (dry)
+u_maiz_mazorca|Boiled corn on the cob
+u_pan_blanco_molde|White sliced bread
+u_pan_integral_molde|Wholemeal wheat bread
+u_pan_frances|Baguette
+u_pan_multicereal|Multigrain bread
+u_pan_tostado_usda|Toasted bread (white)
+u_pan_hamburguesa|Burger / hot dog bun
+u_tortilla_maiz|Corn tortilla
+u_picos|Breadsticks
+u_crackers|Crackers / savoury biscuits
+u_tortitas_arroz_usda|Puffed rice cakes
+u_palomitas_aceite|Popcorn (with oil)
+u_cereales_arroz_inflado|Puffed rice (cereal)
+u_harina_integral|Wholemeal wheat flour
+u_harina_maiz|Cornflour (cornstarch)
+u_pan_rallado|Breadcrumbs
+u_patata_cruda_piel|Raw potato (with skin)
+u_patata_hervida_sin|Boiled potato (peeled)
+u_patata_horno_piel|Baked potato (with skin)
+u_patatas_fritas_horno|Oven-baked frozen chips
+u_boniato_crudo|Sweet potato (raw)
+u_boniato_hervido|Boiled sweet potato
+u_yuca|Cassava (raw)
+u_nabo|Turnip (cooked)
+u_lentejas_secas|Lentils (dry)
