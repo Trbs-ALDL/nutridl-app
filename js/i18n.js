@@ -49,6 +49,11 @@ const dowLetters = () => Array.from({ length: 7 }, (_, i) => {
     return d.toLocaleDateString(locale(), { weekday: 'narrow' }).toUpperCase();
 });
 
+// Días de la semana abreviados («Lun», «Mar»… / «Mon», «Tue»…), empezando en lunes
+const dowShort = () => Array.from({ length: 7 }, (_, i) => {
+    const s = new Date(2024, 0, 1 + i).toLocaleDateString(locale(), { weekday: 'short' }).replace(/\.$/, '');
+    return s.charAt(0).toUpperCase() + s.slice(1);
+});
 // Textos fijos del HTML: data-t (contenido), data-t-ph (placeholder), data-t-al (aria-label), data-t-ti (title)
 function applyStaticI18n(root) {
     const r = root || document;

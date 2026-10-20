@@ -33,6 +33,7 @@ function scanJS(src) {
         if (fn === 'tp') return arg >= 1;
         if (fn === 'askConfirm') return !enLista && arg <= 1;  // pregunta y texto del botón
         if (fn === 'MT') return arg === 1 || (enLista && arg === 4);   // nombre del plato y sus pasos
+        if (fn === 'celebrate') return !enLista && (arg === 1 || arg === 2);  // título y texto de la celebración
         return FN_KEY.has(fn) && arg === 0 && !enLista;
     };
     function readQuoted(q) {

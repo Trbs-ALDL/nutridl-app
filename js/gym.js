@@ -7,7 +7,11 @@
 //  Cada entreno guardado va a state.workouts: { id, d, t, di, ex: [{ id, name, sets: [{ kg, reps }] }] }
 // =====================================================================
 const getEx = id => EX.find(e => e.id === id);
-const DOW = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+// Nombre de un ejercicio en el idioma activo: los de la lista por su identificador (así cambian de idioma
+// aunque estén guardados en un entreno antiguo); los que escribiste tú, tal cual.
+const wTitle = t => { const m = /^(?:Día|Day) (\d+)$/.exec(t || ''); return m ? tr('Día {k}', { k: m[1] }) : (t || ''); };
+const exLabel = e => { const x = e && e.id && getEx(e.id); return x ? tr(x.name) : (e && (e.n || e.name)) || ''; };
+const DOW = ['L', 'M', 'X', 'J', 'V', 'S', 'D']; // i18n-ignore (ya no se usa: las iniciales salen de dowLetters())
 const isoOf = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 let gymDay = 0, gymSaveT;
 function myGym() { const g = state.gym; if (!Array.isArray(g.plan)) g.plan = []; return g; }
@@ -37,7 +41,7 @@ function weekInfo() {
     const logs = state.workouts.filter(w => w.d >= sIso && w.d <= todayISO());
     const dates = new Set(logs.map(w => w.d));
     const doneDays = new Set(logs.map(w => typeof w.di === 'number' ? 'd' + w.di : 'f' + w.d));
-    const strip = DOW.map((l, i) => { const d = new Date(start); d.setDate(start.getDate() + i); const iso = isoOf(d); return { l, done: dates.has(iso), today: i === dow }; });
+    const strip = dowLetters().map((l, i) => { const d = new Date(start); d.setDate(start.getDate() + i); const iso = isoOf(d); return { l, done: dates.has(iso), today: i === dow }; });
     return { strip, done: doneDays.size, doneDi: new Set(logs.filter(w => typeof w.di === 'number').map(w => w.di)) };
 }
 
@@ -49,38 +53,38 @@ function setMyDays(n) {
     save(); renderGym();
 }
 function changeMyDays() { openGymSettings(); }
-const DOW_SHORT = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'], DOW_LONG = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+const DOW_SHORT = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'], DOW_LONG = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo']; // i18n-ignore (ya no se usan: salen de dowShort())
 const todayDow = () => (new Date(todayISO() + 'T12:00:00').getDay() + 6) % 7; // 0 = lunes
 let gymAutoDay = false, gsDraft = null;
 function openGymSettings() {
     const g = myGym();
     gsDraft = { n: gymDays() || 3, wd: (g.wd || []).slice(), rest: g.rest || 90 };
-    openSheet('<i class="fa-solid fa-gear text-mint-400"></i> Ajustes del gym', '<div id="gs-body" class="space-y-5"></div>');
+    openSheet('<i class="fa-solid fa-gear text-mint-400"></i> ' + tr('Ajustes del gym'), '<div id="gs-body" class="space-y-5"></div>');
     renderGymSettings();
 }
 function renderGymSettings() {
     const b = $('gs-body'); if (!b) return;
     const d = gsDraft;
-    b.innerHTML = `<div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">Días de entreno a la semana</div>
+    b.innerHTML = `<div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Días de entreno a la semana')}</div>
             <div class="grid grid-cols-7 gap-1.5">${[1, 2, 3, 4, 5, 6, 7].map(n => `<button type="button" onclick="gsDraft.n=${n};gsDraft.wd=gsDraft.wd.slice(0,${n});renderGymSettings()" class="py-3 rounded-xl text-sm font-extrabold border ${d.n === n ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${n}</button>`).join('')}</div></div>
-        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">Qué días (opcional) · ${d.wd.length}/${d.n}</div>
-            <div class="grid grid-cols-7 gap-1.5">${DOW_SHORT.map((l, i) => { const on = d.wd.includes(i); return `<button type="button" onclick="gsToggle(${i})" aria-pressed="${on}" class="py-3 rounded-xl text-xs font-extrabold border ${on ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${l}</button>`; }).join('')}</div>
-            <p class="text-[11px] text-neutral-500">Si los eliges, cada día del plan lleva su día de la semana y al abrir el gym verás el de hoy.</p></div>
-        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">Descanso entre series</div>
+        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Qué días (opcional)')} · ${d.wd.length}/${d.n}</div>
+            <div class="grid grid-cols-7 gap-1.5">${dowShort().map((l, i) => { const on = d.wd.includes(i); return `<button type="button" onclick="gsToggle(${i})" aria-pressed="${on}" class="py-3 rounded-xl text-xs font-extrabold border ${on ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${l}</button>`; }).join('')}</div>
+            <p class="text-[11px] text-neutral-500">${tr('Si los eliges, cada día del plan lleva su día de la semana y al abrir el gym verás el de hoy.')}</p></div>
+        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Descanso entre series')}</div>
             <div class="grid grid-cols-4 gap-2">${[60, 90, 120, 180].map(sec => `<button type="button" onclick="gsDraft.rest=${sec};renderGymSettings()" class="py-2.5 rounded-xl text-xs font-bold border ${d.rest === sec ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${fmtDur(sec)}</button>`).join('')}</div></div>
-        <button type="button" onclick="gsSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">Guardar ajustes</button>
-        <p class="text-[11px] text-neutral-500">Tus ejercicios y tus entrenos guardados no se borran nunca al cambiar los días.</p>`;
+        <button type="button" onclick="gsSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr('Guardar ajustes')}</button>
+        <p class="text-[11px] text-neutral-500">${tr('Tus ejercicios y tus entrenos guardados no se borran nunca al cambiar los días.')}</p>`;
 }
 function gsToggle(i) {
     const d = gsDraft;
     if (d.wd.includes(i)) d.wd = d.wd.filter(x => x !== i);
     else if (d.wd.length < d.n) d.wd.push(i);
-    else { toast(`Ya has elegido ${d.n} día${d.n === 1 ? '' : 's'}: quita uno primero`); return; }
+    else { toast(tr('Ya has elegido {x}: quita uno primero', { x: tp(d.n, 'día', 'días') })); return; }
     d.wd.sort((a, b) => a - b); renderGymSettings();
 }
 async function gsSave() {
     const g = myGym(), d = gsDraft, prev = gymDays();
-    if (prev && d.n < prev && !(await askConfirm(`¿Pasar de ${prev} a ${d.n} días? Los días que sobran se guardan por si vuelves a subir el número.`, 'Cambiar'))) return;
+    if (prev && d.n < prev && !(await askConfirm(tr('¿Pasar de {a} a {b} días? Los días que sobran se guardan por si vuelves a subir el número.', { a: prev, b: d.n }), 'Cambiar'))) return;
     g.wd = d.wd.slice(); g.rest = d.rest; gymAutoDay = false;
     setMyDays(d.n); closeSheet(); renderTrainCard(); toast('Ajustes del gym guardados');
 }
@@ -89,8 +93,8 @@ function renderTrainCard() {
     const box = $('train-card'); if (!box) return;
     const g = myGym(), N = gymDays();
     box.innerHTML = `<div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-2xl bg-mint-500/15 text-mint-400 flex items-center justify-center text-lg"><i class="fa-solid fa-dumbbell"></i></div>
-        <div><h2 class="text-lg font-bold text-neutral-100">Entrenamiento</h2><div class="text-sm text-neutral-400">${N ? `${N} día${N === 1 ? '' : 's'} a la semana${g.wd && g.wd.length ? ' · ' + g.wd.map(i => DOW_SHORT[i]).join(', ') : ''}` : 'Sin días elegidos'}</div></div></div>
-        <button type="button" onclick="openGymSettings()" class="px-3 py-2 rounded-xl bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100 hover:border-mint-500/50 whitespace-nowrap">${N ? 'Cambiar' : 'Elegir'}</button></div>`;
+        <div><h2 class="text-lg font-bold text-neutral-100">${tr('Entrenamiento')}</h2><div class="text-sm text-neutral-400">${N ? tr('{x} a la semana', { x: tp(N, 'día', 'días') }) + (g.wd && g.wd.length ? ' · ' + g.wd.map(i => dowShort()[i]).join(', ') : '') : tr('Sin días elegidos')}</div></div></div>
+        <button type="button" onclick="openGymSettings()" class="px-3 py-2 rounded-xl bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100 hover:border-mint-500/50 whitespace-nowrap">${N ? tr('Cambiar') : tr('Elegir')}</button></div>`;
 }
 function pickGymDay(i) { gymDay = i; renderGym(); }
 
@@ -99,8 +103,8 @@ function renderGym() {
     const g = myGym(), N = gymDays();
     if (!N) {
         box.innerHTML = `<div class="gym-hero rounded-3xl p-6 sm:p-8 space-y-6">
-            <h3 class="text-2xl sm:text-3xl font-extrabold text-neutral-100">¿Cuántos días entrenas a la semana?</h3>
-            <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">${[1, 2, 3, 4, 5, 6, 7].map(n => `<button onclick="setMyDays(${n})" class="gym-daybtn aspect-square rounded-2xl text-2xl font-extrabold">${n}<span class="block text-[10px] font-bold uppercase opacity-70">${n === 1 ? 'día' : 'días'}</span></button>`).join('')}</div>
+            <h3 class="text-2xl sm:text-3xl font-extrabold text-neutral-100">${tr('¿Cuántos días entrenas a la semana?')}</h3>
+            <div class="grid grid-cols-4 sm:grid-cols-7 gap-2">${[1, 2, 3, 4, 5, 6, 7].map(n => `<button onclick="setMyDays(${n})" class="gym-daybtn aspect-square rounded-2xl text-2xl font-extrabold">${n}<span class="block text-[10px] font-bold uppercase opacity-70">${tr(n === 1 ? 'día' : 'días')}</span></button>`).join('')}</div>
         </div>`;
         return;
     }
@@ -109,37 +113,37 @@ function renderGym() {
     const W = weekInfo(), pct = Math.min(100, W.done / N * 100), full = W.done >= N;
     if (full && !g.unlocked) { g.unlocked = true; save(); }
     const day = g.plan[gymDay];
-    const dayName = i => (g.wd && g.wd[i] != null ? `<span class="opacity-70">${DOW_SHORT[g.wd[i]]}</span> · ` : '') + esc(g.plan[i].name || `Día ${i + 1}`);
+    const dayName = i => (g.wd && g.wd[i] != null ? `<span class="opacity-70">${dowShort()[g.wd[i]]}</span> · ` : '') + esc(g.plan[i].name || tr('Día {k}', { k: i + 1 }));
     box.innerHTML = `
         <div class="gym-hero rounded-3xl p-5 sm:p-6 space-y-5">
             <div class="flex items-start justify-between gap-4">
-                <div><div class="text-4xl font-extrabold text-neutral-100 leading-none">${W.done}<span class="text-lg text-neutral-400"> / ${N} ${N === 1 ? 'día' : 'días'}</span></div><div class="text-sm font-semibold text-neutral-400 mt-1">entrenados esta semana</div></div>
+                <div><div class="text-4xl font-extrabold text-neutral-100 leading-none">${W.done}<span class="text-lg text-neutral-400"> / ${N} ${tr(N === 1 ? 'día' : 'días')}</span></div><div class="text-sm font-semibold text-neutral-400 mt-1">${tr('entrenados esta semana')}</div></div>
 
             </div>
             <div class="flex justify-between gap-1">${W.strip.map(x => `<div class="flex flex-col items-center gap-1.5 flex-1"><span class="text-[10px] font-bold ${x.today ? 'text-mint-300' : 'text-neutral-500'}">${x.l}</span><span class="w-8 h-8 rounded-full flex items-center justify-center text-xs ${x.done ? 'bg-mint-600 text-white' : x.today ? 'border-2 border-mint-500 text-mint-300' : 'bg-neutral-800/80 text-neutral-600'}">${x.done ? '<i class="fa-solid fa-check"></i>' : ''}</span></div>`).join('')}</div>
             <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-500 gym-bar" style="width:${pct}%"></div></div>
             ${g.unlocked
-                ? `<button onclick="openRecords()" class="w-full py-3.5 rounded-2xl bg-amber-400/15 border border-amber-400/40 text-amber-200 font-extrabold text-sm hover:bg-amber-400/25 flex items-center justify-center gap-2"><i class="fa-solid fa-trophy"></i> Mis pesos más altos</button>`
-                : `<div class="w-full py-3.5 rounded-2xl border border-dashed border-neutral-700 text-neutral-400 font-bold text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-lock"></i> Completa tus ${N} días para ver tus pesos más altos</div>`}
+                ? `<button onclick="openRecords()" class="w-full py-3.5 rounded-2xl bg-amber-400/15 border border-amber-400/40 text-amber-200 font-extrabold text-sm hover:bg-amber-400/25 flex items-center justify-center gap-2"><i class="fa-solid fa-trophy"></i> ${tr('Mis pesos más altos')}</button>`
+                : `<div class="w-full py-3.5 rounded-2xl border border-dashed border-neutral-700 text-neutral-400 font-bold text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-lock"></i> ${tr('Completa tus {k} días para ver tus pesos más altos', { k: N })}</div>`}
         </div>
 
-        <div class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 gym-tabs" role="tablist" aria-label="Días de entrenamiento">${g.plan.slice(0, N).map((p, i) => `<button role="tab" aria-selected="${i === gymDay}" onclick="pickGymDay(${i})" class="shrink-0 px-4 py-2.5 rounded-2xl text-sm font-extrabold border transition ${i === gymDay ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-mint-500/40'}">${W.doneDi.has(i) ? '<i class="fa-solid fa-check text-xs"></i> ' : ''}${dayName(i)}</button>`).join('')}</div>
+        <div class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 gym-tabs" role="tablist" aria-label="${tr('Días de entrenamiento')}">${g.plan.slice(0, N).map((p, i) => `<button role="tab" aria-selected="${i === gymDay}" onclick="pickGymDay(${i})" class="shrink-0 px-4 py-2.5 rounded-2xl text-sm font-extrabold border transition ${i === gymDay ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-mint-500/40'}">${W.doneDi.has(i) ? '<i class="fa-solid fa-check text-xs"></i> ' : ''}${dayName(i)}</button>`).join('')}</div>
 
         <div class="glass-card rounded-3xl p-4 sm:p-6 space-y-4 border border-neutral-800">
-            <label class="block"><span class="sr-only">Nombre del día</span>
-                <input value="${esc(day.name)}" maxlength="40" placeholder="Día ${gymDay + 1} · ponle nombre" oninput="myGym().plan[${gymDay}].name=this.value; gymSave()" onchange="renderGym()" class="w-full bg-transparent text-xl font-extrabold text-neutral-100 placeholder:text-neutral-600 outline-none border-b border-neutral-800 focus:border-mint-500 pb-2"></label>
+            <label class="block"><span class="sr-only">${tr('Nombre del día')}</span>
+                <input value="${esc(day.name)}" maxlength="40" placeholder="${tr('Día {k} · ponle nombre', { k: gymDay + 1 })}" oninput="myGym().plan[${gymDay}].name=this.value; gymSave()" onchange="renderGym()" class="w-full bg-transparent text-xl font-extrabold text-neutral-100 placeholder:text-neutral-600 outline-none border-b border-neutral-800 focus:border-mint-500 pb-2"></label>
             ${sessHtml()}
-            <div id="gym-ex" class="space-y-3">${day.ex.length ? day.ex.map((e, k) => gymExHtml(e, k)).join('') : `<div class="p-6 rounded-2xl border border-dashed border-neutral-700 text-center text-sm text-neutral-400"><i class="fa-solid fa-dumbbell text-2xl text-neutral-600 block mb-2"></i>Añade tu primer ejercicio</div>`}</div>
+            <div id="gym-ex" class="space-y-3">${day.ex.length ? day.ex.map((e, k) => gymExHtml(e, k)).join('') : `<div class="p-6 rounded-2xl border border-dashed border-neutral-700 text-center text-sm text-neutral-400"><i class="fa-solid fa-dumbbell text-2xl text-neutral-600 block mb-2"></i>${tr('Añade tu primer ejercicio')}</div>`}</div>
             <div class="space-y-3">
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm"></i>
-                    <input id="gym-q" type="search" enterkeyhint="done" autocomplete="off" placeholder="Añadir ejercicio: press banca, sentadilla…" oninput="renderGymSearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();addTypedEx()}" class="w-full pl-10 pr-4 py-3 bg-neutral-800/60 border border-neutral-800 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-mint-500" aria-label="Buscar ejercicio para añadir">
+                    <input id="gym-q" type="search" enterkeyhint="done" autocomplete="off" placeholder="${tr('Añadir ejercicio: press banca, sentadilla…')}" oninput="renderGymSearch()" onkeydown="if(event.key==='Enter'){event.preventDefault();addTypedEx()}" class="w-full pl-10 pr-4 py-3 bg-neutral-800/60 border border-neutral-800 rounded-2xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-mint-500" aria-label="${tr('Buscar ejercicio para añadir')}">
                 </div>
                 <div id="gym-results" class="grid gap-1.5"></div>
                 <div id="gym-sugg"></div>
             </div>
-            <div class="space-y-2 text-xs font-bold"><div class="text-neutral-400"><i class="fa-solid fa-stopwatch text-mint-400"></i> Temporizador de descanso</div><div class="grid grid-cols-4 gap-2">${[60, 90, 120, 180].map(s => `<button onclick="startRest(${s})" class="py-2.5 rounded-xl border ${(g.rest || 90) === s ? 'border-mint-500/60 bg-mint-500/10 text-mint-300' : 'border-neutral-800 bg-neutral-800/60 text-neutral-300'} hover:border-mint-500/50">${fmtDur(s)}</button>`).join('')}</div></div>
-            <button onclick="saveGymDay()" class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-base cta-glow flex items-center justify-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Guardar entreno de hoy</button>
+            <div class="space-y-2 text-xs font-bold"><div class="text-neutral-400"><i class="fa-solid fa-stopwatch text-mint-400"></i> ${tr('Temporizador de descanso')}</div><div class="grid grid-cols-4 gap-2">${[60, 90, 120, 180].map(s => `<button onclick="startRest(${s})" class="py-2.5 rounded-xl border ${(g.rest || 90) === s ? 'border-mint-500/60 bg-mint-500/10 text-mint-300' : 'border-neutral-800 bg-neutral-800/60 text-neutral-300'} hover:border-mint-500/50">${fmtDur(s)}</button>`).join('')}</div></div>
+            <button onclick="saveGymDay()" class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-base cta-glow flex items-center justify-center gap-2"><i class="fa-solid fa-floppy-disk"></i> ${tr('Guardar entreno de hoy')}</button>
         </div>
         ${gymHistoryHtml()}`;
     renderGymSearch();
@@ -150,24 +154,24 @@ function gymExHtml(e, k) {
     const lp = lastPerfOf(e) || [];
     return `<div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3 space-y-2" data-k="${k}">
         <div class="flex items-start justify-between gap-2">
-            <div class="min-w-0"><div class="text-sm font-extrabold text-mint-300 truncate" title="${esc(e.n)}">${esc(e.n)}</div>
-                ${lp.length ? `<div class="text-[11px] text-neutral-400 truncate">Última vez: ${perfText(lp)}</div>` : ''}</div>
-            <button onclick="removeGymEx(${k})" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Quitar ${esc(e.n)}"><i class="fa-solid fa-trash-can"></i></button>
+            <div class="min-w-0"><div class="text-sm font-extrabold text-mint-300 truncate" title="${esc(exLabel(e))}">${esc(exLabel(e))}</div>
+                ${lp.length ? `<div class="text-[11px] text-neutral-400 truncate">${tr('Última vez:')} ${perfText(lp)}</div>` : ''}</div>
+            <button onclick="removeGymEx(${k})" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-trash-can"></i></button>
         </div>
-        <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500 px-1"><span class="text-center">Serie</span><span class="text-center">kg</span><span class="text-center">Reps</span><span></span></div>
+        <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500 px-1"><span class="text-center">${tr('Serie')}</span><span class="text-center">kg</span><span class="text-center">${tr('Reps')}</span><span></span></div>
         ${e.s.map((s, i) => { const drop = s.t === 'drop', ld = (lp[i] && lp[i].drop) || []; return `<div class="gset-grid items-center">
-            <button type="button" onclick="toggleDrop(${k},${i})" class="nd-settype ${drop ? 'is-drop' : ''}" aria-pressed="${drop}" aria-label="Serie ${i + 1}: ${drop ? 'dropset' : 'normal'}. Pulsa para cambiar a ${drop ? 'normal' : 'dropset'}">${i + 1}${drop ? '<small>D</small>' : ''}</button>
-            <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(s.kg))}" placeholder="${lp[i] && lp[i].kg ? lp[i].kg : 0}" oninput="gymSet(${k},${i},'kg',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Kilos serie ${i + 1}">
-            <input type="number" inputmode="numeric" min="0" value="${esc(String(s.r))}" placeholder="${lp[i] ? lp[i].reps : 0}" oninput="gymSet(${k},${i},'r',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Repeticiones serie ${i + 1}">
-            <button onclick="removeGymSet(${k},${i})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="Quitar serie ${i + 1}" ${e.s.length < 2 ? 'disabled style="visibility:hidden"' : ''}><i class="fa-solid fa-xmark"></i></button>
+            <button type="button" onclick="toggleDrop(${k},${i})" class="nd-settype ${drop ? 'is-drop' : ''}" aria-pressed="${drop}" aria-label="${drop ? tr('Serie {k}: dropset. Pulsa para cambiar a normal', { k: i + 1 }) : tr('Serie {k}: normal. Pulsa para cambiar a dropset', { k: i + 1 })}">${i + 1}${drop ? '<small>D</small>' : ''}</button>
+            <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(s.kg))}" placeholder="${lp[i] && lp[i].kg ? lp[i].kg : 0}" oninput="gymSet(${k},${i},'kg',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="${tr('Kilos serie {k}', { k: i + 1 })}">
+            <input type="number" inputmode="numeric" min="0" value="${esc(String(s.r))}" placeholder="${lp[i] ? lp[i].reps : 0}" oninput="gymSet(${k},${i},'r',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="${tr('Repeticiones serie {k}', { k: i + 1 })}">
+            <button onclick="removeGymSet(${k},${i})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="${tr('Quitar serie {k}', { k: i + 1 })}" ${e.s.length < 2 ? 'disabled style="visibility:hidden"' : ''}><i class="fa-solid fa-xmark"></i></button>
         </div>${drop ? (s.d || []).map((d, j) => `<div class="gset-grid items-center nd-droprow">
             <span class="text-center text-xs font-extrabold text-amber-300" aria-hidden="true">↓</span>
-            <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(d.kg))}" placeholder="${ld[j] && ld[j].kg ? ld[j].kg : 0}" oninput="gymDrop(${k},${i},${j},'kg',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Kilos bajada ${j + 2} de la serie ${i + 1}">
-            <input type="number" inputmode="numeric" min="0" value="${esc(String(d.r))}" placeholder="${ld[j] ? ld[j].reps : 0}" oninput="gymDrop(${k},${i},${j},'r',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Repeticiones bajada ${j + 2} de la serie ${i + 1}">
-            <button type="button" onclick="removeDrop(${k},${i},${j})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="Quitar bajada ${j + 2} de la serie ${i + 1}"><i class="fa-solid fa-xmark"></i></button>
-        </div>`).join('') + `<button type="button" onclick="addDrop(${k},${i})" class="nd-adddrop"><i class="fa-solid fa-plus"></i> Bajada</button>` : ''}`; }).join('')}
-        <button onclick="addGymSet(${k})" class="w-full py-2 rounded-xl bg-neutral-800 text-neutral-200 text-xs font-bold hover:bg-neutral-700"><i class="fa-solid fa-plus"></i> Añadir serie</button>
-        ${k === 0 ? '<p class="text-[11px] text-neutral-500">Toca el número de una serie para hacerla dropset y apuntar cada bajada de peso.</p>' : ''}
+            <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(d.kg))}" placeholder="${ld[j] && ld[j].kg ? ld[j].kg : 0}" oninput="gymDrop(${k},${i},${j},'kg',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="${tr('Kilos bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}">
+            <input type="number" inputmode="numeric" min="0" value="${esc(String(d.r))}" placeholder="${ld[j] ? ld[j].reps : 0}" oninput="gymDrop(${k},${i},${j},'r',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="${tr('Repeticiones bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}">
+            <button type="button" onclick="removeDrop(${k},${i},${j})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="${tr('Quitar bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}"><i class="fa-solid fa-xmark"></i></button>
+        </div>`).join('') + `<button type="button" onclick="addDrop(${k},${i})" class="nd-adddrop"><i class="fa-solid fa-plus"></i> ${tr('Bajada')}</button>` : ''}`; }).join('')}
+        <button onclick="addGymSet(${k})" class="w-full py-2 rounded-xl bg-neutral-800 text-neutral-200 text-xs font-bold hover:bg-neutral-700"><i class="fa-solid fa-plus"></i> ${tr('Añadir serie')}</button>
+        ${k === 0 ? '<p class="text-[11px] text-neutral-500">' + tr('Toca el número de una serie para hacerla dropset y apuntar cada bajada de peso.') + '</p>' : ''}
     </div>`;
 }
 // Dropsets en el plan del día: s.t = 'drop' y s.d = [{ kg, r }] (las bajadas que siguen a la primera)
@@ -199,7 +203,7 @@ function removeGymSet(k, i) { const s = curDay().ex[k].s; if (s.length > 1) s.sp
 function removeGymEx(k) {
     const d = curDay(), di = gymDay, [gone] = d.ex.splice(k, 1);
     save(); renderGym();
-    toastUndo(`${gone.n} quitado`, () => { myGym().plan[di].ex.splice(k, 0, gone); save(); renderGym(); });
+    toastUndo(tr('{n} quitado', { n: exLabel(gone) }), () => { myGym().plan[di].ex.splice(k, 0, gone); save(); renderGym(); });
 }
 function addGymEx(id, name) {
     const d = curDay(); name = (name || '').trim().slice(0, 50); if (!name) return;
@@ -210,7 +214,7 @@ function addGymEx(id, name) {
 }
 function addTypedEx() {
     const q = ($('gym-q').value || '').trim(); if (!q) return;
-    const m = EX.find(e => norm(e.name) === norm(q)), mine = m ? null : myExercises().find(n => norm(n) === norm(q));
+    const m = EX.find(e => norm(e.name) === norm(q) || norm(tr(e.name)) === norm(q)), mine = m ? null : myExercises().find(n => norm(n) === norm(q));
     addGymEx(m ? m.id : '', m ? m.name : mine || q);
 }
 // Tus ejercicios: los que escribiste tú (no están en la lista), sacados de tus días y de tus entrenos guardados; los más recientes primero
@@ -225,7 +229,7 @@ function myExercises() {
 }
 function addMyEx(i) { const n = myExShown[i]; if (n) addGymEx('', n); }
 const myExBtn = (n, i, big) => big
-    ? `<button onclick="addMyEx(${i})" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(n)}</span><span class="text-[11px] font-semibold text-mint-300 whitespace-nowrap"><i class="fa-solid fa-user"></i> Tuyo</span></button>`
+    ? `<button onclick="addMyEx(${i})" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(n)}</span><span class="text-[11px] font-semibold text-mint-300 whitespace-nowrap"><i class="fa-solid fa-user"></i> ${tr('Tuyo')}</span></button>`
     : `<button onclick="addMyEx(${i})" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(n)}</button>`;
 // Buscador de ejercicios + recomendaciones opcionales (multiarticulares básicos primero)
 function renderGymSearch() {
@@ -236,9 +240,9 @@ function renderGymSearch() {
     if (q) {
         myExShown = mine.filter(n => norm(n).includes(q)).slice(0, 5);
         const exact = myExShown.some(n => norm(n) === q);
-        const hits = pool.filter(e => norm(e.name).includes(q) || norm(e.group).includes(q)).slice(0, 8);
-        $('gym-results').innerHTML = myExShown.map((n, i) => myExBtn(n, i, 1)).join('') + hits.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(e.name)}</span><span class="text-[11px] font-semibold text-neutral-400 whitespace-nowrap">${e.group}</span></button>`).join('') +
-            (exact ? '' : `<button onclick="addTypedEx()" class="text-left px-3 py-2.5 rounded-xl border border-dashed border-mint-500/40 text-sm font-bold text-mint-300 hover:bg-mint-500/10"><i class="fa-solid fa-plus"></i> Añadir «${esc(qi.value.trim())}»</button>`);
+        const hits = pool.filter(e => norm([e.name, tr(e.name), e.group, tr(e.group)].join(' ')).includes(q)).slice(0, 8);
+        $('gym-results').innerHTML = myExShown.map((n, i) => myExBtn(n, i, 1)).join('') + hits.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(tr(e.name))}</span><span class="text-[11px] font-semibold text-neutral-400 whitespace-nowrap">${esc(tr(e.group))}</span></button>`).join('') +
+            (exact ? '' : `<button onclick="addTypedEx()" class="text-left px-3 py-2.5 rounded-xl border border-dashed border-mint-500/40 text-sm font-bold text-mint-300 hover:bg-mint-500/10"><i class="fa-solid fa-plus"></i> ${tr('Añadir «{n}»', { n: esc(qi.value.trim()) })}</button>`);
         $('gym-sugg').innerHTML = '';
         return;
     }
@@ -247,9 +251,9 @@ function renderGymSearch() {
     const off = (gymDay * 5) % Math.max(1, top.length);
     const sugg = [...top.slice(off), ...top.slice(0, off)].slice(0, 6);
     myExShown = mine.slice(0, 8);
-    $('gym-sugg').innerHTML = (myExShown.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">Tus ejercicios</div>
-        <div class="flex flex-wrap gap-2 mb-3">${myExShown.map((n, i) => myExBtn(n, i)).join('')}</div>` : '') + (sugg.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">Recomendados</div>
-        <div class="flex flex-wrap gap-2">${sugg.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(e.name)}</button>`).join('')}</div>` : '');
+    $('gym-sugg').innerHTML = (myExShown.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">${tr('Tus ejercicios')}</div>
+        <div class="flex flex-wrap gap-2 mb-3">${myExShown.map((n, i) => myExBtn(n, i)).join('')}</div>` : '') + (sugg.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">${tr('Recomendados')}</div>
+        <div class="flex flex-wrap gap-2">${sugg.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(tr(e.name))}</button>`).join('')}</div>` : '');
 }
 function saveGymDay() {
     const d = curDay();
@@ -260,7 +264,7 @@ function saveGymDay() {
         return set;
     }).filter(s => s.reps > 0) })).filter(e => e.sets.length);
     if (!ex.length) { toast('Apunta al menos las repeticiones de una serie'); return; }
-    const t = todayISO(), title = d.name || `Día ${gymDay + 1}`;
+    const t = todayISO(), title = d.name || `Día ${gymDay + 1}`; // dato: se traduce al enseñarlo (wTitle)
     const before = weekInfo().done;
     const dur = sessSeconds(), w = { id: Date.now(), d: t, t: title, di: gymDay, ex };
     if (dur >= 60 && dur <= 6 * 3600) w.dur = dur; // duración real del entreno (si se usó el cronómetro y es creíble)
@@ -274,7 +278,7 @@ function saveGymDay() {
     if (justUnlocked) g.unlocked = true;
     save(); renderGym(); renderDashboard();
     if (navigator.vibrate) navigator.vibrate(15);
-    toast(justUnlocked ? 'Semana completada: ya puedes ver tus pesos más altos' : `${title} guardado${w.dur ? ' · ' + durTxt(w.dur) : ''}`);
+    toast(justUnlocked ? 'Semana completada: ya puedes ver tus pesos más altos' : tr('{n} guardado', { n: wTitle(title) }) + (w.dur ? ' · ' + durTxt(w.dur) : ''));
 }
 
 // ----- Cronómetro del entreno -----
@@ -311,12 +315,12 @@ async function stopSession(silent) {
 }
 function sessHtml() {
     const S = myGym().sess;
-    if (!S) return `<button type="button" onclick="startSession()" class="nd-sess-start"><i class="fa-solid fa-play"></i> Empezar entreno <span>cronómetro</span></button>`;
+    if (!S) return `<button type="button" onclick="startSession()" class="nd-sess-start"><i class="fa-solid fa-play"></i> ${tr('Empezar entreno')} <span>${tr('cronómetro')}</span></button>`;
     const paused = !!S.pausedAt;
     return `<div class="nd-sess ${paused ? 'is-paused' : ''}" role="timer" aria-live="off">
-        <i class="fa-solid fa-stopwatch"></i><div class="min-w-0 flex-1"><div class="nd-sess-lbl">${paused ? 'En pausa' : 'Entreno en marcha'}</div><div id="gs-clock" class="nd-sess-time">${clockTxt(sessSeconds())}</div></div>
-        <button type="button" onclick="pauseSession()" class="nd-mbtn" aria-label="${paused ? 'Reanudar' : 'Pausar'} cronómetro"><i class="fa-solid ${paused ? 'fa-play' : 'fa-pause'}"></i> ${paused ? 'Seguir' : 'Pausa'}</button>
-        <button type="button" onclick="stopSession()" class="nd-mbtn" aria-label="Parar cronómetro sin guardar"><i class="fa-solid fa-stop"></i></button>
+        <i class="fa-solid fa-stopwatch"></i><div class="min-w-0 flex-1"><div class="nd-sess-lbl">${paused ? tr('En pausa') : tr('Entreno en marcha')}</div><div id="gs-clock" class="nd-sess-time">${clockTxt(sessSeconds())}</div></div>
+        <button type="button" onclick="pauseSession()" class="nd-mbtn" aria-label="${paused ? tr('Reanudar cronómetro') : tr('Pausar cronómetro')}"><i class="fa-solid ${paused ? 'fa-play' : 'fa-pause'}"></i> ${paused ? tr('Seguir') : tr('Pausa')}</button>
+        <button type="button" onclick="stopSession()" class="nd-mbtn" aria-label="${tr('Parar cronómetro sin guardar')}"><i class="fa-solid fa-stop"></i></button>
     </div>`;
 }
 
@@ -327,20 +331,20 @@ function bestLifts() {
         const k = exKey(e);
         e.sets.forEach(s => {
             const b = best[k];
-            if (!b || s.kg > b.s.kg || (s.kg === b.s.kg && s.reps > b.s.reps)) best[k] = { key: k, name: e.name, s, n: e.sets.length, d: w.d };
+            if (!b || s.kg > b.s.kg || (s.kg === b.s.kg && s.reps > b.s.reps)) best[k] = { key: k, id: e.id, name: e.name, s, n: e.sets.length, d: w.d };
         });
     }));
-    return Object.values(best).sort((a, b) => b.s.kg - a.s.kg || a.name.localeCompare(b.name));
+    return Object.values(best).sort((a, b) => b.s.kg - a.s.kg || exLabel(a).localeCompare(exLabel(b)));
 }
 function openRecords() {
     const L = bestLifts(), m = $('gym-records');
     $('gym-records-list').innerHTML = L.length ? L.map((b, i) => `<button type="button" onclick="closeRecords(); openProgress('${b.key}')" class="w-full text-left flex items-center gap-3 p-3 rounded-2xl ${i < 3 ? 'bg-amber-400/10 border border-amber-400/30' : 'bg-neutral-800/60 border border-neutral-800'}">
             <div class="w-9 h-9 shrink-0 rounded-xl flex items-center justify-center font-extrabold text-sm ${i < 3 ? 'bg-amber-400 text-neutral-900' : 'bg-neutral-800 text-neutral-400'}">${i + 1}</div>
-            <div class="min-w-0 flex-1"><div class="font-extrabold text-neutral-100 truncate" title="${esc(b.name)}">${esc(b.name)}</div>
-                <div class="text-[11px] text-neutral-400">${b.n} ${b.n === 1 ? 'serie' : 'series'} ese día · ${new Date(b.d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div></div>
-            <div class="text-right shrink-0"><div class="text-xl font-extrabold ${i < 3 ? 'text-amber-300' : 'text-neutral-100'}">${b.s.kg ? kgTxt(b.s.kg) + ' kg' : 'Sin peso'}</div><div class="text-xs font-bold text-neutral-400">× ${b.s.reps} reps</div></div>
+            <div class="min-w-0 flex-1"><div class="font-extrabold text-neutral-100 truncate" title="${esc(exLabel(b))}">${esc(exLabel(b))}</div>
+                <div class="text-[11px] text-neutral-400">${tr('{x} ese día', { x: tp(b.n, 'serie', 'series') })} · ${new Date(b.d + 'T12:00:00').toLocaleDateString(locale(), { day: 'numeric', month: 'short' })}</div></div>
+            <div class="text-right shrink-0"><div class="text-xl font-extrabold ${i < 3 ? 'text-amber-300' : 'text-neutral-100'}">${b.s.kg ? kgTxt(b.s.kg) + ' kg' : tr('Sin peso')}</div><div class="text-xs font-bold text-neutral-400">× ${b.s.reps} ${tr('reps')}</div></div>
             <i class="fa-solid fa-chart-line text-neutral-500"></i>
-        </button>`).join('') : '<p class="text-sm text-neutral-400 text-center py-6">Aún no hay series guardadas.</p>';
+        </button>`).join('') : '<p class="text-sm text-neutral-400 text-center py-6">' + tr('Aún no hay series guardadas.') + '</p>';
     m.classList.remove('hidden'); document.body.style.overflow = 'hidden';
     setTimeout(() => { const c = m.querySelector('[data-close]'); if (c && matchMedia('(pointer: fine)').matches) c.focus(); }, 30);
 }
@@ -354,23 +358,23 @@ function gymHistoryHtml() {
     const all = state.workouts.slice().sort((a, b) => b.d.localeCompare(a.d) || b.id - a.id);
     if (!all.length) return '';
     const q = norm(gh.q.trim());
-    const L = q ? all.filter(w => norm(w.t).includes(q) || w.ex.some(e => norm(e.name).includes(q))) : all;
+    const L = q ? all.filter(w => norm(w.t + ' ' + wTitle(w.t)).includes(q) || w.ex.some(e => norm(e.name + ' ' + exLabel(e)).includes(q))) : all;
     const shown = L.slice(0, gh.n);
     let month = '', rows = '';
     shown.forEach(w => {
-        const m = new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+        const m = new Date(w.d + 'T12:00:00').toLocaleDateString(locale(), { month: 'long', year: 'numeric' });
         if (m !== month) { month = m; rows += `<div class="pt-3 pb-1 text-xs font-extrabold uppercase tracking-wider text-neutral-400 first-letter:uppercase">${m}</div>`; }
         const n = w.ex.reduce((a, e) => a + e.sets.length, 0), vol = w.ex.reduce((a, e) => a + exVol(e), 0);
         rows += `<button type="button" onclick="openWorkout(${+w.id || 0})" class="w-full flex items-center gap-3 py-2.5 text-left border-b border-neutral-800/70">
-            <div class="w-11 shrink-0 text-center"><div class="text-[10px] font-bold uppercase text-neutral-500">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'short' })}</div><div class="text-lg font-extrabold text-neutral-100 leading-none">${+w.d.slice(8)}</div></div>
-            <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(w.t)}</div><div class="text-xs text-neutral-400 truncate">${w.ex.length} ejercicio${w.ex.length === 1 ? '' : 's'} · ${n} serie${n === 1 ? '' : 's'}${w.dur ? ` · ${durTxt(w.dur)}` : ''}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div></div>
+            <div class="w-11 shrink-0 text-center"><div class="text-[10px] font-bold uppercase text-neutral-500">${new Date(w.d + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'short' })}</div><div class="text-lg font-extrabold text-neutral-100 leading-none">${+w.d.slice(8)}</div></div>
+            <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(wTitle(w.t))}</div><div class="text-xs text-neutral-400 truncate">${tp(w.ex.length, 'ejercicio', 'ejercicios')} · ${tp(n, 'serie', 'series')}${w.dur ? ` · ${durTxt(w.dur)}` : ''}${vol ? ` · ${tr('{k} kg movidos', { k: fmt(vol) })}` : ''}</div></div>
             <i class="fa-solid fa-chevron-right text-neutral-600"></i></button>`;
     });
     return `<div class="glass-card rounded-3xl p-4 sm:p-6 space-y-2 border border-neutral-800">
-        <div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-100">Historial</h3><span class="text-xs font-bold text-neutral-400">${all.length} entreno${all.length === 1 ? '' : 's'}</span></div>
-        <input type="search" value="${esc(gh.q)}" oninput="gh.q=this.value;gh.n=20;ghRefresh()" placeholder="Buscar: press banca, pierna…" class="w-full px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 text-sm font-semibold" aria-label="Buscar en el historial">
-        <div id="gh-list">${rows || '<p class="text-sm text-neutral-400 py-4 text-center">Nada con esa búsqueda.</p>'}</div>
-        ${L.length > gh.n ? `<button type="button" onclick="gh.n+=30;ghRefresh()" class="w-full mt-2 py-2.5 rounded-xl bg-neutral-800 text-sm font-bold text-neutral-200">Ver más (${L.length - gh.n} más)</button>` : ''}
+        <div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-100">${tr('Historial')}</h3><span class="text-xs font-bold text-neutral-400">${tp(all.length, 'entreno', 'entrenos')}</span></div>
+        <input type="search" value="${esc(gh.q)}" oninput="gh.q=this.value;gh.n=20;ghRefresh()" placeholder="${tr('Buscar: press banca, pierna…')}" class="w-full px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 text-sm font-semibold" aria-label="${tr('Buscar en el historial')}">
+        <div id="gh-list">${rows || '<p class="text-sm text-neutral-400 py-4 text-center">' + tr('Nada con esa búsqueda.') + '</p>'}</div>
+        ${L.length > gh.n ? `<button type="button" onclick="gh.n+=30;ghRefresh()" class="w-full mt-2 py-2.5 rounded-xl bg-neutral-800 text-sm font-bold text-neutral-200">${tr('Ver más ({k} más)', { k: L.length - gh.n })}</button>` : ''}
     </div>`;
 }
 function ghRefresh() {
@@ -385,23 +389,23 @@ function ghRefresh() {
 function openWorkout(id) {
     const w = state.workouts.find(x => x.id === id); if (!w) return;
     const vol = w.ex.reduce((a, e) => a + exVol(e), 0);
-    openSheet(`<i class="fa-solid fa-dumbbell text-mint-400"></i> ${esc(w.t)}`, `<div class="space-y-4">
-        <div class="text-sm text-neutral-400 first-letter:uppercase">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${w.dur ? ` · <i class="fa-solid fa-stopwatch"></i> ${durTxt(w.dur)}` : ''}${vol ? ` · ${fmt(vol)} kg movidos` : ''}</div>
-        ${w.ex.map(e => `<div class="rounded-2xl bg-neutral-800/50 border border-neutral-800 p-3 space-y-1.5"><button type="button" onclick="closeSheet();openProgress('${exKey(e).replace(/'/g, '')}')" class="text-sm font-extrabold text-mint-300 text-left">${esc(e.name)} <i class="fa-solid fa-chart-line text-[11px] text-neutral-500"></i></button>
-            ${e.sets.map((st, i) => `<div class="flex justify-between gap-3 text-sm"><span class="text-neutral-400 shrink-0">Serie ${i + 1}${isDrop(st) ? ' <span class="nd-droptag">Dropset</span>' : ''}</span><span class="font-bold text-neutral-100 text-right">${setText(st)} reps</span></div>`).join('')}</div>`).join('')}
-        <div class="grid grid-cols-2 gap-2"><button type="button" onclick="editWorkout(${+w.id || 0})" class="py-3 rounded-xl bg-neutral-800 font-bold text-sm"><i class="fa-solid fa-pen"></i> Editar</button><button type="button" onclick="closeSheet();delWorkout(${+w.id || 0})" class="py-3 rounded-xl border border-neutral-700 text-roseAccent-400 font-bold text-sm"><i class="fa-solid fa-trash-can"></i> Borrar</button></div>
+    openSheet(`<i class="fa-solid fa-dumbbell text-mint-400"></i> ${esc(wTitle(w.t))}`, `<div class="space-y-4">
+        <div class="text-sm text-neutral-400 first-letter:uppercase">${new Date(w.d + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${w.dur ? ` · <i class="fa-solid fa-stopwatch"></i> ${durTxt(w.dur)}` : ''}${vol ? ` · ${tr('{k} kg movidos', { k: fmt(vol) })}` : ''}</div>
+        ${w.ex.map(e => `<div class="rounded-2xl bg-neutral-800/50 border border-neutral-800 p-3 space-y-1.5"><button type="button" onclick="closeSheet();openProgress('${exKey(e).replace(/'/g, '')}')" class="text-sm font-extrabold text-mint-300 text-left">${esc(exLabel(e))} <i class="fa-solid fa-chart-line text-[11px] text-neutral-500"></i></button>
+            ${e.sets.map((st, i) => `<div class="flex justify-between gap-3 text-sm"><span class="text-neutral-400 shrink-0">${tr('Serie {k}', { k: i + 1 })}${isDrop(st) ? ' <span class="nd-droptag">Dropset</span>' : ''}</span><span class="font-bold text-neutral-100 text-right">${setText(st)} ${tr('reps')}</span></div>`).join('')}</div>`).join('')}
+        <div class="grid grid-cols-2 gap-2"><button type="button" onclick="editWorkout(${+w.id || 0})" class="py-3 rounded-xl bg-neutral-800 font-bold text-sm"><i class="fa-solid fa-pen"></i> ${tr('Editar')}</button><button type="button" onclick="closeSheet();delWorkout(${+w.id || 0})" class="py-3 rounded-xl border border-neutral-700 text-roseAccent-400 font-bold text-sm"><i class="fa-solid fa-trash-can"></i> ${tr('Borrar')}</button></div>
     </div>`);
 }
 function savedWorkoutsHtml() {
     const W = state.workouts.slice().reverse().slice(0, 12);
     if (!W.length) return '';
     return `<div class="glass-card rounded-3xl p-4 sm:p-6 space-y-3 border border-neutral-800">
-        <h3 class="text-lg font-extrabold text-neutral-100">Entrenos guardados</h3>
+        <h3 class="text-lg font-extrabold text-neutral-100">${tr('Entrenos guardados')}</h3>
         <div class="divide-y divide-neutral-800">${W.map(w => { const n = w.ex.reduce((a, e) => a + e.sets.length, 0); return `<div class="flex items-center gap-2 py-2.5">
-            <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(w.t)}</div>
-                <div class="text-xs text-neutral-400">${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })} · ${w.ex.length} ejercicio${w.ex.length === 1 ? '' : 's'} · ${n} serie${n === 1 ? '' : 's'}</div></div>
-            <button onclick="editWorkout(${+w.id || 0})" class="px-3 py-2 rounded-xl bg-neutral-800 text-xs font-bold text-neutral-200 hover:bg-neutral-700"><i class="fa-solid fa-pen"></i> Editar</button>
-            <button onclick="delWorkout(${+w.id || 0})" class="w-9 h-9 rounded-xl text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="Borrar entreno del ${w.d}"><i class="fa-solid fa-trash-can"></i></button>
+            <div class="flex-1 min-w-0"><div class="text-sm font-bold text-neutral-100 truncate">${esc(wTitle(w.t))}</div>
+                <div class="text-xs text-neutral-400">${new Date(w.d + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'short' })} · ${tp(w.ex.length, 'ejercicio', 'ejercicios')} · ${tp(n, 'serie', 'series')}</div></div>
+            <button onclick="editWorkout(${+w.id || 0})" class="px-3 py-2 rounded-xl bg-neutral-800 text-xs font-bold text-neutral-200 hover:bg-neutral-700"><i class="fa-solid fa-pen"></i> ${tr('Editar')}</button>
+            <button onclick="delWorkout(${+w.id || 0})" class="w-9 h-9 rounded-xl text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Borrar entreno del {d}', { d: w.d })}"><i class="fa-solid fa-trash-can"></i></button>
         </div>`; }).join('')}</div>
     </div>`;
 }
@@ -413,20 +417,20 @@ function delWorkout(id) {
 }
 function editWorkout(id) {
     const w = state.workouts.find(x => x.id === id); if (!w) return;
-    openSheet('<i class="fa-solid fa-pen text-mint-400"></i> Editar entreno', `
+    openSheet('<i class="fa-solid fa-pen text-mint-400"></i> ' + tr('Editar entreno'), `
         <form onsubmit="event.preventDefault(); saveWorkoutEdit(${id})" class="space-y-4">
-            <div class="text-sm text-neutral-400">${esc(w.t)} · ${new Date(w.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}</div>
+            <div class="text-sm text-neutral-400">${esc(wTitle(w.t))} · ${new Date(w.d + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' })}</div>
             ${w.ex.map((e, k) => `<div class="rounded-2xl bg-neutral-800/50 border border-neutral-800 p-3 space-y-2">
-                <div class="text-sm font-extrabold text-mint-300">${esc(e.name)}</div>
-                <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500"><span class="text-center">Serie</span><span class="text-center">kg</span><span class="text-center">Reps</span><span></span></div>
+                <div class="text-sm font-extrabold text-mint-300">${esc(exLabel(e))}</div>
+                <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500"><span class="text-center">${tr('Serie')}</span><span class="text-center">kg</span><span class="text-center">${tr('Reps')}</span><span></span></div>
                 ${e.sets.map((s, i) => `<div class="gset-grid items-center"><span class="text-center text-xs font-extrabold text-neutral-300">${i + 1}</span>
-                    <input data-w="${k}-${i}-kg" type="number" inputmode="decimal" step="0.5" min="0" value="${s.kg || ''}" placeholder="0" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Kilos serie ${i + 1}">
-                    <input data-w="${k}-${i}-reps" type="number" inputmode="numeric" min="0" value="${s.reps || ''}" placeholder="0" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="Repeticiones serie ${i + 1}"><span>${isDrop(s) ? '<span class="nd-droptag">D</span>' : ''}</span></div>${isDrop(s) ? s.drop.map((d, j) => `<div class="gset-grid items-center nd-droprow"><span class="text-center text-xs font-extrabold text-amber-300" aria-hidden="true">↓</span>
-                    <input data-w="${k}-${i}-d${j}-kg" type="number" inputmode="decimal" step="0.5" min="0" value="${d.kg || ''}" placeholder="0" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Kilos bajada ${j + 2} de la serie ${i + 1}">
-                    <input data-w="${k}-${i}-d${j}-reps" type="number" inputmode="numeric" min="0" value="${d.reps || ''}" placeholder="0" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="Repeticiones bajada ${j + 2} de la serie ${i + 1}"><span></span></div>`).join('') : ''}`).join('')}
+                    <input data-w="${k}-${i}-kg" type="number" inputmode="decimal" step="0.5" min="0" value="${s.kg || ''}" placeholder="0" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="${tr('Kilos serie {k}', { k: i + 1 })}">
+                    <input data-w="${k}-${i}-reps" type="number" inputmode="numeric" min="0" value="${s.reps || ''}" placeholder="0" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="${tr('Repeticiones serie {k}', { k: i + 1 })}"><span>${isDrop(s) ? '<span class="nd-droptag">D</span>' : ''}</span></div>${isDrop(s) ? s.drop.map((d, j) => `<div class="gset-grid items-center nd-droprow"><span class="text-center text-xs font-extrabold text-amber-300" aria-hidden="true">↓</span>
+                    <input data-w="${k}-${i}-d${j}-kg" type="number" inputmode="decimal" step="0.5" min="0" value="${d.kg || ''}" placeholder="0" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="${tr('Kilos bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}">
+                    <input data-w="${k}-${i}-d${j}-reps" type="number" inputmode="numeric" min="0" value="${d.reps || ''}" placeholder="0" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="${tr('Repeticiones bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}"><span></span></div>`).join('') : ''}`).join('')}
             </div>`).join('')}
-            <p class="text-[11px] text-neutral-500">Deja las repeticiones a 0 para quitar una serie.</p>
-            <button class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">Guardar cambios</button>
+            <p class="text-[11px] text-neutral-500">${tr('Deja las repeticiones a 0 para quitar una serie.')}</p>
+            <button class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr('Guardar cambios')}</button>
         </form>`);
 }
 function saveWorkoutEdit(id) {
@@ -446,24 +450,24 @@ function openProgress(key) {
     state.workouts.slice().sort((a, b) => a.d.localeCompare(b.d) || a.id - b.id).forEach(w => w.ex.forEach(e => {
         if (exKey(e) !== key) return;
         const top = e.sets.reduce((a, s) => s.kg > a.kg || (s.kg === a.kg && s.reps > a.reps) ? s : a, e.sets[0]);
-        pts.push({ d: w.d, kg: top.kg, reps: top.reps, name: e.name });
+        pts.push({ d: w.d, kg: top.kg, reps: top.reps, name: e.name, id: e.id });
     }));
     if (!pts.length) return;
-    const name = pts[pts.length - 1].name;
+    const name = exLabel(pts[pts.length - 1]);
     const first = pts[0], last = pts[pts.length - 1], diff = last.kg - first.kg;
     openSheet(`<i class="fa-solid fa-chart-line text-mint-400"></i> ${esc(name)}`, `
         <div class="space-y-4">
             <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">Primero</div><div class="text-lg font-extrabold">${kgTxt(first.kg)} kg</div></div>
-                <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">Último</div><div class="text-lg font-extrabold">${kgTxt(last.kg)} kg</div></div>
-                <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">Cambio</div><div class="text-lg font-extrabold ${diff > 0 ? 'text-mint-300' : ''}">${diff > 0 ? '+' : ''}${kgTxt(diff)} kg</div></div>
+                <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">${tr('Primero')}</div><div class="text-lg font-extrabold">${kgTxt(first.kg)} kg</div></div>
+                <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">${tr('Último')}</div><div class="text-lg font-extrabold">${kgTxt(last.kg)} kg</div></div>
+                <div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[10px] font-bold uppercase text-neutral-400">${tr('Cambio')}</div><div class="text-lg font-extrabold ${diff > 0 ? 'text-mint-300' : ''}">${diff > 0 ? '+' : ''}${kgTxt(diff)} kg</div></div>
             </div>
             <div id="pg-chart"></div>
-            <div class="divide-y divide-neutral-800 text-sm">${pts.slice().reverse().slice(0, 10).map(p => `<div class="flex justify-between py-2"><span class="text-neutral-400">${new Date(p.d + 'T12:00:00').toLocaleDateString('es-ES', { weekday: 'short', day: 'numeric', month: 'short' })}</span><span class="font-bold">${kgTxt(p.kg)} kg × ${p.reps}</span></div>`).join('')}</div>
+            <div class="divide-y divide-neutral-800 text-sm">${pts.slice().reverse().slice(0, 10).map(p => `<div class="flex justify-between py-2"><span class="text-neutral-400">${new Date(p.d + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'short', day: 'numeric', month: 'short' })}</span><span class="font-bold">${kgTxt(p.kg)} kg × ${p.reps}</span></div>`).join('')}</div>
         </div>`);
-    const dl = d => new Date(d + 'T12:00:00').toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+    const dl = d => new Date(d + 'T12:00:00').toLocaleDateString(locale(), { day: 'numeric', month: 'short' });
     lineChart($('pg-chart'), {
-        aria: 'Progreso de ' + name, legend: 'Peso más alto de cada entreno (kg)', dec: 0, minPad: 2.5,
+        aria: tr('Progreso de {n}', { n: name }), legend: tr('Peso más alto de cada entreno (kg)'), dec: 0, minPad: 2.5,
         points: pts.map((p, i) => ({ x: i, y: p.kg, tip: `${dl(p.d)}: ${kgTxt(p.kg)} kg × ${p.reps}` })),
         line: pts.map((p, i) => ({ x: i, y: p.kg })),
         xLabels: [dl(first.d), pts.length > 1 ? dl(last.d) : ''],

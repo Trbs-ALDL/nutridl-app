@@ -80,3 +80,13 @@ test('Idioma: el diccionario no tiene claves repetidas ni traducciones vacías',
     const malos = JSON.parse(en("JSON.stringify(Object.entries(LANG_EN).filter(([k, v]) => (k.match(/\{\w+\}/g) || []).some(h => !String(v).includes(h))).map(([k]) => k))"));
     assert.deepEqual(malos, [], 'huecos perdidos en: ' + malos.join(' · '));
 });
+
+test('Idioma: los 95 ejercicios y sus grupos musculares tienen nombre en inglés', () => {
+    const en = cargar('en');
+
+    const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'data', 'exercises.js'), 'utf8');
+    en(src.replace("'use strict';", ''));
+    const faltan = JSON.parse(en("JSON.stringify([...new Set(EX.flatMap(e => [e.name, e.group]))].filter(k => LANG_EN[k] == null))"));
+    assert.deepEqual(faltan, [], 'sin inglés: ' + faltan.join(' · '));
+    assert.equal(en("tr(EX.find(e => e.id === 'banca').name)"), 'Barbell bench press');
+});

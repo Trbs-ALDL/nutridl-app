@@ -41,18 +41,18 @@ function weightTrend() {
 // Mensajes de seguimiento: datos (lo que has hecho), tendencias (lo que muestran tus datos) y consejos
 function insightsList() {
     const out = [], c = calc, S = streakInfo(), W = weekStats(), T = weightTrend(), goal = typeof goalTypeOf === 'function' ? goalTypeOf() : 'maintain';
-    if (S.cur >= 2) out.push({ k: 'dato', ic: '🔥', t: `Has registrado comida ${S.cur} días seguidos.`, pr: S.cur >= 7 ? 9 : 6 });
-    if (W.logged >= 3 && c.prot) out.push({ k: 'dato', ic: W.protOk >= 5 ? '🏆' : '🥩', t: `Has cumplido tu objetivo de proteína ${W.protOk} de los últimos 7 días.`, pr: W.protOk >= 5 ? 8 : 7 });
-    if (W.logged >= 3 && c.target) out.push({ k: 'dato', ic: '🎯', t: `Tus calorías han estado en tu objetivo (±10 %) ${W.kcalOk} de ${W.logged} días registrados.`, pr: 5 });
+    if (S.cur >= 2) out.push({ k: 'dato', ic: '🔥', t: tr('Has registrado comida {k} días seguidos.', { k: S.cur }), pr: S.cur >= 7 ? 9 : 6 });
+    if (W.logged >= 3 && c.prot) out.push({ k: 'dato', ic: W.protOk >= 5 ? '🏆' : '🥩', t: tr('Has cumplido tu objetivo de proteína {k} de los últimos 7 días.', { k: W.protOk }), pr: W.protOk >= 5 ? 8 : 7 });
+    if (W.logged >= 3 && c.target) out.push({ k: 'dato', ic: '🎯', t: tr('Tus calorías han estado en tu objetivo ({x}) {a} de {b} días registrados.', { x: '±' + pctTxt(10), a: W.kcalOk, b: W.logged }), pr: 5 });
     if (T && T.week != null && Math.abs(T.week) >= .1) {
-        const dir = T.week < 0 ? 'bajado' : 'subido';
         const good = (goal === 'lose' && T.week < 0) || (goal === 'gain' && T.week > 0);
-        out.push({ k: 'tendencia', ic: good ? '📉' : '📈', t: `Tu peso medio ha ${dir} ${fmt(Math.abs(T.week), 1)} kg esta semana.${good ? ' Vas en la dirección de tu objetivo.' : ''}`, pr: 8 });
+        const k = fmt(Math.abs(T.week), 1);
+        out.push({ k: 'tendencia', ic: good ? '📉' : '📈', t: (T.week < 0 ? tr('Tu peso medio ha bajado {k} kg esta semana.', { k }) : tr('Tu peso medio ha subido {k} kg esta semana.', { k })) + (good ? tr(' Vas en la dirección de tu objetivo.') : ''), pr: 8 });
     }
-    if (T && T.stable3) out.push({ k: 'tendencia', ic: '⚖️', t: goal === 'lose' ? 'Tu peso lleva 3 semanas estable. Si quieres seguir bajando, revisa que apuntas todo (aceite, salsas, bebidas) o suma pasos al día.' : 'Tu peso lleva 3 semanas estable.', pr: goal === 'maintain' ? 4 : 8 });
-    if (W.logged >= 3 && c.prot && W.avgP < c.prot * .8) out.push({ k: 'consejo', ic: '💡', t: `Tu proteína media es de ${fmt(W.avgP)} g de ${c.prot} g. Añadir un lácteo proteico o una ración más de carne, pescado, huevo o legumbre te acerca.`, pr: 7 });
-    if (!state.weights.length || (T && dayNum(todayISO()) - T.lastD >= 7)) out.push({ k: 'consejo', ic: '⚖️', t: 'Pésate una vez por semana, en ayunas, para ver tu tendencia real.', pr: 3 });
-    if (W.workouts) out.push({ k: 'dato', ic: '💪', t: `Has guardado ${W.workouts} entreno${W.workouts === 1 ? '' : 's'} en los últimos 7 días.`, pr: 4 });
+    if (T && T.stable3) out.push({ k: 'tendencia', ic: '⚖️', t: goal === 'lose' ? tr('Tu peso lleva 3 semanas estable. Si quieres seguir bajando, revisa que apuntas todo (aceite, salsas, bebidas) o suma pasos al día.') : tr('Tu peso lleva 3 semanas estable.'), pr: goal === 'maintain' ? 4 : 8 });
+    if (W.logged >= 3 && c.prot && W.avgP < c.prot * .8) out.push({ k: 'consejo', ic: '💡', t: tr('Tu proteína media es de {a} g de {b} g. Añadir un lácteo proteico o una ración más de carne, pescado, huevo o legumbre te acerca.', { a: fmt(W.avgP), b: c.prot }), pr: 7 });
+    if (!state.weights.length || (T && dayNum(todayISO()) - T.lastD >= 7)) out.push({ k: 'consejo', ic: '⚖️', t: tr('Pésate una vez por semana, en ayunas, para ver tu tendencia real.'), pr: 3 });
+    if (W.workouts) out.push({ k: 'dato', ic: '💪', t: tr('Has guardado {x} en los últimos 7 días.', { x: tp(W.workouts, 'entreno', 'entrenos') }), pr: 4 });
     return out.sort((a, b) => b.pr - a.pr);
 }
 
@@ -78,18 +78,18 @@ function dayMoment() {
 
     // 1. Vuelve después de unos días: ni regañar ni fingir que no ha pasado
     if (last && fuera >= 3 && M.back !== today) return {
-        k: 'back', ic: '🌱', kicker: `${fuera} días sin apuntar`,
-        title: 'Me alegra verte de vuelta',
-        sub: `Tu plan sigue donde lo dejaste: ${fmt(calc.target)} kcal y ${fmt(calc.prot)} g de proteína. No hay nada que recuperar, se empieza por la comida de hoy.`,
-        btn: ['Apuntar algo', 'openFoodSheet()'], btn2: ['Ahora no', "dismissMoment('back')"] };
+        k: 'back', ic: '🌱', kicker: tr('{k} días sin apuntar', { k: fuera }),
+        title: tr('Me alegra verte de vuelta'),
+        sub: tr('Tu plan sigue donde lo dejaste: {k} kcal y {p} g de proteína. No hay nada que recuperar, se empieza por la comida de hoy.', { k: fmt(calc.target), p: fmt(calc.prot) }),
+        btn: [tr('Apuntar algo'), 'openFoodSheet()'], btn2: [tr('Ahora no'), "dismissMoment('back')"] };
 
     // 2. La racha se pierde esta noche: solo a partir de las 17 h y solo si es verdad.
     //    Va antes que el resumen semanal: el resumen aguanta hasta el miércoles, la racha no.
     if (S.cur >= 2 && !S.today && new Date().getHours() >= 17 && M.risk !== today) return {
-        k: 'risk', ic: '🔥', kicker: `Racha de ${S.cur} días`,
-        title: 'Hoy aún no has apuntado nada',
-        sub: `Con apuntar una comida la mantienes. ${S.cur === S.best ? 'Además es tu mejor racha hasta ahora.' : `Tu récord está en ${S.best} días.`}`,
-        btn: ['Apuntar en 10 segundos', 'openFoodSheet()'], btn2: ['Hoy no', "dismissMoment('risk')"] };
+        k: 'risk', ic: '🔥', kicker: tr('Racha de {k} días', { k: S.cur }),
+        title: tr('Hoy aún no has apuntado nada'),
+        sub: tr('Con apuntar una comida la mantienes.') + ' ' + (S.cur === S.best ? tr('Además es tu mejor racha hasta ahora.') : tr('Tu récord está en {k} días.', { k: S.best })),
+        btn: [tr('Apuntar en 10 segundos'), 'openFoodSheet()'], btn2: [tr('Hoy no'), "dismissMoment('risk')"] };
 
     // 3. Resumen de la semana pasada: lunes, martes o miércoles, una vez por semana
     const lunes = mondayOf(today);
@@ -97,22 +97,24 @@ function dayMoment() {
         const W = weekStats(shiftISO(lunes, -1));
         if (W.logged >= 3) {
             const T = weightTrend();
-            const peso = T && T.week != null && Math.abs(T.week) >= 0.1
-                ? ` Tu peso medio ${T.week < 0 ? 'bajó' : 'subió'} ${fmt(Math.abs(T.week), 1)} kg.` : '';
-            return { k: 'week', ic: '⭐', kicker: 'La semana pasada',
-                title: `${W.logged} de 7 días apuntados`,
-                sub: `Media de ${fmt(W.avgKcal)} kcal y ${fmt(W.avgP)} g de proteína.${W.protOk ? ` Cumpliste tu proteína ${W.protOk} ${W.protOk === 1 ? 'día' : 'días'}.` : ` Esta semana, apunta a ${fmt(calc.prot)} g de proteína al día.`}${W.workouts ? ` Guardaste ${W.workouts} entreno${W.workouts === 1 ? '' : 's'}.` : ''}${peso}`,
-                btn: ['Ver mi progreso', `momentSeen('week','${lunes}'); showTab('progress')`],
-                btn2: ['Compartirla', `momentSeen('week','${lunes}'); shareProgress()`] };
+            const kg = T && T.week != null && Math.abs(T.week) >= 0.1 ? fmt(Math.abs(T.week), 1) : null;
+            const peso = kg ? ' ' + (T.week < 0 ? tr('Tu peso medio bajó {k} kg.', { k: kg }) : tr('Tu peso medio subió {k} kg.', { k: kg })) : '';
+            return { k: 'week', ic: '⭐', kicker: tr('La semana pasada'),
+                title: tr('{k} de 7 días apuntados', { k: W.logged }),
+                sub: tr('Media de {k} kcal y {p} g de proteína.', { k: fmt(W.avgKcal), p: fmt(W.avgP) })
+                    + ' ' + (W.protOk ? tr('Cumpliste tu proteína {x}.', { x: tp(W.protOk, 'día', 'días') }) : tr('Esta semana, apunta a {p} g de proteína al día.', { p: fmt(calc.prot) }))
+                    + (W.workouts ? ' ' + tr('Guardaste {x}.', { x: tp(W.workouts, 'entreno', 'entrenos') }) : '') + peso,
+                btn: [tr('Ver mi progreso'), `momentSeen('week','${lunes}'); showTab('progress')`],
+                btn2: [tr('Compartirla'), `momentSeen('week','${lunes}'); shareProgress()`] };
         }
     }
 
     // 4. Ofrecer el recordatorio diario una sola vez, cuando ya se sabe que la app le sirve
     if (S.total >= 3 && !M.remind && M.last !== today) return {
-        k: 'remind', ic: '🔔', kicker: 'Para no olvidarte',
-        title: 'Ponte un recordatorio diario',
-        sub: 'Se añade a tu calendario y te avisa a la hora que elijas. Funciona aunque no abras la app.',
-        btn: ['Ponerlo', "momentSeen('remind', 1); openReminder()"], btn2: ['No, gracias', "dismissMoment('remind')"] };
+        k: 'remind', ic: '🔔', kicker: tr('Para no olvidarte'),
+        title: tr('Ponte un recordatorio diario'),
+        sub: tr('Se añade a tu calendario y te avisa a la hora que elijas. Funciona aunque no abras la app.'),
+        btn: [tr('Ponerlo'), "momentSeen('remind', 1); openReminder()"], btn2: [tr('No, gracias'), "dismissMoment('remind')"] };
 
     return null;
 }
@@ -120,18 +122,18 @@ function dayMoment() {
 //  LOGROS
 // =====================================================================
 const ACHIEVEMENTS = [
-    ['first_food', '🍽️', 'Primera comida', 'Apunta tu primera comida', () => streakInfo().total >= 1],
-    ['streak7', '🔥', '7 días', '7 días seguidos registrando', () => streakInfo().best >= 7],
-    ['streak14', '🔥', '14 días', '14 días seguidos registrando', () => streakInfo().best >= 14],
-    ['streak30', '🏅', '30 días', '30 días seguidos registrando', () => streakInfo().best >= 30],
-    ['streak60', '🏆', '60 días', '60 días seguidos registrando', () => streakInfo().best >= 60],
-    ['streak100', '👑', '100 días', '100 días seguidos registrando', () => streakInfo().best >= 100],
-    ['protein5', '🥩', 'Semana proteica', 'Proteína cumplida 5 de 7 días', () => weekStats(todayISO()).protOk >= 5],
-    ['first_weight', '⚖️', 'Primer pesaje', 'Apunta tu peso', () => state.weights.length >= 1],
-    ['weights8', '📈', 'Constancia', '8 pesajes registrados', () => state.weights.length >= 8],
-    ['first_workout', '💪', 'Primer entreno', 'Guarda un entreno', () => state.workouts.length >= 1],
-    ['workouts20', '🏋️', '20 entrenos', '20 entrenos guardados', () => state.workouts.length >= 20],
-    ['measures', '📏', 'Medidas', 'Guarda tus medidas', () => (state.measures || []).length >= 1],
+    ['first_food', '🍽️', tk('Primera comida'), tk('Apunta tu primera comida'), () => streakInfo().total >= 1],
+    ['streak7', '🔥', tk('7 días'), tk('7 días seguidos registrando'), () => streakInfo().best >= 7],
+    ['streak14', '🔥', tk('14 días'), tk('14 días seguidos registrando'), () => streakInfo().best >= 14],
+    ['streak30', '🏅', tk('30 días'), tk('30 días seguidos registrando'), () => streakInfo().best >= 30],
+    ['streak60', '🏆', tk('60 días'), tk('60 días seguidos registrando'), () => streakInfo().best >= 60],
+    ['streak100', '👑', tk('100 días'), tk('100 días seguidos registrando'), () => streakInfo().best >= 100],
+    ['protein5', '🥩', tk('Semana proteica'), tk('Proteína cumplida 5 de 7 días'), () => weekStats(todayISO()).protOk >= 5],
+    ['first_weight', '⚖️', tk('Primer pesaje'), tk('Apunta tu peso'), () => state.weights.length >= 1],
+    ['weights8', '📈', tk('Constancia'), tk('8 pesajes registrados'), () => state.weights.length >= 8],
+    ['first_workout', '💪', tk('Primer entreno'), tk('Guarda un entreno'), () => state.workouts.length >= 1],
+    ['workouts20', '🏋️', tk('20 entrenos'), tk('20 entrenos guardados'), () => state.workouts.length >= 20],
+    ['measures', '📏', tk('Medidas'), tk('Guarda tus medidas'), () => (state.measures || []).length >= 1],
 ];
 // Comprueba logros nuevos y los celebra (una sola vez cada uno)
 function checkAchievements(silent) {
@@ -151,17 +153,17 @@ function checkDayMoments() {
     const done = state.cel[d] || (state.cel[d] = {});
     // Solo se guarda lo de los últimos 10 días
     Object.keys(state.cel).forEach(k => { if (k < shiftISO(d, -10)) delete state.cel[k]; });
-    if (!done.prot && t.p >= calc.prot) { done.prot = 1; save(); celebrate('🏆', 'Objetivo de proteína conseguido', `${fmt(t.p)} g de ${calc.prot} g`); return; }
+    if (!done.prot && t.p >= calc.prot) { done.prot = 1; save(); celebrate('🏆', 'Objetivo de proteína conseguido', tr('{a} g de {b} g', { a: fmt(t.p), b: calc.prot })); return; }
     if (!done.day && t.p >= calc.prot * .9 && t.kcal >= calc.target * .9 && t.kcal <= calc.target * 1.05) { done.day = 1; save(); celebrate('🔥', 'Día completado', 'Calorías y proteína en tu objetivo'); return; }
     const S = streakInfo();
-    if (S.today && [7, 14, 30, 60, 100].includes(S.cur) && !done['s' + S.cur]) { done['s' + S.cur] = 1; save(); celebrate('🔥', `${S.cur} días seguidos`, 'Tu racha sigue creciendo'); }
+    if (S.today && [7, 14, 30, 60, 100].includes(S.cur) && !done['s' + S.cur]) { done['s' + S.cur] = 1; save(); celebrate('🔥', tr('{k} días seguidos', { k: S.cur }), 'Tu racha sigue creciendo'); }
 }
 
 // Aviso de celebración (discreto, arriba, 3 s)
 let celT;
 function celebrate(ic, title, sub) {
     const el = $('nd-celebrate'); if (!el) return;
-    el.innerHTML = `<span class="nd-ic">${icon(ic)}</span><span class="min-w-0"><span class="block text-sm font-extrabold text-neutral-50">${esc(title)}</span>${sub ? `<span class="block text-xs text-neutral-300">${esc(sub)}</span>` : ''}</span>`;
+    el.innerHTML = `<span class="nd-ic">${icon(ic)}</span><span class="min-w-0"><span class="block text-sm font-extrabold text-neutral-50">${esc(tr(title))}</span>${sub ? `<span class="block text-xs text-neutral-300">${esc(tr(sub))}</span>` : ''}</span>`;
     el.classList.add('show');
     if (navigator.vibrate && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) try { navigator.vibrate(12); } catch (e) { }
     clearTimeout(celT); celT = setTimeout(() => el.classList.remove('show'), 3200);
