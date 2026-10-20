@@ -433,9 +433,9 @@
                     </div>
                 </div>
                 <div class="flex items-center gap-2 w-full md:w-auto min-w-0">
-                    <button onclick="diaryShift(-1)" class="w-10 h-10 shrink-0 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día anterior"><i class="fa-solid fa-chevron-left"></i></button>
-                    <input id="dia-date" type="date" aria-label="Día del diario" onchange="diaryDate=this.value||todayISO();renderDiary()" class="flex-1 md:flex-none min-w-0 w-full md:w-auto p-2.5 bg-neutral-800 border border-neutral-700 rounded-xl text-sm font-bold">
-                    <button onclick="diaryShift(1)" class="w-10 h-10 shrink-0 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día siguiente"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button onclick="diaryShift(-1)" class="w-10 h-10 shrink-0 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día anterior" data-t-al="Día anterior"><i class="fa-solid fa-chevron-left"></i></button>
+                    <input id="dia-date" type="date" aria-label="Día del diario" data-t-al="Día del diario" onchange="diaryDate=this.value||todayISO();renderDiary()" class="flex-1 md:flex-none min-w-0 w-full md:w-auto p-2.5 bg-neutral-800 border border-neutral-700 rounded-xl text-sm font-bold">
+                    <button onclick="diaryShift(1)" class="w-10 h-10 shrink-0 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-300" aria-label="Día siguiente" data-t-al="Día siguiente"><i class="fa-solid fa-chevron-right"></i></button>
                     <button id="dia-today" onclick="diaryDate=todayISO();renderDiary()" class="px-3 h-10 rounded-xl text-xs font-bold whitespace-nowrap">Hoy</button>
                 </div>
             </div>
@@ -448,7 +448,7 @@
                 <i class="fa-solid fa-magnifying-glass text-mint-400"></i>
                 <span class="text-sm font-semibold text-neutral-400 truncate" data-t="Busca un alimento: «spaghetti hacendado», «yogur griego»…">Busca un alimento: «spaghetti hacendado», «yogur griego»…</span>
             </button>
-            <button type="button" onclick="openScanner()" class="w-14 shrink-0 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-mint-400 text-lg hover:border-mint-500/50" aria-label="Escanear código de barras"><i class="fa-solid fa-barcode"></i></button>
+            <button type="button" onclick="openScanner()" class="w-14 shrink-0 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-mint-400 text-lg hover:border-mint-500/50" aria-label="Escanear código de barras" data-t-al="Escanear código de barras"><i class="fa-solid fa-barcode"></i></button>
             </div>
             <div class="grid grid-cols-3 gap-2">
                 <button type="button" onclick="openVoiceLog()" class="py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 hover:border-mint-500/50 text-sm font-extrabold text-neutral-100 flex items-center justify-center gap-2"><i class="fa-solid fa-microphone text-mint-400"></i> Voz <i data-lock="voice" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
@@ -479,7 +479,7 @@
                 <div id="chat-sugg" class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 nd-noscroll"></div>
                 <form id="chat-form" class="nd-composer" onsubmit="event.preventDefault(); coachSend()">
                     <button type="button" id="chat-mic" onclick="coachMic()" class="w-11 h-11 shrink-0 rounded-full bg-neutral-800 text-mint-400 hover:bg-neutral-700" aria-label="Hablar"><i class="fa-solid fa-microphone"></i></button>
-                    <input id="chat-in" type="text" autocomplete="off" enterkeyhint="send" maxlength="300" placeholder="Pregunta o di lo que has comido…" class="flex-1 min-w-0 bg-transparent px-2 py-3 text-[15px] font-semibold outline-none" aria-label="Mensaje para el Coach">
+                    <input id="chat-in" type="text" autocomplete="off" enterkeyhint="send" maxlength="300" placeholder="Pregunta o di lo que has comido…" data-t-ph="Pregunta o di lo que has comido…" class="flex-1 min-w-0 bg-transparent px-2 py-3 text-[15px] font-semibold outline-none" aria-label="Mensaje para el Coach">
                     <button type="submit" class="w-11 h-11 shrink-0 rounded-full bg-mint-600 hover:bg-mint-700 text-white" aria-label="Enviar"><i class="fa-solid fa-arrow-up"></i></button>
                 </form>
             </div>
@@ -577,7 +577,7 @@
         <div class="flex items-center gap-2">
             <button onclick="restAdd(-15)" class="w-12 py-2 rounded-xl bg-neutral-800 text-sm font-extrabold text-neutral-200" aria-label="Quitar 15 segundos">−15</button>
             <div class="flex-1 text-center"><div class="text-[10px] font-bold uppercase text-neutral-400">Descanso</div><div id="rest-time" class="text-2xl font-extrabold text-neutral-100 leading-tight tabular-nums">0:00</div></div>
-            <button onclick="restAdd(15)" class="w-12 py-2 rounded-xl bg-neutral-800 text-sm font-extrabold text-neutral-200" aria-label="Añadir 15 segundos">+15</button>
+            <button onclick="restAdd(15)" class="w-12 py-2 rounded-xl bg-neutral-800 text-sm font-extrabold text-neutral-200" aria-label="Añadir 15 segundos" data-t-al="Añadir 15 segundos">+15</button>
             <button onclick="restStop()" class="px-3 py-2 rounded-xl bg-mint-600 text-white text-sm font-extrabold">Listo</button>
         </div>
         <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div id="rest-prog" class="h-full rounded-full bg-mint-500" style="width:100%"></div></div>
@@ -632,7 +632,7 @@
             </div>
             <div class="space-y-1.5">
                 <label for="pdf-name" class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Nombre del cliente</label>
-                <input id="pdf-name" type="text" maxlength="40" placeholder="Ej: Laura García" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-mint-500">
+                <input id="pdf-name" type="text" maxlength="40" placeholder="Ej: Laura García" data-t-ph="Ej: Laura García" class="w-full p-3 bg-neutral-800/60 border border-neutral-800 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-mint-500">
             </div>
             <div class="space-y-2 text-sm font-semibold text-neutral-200">
                 <div class="text-xs font-bold text-neutral-300 uppercase tracking-wider">Qué incluir</div>
@@ -653,14 +653,14 @@
         <div class="bg-neutral-900 border border-neutral-800 w-full sm:max-w-xl rounded-t-3xl sm:rounded-3xl shadow-2xl h-[92dvh] sm:h-[82vh] flex flex-col overflow-hidden">
             <div class="p-4 pb-3 border-b border-neutral-800 space-y-3 shrink-0">
                 <div class="flex items-center gap-2">
-                    <button id="fs-back" type="button" onclick="fsBack()" class="hidden w-10 h-10 shrink-0 rounded-xl hover:bg-neutral-800 text-neutral-300" aria-label="Volver a la búsqueda"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button id="fs-back" type="button" onclick="fsBack()" class="hidden w-10 h-10 shrink-0 rounded-xl hover:bg-neutral-800 text-neutral-300" aria-label="Volver a la búsqueda" data-t-al="Volver a la búsqueda"><i class="fa-solid fa-chevron-left"></i></button>
                     <h2 id="fs-title" class="min-w-0 text-base font-extrabold text-neutral-100 truncate">Añadir alimento</h2>
-                    <select id="fs-slot" onchange="fs.slot=this.value;fsRenderTitle()" class="mr-auto p-2 bg-neutral-800 border border-neutral-700 rounded-xl text-sm font-bold" aria-label="Comida del día"></select>
+                    <select id="fs-slot" onchange="fs.slot=this.value;fsRenderTitle()" class="mr-auto p-2 bg-neutral-800 border border-neutral-700 rounded-xl text-sm font-bold" aria-label="Comida del día" data-t-al="Comida del día"></select>
                     <button type="button" onclick="closeFoodSheet()" class="w-10 h-10 shrink-0 rounded-xl hover:bg-neutral-800 text-neutral-400" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div id="fs-searchbar" class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm"></i>
-                    <input id="fs-q" type="search" enterkeyhint="search" autocomplete="off" placeholder="Buscar: spaghetti hacendado, pechuga de pavo…" oninput="fs.q=this.value;fsRender()" class="w-full pl-10 pr-4 py-3 bg-neutral-800 border border-neutral-700 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-mint-500" aria-label="Buscar alimento">
+                    <input id="fs-q" type="search" enterkeyhint="search" autocomplete="off" placeholder="Buscar: spaghetti hacendado, pechuga de pavo…" data-t-ph="Buscar: spaghetti hacendado, pechuga de pavo…" oninput="fs.q=this.value;fsRender()" class="w-full pl-10 pr-4 py-3 bg-neutral-800 border border-neutral-700 rounded-2xl font-semibold focus:outline-none focus:ring-2 focus:ring-mint-500" aria-label="Buscar alimento">
                 </div>
                 <div id="fs-tabs" class="flex gap-2 text-xs font-bold"></div>
             </div>
@@ -672,7 +672,7 @@
     <div id="wizard" class="no-print hidden fixed inset-0 z-[70] bg-slateDark-950/70 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-6" role="dialog" aria-modal="true" aria-labelledby="wz-title">
         <div class="bg-neutral-900 w-full sm:max-w-2xl rounded-t-3xl sm:rounded-3xl shadow-2xl max-h-[94vh] flex flex-col">
             <div class="p-4 sm:p-5 border-b border-neutral-800 flex items-center gap-3">
-                <button id="wz-back" onclick="wzBack()" class="w-9 h-9 rounded-xl hover:bg-neutral-700 text-neutral-400" aria-label="Atrás"><i class="fa-solid fa-arrow-left"></i></button>
+                <button id="wz-back" onclick="wzBack()" class="w-9 h-9 rounded-xl hover:bg-neutral-700 text-neutral-400" aria-label="Atrás" data-t-al="Atrás"><i class="fa-solid fa-arrow-left"></i></button>
                 <div class="flex-1">
                     <div class="h-2 bg-neutral-800 rounded-full overflow-hidden"><div id="wz-bar" class="h-full bg-gradient-to-r from-mint-500 to-mint-400 wz-bar" style="width:0%"></div></div>
                     <div class="text-[10px] font-bold text-neutral-500 mt-1" id="wz-count"></div>
@@ -684,12 +684,12 @@
         </div>
     </div>
 
-    <script src="js/data/lang-en.js?v=1085d1a235" defer></script>
+    <script src="js/data/lang-en.js?v=2829e4aad7" defer></script>
     <script src="js/i18n.js?v=adc52f741c" defer></script>
     <script src="js/core.js?v=f7bd15ecac" defer></script>
     <script src="js/data/foods.js?v=11595b85c4" defer></script>
     <script src="js/data/exercises.js?v=8e845d8e16" defer></script>
-    <script src="js/calc.js?v=fbac00ff26" defer></script>
+    <script src="js/calc.js?v=8194745a81" defer></script>
     <script src="js/analytics.js?v=1974b7351f" defer></script>
     <script src="js/progress.js?v=ec824c8280" defer></script>
     <script src="js/engine.js?v=ca09975bf8" defer></script>
@@ -700,7 +700,7 @@
     <script src="js/gym.js?v=e8dfffdb10" defer></script>
     <script src="js/diary.js?v=0b3305fa93" defer></script>
     <script src="js/profiles.js?v=1ce5a85199" defer></script>
-    <script src="js/dashboard.js?v=cb9d283659" defer></script>
+    <script src="js/dashboard.js?v=09191e0dff" defer></script>
     <script src="js/kitchen.js?v=e60c77038a" defer></script>
     <script src="js/coach.js?v=4b5cffed6c" defer></script>
     <script src="js/plans.js?v=5a48e15628" defer></script>

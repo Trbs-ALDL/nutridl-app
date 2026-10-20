@@ -240,7 +240,7 @@ function renderResults() {
     const b = c.bmi;
     const WHO = [[16, 'Delgadez severa', 'blue'], [17, 'Delgadez moderada', 'blue'], [18.5, 'Delgadez leve', 'blue'], [25, 'Peso normal', 'mint'], [30, 'Sobrepeso (preobesidad)', 'amber'], [35, 'Obesidad de grado I', 'rose'], [40, 'Obesidad de grado II', 'rose'], [999, 'Obesidad de grado III', 'rose']];
     const who = WHO.find(x => b < x[0]);
-    const cat = b < 18.5 ? 'Bajo peso' : b < 25 ? 'Peso saludable' : b < 30 ? 'Sobrepeso' : who[1].replace('Obesidad de grado', 'Obesidad grado');
+    const cat = b < 18.5 ? tr('Bajo peso') : b < 25 ? tr('Peso saludable') : b < 30 ? tr('Sobrepeso') : who[1].replace('Obesidad de grado', 'Obesidad grado');
     const CLS = { blue: 'bg-blue-500/20 text-blue-300 border-blue-500/30', mint: 'bg-mint-500/15 text-mint-300 border-mint-500/30', amber: 'bg-amber-500/20 text-amber-300 border-amber-500/30', rose: 'bg-roseAccent-100 text-roseAccent-800 border-roseAccent-200' };
     c.bmiCat = cat;
     $('res-bmi-val').innerText = fmt(b, 1);
