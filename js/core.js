@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.10.1';
+const APP_VERSION = '3.11.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -44,7 +44,7 @@ window.addEventListener('unhandledrejection', e => logErr('Promesa: ' + ((e.reas
 let profiles = { current: null, list: {} }; // list[id] = { name, created, state }
 
 const $ = id => document.getElementById(id);
-const fmt = (n, d = 0) => Number(n).toLocaleString('es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt = (n, d = 0) => Number(n).toLocaleString(typeof locale === 'function' ? locale() : 'es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // Iconos de línea en lugar de emojis en toda la app (los emojis se veían infantiles).
 // Las claves van sin el selector de variante (U+FE0F): icon() lo quita antes de buscar.

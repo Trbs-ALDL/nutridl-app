@@ -101,19 +101,23 @@ function renderProfileChip() {
                 <button onclick="event.stopPropagation();deleteProfile('${id}')" class="w-9 h-9 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-600 hover:bg-neutral-700" aria-label="Borrar el perfil de ${esc(p.name)}" title="Borrar este perfil"><i class="fa-solid fa-trash text-xs"></i></button>
             </div>`).join('')}
             <div class="my-2 border-t border-neutral-800"></div>
-            <button onclick="closeProfileMenu();openWizard('edit')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-pen w-7 text-center text-neutral-400"></i>Editar mis datos</button>
-            <button onclick="newProfile()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-user-plus w-7 text-center text-neutral-400"></i>Añadir otra persona</button>
-            <button onclick="exportProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-download w-7 text-center text-neutral-400"></i>Guardar copia de seguridad</button>
-            <button onclick="importProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-upload w-7 text-center text-neutral-400"></i>Cargar una copia</button>
-            <button onclick="openAutoBackups()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-clock-rotate-left w-7 text-center text-neutral-400"></i>Copias automáticas</button>
-            <button onclick="deleteProfile(profiles.current)" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-trash w-7 text-center"></i>Borrar mi perfil</button>
+            <button onclick="closeProfileMenu();openWizard('edit')" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-pen w-7 text-center text-neutral-400"></i>${tr('Editar mis datos')}</button>
+            <button onclick="newProfile()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-user-plus w-7 text-center text-neutral-400"></i>${tr('Añadir otra persona')}</button>
+            <button onclick="exportProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-download w-7 text-center text-neutral-400"></i>${tr('Guardar copia de seguridad')}</button>
+            <button onclick="importProfiles()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-upload w-7 text-center text-neutral-400"></i>${tr('Cargar una copia')}</button>
+            <button onclick="openAutoBackups()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-clock-rotate-left w-7 text-center text-neutral-400"></i>${tr('Copias automáticas')}</button>
+            <button onclick="deleteProfile(profiles.current)" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-trash w-7 text-center"></i>${tr('Borrar mi perfil')}</button>
             <div class="my-2 border-t border-neutral-800"></div>
-            <button onclick="openPro()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-crown w-7 text-center text-amber-300"></i>nutriDL PRO <span class="nd-pro-badge ml-auto">${isPro() ? 'Activo' : 'Probar'}</span></button>
-            <button onclick="openSync()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-rotate w-7 text-center text-neutral-400"></i>Móvil y ordenador</button>
-            <button data-install onclick="installApp()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-mobile-screen-button w-7 text-center text-mint-400"></i>Instalar la app</button>
-                <button onclick="openReport()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-bug w-7 text-center text-neutral-400"></i>Informe de errores</button>
-            <a href="privacidad.html" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-shield-halved w-7 text-center text-neutral-400"></i>Privacidad</a>
-            <button onclick="wipeAll()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-eraser w-7 text-center"></i>Borrar todos los datos</button>
+            ${I18N_READY ? `<div class="flex items-center gap-3 px-3 py-2"><i class="fa-solid fa-language w-7 text-center text-neutral-400"></i>
+                <span class="flex-1 font-semibold">${tr('Idioma')}</span>
+                <div class="nd-langsel" role="group" aria-label="${esc(tr('Idioma'))}">${Object.keys(LANGS).map(l => `<button type="button" onclick="setLang('${l}')" class="${l === LANG ? 'is-on' : ''}" aria-pressed="${l === LANG}">${l.toUpperCase()}</button>`).join('')}</div>
+            </div>` : ''}
+            <button onclick="openPro()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-crown w-7 text-center text-amber-300"></i>nutriDL PRO <span class="nd-pro-badge ml-auto">${isPro() ? tr('Activo') : tr('Probar')}</span></button>
+            <button onclick="openSync()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-rotate w-7 text-center text-neutral-400"></i>${tr('Móvil y ordenador')}</button>
+            <button data-install onclick="installApp()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-mobile-screen-button w-7 text-center text-mint-400"></i>${tr('Instalar la app')}</button>
+                <button onclick="openReport()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-bug w-7 text-center text-neutral-400"></i>${tr('Informe de errores')}</button>
+            <a href="privacidad.html" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-shield-halved w-7 text-center text-neutral-400"></i>${tr('Privacidad')}</a>
+            <button onclick="wipeAll()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-eraser w-7 text-center"></i>${tr('Borrar todos los datos')}</button>
         </div>`;
 }
 function toggleProfileMenu(e) {

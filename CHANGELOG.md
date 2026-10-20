@@ -1,5 +1,13 @@
 # Cambios de nutriDL
 
+## 3.11.0 · 20 de octubre de 2026
+
+**Base para el inglés (aún no visible)**
+- La app ya puede funcionar en español o en inglés: los textos, los números (1.234,5 / 1,234.5), las fechas y las iniciales de los días se adaptan al idioma, y la elección se recuerda.
+- **El selector todavía no se enseña**, a propósito: hasta que la traducción esté completa, media app en inglés y media en español sería peor que dejarla en español. Una prueba automática impide publicarlo a medias.
+- Para quien usa la app hoy **no cambia nada**: sigue igual, en español.
+- Nueva herramienta `npm run i18n` para ver cuánto falta.
+
 ## 3.10.1 · 20 de octubre de 2026
 
 - **El aviso de racha manda sobre el resumen semanal.** Un lunes por la tarde podían salir los dos; ahora sale primero el que caduca hoy (la racha), porque el resumen aguanta hasta el miércoles.

@@ -30,6 +30,9 @@ function init() {
     renderProfileChip(); renderDiary(); renderDashboard(); renderPrefs();
     document.addEventListener('click', e => { if (!e.target.closest('#profile-chip')) closeProfileMenu(); });
     // Sin perfil se abre la bienvenida; con perfil, la última pestaña usada (la calculadora antigua es «Mi plan»)
+    // Idioma: se aplica a los textos fijos antes de pintar nada
+    document.documentElement.lang = LANG;
+    applyStaticI18n();
     showTab(profiles.current ? (TABS.includes(state.tab) ? state.tab : 'home') : 'home', false);
     // Accesos directos del icono de la app (mantener pulsado): ?accion=comida / gym / voz / coach
     const accion = new URLSearchParams(location.search).get('accion');

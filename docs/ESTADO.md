@@ -35,13 +35,13 @@ funciones 9 · base de alimentos 8,5 · diseño 8 · primera vez 8 · legal 7,5
 | Apartado | Ahora | Meta | Decisión de Ángel (20-10-2026) |
 |---|---|---|---|
 | Saber cuánta gente la usa | 2 | 8 | Cloudflare Web Analytics (gratis, sin cookies) |
-| Idiomas | 3 | 7 | Inglés (los genéricos ya tienen nombre USDA en `tools/genericos/*.json`) |
+| Idiomas | 3 → **4** | 9 | Base hecha (3.11.0). Falta traducir: ver F6 |
 | Estar en Play Store | 3 | 7 | Guía en `PLAY-STORE.md`; falta cuenta y 12 testers |
 | Cobrar | 3 | 7 | Códigos a mano ahora; Stripe cuando llegue el momento |
 | Guardar datos en la nube | 4 | 8 | **Supabase gratis**: cuentas, sincronización y PRO no falseable |
 | ~~Coach «inteligente»~~ | ~~5~~ **7,5** | ✅ | Hecho en la 3.9.0 · reglas, sin IA |
 | ~~Que la gente vuelva~~ | ~~5,5~~ **7,5** | ✅ | Hecho en la 3.10.0 · push real queda para la F5 |
-| Pruebas automáticas | 6,5 → **7,5** | 7,5 | 46 pruebas. Faltan diario y perfiles para un 8 |
+| Pruebas automáticas | 6,5 → **7,5** | 9 | 51 pruebas. Para un 9 hacen falta ~100 (diario, perfiles, gym) |
 
 ## 3. Plan por fases
 
@@ -60,7 +60,32 @@ Marca cada fase como HECHA aquí al terminarla.
   **Lo que falta para un 9**: avisos de verdad al móvil (push), y eso necesita servidor → va con la F5.
 - [ ] **F4 · Pruebas** · subir de 34 a ~55 cubriendo Coach, diario y perfiles.
 - [ ] **F5 · Nube (Supabase)** · la más grande, en 3 pasos: cuentas → sincronizar → PRO real.
-- [ ] **F6 · Inglés** · interfaz + nombres de alimentos genéricos.
+- [~] **F6 · Inglés (ES / EN)** — base HECHA en la 3.11.0, traducción EN CURSO.
+  Motor: `js/i18n.js` (`tr()`, `setLang()`, `locale()`, `dateTxt()`, `dowLetters()`, `applyStaticI18n()`),
+  diccionario en `js/data/lang-en.js`, estilo `.nd-langsel`, selector en el menú de ajustes.
+  **Medir siempre con `node tools/i18n-check.js`** (y `--faltan` / `--sin-en`).
+  **Seguro**: `I18N_READY = false` en `js/i18n.js` oculta el selector hasta que esté completo;
+  `tests/v311.test.js` no deja ponerlo en `true` si falta algo. Para probar: `setLang('en')` en la consola.
+  Ya funcionan: textos marcados, números (1234,5 → 1,234.5), fechas, iniciales de los días, `<html lang>`,
+  se recuerda la elección y se detecta el idioma del navegador.
+  **Lo que falta, por orden:**
+  1. ~519 textos de la interfaz sin marcar (coach 99 · engine 88 · diary 46 · calc 41 · gym 33 · insights 33 · kitchen 31 · wizard 30 · progress 26 · plans 22 · pdf 18 · dashboard 17 · index.html 12 · resto 19).
+  2. Fechas con `'es-ES'` fijo todavía en 30 sitios → cambiar por `dateTxt()` / `locale()`.
+  3. Nombres de alimentos: los ~470 genéricos y platos tienen su nombre inglés en `tools/genericos/*.json`
+     (campo `usda`). Los ~1.508 de marca NO se traducen (un producto se llama como se llama).
+  4. 95 ejercicios y sus 9 grupos musculares (`js/data/exercises.js`).
+  5. El Coach entiende solo español: sus patrones (`RX` en `coach.js`) y el lector de comidas
+     (`js/parser.js`) necesitan versión inglesa. **Sin esto, el inglés no es «igual de funcional».**
+  6. Dictado por voz: `rec.lang` fijo en `'es-ES'` (coach.js).
+  7. `privacidad.html` y `terminos.html`.
+  8. Las 1.913 páginas «Calorías de…» son españolas: decidir si se generan en inglés (`npm run seo`).
+
+- [ ] **F8 · Subir a 9 lo que está en 7,5** (encargo del 20-10-2026)
+  - **Coach 7,5 → 9**: que entienda inglés (va con F6.5), más temas, y que el lector de comidas
+    acepte frases sueltas mejor. Sin IA externa, por decisión de Ángel.
+  - **Enganche 7,5 → 9**: necesita avisos de verdad al móvil (push) → depende de la F5 (servidor).
+    Sin servidor no se puede pasar de 7,5 honestamente.
+  - **Pruebas 7,5 → 9**: de 51 a ~100, cubriendo diario, perfiles, gym y calculadora.
 - [ ] **F7 · Play Store** · cuenta de desarrollador y 12 testers (necesita a Ángel).
 
 ## 4. Lo que necesita a Ángel (no lo puede hacer Claude)

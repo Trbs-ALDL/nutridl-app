@@ -29,9 +29,9 @@
     <link rel="preload" href="fonts/newsreader-600.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/plus-jakarta-sans-400.woff2" as="font" type="font/woff2" crossorigin>
     <style id="fonts-inline">@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/plus-jakarta-sans-400.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/plus-jakarta-sans-500.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/plus-jakarta-sans-600.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/plus-jakarta-sans-700.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/plus-jakarta-sans-800.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/newsreader-500.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/newsreader-600.woff2) format('woff2')}</style>
-    <link rel="stylesheet" href="css/icons.css?v=52bd788ae5">
+    <link rel="stylesheet" href="css/icons.css?v=fd481c3887">
     <link rel="stylesheet" href="css/tailwind.css?v=ad1eb94e4e">
-    <link rel="stylesheet" href="css/app.css?v=7ae814dec5">
+    <link rel="stylesheet" href="css/app.css?v=be3fd7dabc">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -58,12 +58,12 @@
                 <span class="nd-brand text-[1.4rem] text-neutral-100">nutri<span class="text-mint-400">DL</span></span>
             </button>
             <nav id="tabbar-top" class="hidden lg:flex items-center gap-1 p-1 rounded-2xl bg-neutral-900 border border-neutral-800 text-sm font-extrabold" aria-label="Secciones">
-                <button data-tab="home" onclick="showTab('home')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-house"></i> Hoy</button>
-                <button data-tab="food" onclick="showTab('food')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-utensils"></i> Diario</button>
-                <button data-tab="coach" onclick="showTab('coach')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> Coach</button>
-                <button data-tab="progress" onclick="showTab('progress')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-chart-line"></i> Progreso</button>
-                <button data-tab="gym" onclick="showTab('gym')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-dumbbell"></i> Gym</button>
-                <button data-tab="calc" onclick="showTab('calc')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-bullseye"></i> Mi plan</button>
+                <button data-tab="home" onclick="showTab('home')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-house"></i> <span data-t="Hoy">Hoy</span></button>
+                <button data-tab="food" onclick="showTab('food')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-utensils"></i> <span data-t="Diario">Diario</span></button>
+                <button data-tab="coach" onclick="showTab('coach')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-wand-magic-sparkles"></i> <span data-t="Coach">Coach</span></button>
+                <button data-tab="progress" onclick="showTab('progress')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-chart-line"></i> <span data-t="Progreso">Progreso</span></button>
+                <button data-tab="gym" onclick="showTab('gym')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-dumbbell"></i> <span data-t="Gym">Gym</span></button>
+                <button data-tab="calc" onclick="showTab('calc')" class="px-4 py-2 rounded-xl flex items-center gap-2"><i class="fa-solid fa-bullseye"></i> <span data-t="Mi plan">Mi plan</span></button>
             </nav>
             <div id="profile-chip" class="relative"></div>
         </div>
@@ -82,7 +82,7 @@
                         <p class="text-lg sm:text-xl text-neutral-300 max-w-xl">Controla tus calorías, macros, comidas y progreso en un solo lugar.</p>
                         <div class="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
                             <button onclick="newProfile()" class="nd-btn-primary">Empezar gratis <i class="fa-solid fa-arrow-right"></i></button>
-                            <button onclick="importProfiles()" class="nd-btn-ghost"><i class="fa-solid fa-upload"></i> Ya tengo una copia</button>
+                            <button onclick="importProfiles()" class="nd-btn-ghost"><i class="fa-solid fa-upload"></i> <span data-t="Ya tengo una copia">Ya tengo una copia</span></button>
                         </div>
                         <ul class="flex flex-wrap gap-x-5 gap-y-2 text-sm font-semibold text-neutral-400">
                             <li><i class="fa-solid fa-check text-mint-400"></i> Gratis y sin anuncios</li>
@@ -156,7 +156,7 @@
         <div id="tab-calc" data-panel="calc" class="space-y-8 hidden">
         <div class="flex items-center justify-between gap-3">
             <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight">Mi plan</h2>
-            <button onclick="openWizard('edit')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-wand-magic-sparkles text-mint-400"></i> Asistente</button>
+            <button onclick="openWizard('edit')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-wand-magic-sparkles text-mint-400"></i> <span data-t="Asistente">Asistente</span></button>
         </div>
 
 
@@ -180,8 +180,8 @@
                     <div class="space-y-2">
                         <label class="block text-xs font-bold text-neutral-300 uppercase tracking-wider">Sexo biológico</label>
                         <div class="grid grid-cols-2 gap-3">
-                            <button id="btn-gender-female" onclick="setGender('female')" class="py-3 px-4 rounded-2xl font-extrabold text-xs transition border flex items-center justify-center gap-2"><i class="fa-solid fa-venus text-sm"></i> Mujer</button>
-                            <button id="btn-gender-male" onclick="setGender('male')" class="py-3 px-4 rounded-2xl font-extrabold text-xs transition border flex items-center justify-center gap-2"><i class="fa-solid fa-mars text-sm"></i> Hombre</button>
+                            <button id="btn-gender-female" onclick="setGender('female')" class="py-3 px-4 rounded-2xl font-extrabold text-xs transition border flex items-center justify-center gap-2"><i class="fa-solid fa-venus text-sm"></i> <span data-t="Mujer">Mujer</span></button>
+                            <button id="btn-gender-male" onclick="setGender('male')" class="py-3 px-4 rounded-2xl font-extrabold text-xs transition border flex items-center justify-center gap-2"><i class="fa-solid fa-mars text-sm"></i> <span data-t="Hombre">Hombre</span></button>
                         </div>
                     </div>
 
@@ -222,8 +222,8 @@
                     </div>
 
                     <div class="space-y-2">
-                        <button id="btn-edit" onclick="editData()" class="hidden w-full py-3.5 rounded-2xl bg-neutral-800 border border-neutral-700 hover:border-mint-500/50 text-neutral-100 font-extrabold text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-pen text-mint-400"></i> Editar datos</button>
-                        <button id="btn-accept" onclick="acceptData()" class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-base cta-glow flex items-center justify-center gap-2"><i class="fa-solid fa-check"></i> Aceptar</button>
+                        <button id="btn-edit" onclick="editData()" class="hidden w-full py-3.5 rounded-2xl bg-neutral-800 border border-neutral-700 hover:border-mint-500/50 text-neutral-100 font-extrabold text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-pen text-mint-400"></i> <span data-t="Editar datos">Editar datos</span></button>
+                        <button id="btn-accept" onclick="acceptData()" class="w-full py-4 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-base cta-glow flex items-center justify-center gap-2"><i class="fa-solid fa-check"></i> <span data-t="Aceptar">Aceptar</span></button>
                         <p id="calc-err" role="alert" class="hidden text-xs font-bold text-roseAccent-400"></p>
                     </div>
 
@@ -446,7 +446,7 @@
             <div class="flex gap-2">
             <button type="button" onclick="openFoodSheet()" class="flex-1 min-w-0 flex items-center gap-3 px-4 py-3.5 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-left hover:border-mint-500/50" aria-label="Buscar un alimento para apuntar">
                 <i class="fa-solid fa-magnifying-glass text-mint-400"></i>
-                <span class="text-sm font-semibold text-neutral-400 truncate">Busca un alimento: «spaghetti hacendado», «yogur griego»…</span>
+                <span class="text-sm font-semibold text-neutral-400 truncate" data-t="Busca un alimento: «spaghetti hacendado», «yogur griego»…">Busca un alimento: «spaghetti hacendado», «yogur griego»…</span>
             </button>
             <button type="button" onclick="openScanner()" class="w-14 shrink-0 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-mint-400 text-lg hover:border-mint-500/50" aria-label="Escanear código de barras"><i class="fa-solid fa-barcode"></i></button>
             </div>
@@ -466,10 +466,10 @@
         <section id="sec-coach" class="max-w-3xl mx-auto space-y-4">
             <div class="flex items-center justify-between gap-3">
                 <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight flex items-center gap-2">Coach <span class="nd-pro-badge">Beta</span></h2>
-                <button onclick="openPrefs()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-sliders text-mint-400"></i> Preferencias</button>
+                <button onclick="openPrefs()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-sliders text-mint-400"></i> <span data-t="Preferencias">Preferencias</span></button>
             </div>
             <div id="coach-seg" class="nd-seg" role="tablist" aria-label="Vistas del Coach">
-                <button role="tab" data-cv="chat" onclick="coachView('chat')"><i class="fa-solid fa-comment-dots"></i> Coach</button>
+                <button role="tab" data-cv="chat" onclick="coachView('chat')"><i class="fa-solid fa-comment-dots"></i> <span data-t="Coach">Coach</span></button>
                 <button role="tab" data-cv="menu" onclick="coachView('menu')"><i class="fa-solid fa-calendar-day"></i> Menú <i data-lock="menu" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
                 <button role="tab" data-cv="shop" onclick="coachView('shop')"><i class="fa-solid fa-basket-shopping"></i> Compra <i data-lock="shop" class="fa-solid fa-lock text-[10px] text-amber-300 hidden" aria-label="PRO"></i></button>
             </div>
@@ -492,7 +492,7 @@
         <div id="tab-progress" data-panel="progress" class="hidden space-y-6">
         <div class="flex items-center justify-between gap-3">
             <h2 class="text-2xl sm:text-3xl font-extrabold text-neutral-100 tracking-tight whitespace-nowrap">Mi progreso</h2>
-            <button onclick="openReminder()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-regular fa-bell text-mint-400"></i> Recordatorio</button>
+            <button onclick="openReminder()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-regular fa-bell text-mint-400"></i> <span data-t="Recordatorio">Recordatorio</span></button>
         </div>
         <div id="prog-summary" class="space-y-4"></div>
         <!-- Peso (registro, gráfica con media de 7 días y objetivo) y medidas -->
@@ -544,8 +544,8 @@
             <div class="flex items-center justify-between gap-3">
                 <h2 class="text-3xl font-extrabold text-neutral-100 tracking-tight">Entrenar</h2>
                 <div class="flex gap-2">
-                    <button onclick="openGymSettings()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-gear text-mint-400"></i> Ajustes</button>
-                    <button onclick="openPdfModal('gym')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-file-pdf"></i> PDF</button>
+                    <button onclick="openGymSettings()" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-gear text-mint-400"></i> <span data-t="Ajustes">Ajustes</span></button>
+                    <button onclick="openPdfModal('gym')" class="px-3 py-2 rounded-xl text-xs font-extrabold bg-neutral-800 border border-neutral-700 text-neutral-100 hover:border-mint-500/50 whitespace-nowrap"><i class="fa-solid fa-file-pdf"></i> <span data-t="PDF">PDF</span></button>
                 </div>
             </div>
             <div id="gym-app" class="space-y-5"></div>
@@ -557,7 +557,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-[11px] text-neutral-400 leading-relaxed space-y-1">
             <p><strong>Aviso importante:</strong> nutriDL es una herramienta educativa y orientativa; no sustituye el consejo de un médico o dietista-nutricionista. No está indicada para embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria, diabetes con medicación, enfermedad renal u otras patologías: en esos casos consulta a un profesional sanitario.</p>
             <p>Tus datos se guardan solo en tu navegador; no se envían a ningún servidor. Al escanear un producto solo se consulta su código de barras en Open Food Facts. Si usas la voz, tu navegador puede enviar el audio a su servicio de dictado (Google en Chrome, Apple en Safari) para convertirlo en texto. Las cantidades estimadas (foto, raciones por defecto) son aproximadas.</p>
-            <p class="nd-foot-links flex flex-wrap gap-x-4 gap-y-1 pt-1"><button data-install onclick="installApp()" class="underline underline-offset-2 hover:text-neutral-200 font-bold text-mint-300"><i class="fa-solid fa-mobile-screen-button"></i> Instalar la app</button><a href="alimentos/" class="underline underline-offset-2 hover:text-neutral-200">Calorías de los alimentos</a><a href="privacidad.html" class="underline underline-offset-2 hover:text-neutral-200">Privacidad</a><a href="terminos.html" class="underline underline-offset-2 hover:text-neutral-200">Términos de uso</a><a href="mailto:aannggeelltrabajos@gmail.com" class="underline underline-offset-2 hover:text-neutral-200">Contacto</a><button onclick="openReport()" class="underline underline-offset-2 hover:text-neutral-200">Informe de errores</button><button onclick="openPro()" class="underline underline-offset-2 hover:text-neutral-200">nutriDL PRO</button><button onclick="wipeAll()" class="underline underline-offset-2 hover:text-neutral-200">Borrar todos mis datos</button><span>nutriDL <span id="app-version"></span></span></p>
+            <p class="nd-foot-links flex flex-wrap gap-x-4 gap-y-1 pt-1"><button data-install onclick="installApp()" class="underline underline-offset-2 hover:text-neutral-200 font-bold text-mint-300"><i class="fa-solid fa-mobile-screen-button"></i> <span data-t="Instalar la app">Instalar la app</span></button><a href="alimentos/" class="underline underline-offset-2 hover:text-neutral-200">Calorías de los alimentos</a><a href="privacidad.html" class="underline underline-offset-2 hover:text-neutral-200">Privacidad</a><a href="terminos.html" class="underline underline-offset-2 hover:text-neutral-200">Términos de uso</a><a href="mailto:aannggeelltrabajos@gmail.com" class="underline underline-offset-2 hover:text-neutral-200">Contacto</a><button onclick="openReport()" class="underline underline-offset-2 hover:text-neutral-200">Informe de errores</button><button onclick="openPro()" class="underline underline-offset-2 hover:text-neutral-200">nutriDL PRO</button><button onclick="wipeAll()" class="underline underline-offset-2 hover:text-neutral-200">Borrar todos mis datos</button><span>nutriDL <span id="app-version"></span></span></p>
         </div>
     </footer>
 
@@ -601,11 +601,11 @@
     <div id="sticky-cta" class="no-print lg:hidden fixed bottom-0 inset-x-0 z-40 bg-neutral-900/95 backdrop-blur border-t border-neutral-800 shadow-[0_-8px_20px_-10px_rgba(0,0,0,0.15)]" style="padding-bottom: env(safe-area-inset-bottom)">
         <!-- Barra inferior tipo app: 3 pestañas -->
         <nav id="tabbar-bottom" class="grid grid-cols-5 text-[11px] font-extrabold" aria-label="Secciones">
-            <button data-tab="home" onclick="showTab('home')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-house text-lg"></i>Hoy</button>
-            <button data-tab="food" onclick="showTab('food')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-utensils text-lg"></i>Diario</button>
-            <button data-tab="coach" onclick="showTab('coach')" class="py-2.5 flex flex-col items-center gap-1"><span class="nd-coach-tab"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i></span>Coach</button>
-            <button data-tab="progress" onclick="showTab('progress')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-chart-line text-lg"></i>Progreso</button>
-            <button data-tab="gym" onclick="showTab('gym')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-dumbbell text-lg"></i>Gym</button>
+            <button data-tab="home" onclick="showTab('home')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-house text-lg"></i><span data-t="Hoy">Hoy</span></button>
+            <button data-tab="food" onclick="showTab('food')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-utensils text-lg"></i><span data-t="Diario">Diario</span></button>
+            <button data-tab="coach" onclick="showTab('coach')" class="py-2.5 flex flex-col items-center gap-1"><span class="nd-coach-tab"><i class="fa-solid fa-wand-magic-sparkles text-lg"></i></span><span data-t="Coach">Coach</span></button>
+            <button data-tab="progress" onclick="showTab('progress')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-chart-line text-lg"></i><span data-t="Progreso">Progreso</span></button>
+            <button data-tab="gym" onclick="showTab('gym')" class="py-2.5 flex flex-col items-center gap-1"><i class="fa-solid fa-dumbbell text-lg"></i><span data-t="Gym">Gym</span></button>
         </nav>
         <button id="sticky-cta-btn" onclick="stickyAction()" class="hidden"></button>
     </div>
@@ -641,9 +641,9 @@
             </div>
             <div id="pdf-result"></div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <button onclick="makePdf('download')" class="py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-sm font-extrabold flex items-center justify-center gap-2"><i class="fa-solid fa-download"></i> Descargar PDF</button>
-                <button id="pdf-share" onclick="makePdf('share')" class="hidden py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-100 text-sm font-extrabold flex items-center justify-center gap-2"><i class="fa-solid fa-share-nodes"></i> Compartir PDF</button>
-                <button onclick="printFromPdfModal()" class="py-3 rounded-xl border border-neutral-800 hover:bg-neutral-800 text-neutral-300 text-sm font-bold flex items-center justify-center gap-2"><i class="fa-solid fa-print"></i> Imprimir</button>
+                <button onclick="makePdf('download')" class="py-3 rounded-xl bg-mint-600 hover:bg-mint-700 text-white text-sm font-extrabold flex items-center justify-center gap-2"><i class="fa-solid fa-download"></i> <span data-t="Descargar PDF">Descargar PDF</span></button>
+                <button id="pdf-share" onclick="makePdf('share')" class="hidden py-3 rounded-xl bg-neutral-800 hover:bg-neutral-700 text-neutral-100 text-sm font-extrabold flex items-center justify-center gap-2"><i class="fa-solid fa-share-nodes"></i> <span data-t="Compartir PDF">Compartir PDF</span></button>
+                <button onclick="printFromPdfModal()" class="py-3 rounded-xl border border-neutral-800 hover:bg-neutral-800 text-neutral-300 text-sm font-bold flex items-center justify-center gap-2"><i class="fa-solid fa-print"></i> <span data-t="Imprimir">Imprimir</span></button>
             </div>
         </div>
     </div>
@@ -684,7 +684,9 @@
         </div>
     </div>
 
-    <script src="js/core.js?v=a8b824f85e" defer></script>
+    <script src="js/data/lang-en.js?v=1085d1a235" defer></script>
+    <script src="js/i18n.js?v=adc52f741c" defer></script>
+    <script src="js/core.js?v=f7bd15ecac" defer></script>
     <script src="js/data/foods.js?v=11595b85c4" defer></script>
     <script src="js/data/exercises.js?v=8e845d8e16" defer></script>
     <script src="js/calc.js?v=fbac00ff26" defer></script>
@@ -697,12 +699,12 @@
     <script src="js/wizard.js?v=cfbc27ac3b" defer></script>
     <script src="js/gym.js?v=e8dfffdb10" defer></script>
     <script src="js/diary.js?v=0b3305fa93" defer></script>
-    <script src="js/profiles.js?v=3b9cf8512b" defer></script>
+    <script src="js/profiles.js?v=1ce5a85199" defer></script>
     <script src="js/dashboard.js?v=cb9d283659" defer></script>
     <script src="js/kitchen.js?v=e60c77038a" defer></script>
     <script src="js/coach.js?v=4b5cffed6c" defer></script>
     <script src="js/plans.js?v=5a48e15628" defer></script>
     <script src="js/app.js?v=8c5831e6b5" defer></script>
-    <script src="js/main.js?v=a70164a23b" defer></script>
+    <script src="js/main.js?v=0c60ff9a47" defer></script>
 </body>
 </html>
