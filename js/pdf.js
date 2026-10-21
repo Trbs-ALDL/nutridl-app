@@ -215,7 +215,7 @@ function buildPlanPdf(opt) {
     d.gap(10); d.ensure(40);
     d.line(d.M, d.y, d.M + d.cw, d.y, '#cccccc'); d.gap(6);
     d.para(tr('Documento orientativo generado con nutriDL. No sustituye el consejo de un médico o dietista-nutricionista. No indicado en embarazo, lactancia, menores de 18 años, trastornos de la conducta alimentaria u otras patologías sin supervisión profesional.'), { size: 7.5, color: '#8a8a8a' });
-    return d.build({ title: `${opt.title} - ${name}`, footer: `nutriDL · ${opt.title} · ${name}` });
+    return d.build({ title: `${opt.title} - ${name}`, footer: `${opt.title} · ${name} · nutriDL · ${SHARE_URL}` });
 }
 
 // ----- Ventana "Descargar plan en PDF" -----

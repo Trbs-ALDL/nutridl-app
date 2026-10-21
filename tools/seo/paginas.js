@@ -48,7 +48,7 @@ td + td { white-space: nowrap; }
 .cta { display: block; text-align: center; margin: 26px 0; padding: 16px; border-radius: 16px; background: #9a6b40; color: #fff; font-weight: 800; text-decoration: none; }
 .cta:hover { background: #855c36; color: #fff; }
 .rel { list-style: none; padding: 0; display: grid; gap: 8px; }
-.rel li { margin: 0; } .rel a { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #1a1612; text-decoration: none; }
+.rel li { margin: 0; } .rel a { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 12px 14px; border-radius: 12px; background: #1a1612; text-decoration: none; }
 .rel span { color: #aea396; white-space: nowrap; }
 .idx { columns: 2 16rem; column-gap: 24px; padding-left: 1em; } .idx li { break-inside: avoid; }
 nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; } nav.toc a { padding: 6px 10px; border-radius: 99px; background: #1a1612; text-decoration: none; font-size: .9rem; }`;
@@ -96,6 +96,26 @@ const related = f => {
     return groups[groupKey(f)].filter(x => x !== f).map(x => [x, score(x)]).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([x]) => x);
 };
 
+// Notas propias de cada ficha, calculadas con sus datos (contenido único, no solo la plantilla con otros números).
+// Semáforo de la FSA / Department of Health (Reino Unido, guía de etiquetado frontal de 2016), por 100 g o 100 ml.
+const FSA = { solid: { fat: [3, 17.5], sug: [5, 22.5] }, liquid: { fat: [1.5, 8.75], sug: [2.5, 11.25] } };
+const protPer100kcal = f => kcal100(f) > 0 ? f.p / kcal100(f) * 100 : 0;
+const notes = f => {
+    const out = [], L = f.ml ? FSA.liquid : FSA.solid, u = f.ml ? '100 ml' : '100 g';
+    const fsa = (v, [lo, hi], what) => v > hi ? `Alto en ${what} según el semáforo nutricional de la FSA (más de ${num(hi)} g por ${u}).`
+        : v <= lo ? `Bajo en ${what} según el semáforo nutricional de la FSA (${num(lo)} g o menos por ${u}).` : null;
+    const g = fsa(f.f, L.fat, 'grasas'); if (g) out.push(g);
+    if (f.sug != null) { const s = fsa(f.sug, L.sug, 'azúcares'); if (s) out.push(s); }
+    const grp = groups[groupKey(f)].filter(x => kcal100(x) >= 20);
+    if (grp.length >= 8 && kcal100(f) >= 20) {
+        const mine = protPer100kcal(f), below = grp.filter(x => protPer100kcal(x) < mine).length, p = Math.round(below / (grp.length - 1) * 100);
+        const quien = f.brand ? `los productos de ${f.brand}` : `«${CAT[f.cat] || 'su grupo'}»`;
+        if (p >= 75) out.push(`Da ${num(mine)} g de proteína por cada 100 kcal: más que el ${p} % de ${quien} de esta lista.`);
+        else if (p <= 25 && mine < 4) out.push(`Da ${num(mine)} g de proteína por cada 100 kcal, de las más bajas entre ${quien} de esta lista.`);
+    }
+    return out;
+};
+
 fs.mkdirSync(OUT, { recursive: true });
 fs.writeFileSync(path.join(OUT, 'alimentos.css'), STYLE.trim() + '\n');
 for (const old of fs.readdirSync(OUT)) if (old.endsWith('.html')) fs.unlinkSync(path.join(OUT, old)); // páginas generadas: se rehacen enteras
@@ -118,6 +138,7 @@ for (const f of list) {
     <p>1 ${esc(s1)} (${sg} ${unit}) = <strong>${num(k * r, 0)} kcal</strong> y <strong>${num(f.p * r)} g de proteína</strong>.</p>
     <div class="bar" role="img" aria-label="Reparto de calorías: proteína ${pct(pk)} %, hidratos ${pct(ck)} %, grasas ${pct(fk)} %"><span style="width:${pct(pk)}%"></span><span style="width:${pct(ck)}%"></span><span style="width:${pct(fk)}%"></span></div>
     <p class="meta">De sus calorías: proteína ${pct(pk)} % · hidratos ${pct(ck)} % · grasas ${pct(fk)} %</p>
+    ${notes(f).length ? `<ul>${notes(f).map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}
     <h2>Información nutricional</h2>
     <table><thead><tr><th>Nutriente</th><th>Por 100 ${unit}</th><th>Por ${esc(s1)} (${sg} ${unit})</th></tr></thead>
     <tbody>${rows.map(([a, b, c]) => `<tr><td>${esc(a.trim())}</td><td>${b}</td><td>${c}</td></tr>`).join('')}</tbody></table>
@@ -127,6 +148,42 @@ for (const f of list) {
     <ul class="rel">${related(f).map(x => `<li><a href="${x._slug}.html">${esc(fullName(x))}<span>${num(kcal100(x), 0)} kcal/100 ${x.ml ? 'ml' : 'g'}</span></a></li>`).join('')}</ul>` : ''}`;
     fs.writeFileSync(path.join(OUT, f._slug + '.html'), page({ title, desc, canonical: url, body,
         ld: crumbs([['nutriDL', SITE], ['Calorías de los alimentos', SITE + 'alimentos/'], [name, url]]) }));
+}
+
+// Rankings con datos reales (playbook «curación»): búsquedas tipo «productos Mercadona con más proteína»
+const solid = f => !f.ml;
+const perServ = (f, v) => v * ((f.serv || [100])[0] / 100);
+const RANKINGS = [
+    { slug: 'hacendado-mas-proteina', title: 'Productos Hacendado con más proteína',
+      intro: 'Los productos Hacendado (Mercadona) de esta lista con más proteína por cada 100 g, según su etiqueta.',
+      pick: f => f.brand === 'Hacendado' && solid(f), val: f => f.p, show: f => `${num(f.p)} g proteína/100 g`, n: 25 },
+    { slug: 'hacendado-proteina-por-caloria', title: 'Productos Hacendado con más proteína por caloría',
+      intro: 'Para ganar músculo o perder grasa sin pasarte de calorías: los productos Hacendado que más proteína dan por cada 100 kcal.',
+      pick: f => f.brand === 'Hacendado' && kcal100(f) >= 40 && f.p >= 5, val: protPer100kcal, show: f => `${num(protPer100kcal(f))} g proteína/100 kcal`, n: 25 },
+    { slug: 'alimentos-mas-proteina', title: 'Alimentos con más proteína',
+      intro: 'Alimentos básicos (sin marca) con más proteína por cada 100 g, con valores oficiales del USDA.',
+      pick: f => !f.brand && solid(f), val: f => f.p, show: f => `${num(f.p)} g proteína/100 g`, n: 30 },
+    { slug: 'comida-rapida-menos-calorias', title: 'Comida rápida con menos calorías por ración',
+      intro: 'Platos de McDonald’s, Burger King y KFC con menos calorías por ración (raciones de 100 g o más; sin salsas ni bebidas), según la información nutricional oficial de cada cadena.',
+      pick: f => f.fast && solid(f) && kcal100(f) > 0 && (f.serv || [0])[0] >= 100 && !/salsa|ketchup|mayonesa|ali[ñn]o|caf[eé]|capuchino|batido|sirope|zumo|refresco|bebida|don sim[oó]n|agua/i.test(f.name + " " + (f.brand || "")),
+      val: f => -perServ(f, kcal100(f)), show: f => `${num(perServ(f, kcal100(f)), 0)} kcal/ración`, n: 25 },
+    { slug: 'comida-rapida-mas-proteina', title: 'Comida rápida con más proteína por ración',
+      intro: 'Si comes fuera y quieres llegar a tu proteína: lo que más proteína da por ración en McDonald’s, Burger King y KFC.',
+      pick: f => f.fast, val: f => perServ(f, f.p), show: f => `${num(perServ(f, f.p))} g proteína/ración`, n: 25 },
+];
+for (const R of RANKINGS) {
+    const items = list.filter(R.pick).sort((a, b) => R.val(b) - R.val(a)).slice(0, R.n);
+    R.count = items.length; if (!items.length) continue;
+    const url = `${SITE}alimentos/ranking-${R.slug}.html`;
+    fs.writeFileSync(path.join(OUT, `ranking-${R.slug}.html`), page({
+        title: `${R.title} · nutriDL`, desc: `${R.intro} Top ${items.length} con calorías y fuente de cada dato.`, canonical: url,
+        ld: crumbs([['nutriDL', SITE], ['Calorías de los alimentos', SITE + 'alimentos/'], [R.title, url]]),
+        body: `    <a class="back" href="./">← Calorías de los alimentos</a>
+    <h1>${esc(R.title)}</h1>
+    <p>${esc(R.intro)}</p>
+    <ol class="rel">${items.map(x => `<li><a href="${x._slug}.html">${esc(fullName(x))}<span>${R.show(x)} · ${num(kcal100(x), 0)} kcal/100 ${x.ml ? 'ml' : 'g'}</span></a></li>`).join('')}</ol>
+    <p class="meta">Calculado con los ${list.filter(R.pick).length} alimentos de la base de nutriDL que cumplen el criterio (${TODAY}). Cada ficha enlaza a su fuente. No es una lista de todo el supermercado.</p>
+    <a class="cta" href="../">Calcula tu plan y apunta lo que comes en nutriDL · gratis y sin anuncios</a>` }));
 }
 
 // Índice: marcas (de más a menos productos) y alimentos genéricos por grupo
@@ -145,12 +202,14 @@ fs.writeFileSync(path.join(OUT, 'index.html'), page({
     body: `    <a class="back" href="../">← nutriDL</a>
     <h1>${esc(idxTitle)}</h1>
     <p>Valores por 100 g (o 100 ml) con la fuente de cada dato: la etiqueta del producto, el USDA o la información oficial del restaurante. Para llevar la cuenta de tu día, <a href="../">usa nutriDL gratis</a>.</p>
+    <h2>Listas</h2>
+    <ul class="rel">${RANKINGS.filter(R => R.count).map(R => `<li><a href="ranking-${R.slug}.html">${esc(R.title)}<span>top ${R.count}</span></a></li>`).join('')}</ul>
     <nav class="toc" aria-label="Secciones">${secs.map(s => `<a href="#${s.id}">${esc(s.t)}</a>`).join('')}</nav>
 ${secs.map(s => s.html).join('\n')}`,
 }));
 
 // sitemap.xml
-const urls = [[SITE, TODAY], [SITE + 'privacidad.html'], [SITE + 'terminos.html'], [SITE + 'alimentos/', TODAY], ...list.map(f => [`${SITE}alimentos/${f._slug}.html`])];
+const urls = [[SITE, TODAY], [SITE + 'privacidad.html'], [SITE + 'terminos.html'], [SITE + 'alimentos/', TODAY], ...RANKINGS.filter(R => R.count).map(R => [`${SITE}alimentos/ranking-${R.slug}.html`, TODAY]), ...list.map(f => [`${SITE}alimentos/${f._slug}.html`])];
 fs.writeFileSync(path.join(root, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map(([u, d]) => `  <url><loc>${u}</loc>${d ? `<lastmod>${d}</lastmod>` : ''}</url>`).join('\n')}

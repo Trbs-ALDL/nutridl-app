@@ -1,5 +1,17 @@
 # Cambios de nutriDL
 
+## 3.13.0 · 22 de octubre de 2026
+
+Ronda de mejoras con las skills de negocio (review-mining, competitive-analysis, aso, onboarding, paywalls, pricing, churn-prevention, referrals, cro, copywriting, programmatic-seo, mvp-scoping).
+
+- **Aviso antes de que acabe la prueba PRO** (a 2 días y a 1 día) en «Hoy»: explica que lo gratis sigue y que no se cobra nada. Una vez al día como mucho.
+- **Pantalla PRO**: botón «Seguir con la versión gratis», además de la X.
+- **Boca a boca**: el PDF del plan lleva el enlace a la app en el pie, y la lista de la compra compartida termina con «Hecha con nutriDL, gratis: …».
+- **Páginas «Calorías de…»**: cada ficha añade notas propias calculadas con sus datos (semáforo de la FSA para grasas y azúcares; proteína por 100 kcal frente a su grupo). Las listas de «parecidos» ya no se salen de la pantalla en el móvil.
+- **5 rankings nuevos** con datos reales: productos Hacendado con más proteína, Hacendado con más proteína por caloría, alimentos con más proteína, comida rápida con menos calorías y con más proteína por ración. Enlazados desde el índice y en el sitemap.
+- **Ficha de Google Play** (`docs/PLAY-STORE.md`): título «nutriDL: Contador de Calorías», descripción con las búsquedas reales («contar calorías», «dieta», «adelgazar», «Mercadona») y cifras al día (2.280 alimentos).
+- Nuevo `docs/COMPETENCIA.md`: 580 reseñas de Google Play España (Fitia, Yazio, MyFitnessPal) y posicionamiento.
+
 ## 3.12.0 · 21 de octubre de 2026
 
 **La app ya está en inglés: puedes elegir ES o EN**

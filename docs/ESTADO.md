@@ -6,6 +6,9 @@
 
 Última medición: **20 de octubre de 2026** · versión **3.8.1**
 
+> **22-10-2026 · 3.13.0:** ronda con las skills de negocio. Competencia y voz del cliente en `docs/COMPETENCIA.md` (580 reseñas de Play ES: el dolor nº 1 del mercado es «todo es de pago»). Hecho: aviso de fin de prueba PRO, «Seguir gratis» en la pantalla PRO, enlace a la app en PDF y lista de la compra, notas propias + 5 rankings en las páginas SEO (1.920 direcciones en el sitemap), ficha de Play optimizada. Pruebas: 54 pasan. Copia: «appdura 19.0» = 3.12.0 (la próxima es la 20.0).
+> **Pendiente de decisión de Ángel:** promesa pública «lo gratis seguirá gratis», nuevo titular de portada, recomposición corporal + macros a mano + exportar a CSV (lo más pedido en las reseñas), capturas de Play con textos.
+
 ## 1. Lo que ya está medido (no repetir)
 
 | Medición | Resultado | Cómo se midió |

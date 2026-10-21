@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://trbs-aldl.github.io/nutridl-app/</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://trbs-aldl.github.io/nutridl-app/</loc><lastmod>2026-10-21</lastmod></url>
   <url><loc>https://trbs-aldl.github.io/nutridl-app/privacidad.html</loc></url>
   <url><loc>https://trbs-aldl.github.io/nutridl-app/terminos.html</loc></url>
-  <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/ranking-hacendado-mas-proteina.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/ranking-hacendado-proteina-por-caloria.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/ranking-alimentos-mas-proteina.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/ranking-comida-rapida-menos-calorias.html</loc><lastmod>2026-10-21</lastmod></url>
+  <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/ranking-comida-rapida-mas-proteina.html</loc><lastmod>2026-10-21</lastmod></url>
   <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/big-mac-mcdonald-s.html</loc></url>
   <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/cuarto-de-libra-mcdonald-s.html</loc></url>
   <url><loc>https://trbs-aldl.github.io/nutridl-app/alimentos/cuarto-de-libra-doble-mcdonald-s.html</loc></url>

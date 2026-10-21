@@ -62,26 +62,27 @@ Con dominio propio (por ejemplo `nutridl.es`) sería `nutridl.es/.well-known/ass
 5. Pasados los 14 días: Panel → **Solicitar acceso a producción** → responde el cuestionario → publica.
 
 ## Textos de la ficha (copiar y pegar)
-**Nombre (26/30):** nutriDL: Calorías y Macros
+**Nombre (29/30):** nutriDL: Contador de Calorías
 
-**Descripción breve (76/80):** Cuenta calorías y macros gratis. Escáner sin anuncios y productos Hacendado.
+**Descripción breve (73/80):** Cuenta calorías y macros gratis y sin anuncios. Escáner, gym y Hacendado.
 
 **Descripción completa:**
 ```
-nutriDL es tu entrenador nutricional personal: te dice cuántas calorías y cuánta proteína necesitas, qué comer ahora y cómo vas, sin anuncios y sin crear cuenta.
+nutriDL es un contador de calorías y macros gratis y sin anuncios: te dice cuántas calorías y cuánta proteína necesitas para adelgazar, ganar músculo o mantenerte, qué comer ahora y cómo vas. Sin crear cuenta.
 
-LO QUE OTRAS APPS COBRAN, AQUÍ ES GRATIS
+LO BÁSICO, GRATIS DE VERDAD
 • Escáner de código de barras gratis
-• Calorías, proteína, hidratos y grasas completos
+• Calorías, proteína, hidratos, grasas y azúcares completos
+• Apunta todas las comidas que quieras, sin límite
 • Sin anuncios. Nunca.
 
-MÁS DE 1.400 ALIMENTOS COMPROBADOS
-• Casi 500 productos Hacendado y las marcas que compras en España
+MÁS DE 2.200 ALIMENTOS COMPROBADOS
+• Casi 500 productos Hacendado de Mercadona y las marcas que compras en España
 • Alimentos crudos y cocinados con valores oficiales (USDA)
 • Cada producto se revisa: sus calorías tienen que cuadrar con la etiqueta
 
-TU PLAN EN 2 MINUTOS
-• Calculamos tus calorías y macros según tu objetivo: perder grasa, ganar músculo o mantenerte
+TU DIETA EN 2 MINUTOS
+• Calculamos tus calorías y macros según tu objetivo: perder peso, ganar músculo o mantenerte
 • Te explicamos de dónde sale cada número
 
 UN COACH QUE TE RESPONDE
@@ -92,10 +93,10 @@ UN COACH QUE TE RESPONDE
 PROGRESO QUE SE ENTIENDE
 • Peso medio con tendencia real (la báscula engaña, la media no)
 • Racha, logros y tu semana de un vistazo
-• Medidas corporales
+• Medidas corporales y tu semana en una imagen para compartir
 
 GYM INCLUIDO
-• Apunta series y pesos, con temporizador de descanso
+• Apunta series y pesos, con temporizador de descanso y cronómetro
 • Tus mejores marcas por ejercicio
 
 FUNCIONES PRO (pruébalas 7 días gratis, sin tarjeta)
@@ -106,7 +107,8 @@ FUNCIONES PRO (pruébalas 7 días gratis, sin tarjeta)
 
 PRIVACIDAD DE VERDAD
 • Sin cuentas ni contraseñas
-• Tus datos se quedan en tu móvil; puedes hacer copia o borrarlo todo
+• Tus datos se quedan en tu móvil; puedes exportar tu plan en PDF, hacer copia o borrarlo todo
+• En español e inglés
 
 nutriDL es una herramienta educativa y orientativa: no sustituye el consejo de un médico o dietista-nutricionista. No está indicada para embarazo, lactancia, menores de 18 años ni trastornos de la conducta alimentaria.
 ```

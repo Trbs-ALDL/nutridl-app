@@ -76,6 +76,14 @@ function dayMoment() {
     const M = moments(), today = todayISO(), S = streakInfo();
     const last = lastLoggedDay(), fuera = last ? dayNum(today) - dayNum(last) : 0;
 
+    // 0. La prueba PRO acaba en 1-2 días: avisar con tiempo, sin presión (no se cobra nada ni se renueva sola)
+    const tl = typeof trialDaysLeft === 'function' ? trialDaysLeft() : 0;
+    if (tl >= 1 && tl <= 2 && M.trial !== today) return {
+        k: 'trial', ic: '👑', kicker: tr('Prueba PRO'),
+        title: tl === 1 ? tr('Tu prueba PRO termina mañana') : tr('Tu prueba PRO termina en 2 días'),
+        sub: tr('Después sigues con todo lo gratis: diario, escáner, Coach, progreso y gym. No se cobra nada: la prueba no se renueva sola.'),
+        btn: [tr('Ver qué incluye PRO'), "momentSeen('trial'); openPro()"], btn2: [tr('Entendido'), "dismissMoment('trial')"] };
+
     // 1. Vuelve después de unos días: ni regañar ni fingir que no ha pasado
     if (last && fuera >= 3 && M.back !== today) return {
         k: 'back', ic: '🌱', kicker: tr('{k} días sin apuntar', { k: fuera }),

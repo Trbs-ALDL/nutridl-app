@@ -11,7 +11,7 @@ td + td { white-space: nowrap; }
 .cta { display: block; text-align: center; margin: 26px 0; padding: 16px; border-radius: 16px; background: #9a6b40; color: #fff; font-weight: 800; text-decoration: none; }
 .cta:hover { background: #855c36; color: #fff; }
 .rel { list-style: none; padding: 0; display: grid; gap: 8px; }
-.rel li { margin: 0; } .rel a { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: #1a1612; text-decoration: none; }
+.rel li { margin: 0; } .rel a { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 12px 14px; border-radius: 12px; background: #1a1612; text-decoration: none; }
 .rel span { color: #aea396; white-space: nowrap; }
 .idx { columns: 2 16rem; column-gap: 24px; padding-left: 1em; } .idx li { break-inside: avoid; }
 nav.toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; } nav.toc a { padding: 6px 10px; border-radius: 99px; background: #1a1612; text-decoration: none; font-size: .9rem; }

@@ -282,7 +282,8 @@ function shopText() {
     return tr('Lista de la compra · nutriDL ({x})', { x: S.days === 1 ? tr('hoy') : tp(S.days, 'día', 'días') }) + '\n' + SHOP_GROUPS.map(([g, label]) => { const L = S.items.filter(x => x.group === g && !S.done[x.fid]); return L.length ? `\n${tr(label)}\n` + L.map(x => { const f = getFood(x.fid); return f ? `- ${foodName(f)}: ${shopQty(f, x.g)}` : ''; }).join('\n') : ''; }).join('') + ((S.extra || []).filter(x => !x.done).length ? '\n\n' + tr('Otros') + '\n' + S.extra.filter(x => !x.done).map(x => '- ' + x.t).join('\n') : '');
 }
 async function shareShop() {
-    const t = shopText();
+    // Al compartir, la lista lleva el enlace a la app: así quien la recibe puede probarla
+    const t = shopText() + '\n\n' + tr('Hecha con nutriDL, gratis: {u}', { u: 'https://' + SHARE_URL + '/' });
     if (navigator.share) { try { await navigator.share({ title: tr('Lista de la compra'), text: t }); return; } catch (e) { if (e && e.name === 'AbortError') return; } }
     try { await navigator.clipboard.writeText(t); toast('Lista copiada: pégala donde quieras'); } catch (e) { toast('No se pudo copiar'); }
 }

@@ -103,6 +103,7 @@ function openPaywall(feature) {
         <div class="text-center space-y-2 py-2"><div class="nd-ic-xl mx-auto">${icon('👑')}</div><h3 class="text-xl font-extrabold text-neutral-50">${tr('{n} es de nutriDL PRO', { n: esc(name) })}</h3><p class="text-sm text-neutral-300">${esc(why)}</p></div>
         ${proActions()}${proPrices()}
         <details class="nd-faq"><summary>${tr('Qué incluye PRO')}<i class="fa-solid fa-chevron-down chev"></i></summary><div class="px-3 pb-3">${proTable()}</div></details>
+        <button type="button" onclick="closeSheet()" class="w-full py-2.5 text-sm font-bold text-neutral-400 hover:text-neutral-200">${tr('Seguir con la versión gratis')}</button>
     </div>`);
 }
 function afterProChange() { closeSheet(); renderDashboard(); renderDiary(); if (state.tab === 'coach') renderCoach(); if (state.tab === 'progress') renderProgress(); }
