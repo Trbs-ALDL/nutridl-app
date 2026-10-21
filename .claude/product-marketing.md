@@ -20,6 +20,9 @@
 - Coach que responde («¿Qué ceno con 600 kcal?»), gym incluido, tarjeta «Compartir mi semana».
 - Competidores principales: Fitia (fuerte en España/Latam, ~9,99 €/mes), MyFitnessPal, Yazio, FatSecret.
 
+## Promesa pública (desde la 3.14.0)
+El escáner, las macros, el diario, el Coach básico, el progreso y el gym seguirán siendo gratis. Lo que hoy es gratis no pasará a ser de pago. **No proponer nunca cobrar por estas funciones.**
+
 ## Precio
 - Gratis siempre: plan, diario, escáner, base de alimentos, Coach básico, peso, progreso, gym.
 - **PRO: 4,99 €/mes · 39,99 €/año** (prueba de 7 días sin tarjeta): voz, foto, Mi nevera, menú del día, compra inteligente, análisis avanzado.

@@ -37,7 +37,7 @@
 4. **Privacidad**: sin cuenta; los datos en el móvil.
 5. Coach por reglas que responde al instante (sin «créditos»).
 
-**Huecos honestos de nutriDL:** no está en Play Store, base más pequeña (2.280 vs millones), sin fotos con IA reconocedora, sin objetivo de recomposición, sin macros a mano, sin exportar a Excel/CSV, sin sincronizar con relojes.
+**Huecos honestos de nutriDL** (recomposición y macros a mano: HECHOS en la 3.14.0): no está en Play Store, base más pequeña (2.280 vs millones), sin fotos con IA reconocedora, sin exportar a Excel/CSV, sin sincronizar con relojes.
 
 ## 5. Posicionamiento recomendado
 **Competir en otro eje: confianza y libertad, no en IA.** Mensaje: *«La app de calorías que no te cobra por lo básico»*: escáner, macros y comidas ilimitadas gratis, sin anuncios, con datos de verdad de tu supermercado.

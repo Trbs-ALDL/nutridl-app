@@ -29,7 +29,7 @@ function wzTraining(n) {
 }
 function wzPref(k, v) { myPrefs()[k] = v; if (k === 'meals') return wzNext(); renderWz(); }
 function wzAllergy(k) { const p = myPrefs(); p.allergies = p.allergies.includes(k) ? p.allergies.filter(x => x !== k) : p.allergies.concat(k); renderWz(); }
-function wzGoal(t, adj) { state.goalType = t; state.goalAdj = adj; state.goal = t === 'lose' ? -0.15 : t === 'gain' ? 0.10 : 0; if (t === 'gain' && !state.exp) state.exp = state.gym.level || 'beginner'; wzNext(); }
+function wzGoal(t, adj) { state.goalType = t; state.goalAdj = adj; state.goal = t === 'lose' ? -0.15 : t === 'gain' ? 0.10 : t === 'recomp' ? -0.05 : 0; if (t === 'gain' && !state.exp) state.exp = state.gym.level || 'beginner'; wzNext(); }
 function wzNext() {
     const step = WZ_STEPS[wz.i];
     if (step === 'name') {
@@ -96,6 +96,7 @@ function renderWz() {
             body = title(tr('¿Qué quieres conseguir?'), 'Elige tu objetivo principal. Podrás cambiarlo después.') + `<div class="grid gap-3">` + // i18n-ignore (el 2.º texto de title() y las descripciones de objetivo ya no se enseñan)
                 tile(goalTypeOf() === 'lose' && (state.goalAdj || 0) >= 0, "wzGoal('lose',0)", '🔥', tr('Perder grasa'), 'Bajar de peso a un ritmo saludable y sostenible') + // i18n-ignore (el 2.º texto de title() y las descripciones de objetivo ya no se enseñan)
                 tile(goalTypeOf() === 'lose' && state.goalAdj === -1, "wzGoal('lose',-1)", '🌱', tr('Perder peso poco a poco'), 'Sin prisa y con el mínimo hambre posible') + // i18n-ignore (el 2.º texto de title() y las descripciones de objetivo ya no se enseñan)
+                tile(goalTypeOf() === 'recomp', "wzGoal('recomp',0)", '🔄', tr('Recomposición corporal'), 'Perder grasa y ganar músculo a la vez') + // i18n-ignore (el 2.º texto de title() y las descripciones de objetivo ya no se enseñan)
                 tile(goalTypeOf() === 'maintain', "wzGoal('maintain',0)", '⚖️', tr('Mantener mi peso'), 'Comer mejor, tener energía y tonificar') + // i18n-ignore (el 2.º texto de title() y las descripciones de objetivo ya no se enseñan)
                 tile(goalTypeOf() === 'gain', "wzGoal('gain',0)", '💪', tr('Ganar músculo'), 'Superávit moderado para minimizar grasa') + `</div>`; // i18n-ignore (el 2.º texto de title() y las descripciones de objetivo ya no se enseñan)
             break;

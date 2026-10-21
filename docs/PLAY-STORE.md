@@ -71,6 +71,7 @@ Con dominio propio (por ejemplo `nutridl.es`) sería `nutridl.es/.well-known/ass
 nutriDL es un contador de calorías y macros gratis y sin anuncios: te dice cuántas calorías y cuánta proteína necesitas para adelgazar, ganar músculo o mantenerte, qué comer ahora y cómo vas. Sin crear cuenta.
 
 LO BÁSICO, GRATIS DE VERDAD
+Nuestra promesa: el escáner, las macros, el diario, el Coach básico, el progreso y el gym seguirán siendo gratis. Lo que hoy es gratis no pasará a ser de pago.
 • Escáner de código de barras gratis
 • Calorías, proteína, hidratos, grasas y azúcares completos
 • Apunta todas las comidas que quieras, sin límite
@@ -82,7 +83,8 @@ MÁS DE 2.200 ALIMENTOS COMPROBADOS
 • Cada producto se revisa: sus calorías tienen que cuadrar con la etiqueta
 
 TU DIETA EN 2 MINUTOS
-• Calculamos tus calorías y macros según tu objetivo: perder peso, ganar músculo o mantenerte
+• Calculamos tus calorías y macros según tu objetivo: perder peso, recomposición corporal (perder grasa y ganar músculo a la vez), ganar músculo o mantenerte
+• ¿Te ha dado las macros tu entrenador? Ponlas a mano y las calorías salen solas
 • Te explicamos de dónde sale cada número
 
 UN COACH QUE TE RESPONDE

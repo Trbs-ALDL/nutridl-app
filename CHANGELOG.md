@@ -1,5 +1,14 @@
 # Cambios de nutriDL
 
+## 3.14.0 · 22 de octubre de 2026
+
+Los puntos débiles que salieron de las reseñas de la competencia y de la revisión de la portada (`docs/COMPETENCIA.md`):
+
+- **Portada nueva**: titular «Cuenta calorías gratis de verdad» (el anterior queda encima como subtítulo) y **promesa pública**: el escáner, las macros, el diario, el Coach básico, el progreso y el gym seguirán siendo gratis. También en las preguntas frecuentes y en la ficha de Google Play.
+- **Nuevo objetivo: recomposición corporal** (perder grasa y ganar músculo a la vez): déficit pequeño de 2,5 / 5 / 7,5 % y proteína a 2,2 g/kg (Barakat 2020, Morton 2018). En el asistente, en «Mi plan», en «Hoy» y en el PDF.
+- **Macros a mano** en «Mi plan»: pones proteína, hidratos y grasas y las calorías salen solas; botón para volver al cálculo automático. Avisa (sin bloquear) si quedan por debajo del mínimo seguro. Los valores se limpian (solo números, de 0 a 600 g).
+- 6 pruebas nuevas (`tests/v313.test.js`): 60 en total.
+
 ## 3.13.0 · 22 de octubre de 2026
 
 Ronda de mejoras con las skills de negocio (review-mining, competitive-analysis, aso, onboarding, paywalls, pricing, churn-prevention, referrals, cro, copywriting, programmatic-seo, mvp-scoping).

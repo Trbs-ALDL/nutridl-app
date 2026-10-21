@@ -21,7 +21,7 @@ function macroBar(label, val, target, color) {
         <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full" style="width:${pct}%;background:${color}"></div></div></div>`;
 }
 // «Hoy»: objetivo, lo que llevas y lo que te queda, qué hacer ahora, accesos rápidos y cómo vas
-const GOAL_LABEL = { lose: ['🔥', tk('Perder grasa')], maintain: ['⚖️', tk('Mantener peso')], gain: ['💪', tk('Ganar músculo')] };
+const GOAL_LABEL = { lose: ['🔥', tk('Perder grasa')], recomp: ['🔄', tk('Recomposición')], maintain: ['⚖️', tk('Mantener peso')], gain: ['💪', tk('Ganar músculo')] };
 function kcalBar(v, t) {
     const pct = t > 0 ? Math.min(100, v / t * 100) : 0, over = v > t * 1.05;
     return `<div class="nd-kbar" role="progressbar" aria-valuemin="0" aria-valuemax="${Math.round(t)}" aria-valuenow="${Math.round(v)}" aria-label="${tr('Calorías de hoy')}"><div style="width:${pct}%;${over ? 'background:#c2603f' : ''}"></div></div>`;

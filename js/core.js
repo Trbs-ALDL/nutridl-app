@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.13.0';
+const APP_VERSION = '3.14.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -49,7 +49,7 @@ const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;'
 // Iconos de línea en lugar de emojis en toda la app (los emojis se veían infantiles).
 // Las claves van sin el selector de variante (U+FE0F): icon() lo quita antes de buscar.
 const EMOJI_IC = {
-    '🔥': 'fa-fire', '⚖': 'fa-scale-balanced', '🧘': 'fa-spa', '🥩': 'fa-drumstick-bite', '💪': 'fa-dumbbell', '💡': 'fa-lightbulb',
+    '🔥': 'fa-fire', '🔄': 'fa-arrows-rotate', '⚖': 'fa-scale-balanced', '🧘': 'fa-spa', '🥩': 'fa-drumstick-bite', '💪': 'fa-dumbbell', '💡': 'fa-lightbulb',
     '🎯': 'fa-bullseye', '🍽': 'fa-utensils', '☀': 'fa-sun', '📈': 'fa-arrow-trend-up', '📉': 'fa-arrow-trend-down', '🏆': 'fa-trophy',
     '🥗': 'fa-leaf', '💧': 'fa-droplet', '😴': 'fa-moon', '⭐': 'fa-star', '🎉': 'fa-champagne-glasses', '🌱': 'fa-seedling',
     '👩': 'fa-venus', '👨': 'fa-mars', '🛋': 'fa-couch', '🚶': 'fa-person-walking', '🏃': 'fa-person-running', '🏋': 'fa-dumbbell',
