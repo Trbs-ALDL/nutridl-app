@@ -19,7 +19,7 @@ idx = idx.replace(/<link rel="stylesheet" href="css\/fonts\.css(?:\?v=[0-9a-f]+)
 fs.writeFileSync(idxPath, idx);
 
 // --- 2. Lista de archivos y versión global ---
-const files = ['index.html', 'privacidad.html', 'terminos.html', 'manifest.webmanifest'];
+const files = ['index.html', 'privacidad.html', 'terminos.html', 'privacy.html', 'terms.html', 'manifest.webmanifest'];
 for (const d of ['css', 'js', 'fonts', 'icons']) {
     const walk = p => fs.readdirSync(p, { withFileTypes: true }).forEach(e => { const f = path.join(p, e.name); if (e.isDirectory()) walk(f); else files.push(path.relative(root, f).replace(/\\/g, '/')); });
     walk(path.join(root, d));

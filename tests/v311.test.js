@@ -13,7 +13,7 @@ function cargar(lang) {
         document: { documentElement: {}, querySelectorAll: () => [], getElementById: () => null, createElement: () => el },
     };
     vm.createContext(ctx);
-    for (const f of ['data/lang-en', 'i18n']) vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'js', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
+    for (const f of ['data/lang-en', 'data/foods-en', 'i18n']) vm.runInContext(fs.readFileSync(path.join(__dirname, '..', 'js', f + '.js'), 'utf8'), ctx, { filename: f + '.js' });
     vm.runInContext("const fmt = (n, d = 0) => Number(n).toLocaleString(locale(), { minimumFractionDigits: d, maximumFractionDigits: d });", ctx);
     return code => vm.runInContext(code, ctx);
 }

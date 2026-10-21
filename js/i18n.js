@@ -7,7 +7,7 @@ const LANGS = { es: 'Español', en: 'English' };
 // Mientras la traducción al inglés no esté terminada, el selector no se enseña:
 // media app en inglés y media en español es peor que dejarlo en español.
 // Lo vigila tests/v311.test.js: no se puede poner en true si queda algo sin traducir.
-const I18N_READY = false;
+const I18N_READY = true;
 const LANG_KEY = 'nutridl_lang';
 const LOCALES = { es: 'es-ES', en: 'en-GB' };
 
@@ -39,7 +39,14 @@ const tk = s => s;
 const eur = v => new Intl.NumberFormat(locale(), { style: 'currency', currency: 'EUR' }).format(v);
 // Porcentaje: «13 %» en español, «13%» en inglés
 const pctTxt = v => LANG === 'es' ? v + ' %' : v + '%';
-const foodName = f => (f && LANG === 'en' && f.en) || (f && f.name) || '';
+function foodName(f) {
+    if (!f) return '';
+    if (LANG === 'en') {
+        const en = f.en || (typeof FOOD_EN !== 'undefined' && FOOD_EN[f.id]);
+        if (en) return en;
+    }
+    return f.name || '';
+}
 // Plural sencillo: tp(2, 'día', 'días') → «2 días» · en inglés usa el diccionario de cada forma
 const tp = (n, uno, varios) => `${typeof fmt === 'function' ? fmt(n) : n} ${tr(n === 1 ? uno : varios)}`;
 
@@ -62,6 +69,11 @@ function applyStaticI18n(root) {
     r.querySelectorAll('[data-t]').forEach(el => { const k = el.getAttribute('data-t'); if (k) el.textContent = tr(k); });
     [['data-t-ph', 'placeholder'], ['data-t-al', 'aria-label'], ['data-t-ti', 'title'], ['data-t-co', 'content'], ['data-t-alt', 'alt']].forEach(([a, p]) => {
         r.querySelectorAll('[' + a + ']').forEach(el => { const k = el.getAttribute(a); if (k) el.setAttribute(p, tr(k)); });
+    });
+    // Enlaces con una página propia en inglés (privacidad, términos): data-t-hr guarda la dirección inglesa
+    r.querySelectorAll('[data-t-hr]').forEach(el => {
+        if (!el.dataset.hrEs) el.dataset.hrEs = el.getAttribute('href') || '';
+        el.setAttribute('href', LANG === 'en' ? el.getAttribute('data-t-hr') : el.dataset.hrEs);
     });
 }
 

@@ -162,10 +162,12 @@ function scanHTML(f) {
     const KEY = /data-t(?:-ph|-al|-ti|-co|-alt)?="([^"]+)"/g; let m;
     const deco = v => v.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#x27;/g, "'").replace(/&amp;/g, '&');
     while ((m = KEY.exec(s))) claves.add(deco(m[1]));
+    // En index.html cualquier texto con letras tiene que estar marcado: lo que no se traduce va en IGUAL
+    const IGUAL = new Set(['nutri', 'DL', 'nutriDL', 'nutriDL PRO', 'Beta', 'Coach', 'PRO', 'IMC Prime (IMC / 25)']);
     const TXT = />([^<>]+)</g;
     while ((m = TXT.exec(s))) {
         const txt = m[1].replace(/\s+/g, ' ').trim();
-        if (!pareceEspañol(txt)) continue;
+        if (!txt || IGUAL.has(txt) || !/[a-zA-Záéíóúñ]/i.test(txt)) continue;
         const tag = s.slice(s.lastIndexOf('<', m.index), m.index + 1);
         if (/data-t="/.test(tag)) continue;
         out.push({ linea: linea(m.index), txt: txt.length > 90 ? txt.slice(0, 87) + '…' : txt });
@@ -175,7 +177,7 @@ function scanHTML(f) {
         const [tag, a, val] = m;
         if (a === 'content' && !/name="(description|apple-mobile-web-app-title)"|property="og:(title|description)"/.test(tag)) continue;
         const marca = { placeholder: 'data-t-ph', 'aria-label': 'data-t-al', title: 'data-t-ti', content: 'data-t-co', alt: 'data-t-alt' }[a];
-        if (!pareceEspañol(val) || tag.includes(marca + '=')) continue;
+        if (!val || IGUAL.has(val) || !/[a-zA-Záéíóúñ]/i.test(val) || tag.includes(marca + '=')) continue;
         out.push({ linea: linea(m.index), txt: `[${a}] ${val.length > 80 ? val.slice(0, 77) + '…' : val}` });
     }
     return out;

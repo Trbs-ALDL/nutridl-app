@@ -116,7 +116,7 @@ function renderProfileChip() {
             <button onclick="openSync()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-rotate w-7 text-center text-neutral-400"></i>${tr('Móvil y ordenador')}</button>
             <button data-install onclick="installApp()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-mobile-screen-button w-7 text-center text-mint-400"></i>${tr('Instalar la app')}</button>
                 <button onclick="openReport()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-bug w-7 text-center text-neutral-400"></i>${tr('Informe de errores')}</button>
-            <a href="privacidad.html" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-shield-halved w-7 text-center text-neutral-400"></i>${tr('Privacidad')}</a>
+            <a href="${LANG === 'en' ? 'privacy.html' : 'privacidad.html'}" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left"><i class="fa-solid fa-shield-halved w-7 text-center text-neutral-400"></i>${tr('Privacidad')}</a>
             <button onclick="wipeAll()" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-neutral-800 text-left text-roseAccent-600"><i class="fa-solid fa-eraser w-7 text-center"></i>${tr('Borrar todos los datos')}</button>
         </div>`;
 }

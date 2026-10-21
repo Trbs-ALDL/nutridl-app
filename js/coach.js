@@ -189,36 +189,38 @@ const coachAsk = s => coachSend(tr(s), s);
 const askBtn = s => `onclick="coachAsk(${esc(JSON.stringify(s))})"`;
 
 // ---------- Entender la pregunta ----------
+// Cada patrón reconoce la pregunta en español Y en inglés, para que el Coach funcione igual en los dos idiomas.
+// i18n-ignore-start (lo que se ENTIENDE, no se enseña)
 const RX = {
-    safety: /\b(embaraz\w*|lactanc\w*|amamant\w*|diabet\w*|insulin\w*|medicac\w*|anorex\w*|bulimi\w*|atracon\w*|trastorno\w* (de la )?(conducta )?alimentari\w*|vomit\w*|purg\w*|laxante\w*|renal|rinon\w*|hipertens\w*|cancer|quimio\w*|menor de edad|tengo 1[0-7] anos)\b/,
-    tooLow: /\b([1-9]\d{2})\s*(kcal|calorias)\b.*\b(al dia|diarias|cada dia)\b|\bdejar de comer\b|\bno comer nada\b|\bayun\w* de [3-9] dias\b/,
-    hello: /^(hola|buenas|hey|buenos dias|buenas tardes|buenas noches|que tal)\b/,
-    left: /((calorias|kcal|proteina\w*) me queda|cuant\w* me queda|que me queda|me queda(n)? (algo|mucho|poco)|cuant\w* llevo|como voy hoy|resumen de hoy|cuant\w* (calorias|kcal) (he|llevo))/,
-    logged: /\b(he|me he|hemos|acabo de|ya he)\s+(comido|tomado|cenado|desayunado|merendado|bebido|almorzado|picado)\b/,
-    out: /\b(fuera|restaurante\w*|pedir|pido|menu del dia|bar|tapas?|italiano|pizzeria|japones|sushi|chino|hamburgueseria|burger|mexicano|kebab|comida rapida|fast food|cumpleanos|boda|cena de empresa)\b/,
-    suggest: /\b(que (puedo )?(como|ceno|desayuno|meriendo|comer|cenar|desayunar|merendar|tomo|pico)|quiero (un|una|algo)|dame|ideas?|sugier\w*|recomiend\w*|opciones|propon\w*|que hago de)\b|\bme quedan? \d+/,
-    protein: /\b(lleg\w*|alcanz\w*|cumpl\w*|sub\w*|aument\w*|complet\w*|falt\w*|mas)\b.*\bproteina\w*|\bproteina\w*\b.*\b(lleg\w*|alcanz\w*|cumpl\w*|falt\w*)\b/,
-    info: /\b(cuant\w* (calorias|kcal|proteina\w*|hidratos|grasas?)|que (tiene|aporta)|macros de|valor\w* nutricional\w*|informacion de)\b/,
-    progress: /\b(como voy|progreso|tendencia|mi semana|esta semana|resumen semanal|evolucion|he bajado|he subido|racha)\b/,
-    menu: /\b((genera\w*|crea\w*|haz|hazme|quiero|dame|ver) (un |el |mi )?menu|menu (para hoy|completo|semanal|de hoy)|planifica\w*|plan de comidas)\b/,
-    shop: /\b(lista de (la )?compra|que compro|hacer (la |una )?compra|compra (fitness|sana|semanal|para)|haz(me)? (la |una )?compra)\b/,
-    fridge: /\b(tengo|me queda\w*|hay)\b.*\b(nevera|frigo|casa|despensa)\b|\b(en (la|mi) nevera|en casa) (tengo|hay|me queda)\b|^tengo\b|\bcon lo que tengo\b/,
-    weight: /\b(peso|pesado|bascula)\b.*\b(\d{2,3}([.,]\d)?)\b/,
+    safety: /\b(embaraz\w*|lactanc\w*|amamant\w*|diabet\w*|insulin\w*|medicac\w*|anorex\w*|bulimi\w*|atracon\w*|trastorno\w* (de la )?(conducta )?alimentari\w*|vomit\w*|purg\w*|laxante\w*|renal|rinon\w*|hipertens\w*|cancer|quimio\w*|menor de edad|tengo 1[0-7] anos)\b|\b(pregnan\w*|breastfeed\w*|nursing|diabetic|medication|anorexi\w*|bulimi\w*|binge eat\w*|eating disorder|purging|laxative\w*|kidney (disease|failure)|hypertens\w*|chemo\w*|under 18|i am 1[0-7]|im 1[0-7])\b/,
+    tooLow: /\b([1-9]\d{2})\s*(kcal|calorias|calories)\b.*\b(al dia|diarias|cada dia|a day|per day|daily)\b|\bdejar de comer\b|\bno comer nada\b|\bayun\w* de [3-9] dias\b|\bstop eating\b|\bnot eat(ing)? anything\b|\bfast(ing)? for [3-9] days\b/,
+    hello: /^(hola|buenas|hey|buenos dias|buenas tardes|buenas noches|que tal|hi|hello|good morning|good afternoon|good evening|how are you)\b/,
+    left: /((calorias|kcal|proteina\w*) me queda|cuant\w* me queda|que me queda|me queda(n)? (algo|mucho|poco)|cuant\w* llevo|como voy hoy|resumen de hoy|cuant\w* (calorias|kcal) (he|llevo))|\bhow (much|many)\b.*\b(left|remaining)\b|\bwhat.?s left\b|\bwhat is left\b|\bhow (many|much) (calories|kcal|protein)\b.*\b(do i have|left)\b|\bhow am i doing today\b|\btoday.?s summary\b|\bhow (many|much) (calories|kcal) have i\b/,
+    logged: /\b(he|me he|hemos|acabo de|ya he)\s+(comido|tomado|cenado|desayunado|merendado|bebido|almorzado|picado)\b|\bi\s*(just\s+|already\s+)?(ate|had|have eaten|have had|drank)\b(?! too much| too many| way too)/,
+    out: /\b(fuera|restaurante\w*|pedir|pido|menu del dia|bar|tapas?|italiano|pizzeria|japones|sushi|chino|hamburgueseria|burger|mexicano|kebab|comida rapida|fast food|cumpleanos|boda|cena de empresa)\b|\b(eating out|eat out|restaurant|takeaway|take away|take-away|order in|italian|japanese|chinese|mexican|birthday|wedding|work dinner)\b/,
+    suggest: /\b(que (puedo )?(como|ceno|desayuno|meriendo|comer|cenar|desayunar|merendar|tomo|pico)|quiero (un|una|algo)|dame|ideas?|sugier\w*|recomiend\w*|opciones|propon\w*|que hago de)\b|\bme quedan? \d+|\bwhat (can|should|do) i (eat|have|cook|make)\b|\bwhat.?s for (breakfast|lunch|dinner|supper)\b|\bi want (a|an|some|something)\b|\b(give me|suggest|recommend|options|any ideas?|some ideas?)\b|\bi have \d+ kcal\b/,
+    protein: /\b(lleg\w*|alcanz\w*|cumpl\w*|sub\w*|aument\w*|complet\w*|falt\w*|mas)\b.*\bproteina\w*|\bproteina\w*\b.*\b(lleg\w*|alcanz\w*|cumpl\w*|falt\w*)\b|\b(hit|reach|get to|meet|complete|more|missing|increase)\b.*\bprotein\b|\bprotein\b.*\b(hit|reach|left|missing|target|goal)\b/,
+    info: /\b(cuant\w* (calorias|kcal|proteina\w*|hidratos|grasas?)|que (tiene|aporta)|macros de|valor\w* nutricional\w*|informacion de)\b|\bhow (many|much) (calories|kcal|protein|carbs|carbohydrates|fat)\b|\bmacros (of|in|for)\b|\bnutrition(al)? (info|information|value|facts)\b|\bwhat.?s in\b/,
+    progress: /\b(como voy|progreso|tendencia|mi semana|esta semana|resumen semanal|evolucion|he bajado|he subido|racha)\b|\b(how am i doing|my progress|trend|my week|this week|weekly summary|have i lost|have i gained|streak)\b/,
+    menu: /\b((genera\w*|crea\w*|haz|hazme|quiero|dame|ver) (un |el |mi )?menu|menu (para hoy|completo|semanal|de hoy)|planifica\w*|plan de comidas)\b|\b(generate|create|make|give me|show|see|build)( me)? (a |the |my )?(daily )?menu\b|\bmenu for today\b|\b(full|whole) day menu\b|\bmeal plan\b|\bplan my (meals|day)\b/,
+    shop: /\b(lista de (la )?compra|que compro|hacer (la |una )?compra|compra (fitness|sana|semanal|para)|haz(me)? (la |una )?compra)\b|\b(shopping list|grocery list|groceries list)\b|\bwhat (do|should) i buy\b|\b(do|make|build|create|give me) (the |my |a )?(shopping|groceries|grocery)\b|\bshopping for \d+\b/,
+    fridge: /\b(tengo|me queda\w*|hay)\b.*\b(nevera|frigo|casa|despensa)\b|\b(en (la|mi) nevera|en casa) (tengo|hay|me queda)\b|^tengo\b|\bcon lo que tengo\b|\b(i have|i.?ve got|there (is|are))\b.*\b(fridge|freezer|pantry|at home)\b|\bin (the|my) (fridge|freezer|pantry)\b|^i have\b|^i.?ve got\b|\bwith what i have\b/,
+    weight: /\b(peso|pesado|bascula|weigh|weighed|weight|scale)\b.*\b(\d{2,3}([.,]\d)?)\b/,
     // 3.9: temas que antes caían en «no te he entendido»
-    quien: /\b(quien eres|eres (una |un )?(ia|inteligencia artificial|robot|bot|chatgpt|humano|persona|real)|como funcionas|de donde sacas|te conectas)\b/,
-    ayuda: /\b(que (puedes|sabes) hacer|en que (me )?puedes ayudar|para que sirves|como te uso|^ayuda$)\b/,
-    gracias: /^(gracias|muchas gracias|mil gracias|eres un crack|genial gracias|perfecto gracias)\b/,
-    comparar: /\b(que es (mejor|peor)|cual es (mejor|peor)|diferencia entre)\b|\bmejor\b[^?]*\s+o\s+|\s+vs\.?\s+/,
-    puedo: /\b(puedo (comer|tomar|beber|picar)|se puede comer|es malo|son malos|es mala|son malas|engorda\b|engordan\b|esta prohibid|debo evitar|pasa algo si como|me puedo permitir)\b/,
-    agua: /\bcuanta agua\b|\b(agua|hidratacion|hidratarme|liquidos?)\b.*\b(cuanta|cuanto|litros|vasos|al dia|necesito|debo|tengo que)\b/,
-    alcohol: /\b(alcohol|alcoholic\w*|cerveza|birra|cana\b|tercio\b|vino|copa|cubata|gin tonic|whisky|ron\b|sidra)\b/,
-    ayuno: /\b(ayuno|ayunar|ayunas|intermitente|16\/8|ventana de alimentacion|saltarme el desayuno)\b/,
-    supl: /\b(creatina|suplement\w*|proteina en polvo|batido de proteina|whey\b.*\bsirve|bcaa|quemagrasas|quema grasa|multivitamin\w*|termogenic\w*)\b/,
-    cuando: /\b(cuando (vere|voy a ver|notare|empiezo a)|cuanto (tardo|tardare)|en cuanto tiempo|cuantas semanas|resultados)\b/,
-    estancado: /\b(no (bajo|adelgazo|pierdo|subo)|me he estancado|estancad\w*|no avanzo|sigo igual|no se mueve|llevo semanas)\b/,
-    pasado: /\b(me he pasado|me pase|he comido (de )?mas|comi de mas|me he excedido|dia libre|comida trampa|cheat meal|he picado mucho|me siento culpable|culpa)\b/,
-    sinHambre: /\b(no tengo hambre|sin hambre|no me entra|no puedo comer mas|me cuesta comer|me cuesta llegar)\b/,
-};
+    quien: /\b(quien eres|eres (una |un )?(ia|inteligencia artificial|robot|bot|chatgpt|humano|persona|real)|como funcionas|de donde sacas|te conectas)\b|\b(who are you|are you (an? )?(ai|artificial intelligence|robot|bot|chatgpt|human|person|real)|how do you work|where do you get (your )?(data|info)|do you connect)\b/,
+    ayuda: /\b(que (puedes|sabes) hacer|en que (me )?puedes ayudar|para que sirves|como te uso|^ayuda$)\b|\b(what can you do|how can you help|what are you for|how do i use you)\b|^help$/,
+    gracias: /^(gracias|muchas gracias|mil gracias|eres un crack|genial gracias|perfecto gracias|thanks|thank you|thanks a lot|cheers|great thanks|perfect thanks|awesome thanks)\b/,
+    comparar: /\b(que es (mejor|peor)|cual es (mejor|peor)|diferencia entre)\b|\bmejor\b[^?]*\s+o\s+|\s+vs\.?\s+|\b(what.?s|what is|which is) (better|worse|healthier)\b|\bdifference between\b|\bbetter\b[^?]*\s+or\s+/,
+    puedo: /\b(puedo (comer|tomar|beber|picar)|se puede comer|es malo|son malos|es mala|son malas|engorda\b|engordan\b|esta prohibid|debo evitar|pasa algo si como|me puedo permitir)\b|(?:^|[.!?]\s*)\s*(can i (eat|have|drink|snack)|can i afford)\b|\b(is it (bad|ok|okay|fine)|are they bad|does it make me fat|is .{1,20} forbidden|should i avoid|what happens if i eat)\b/,
+    agua: /\bcuanta agua\b|\b(agua|hidratacion|hidratarme|liquidos?)\b.*\b(cuanta|cuanto|litros|vasos|al dia|necesito|debo|tengo que)\b|\bhow much water\b|\b(water|hydration|hydrate|fluids?)\b.*\b(how much|litres?|liters?|glasses|a day|per day|need|should)\b/,
+    alcohol: /\b(alcohol|alcoholic\w*|cerveza|birra|cana\b|tercio\b|vino|copa|cubata|gin tonic|whisky|ron\b|sidra)\b|\b(beer|lager|pint|wine|spirits|whiskey|rum|gin|cider|cocktail)\b/,
+    ayuno: /\b(ayuno|ayunar|ayunas|intermitente|16\/8|ventana de alimentacion|saltarme el desayuno)\b|\b(fasting|intermittent|eating window|skip(ping)? breakfast)\b/,
+    supl: /\b(creatina|suplement\w*|proteina en polvo|batido de proteina|whey\b.*\bsirve|bcaa|quemagrasas|quema grasa|multivitamin\w*|termogenic\w*)\b|\b(creatine|supplements?|protein powder|bcaa|fat burner\w*|fat burning|multivitamin\w*|thermogenic\w*)\b/,
+    cuando: /\b(cuando (vere|voy a ver|notare|empiezo a)|cuanto (tardo|tardare)|en cuanto tiempo|cuantas semanas|resultados)\b|\b(when will i (see|notice)|how long (does|will) it take|how many weeks|in how long|see results)\b/,
+    estancado: /\b(no (bajo|adelgazo|pierdo|subo)|me he estancado|estancad\w*|no avanzo|sigo igual|no se mueve|llevo semanas)\b|\b(not losing|not dropping|not gaining|i.?m stuck|im stuck|plateau|stalled|no progress|same weight|for weeks)\b/,
+    pasado: /\b(me he pasado|me pase|he comido (de )?mas|comi de mas|me he excedido|dia libre|comida trampa|cheat meal|he picado mucho|me siento culpable|culpa)\b|\b(i overate|i over ate|went over|ate too much|i binged|cheat day|day off|snacked a lot|i feel guilty|guilty)\b/,
+    sinHambre: /\b(no tengo hambre|sin hambre|no me entra|no puedo comer mas|me cuesta comer|me cuesta llegar)\b|\b(not hungry|no appetite|can.?t eat (any)?more|cannot eat more|i struggle to eat|hard to (eat|hit))\b/,
+}; // i18n-ignore-end
 // ---------- Memoria de la conversación ----------
 // Sin esto cada mensaje empieza de cero y «¿y de cena?» no significa nada.
 let coachCtx = { intent: '', q: '', slot: '', offer: '', at: 0 };
@@ -227,13 +229,15 @@ function remember(intent, q, extra = {}) { coachCtx = { intent, q: q || '', slot
 // Frases que van cambiando para que no conteste siempre igual.
 // Varían con el nº de mensajes (no al azar) para que las pruebas sigan siendo estables.
 const vary = a => a[((state.chat || []).length) % a.length];
-const SLOT_WORD = { desayuno: 'B', 'media manana': 'M', comida: 'L', almuerzo: 'L', merienda: 'S', cena: 'D' };
+const SLOT_WORD = { desayuno: 'B', 'media manana': 'M', comida: 'L', almuerzo: 'L', merienda: 'S', cena: 'D',
+    breakfast: 'B', 'mid morning': 'M', lunch: 'L', snack: 'S', dinner: 'D', supper: 'D' };
+// i18n-ignore-start (lo que se ENTIENDE, no se enseña)
 const FOLLOW = {
-    slot: /^(y\s+)?(de\s+|para\s+)?(el\s+|la\s+)?(desayuno|media manana|comida|almuerzo|merienda|cena)\s*\??$/,
-    mas: /^(y\s+)?(otra|otro|mas|otra opcion|otra idea|otra cosa|dame otra|alguna mas|no me gusta|no me gustan|cambialo|cambia)\s*\??$/,
-    si: /^(si|sii+|vale|ok|okey|venga|claro|perfecto|dale|adelante|porfa|por favor|genial)\s*[.!]?$/,
-    comida: /^y\s+(el\s+|la\s+|los\s+|las\s+|un\s+|una\s+)?(.{2,40}?)\s*\??$/,
-};
+    slot: /^(y\s+|and\s+)?(de\s+|para\s+|for\s+)?(el\s+|la\s+|the\s+|my\s+)?(desayuno|media manana|comida|almuerzo|merienda|cena|breakfast|mid morning|lunch|snack|dinner|supper)\s*\??$/,
+    mas: /^(y\s+|and\s+)?(otra|otro|mas|otra opcion|otra idea|otra cosa|dame otra|alguna mas|no me gusta|no me gustan|cambialo|cambia|another|another one|more|other|something else|give me another|any more|i don.?t like (it|them|that)|change it)\s*\??$/,
+    si: /^(si|sii+|vale|ok|okey|venga|claro|perfecto|dale|adelante|porfa|por favor|genial|yes|yeah|yep|okay|sure|go ahead|please|great)\s*[.!]?$/,
+    comida: /^(y|and)\s+(el\s+|la\s+|los\s+|las\s+|un\s+|una\s+|the\s+|a\s+|an\s+)?(.{2,40}?)\s*\??$/,
+}; // i18n-ignore-end
 // «¿y de cena?», «otra», «sí», «¿y el arroz?»: se completan con lo último de lo que hablabais
 function followUp(raw) {
     if (!ctxAlive() || raw.length > 46) return null;
@@ -243,11 +247,11 @@ function followUp(raw) {
     if (FOLLOW.mas.test(q) && coachCtx.intent === 'suggest' && coachCtx.q) return coachCtx.q;
     if (FOLLOW.si.test(q) && coachCtx.offer) return coachCtx.offer;
     const mf = q.match(FOLLOW.comida);
-    if (mf && coachCtx.intent === 'info' && matchFoods(mf[2], 1)[0]) return (coachCtx.verbo || 'cuantas calorias tiene ') + mf[2];
+    if (mf && coachCtx.intent === 'info' && matchFoods(mf[3], 1)[0]) return (coachCtx.verbo || 'cuantas calorias tiene ') + mf[3]; // i18n-ignore (frase interna)
     return null;
 }
 // Saca el alimento del que habla la frase, quitando las palabras de relleno
-const RELLENO = /\b(puedo|puede|comer|tomar|beber|picar|se|si|es|son|esta|estan|mal|malo|mala|malos|malas|bueno|buena|buenos|buenas|engorda|engordan|mucho|mucha|un|una|unos|unas|el|la|lo|los|las|de|del|para|por|mi|me|hoy|ahora|algo|poco|tanto|que|cual|mejor|peor|prohibido|evitar|permitir|noche|cena|comida|desayuno)\b/g;
+const RELLENO = /\b(puedo|puede|comer|tomar|beber|picar|se|si|es|son|esta|estan|mal|malo|mala|malos|malas|bueno|buena|buenos|buenas|engorda|engordan|mucho|mucha|un|una|unos|unas|el|la|lo|los|las|de|del|para|por|mi|me|hoy|ahora|algo|poco|tanto|que|cual|mejor|peor|prohibido|evitar|permitir|noche|cena|comida|desayuno|can|could|i|eat|have|drink|snack|is|are|it|they|bad|good|fine|ok|okay|fat|fattening|a|an|the|of|for|my|today|now|something|much|many|what|which|better|worse|healthier|forbidden|avoid|afford|tonight|dinner|lunch|breakfast|how|does|do)\b/g;
 function foodIn(q, rx) {
     const name = q.replace(rx, ' ').replace(/[?¡¿!.,;]/g, ' ').replace(RELLENO, ' ').replace(/\s+/g, ' ').trim();
     return name.length > 1 ? matchFoods(name, 1)[0] : null;
@@ -266,7 +270,7 @@ function coachReply(raw) {
     if (RX.menu.test(q)) { if (!canUse('menu')) return proReply('menu'); setTimeout(() => coachView('menu'), 400); return { r: 'c', tags: ['rec'], html: '<p>' + tr('Te abro tu menú del día: lo calculo con tus calorías, tus macros y tus preferencias. Puedes cambiar cualquier plato.') + '</p>' }; }
     if (RX.shop.test(q)) {
         if (!canUse('shop')) return proReply('shop');
-        const wantsPlan = /\b(\d+ dias?|semana|fitness|me gusta|sin |vegetarian|vegan|barat|economic)/.test(q);
+        const wantsPlan = /\b(\d+ dias?|\d+ days?|semana|week|fitness|me gusta|i like|sin |without |no |vegetarian|vegan|barat|economic|cheap|budget)/.test(q); // i18n-ignore (lo que se entiende)
         setTimeout(() => { coachView('shop'); if (wantsPlan) shopAsk(raw); }, 400);
         return { r: 'c', tags: ['rec'], html: '<p>' + (wantsPlan ? tr('Te preparo la compra con lo que me dices y te la abro. Luego puedes cambiar lo que quieras: «cambia el salmón por merluza», «quita la leche»…') : tr('Te abro la compra: dime qué quieres (días, lo que te gusta, lo que no) y te la preparo con cantidades.')) + '</p>' };
     }
@@ -365,7 +369,8 @@ function logAdjust(mid) {
 }
 // «Tengo pollo, arroz y brócoli, ¿qué ceno?»
 function replyFridge(raw, q) {
-    const ids = parseFoodText(raw.replace(/\b(tengo|en (la|mi) nevera|en casa|hay|me queda\w*|con lo que tengo|que (puedo )?(cenar|comer|desayunar|merendar|hacer|cocinar)|que (ceno|como|hago|cocino))\b/gi, ',')).items.map(i => i.food.id);
+    const ids = parseFoodText(raw.replace(/\b(tengo|en (la|mi) nevera|en casa|hay|me queda\w*|con lo que tengo|que (puedo )?(cenar|comer|desayunar|merendar|hacer|cocinar)|que (ceno|como|hago|cocino))\b/gi, ',')
+        .replace(/\b(i have|i.?ve got|there (is|are)|in (the|my) (fridge|freezer|pantry)|at home|with what i have|what (can|should) i (cook|make|have|eat)|what.?s for (dinner|lunch|breakfast))\b/gi, ',')).items.map(i => i.food.id);
     if (!ids.length) return null;
     if (!canUse('fridge')) return proReply('fridge');
     const p = myPrefs(); ids.forEach(id => { if (!p.pantry.includes(id)) p.pantry.push(id); }); save();
@@ -376,11 +381,11 @@ function replyFridge(raw, q) {
 }
 const proReply = feature => ({ r: 'c', tags: ['rec'], html: `<p>${tr('{n} es de nutriDL PRO: {w}', { n: '<b>' + esc(tr(PRO_FEATURES[feature][0])) + '</b>', w: esc(tr(PRO_FEATURES[feature][1]).toLowerCase()) })}</p><button onclick="openPaywall('${feature}')" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold">${proData().trialUsed ? tr('Ver nutriDL PRO') : tr('Probar 7 días gratis')}</button>` });
 function slotFromText(q) {
-    if (/desayun/.test(q)) return 'B';
-    if (/media manana|almuerz/.test(q)) return planSlots().includes('M') ? 'M' : 'S';
+    if (/desayun|breakfast/.test(q)) return 'B';
+    if (/media manana|almuerz|mid morning/.test(q)) return planSlots().includes('M') ? 'M' : 'S';
     if (/merend|merienda|snack|picar|picoteo|tentempie/.test(q)) return 'S';
-    if (/\bcen(a|ar|o)\b/.test(q)) return 'D';
-    if (/\b(comida|al mediodia|para comer|almorzar)\b/.test(q)) return 'L';
+    if (/\bcen(a|ar|o)\b|\b(dinner|supper)\b/.test(q)) return 'D';
+    if (/\b(comida|al mediodia|para comer|almorzar|lunch)\b/.test(q)) return 'L';
     return null;
 }
 function targetFor(slot) {
@@ -393,11 +398,13 @@ function replySuggest(q) {
     const nm = nextMeal();
     let slot = slotFromText(q) || (nm && nm.slot) || slotByHour();
     let tg = targetFor(slot);
-    const mk = q.match(/(\d{2,4})\s*(kcal|calorias|cal)\b/), mp = q.match(/(\d{1,3})\s*(g|gr|gramos)\s*(de\s+)?proteina/) || q.match(/proteina\w*\s*(de\s*)?(\d{1,3})\s*(g|gr|gramos)?/);
+    const mk = q.match(/(\d{2,4})\s*(kcal|calorias|calories|cal)\b/);
+    const mp = q.match(/(\d{1,3})\s*(g|gr|gramos|grams?)\s*(de\s+|of\s+)?(proteina|protein)/) || q.match(/(proteina\w*|protein)\s*(de\s*|of\s*)?(\d{1,3})\s*(g|gr|gramos|grams?)?/);
+    const pg0 = mp ? +((mp[1] && /^\d+$/.test(mp[1])) ? mp[1] : (mp[3] || mp[2])) : 0;
     const tags = [];
     if (mk) { const k = +mk[1], r = k / Math.max(1, tg.kcal); tg = { kcal: k, p: tg.p * r, f: tg.f * r, c: tg.c * r }; }
-    if (mp) { const pg = +(mp[1] && /^\d+$/.test(mp[1]) ? mp[1] : mp[2]); if (pg > 0 && pg < 150) tg.p = pg; }
-    if (/mucha proteina|alto en proteina|rica? en proteina|proteic|hiperproteic/.test(q)) tg.p = Math.max(tg.p, tg.kcal * .35 / 4);
+    if (mp && pg0 > 0 && pg0 < 150) tg.p = pg0;
+    if (/mucha proteina|alto en proteina|rica? en proteina|proteic|hiperproteic|lots of protein|high (in )?protein|protein rich/.test(q)) tg.p = Math.max(tg.p, tg.kcal * .35 / 4);
     if (mp && !mk) tg.kcal = Math.max(tg.kcal, tg.p * 4 / .35);
     if (tg.kcal < 90) return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('Ya casi has completado tu día ({x}). Si tienes hambre, elige algo muy ligero: una infusión, verduras crudas, un yogur natural o una pieza de fruta.', { x: leftLine() })}</p>` };
     const opts = suggestMeals(slot, tg, { n: 3, seed: Date.now() % 100000 });
@@ -429,7 +436,7 @@ function replyProtein() {
         <button onclick="coachSend(${esc(JSON.stringify(tr('Me quedan {k} kcal y necesito mucha proteína', { k: kq })))},${esc(JSON.stringify(leer))})" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold">${tr('Proponme un plato')}</button>` };
 }
 function replyInfo(q) {
-    const name = q.replace(RX.info, ' ').replace(/\b(tiene|hay en|un|una|el|la|los|las|de|del|por)\b/g, ' ').replace(/[?¿!.]/g, ' ').trim();
+    const name = q.replace(RX.info, ' ').replace(/\b(tiene|hay en|un|una|el|la|los|las|de|del|por|has|have|in|is|are|the|a|an|of|per|does|do)\b/g, ' ').replace(/[?¿!.]/g, ' ').trim();
     const f = name.length > 1 && matchFoods(name, 1)[0]; if (!f) return null;
     remember('info', q);
     const d = defaultPortion(f), m = macrosOf(f, d.g), k = kcal100(f);
@@ -472,9 +479,9 @@ function replyPuedo(q) {
         <button onclick="openFoodSheet(); fsOpen('${f.id}')" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Apuntarlo')}</button>` };
 }
 function replyComparar(q) {
-    const seg = q.replace(/^.*\b(mejor|peor|diferencia entre|diferencia)\b/, ' ').replace(/[?¡¿!.,;]/g, ' ');
-    const partes = seg.split(/\s+(?:o|vs\.?|versus|contra)\s+/)
-        .map(x => x.replace(/\b(el|la|lo|los|las|un|una|unos|unas|de|del|para|mi|comer|tomar|beber|es|son)\b/g, ' ').replace(/\s+/g, ' ').trim())
+    const seg = q.replace(/^.*\b(mejor|peor|diferencia entre|diferencia|better|worse|healthier|difference between)\b/, ' ').replace(/[?¡¿!.,;]/g, ' ');
+    const partes = seg.split(/\s+(?:o|vs\.?|versus|contra|or)\s+/)
+        .map(x => x.replace(/\b(el|la|lo|los|las|un|una|unos|unas|de|del|para|mi|comer|tomar|beber|es|son|the|a|an|of|for|my|eat|have|drink|is|are|to)\b/g, ' ').replace(/\s+/g, ' ').trim())
         .filter(x => x.length > 1);
     if (partes.length < 2) return null;
     const A = matchFoods(partes[0], 1)[0], B = matchFoods(partes[1], 1)[0];
@@ -578,11 +585,11 @@ function replyProgress() {
 // Comer fuera: consejos y cuánto cabe en lo que te queda (valores medios de la base)
 const OUT = {
     italiano: [/italian|pizz|pasta/, [['pizza', 'porción'], ['lasana'], ['macarronestom']], tk('Mejor pasta con salsa de tomate y algo de proteína (pollo, atún, gambas) que con nata o cuatro quesos. Si es pizza, compártela y añade una ensalada.')], // i18n-ignore (dato)
-    japones: [/japon|sushi/, [['sushi']], tk('El sashimi y el nigiri tienen más proteína y menos arroz que los makis fritos o con mayonesa. Sopa miso o edamame para empezar.')],
+    japones: [/japon|sushi|japanese/, [['sushi']], tk('El sashimi y el nigiri tienen más proteína y menos arroz que los makis fritos o con mayonesa. Sopa miso o edamame para empezar.')],
     burger: [/hamburgues|burger|comida rapida|fast food/, [['hamburguesacomp'], ['patatasfritas'], ['nuggets']], tk('Hamburguesa sencilla (sin doble queso ni beicon), ensalada en vez de patatas o patatas pequeñas, y bebida sin azúcar.')],
     tapas: [/tapa|bar\b/, [['tortilla'], ['croquetas'], ['calamaresrom'], ['bravas'], ['ensaladilla'], ['jamon']], tk('Prioriza tapas a la plancha (pulpo, gambas, pinchos de pollo, boquerones en vinagre) y jamón. Fritos y salsas, para compartir.')],
-    chino: [/chino/, [['arroz3']], tk('Pollo o ternera salteados con verduras y arroz blanco en vez de frito. Evita lo rebozado y las salsas dulces.')],
-    menu: [/menu del dia/, [['lentguisadas'], ['paella'], ['pollopl'], ['ensalada']], tk('Primero de verdura, legumbre o ensalada; segundo a la plancha con guarnición sencilla; fruta o café de postre. El pan, en la medida justa.')],
+    chino: [/chino|chinese/, [['arroz3']], tk('Pollo o ternera salteados con verduras y arroz blanco en vez de frito. Evita lo rebozado y las salsas dulces.')],
+    menu: [/menu del dia|set menu|menu of the day/, [['lentguisadas'], ['paella'], ['pollopl'], ['ensalada']], tk('Primero de verdura, legumbre o ensalada; segundo a la plancha con guarnición sencilla; fruta o café de postre. El pan, en la medida justa.')],
 };
 function replyOut(q) {
     const R = remainingToday(), k = Math.max(0, R.kcal);

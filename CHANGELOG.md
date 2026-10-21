@@ -1,5 +1,20 @@
 # Cambios de nutriDL
 
+## 3.12.0 · 21 de octubre de 2026
+
+**La app ya está en inglés: puedes elegir ES o EN**
+
+- **Nuevo selector de idioma** en el menú del perfil (ES / EN). Se recuerda y no toca tus datos.
+- **Toda la app traducida**, no solo los botones: el Coach y sus respuestas, «¿Qué como?», el menú del día, «Mi nevera», la lista de la compra, el diario, el gym, el progreso, los logros, el asistente de alta, el PDF del plan, la portada y las páginas de privacidad y términos (`privacy.html` y `terms.html`).
+- **Los alimentos genéricos tienen nombre en inglés** (772: «Pechuga de pollo» → «Chicken breast»), y el buscador entiende los dos idiomas: «chicken» y «pollo» encuentran lo mismo.
+- **El Coach entiende inglés igual que español.** «I had 200 g of chicken and 100 g of rice» se apunta solo; «what can i have for dinner?» propone platos; también las preguntas de agua, alcohol, ayuno, suplementos, estancamiento, comer fuera, la nevera y la compra. Comprobado: las 28 preguntas de prueba se reconocen igual en los dos idiomas.
+- **Las cantidades también se traducen**: «1 filete», «2 lonchas», «un puñado» pasan a «1 fillet», «2 slices», «a handful». Y al revés: «a slice of bread», «3 tablespoons» o «half an avocado» se entienden al apuntar.
+- Números, fechas, días de la semana, porcentajes y precios siguen el formato de cada idioma (1.234,5 frente a 1,234.5).
+- El dictado por voz escucha en el idioma elegido.
+- **En español no cambia nada**: mismos textos y mismos resultados.
+
+*Lo que sigue en español:* los nombres de los productos de marca (McDonald's, Hacendado, Danone...) y las páginas públicas «Calorías de...».
+
 ## 3.11.1 · 20 de octubre de 2026
 
 - Inglés: la pestaña «Hoy» entera ya tiene su traducción (saludo, fechas, tarjetas, avisos, accesos rápidos y comidas). El selector sigue oculto hasta terminar.

@@ -77,32 +77,34 @@ function fridgeAdd(i) {
 // =====================================================================
 //  COMPRA INTELIGENTE
 // =====================================================================
-const SHOP_FILL = /\b(quiero|hacer|haz|hazme|crea|crear|prepara|preparame|necesito|una|un|compra|lista|fitness|sana|saludable|semanal|para|la|el|los|las|semana|dias?|adaptada|adaptado|a|mis|preferencias|me|gusta|gustan|encanta|encantan|con|incluye|incluir|que|lleve|tenga|mucho|mucha|muchos|muchas|prefiero|economica|barata|alta|en|proteina|proteica|vegana|vegetariana|pescetariana|de|tambien|algo|cosas|comida|comidas|todo|todos)\b/g;
-const NEG = /^(y\s+)?(pero\s+)?(sin|no me gusta\w*|no quiero|nada de|evita\w*|quita\w*|excepto|menos|odio|no como)\b/;
-const ALLERGY_WORDS = { lactosa: /lactosa|lacteos/, gluten: /gluten/, huevo: /\bhuevos?\b/, frutos: /frutos secos/, pescado: /\bpescados?\b/, marisco: /marisco/, soja: /\bsoja\b/ };
+// i18n-ignore-start (lo que se ENTIENDE, no se enseña: vale para español e inglés)
+const SHOP_FILL = /\b(quiero|hacer|haz|hazme|crea|crear|prepara|preparame|necesito|una|un|compra|lista|fitness|sana|saludable|semanal|para|la|el|los|las|semana|dias?|adaptada|adaptado|a|mis|preferencias|me|gusta|gustan|encanta|encantan|con|incluye|incluir|que|lleve|tenga|mucho|mucha|muchos|muchas|prefiero|economica|barata|alta|en|proteina|proteica|vegana|vegetariana|pescetariana|de|tambien|algo|cosas|comida|comidas|todo|todos|i|want|make|do|create|prepare|need|shopping|grocery|groceries|list|healthy|weekly|week|days?|the|my|preferences|like|love|with|include|includes|that|has|lots|of|prefer|cheap|budget|high|protein|vegan|vegetarian|pescatarian|also|some|things|food|meals|all|and|for|an|me)\b/g;
+const NEG = /^(y\s+)?(pero\s+)?(sin|no me gusta\w*|no quiero|nada de|evita\w*|quita\w*|excepto|menos|odio|no como)\b|^(and\s+)?(but\s+)?(no|without|free|i don.?t (like|want)|nothing with|avoid|remove|except|i hate|i don.?t eat)\b/;
+const ALLERGY_WORDS = { lactosa: /lactosa|lacteos|lactose|dairy/, gluten: /gluten/, huevo: /\bhuevos?\b|\beggs?\b/, frutos: /frutos secos|\bnuts\b|tree nuts/, pescado: /\bpescados?\b|\bfish\b/, marisco: /marisco|shellfish|seafood/, soja: /\bsoja\b|\bsoy\b|\bsoya\b/ };
+// i18n-ignore-end
 const foodIdsIn = t => [...new Set(parseFoodText(t).items.map(i => i.food).filter(f => !f.brand).map(f => f.id))];
 function parseShopRequest(text, base = {}) {
     const q = norm(text);
     let days = base.days || 7;
-    const md = q.match(/(\d{1,2})\s*dias?/);
-    if (md) days = +md[1]; else if (/fin de semana|finde/.test(q)) days = 2; else if (/\b(hoy|un dia)\b/.test(q)) days = 1; else if (/(2|dos) semanas/.test(q)) days = 14; else if (/semana/.test(q)) days = 7;
+    const md = q.match(/(\d{1,2})\s*(dias?|days?)/);
+    if (md) days = +md[1]; else if (/fin de semana|finde|weekend/.test(q)) days = 2; else if (/\b(hoy|un dia|today|one day)\b/.test(q)) days = 1; else if (/(2|dos|two) semanas|(2|two) weeks/.test(q)) days = 14; else if (/semana|week/.test(q)) days = 7;
     days = Math.min(14, Math.max(1, days));
     const like = new Set(base.like || []), avoid = new Set(base.avoid || []), allergies = new Set(base.allergies || []);
     // Cada trozo de la frase: lo que va tras «sin», «no me gusta»… es lo que se evita; lo de antes, lo que se quiere
     const pieces = [];
-    for (const raw of q.split(/[,.;]|\bpero\b/)) {
+    for (const raw of q.split(/[,.;]|\bpero\b|\bbut\b/)) {
         const c = raw.trim(); if (!c) continue;
-        const i = c.search(/\b(sin|no me gusta\w*|no quiero|nada de|evita\w*|excepto|menos|odio|no como)\b/);
+        const i = c.search(/\b(sin|no me gusta\w*|no quiero|nada de|evita\w*|excepto|menos|odio|no como|without|i don.?t (like|want)|nothing with|avoid|except|i hate|i don.?t eat)\b/);
         if (i > 0) pieces.push(c.slice(0, i).trim(), c.slice(i).trim()); else pieces.push(c);
     }
     for (const c of pieces) {
         if (!c) continue;
         if (NEG.test(c)) {
             // «sin lactosa y no me gusta el atún»: cada parte por separado
-            for (const part of c.split(/\by\b|\bni\b/)) {
-                let rest = part.replace(NEG, ' ').replace(/\b(no|me|gusta\w*|quiero|como|el|la|los|las|nada|de)\b/g, ' ');
+            for (const part of c.split(/\by\b|\bni\b|\band\b|\bnor\b/)) {
+                let rest = part.replace(NEG, ' ').replace(/\b(no|me|gusta\w*|quiero|como|el|la|los|las|nada|de|i|don.?t|like|want|eat|the|free|of|with)\b/g, ' ');
                 Object.entries(ALLERGY_WORDS).forEach(([k, re]) => { if (re.test(rest)) { allergies.add(k); rest = rest.replace(re, ' '); } });
-                rest = rest.replace(/lacteos|frutos secos/g, ' ').replace(/\s+/g, ' ').trim();
+                rest = rest.replace(/lacteos|frutos secos|dairy|tree nuts/g, ' ').replace(/\s+/g, ' ').trim();
                 if (rest.length > 2) foodIdsIn(rest).forEach(id => { avoid.add(id); like.delete(id); });
             }
         } else {
@@ -112,8 +114,8 @@ function parseShopRequest(text, base = {}) {
     }
     return {
         text, days, like: [...like], avoid: [...avoid], allergies: [...allergies],
-        diet: /vegan/.test(q) ? 'vegan' : /vegetarian/.test(q) ? 'veg' : /pescetarian/.test(q) ? 'pesc' : base.diet || null,
-        budget: /barat|economic|ajustad|low cost/.test(q) ? 'low' : base.budget || null,
+        diet: /vegan/.test(q) ? 'vegan' : /vegetarian/.test(q) ? 'veg' : /pescetarian|pescatarian/.test(q) ? 'pesc' : base.diet || null,
+        budget: /barat|economic|ajustad|low cost|cheap|budget|on a budget/.test(q) ? 'low' : base.budget || null,
     };
 }
 function shopPrefs(req) {

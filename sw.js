@@ -1,7 +1,7 @@
 // nutriDL · service worker (generado por tools/build-sw.js; no editar a mano)
 // Se abre al instante con la copia guardada y se refresca desde la red por detrás. Sin internet: la copia guardada.
 // Las consultas a Open Food Facts no pasan por aquí.
-const CACHE = 'nutridl-75e80f9eb2';
+const CACHE = 'nutridl-a2332c6243';
 const FILES = [
   "./css/app.css",
   "./css/fonts.css",
@@ -30,6 +30,7 @@ const FILES = [
   "./js/core.js",
   "./js/dashboard.js",
   "./js/data/exercises.js",
+  "./js/data/foods-en.js",
   "./js/data/foods.js",
   "./js/data/lang-en.js",
   "./js/diary.js",
@@ -47,7 +48,9 @@ const FILES = [
   "./js/wizard.js",
   "./manifest.webmanifest",
   "./privacidad.html",
-  "./terminos.html"
+  "./privacy.html",
+  "./terminos.html",
+  "./terms.html"
 ];
 
 self.addEventListener('install', e => {

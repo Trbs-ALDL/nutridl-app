@@ -35,7 +35,7 @@ funciones 9 · base de alimentos 8,5 · diseño 8 · primera vez 8 · legal 7,5
 | Apartado | Ahora | Meta | Decisión de Ángel (20-10-2026) |
 |---|---|---|---|
 | Saber cuánta gente la usa | 2 | 8 | Cloudflare Web Analytics (gratis, sin cookies) |
-| Idiomas | 3 → **4** | 9 | Base hecha (3.11.0). Falta traducir: ver F6 |
+| ~~Idiomas~~ | ~~3~~ **8,5** | ✅ | HECHA en la 3.12.0 · ES/EN completo; faltan los nombres de marca y las páginas SEO |
 | Estar en Play Store | 3 | 7 | Guía en `PLAY-STORE.md`; falta cuenta y 12 testers |
 | Cobrar | 3 | 7 | Códigos a mano ahora; Stripe cuando llegue el momento |
 | Guardar datos en la nube | 4 | 8 | **Supabase gratis**: cuentas, sincronización y PRO no falseable |
@@ -60,29 +60,31 @@ Marca cada fase como HECHA aquí al terminarla.
   **Lo que falta para un 9**: avisos de verdad al móvil (push), y eso necesita servidor → va con la F5.
 - [ ] **F4 · Pruebas** · subir de 34 a ~55 cubriendo Coach, diario y perfiles.
 - [ ] **F5 · Nube (Supabase)** · la más grande, en 3 pasos: cuentas → sincronizar → PRO real.
-- [~] **F6 · Inglés (ES / EN)** — base HECHA en la 3.11.0; pestaña «Hoy» traducida en la 3.11.1. Cobertura: 17 % (91 de ~514 textos).
-  Motor: `js/i18n.js` (`tr()`, `setLang()`, `locale()`, `dateTxt()`, `dowLetters()`, `applyStaticI18n()`),
-  diccionario en `js/data/lang-en.js`, estilo `.nd-langsel`, selector en el menú de ajustes.
-  **Medir siempre con `node tools/i18n-check.js`** (y `--faltan` / `--sin-en`).
-  **Seguro**: `I18N_READY = false` en `js/i18n.js` oculta el selector hasta que esté completo;
-  `tests/v311.test.js` no deja ponerlo en `true` si falta algo. Para probar: `setLang('en')` en la consola.
-  Ya funcionan: textos marcados, números (1234,5 → 1,234.5), fechas, iniciales de los días, `<html lang>`,
-  se recuerda la elección y se detecta el idioma del navegador.
-  **Lo que falta, por orden:**
-  1. ~519 textos de la interfaz sin marcar (coach 99 · engine 88 · diary 46 · calc 41 · gym 33 · insights 33 · kitchen 31 · wizard 30 · progress 26 · plans 22 · pdf 18 · dashboard 17 · index.html 12 · resto 19).
-  2. Fechas con `'es-ES'` fijo todavía en 30 sitios → cambiar por `dateTxt()` / `locale()`.
-  3. Nombres de alimentos: los ~470 genéricos y platos tienen su nombre inglés en `tools/genericos/*.json`
-     (campo `usda`). Los ~1.508 de marca NO se traducen (un producto se llama como se llama).
-  4. 95 ejercicios y sus 9 grupos musculares (`js/data/exercises.js`).
-  5. El Coach entiende solo español: sus patrones (`RX` en `coach.js`) y el lector de comidas
-     (`js/parser.js`) necesitan versión inglesa. **Sin esto, el inglés no es «igual de funcional».**
-  6. Dictado por voz: `rec.lang` fijo en `'es-ES'` (coach.js).
-  7. `privacidad.html` y `terminos.html`.
-  8. Las 1.913 páginas «Calorías de…» son españolas: decidir si se generan en inglés (`npm run seo`).
+- [x] **F6 · Inglés (ES / EN)** — HECHA en la 3.12.0 (21-10-2026). Nota 3 → 8,5.
+  Selector ES/EN en el menú del perfil (`I18N_READY = true`). Cobertura del comprobador: **100 %**
+  (1.382 textos con inglés, 0 sin marcar). Medir siempre con `node tools/i18n-check.js`
+  (y `--faltan` / `--sin-en`); el comprobador ya marca como fallo **cualquier** texto de `index.html`
+  con letras que no esté marcado (la lista de excepciones es `IGUAL`, dentro de `tools/i18n-check.js`).
+  - Motor: `js/i18n.js` (`tr()`, `tk()`, `tp()`, `setLang()`, `locale()`, `dateTxt()`, `pctTxt()`,
+    `eur()`, `foodName()`, `applyStaticI18n()` — que también cambia `content`, `alt` y el `href`
+    de las páginas legales con `data-t-hr`). Diccionario: `js/data/lang-en.js`.
+  - Nombres de alimentos genéricos en inglés: `js/data/foods-en.js` (772, por id). `foodName(f)` usa
+    `f.en` si existe y si no esa tabla. El buscador (`matchFoods`) mira los dos idiomas a la vez.
+  - El Coach y el lector de comidas entienden inglés: patrones `RX` y `FOLLOW` (coach.js),
+    `NUM_WORDS`, `UNIT_WORDS`, `STOP`, `PHRASES_EN`, `CANON` y `SLOT_HINTS` (parser.js),
+    y `SHOP_FILL` / `NEG` / `ALLERGY_WORDS` (kitchen.js). Dictado por voz con `locale()`.
+  - Páginas legales en inglés: `privacy.html` y `terms.html`.
+  - **Lo que sigue en español, a propósito o pendiente:**
+    1. Los 1.508 productos **de marca** (McDonald's, Hacendado, Danone…). Un producto se llama
+       como se llama; traducirlos es una decisión, no un fallo. 1.112 llevan alguna palabra
+       en español («Hamburguesa con queso»). Si se hace: añadir su `en` a `js/data/foods-en.js`.
+    2. Las 1.913 páginas públicas «Calorías de…» (`npm run seo`): decidir si se generan en inglés.
+    3. Los mensajes **ya guardados** del chat conservan el idioma en el que se escribieron
+       (se guardan como HTML). El chat se vacía cada día, así que se arregla solo.
 
 - [ ] **F8 · Subir a 9 lo que está en 7,5** (encargo del 20-10-2026)
-  - **Coach 7,5 → 9**: que entienda inglés (va con F6.5), más temas, y que el lector de comidas
-    acepte frases sueltas mejor. Sin IA externa, por decisión de Ángel.
+  - **Coach 7,5 → 9**: inglés HECHO en la 3.12.0 (entiende las mismas preguntas en los dos idiomas).
+    Queda: más temas y que el lector de comidas acepte frases sueltas mejor. Sin IA externa, por decisión de Ángel.
   - **Enganche 7,5 → 9**: necesita avisos de verdad al móvil (push) → depende de la F5 (servidor).
     Sin servidor no se puede pasar de 7,5 honestamente.
   - **Pruebas 7,5 → 9**: de 51 a ~100, cubriendo diario, perfiles, gym y calculadora.
