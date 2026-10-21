@@ -5,9 +5,9 @@
 const fs = require('fs'), path = require('path');
 const file = path.join(__dirname, '..', '..', 'js', 'data', 'foods.js');
 // marcas.json (la base de siempre) va primero para que sus ids no cambien; detrás, por orden de llegada:
-// marcas_v3.json (3.4), marcas_v4.json (3.5, añadidos a mano y comprobados) , marcas_v5.json (3.6, proteínas y despensa) y marcas_v6.json (3.6, bebidas)
+// marcas_v3.json (3.4), marcas_v4.json (3.5, añadidos a mano y comprobados) , marcas_v5.json (3.6, proteínas y despensa), marcas_v6.json (3.6, bebidas) y marcas_v7.json (3.15, los más escaneados en España, revisados a mano)
 const extra = f => fs.existsSync(path.join(__dirname, f)) ? JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')) : [];
-const M = JSON.parse(fs.readFileSync(path.join(__dirname, 'marcas.json'), 'utf8')).concat(extra('marcas_v3.json'), extra('marcas_v4.json'), extra('marcas_v5.json'), extra('marcas_v6.json'));
+const M = JSON.parse(fs.readFileSync(path.join(__dirname, 'marcas.json'), 'utf8')).concat(extra('marcas_v3.json'), extra('marcas_v4.json'), extra('marcas_v5.json'), extra('marcas_v6.json'), extra('marcas_v7.json'));
 const AZ = fs.existsSync(path.join(__dirname, 'marcas_azucar.json')) ? JSON.parse(fs.readFileSync(path.join(__dirname, 'marcas_azucar.json'), 'utf8')) : {};
 const slug = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '');
 const seen = new Set();

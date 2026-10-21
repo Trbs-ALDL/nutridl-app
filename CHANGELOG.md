@@ -1,5 +1,12 @@
 # Cambios de nutriDL
 
+## 3.15.0 · 22 de octubre de 2026
+
+- **111 productos nuevos (2.391 alimentos en total)**: los **más escaneados en España** en Open Food Facts, de cualquier marca (la mejor medida pública de lo que la gente apunta en las apps de calorías). Gullón Zero, Old El Paso, Wasa, Oatly, Alpro, Carrefour, Lidl (Milbona, Alesto, Crownfield…), Príncipe, Lotus Biscoff, Barilla, Weetabix, Hacendado y más.
+- Revisados **uno a uno**: nombre claro en español y la marca de la tienda (no la razón social); fuera 29 (solo de Francia/Italia, sin marca, datos imposibles o nombre dudoso) y 13 repetidos con otro nombre. Mismas reglas de siempre: las calorías tienen que cuadrar con la etiqueta.
+- Proceso repetible: `node tools/marcas/off_fetch7.js` → `off_build3.js v7` → `off_v7_revision.js` → `off_embed.js` → `npm run seo`.
+- El cruasán genérico también se encuentra buscando «croissant». Páginas «Calorías de…»: 2.022.
+
 ## 3.14.0 · 22 de octubre de 2026
 
 Los puntos débiles que salieron de las reseñas de la competencia y de la revisión de la portada (`docs/COMPETENCIA.md`):

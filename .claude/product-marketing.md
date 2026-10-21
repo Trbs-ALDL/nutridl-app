@@ -16,7 +16,7 @@
 ## Diferencias frente a la competencia (comprobadas)
 - Escáner de código de barras y macros completos **gratis** (MyFitnessPal los cobra o los limita; Yazio reserva las macros detalladas a Pro).
 - **Sin anuncios y sin cuenta**: los datos se quedan en el móvil.
-- **Más de 2.200 alimentos comprobados**, casi 500 Hacendado; cada dato con fuente (etiqueta, USDA, web oficial).
+- **Más de 2.300 alimentos comprobados**, casi 500 Hacendado; cada dato con fuente (etiqueta, USDA, web oficial).
 - Coach que responde («¿Qué ceno con 600 kcal?»), gym incluido, tarjeta «Compartir mi semana».
 - Competidores principales: Fitia (fuerte en España/Latam, ~9,99 €/mes), MyFitnessPal, Yazio, FatSecret.
 

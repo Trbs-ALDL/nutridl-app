@@ -8,6 +8,7 @@
 
 > **22-10-2026 · 3.13.0:** ronda con las skills de negocio. Competencia y voz del cliente en `docs/COMPETENCIA.md` (580 reseñas de Play ES: el dolor nº 1 del mercado es «todo es de pago»). Hecho: aviso de fin de prueba PRO, «Seguir gratis» en la pantalla PRO, enlace a la app en PDF y lista de la compra, notas propias + 5 rankings en las páginas SEO (1.920 direcciones en el sitemap), ficha de Play optimizada. Pruebas: 54 pasan. Copia: «appdura 19.0» = 3.12.0 (la próxima es la 20.0).
 > **22-10-2026 · 3.14.0:** HECHO lo que aprobó Ángel: titular «Cuenta calorías gratis de verdad», promesa pública de gratuidad (portada, FAQ y Play), objetivo de recomposición corporal y macros a mano. 60 pruebas pasan.
+> **22-10-2026 · 3.15.0:** +111 productos más escaneados en España (2.391 alimentos; 2.022 páginas SEO). Tanda v7 en tools/marcas (off_fetch7 → off_build3 v7 → off_v7_revision → off_embed).
 > **Quedan como opción (Ángel no las eligió):** exportar a Excel/CSV y capturas de Play con textos.
 
 ## 1. Lo que ya está medido (no repetir)

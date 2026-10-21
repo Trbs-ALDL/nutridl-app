@@ -9,7 +9,7 @@ const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ
 const TANDA = process.argv[2] || 'v3', PREFIX = TANDA + '_', OUTF = `marcas_${TANDA}.json`;
 const rd = f => fs.existsSync(path.join(__dirname, f)) ? JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')) : [];
 // v3 se compara solo con marcas.json (así su lista no cambia nunca); las tandas nuevas, con todo lo anterior
-const old = TANDA === 'v3' ? rd('marcas.json') : rd('marcas.json').concat(rd('marcas_v3.json'), rd('marcas_v4.json'), TANDA === 'v6' ? rd('marcas_v5.json') : []);
+const old = TANDA === 'v3' ? rd('marcas.json') : rd('marcas.json').concat(rd('marcas_v3.json'), rd('marcas_v4.json'), TANDA === 'v6' ? rd('marcas_v5.json') : TANDA === 'v7' ? rd('marcas_v5.json').concat(rd('marcas_v6.json')) : []); // v7: no repetir nada de las tandas anteriores
 const seenCode = new Set(old.map(m => String(m.off)));
 const seenName = new Set(old.map(m => norm(m.brand) + '|' + norm(m.label)));
 const QUOTA = TANDA === 'v3' ? { hacendado: 420 } : TANDA === 'v6' ? { 'coca-cola': 30, 'don-simon': 20 } : { myprotein: 60, prozis: 50, hsn: 40, 'kellogg-s': 30, nestle: 30 }; const DEFAULT_QUOTA = TANDA === 'v3' ? 18 : TANDA === 'v6' ? 15 : 20;
@@ -65,7 +65,7 @@ const RENAME = {
 };
 const tidy = s => s.replace(/\s*\*+$/, '').replace(/\b([A-ZÁÉÍÓÚÑ]{4,})\b/g, w => w.charAt(0) + w.slice(1).toLowerCase()).replace(/\s+hacendado$/i, '').replace(/\s{2,}/g, ' ').trim();
 const out = [], report ={ ok: 0, noData: 0, kcalMal: 0, bad: 0, dup: 0, idioma: 0, ambiguo: 0 };
-const files = fs.readdirSync(dir).filter(f => f.startsWith(PREFIX));
+const files = fs.readdirSync(dir).filter(f => f.startsWith(PREFIX) && !f.includes('__')); // «__» = copias en bruto, no marcas
 const byBrand = {};
 files.forEach(f => { const b = f.slice(3).replace(/_p\d+\.json$/, ''); (byBrand[b] = byBrand[b] || []).push(...JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'))); });
 for (const [b, list] of Object.entries(byBrand)) {
@@ -119,7 +119,7 @@ for (const [b, list] of Object.entries(byBrand)) {
         const r1 = v => Math.round(v * 10) / 10;
         const Su = n.sugars_100g != null && isFinite(+n.sugars_100g) && +n.sugars_100g >= 0 ? r1(Math.min(+n.sugars_100g, C)) : null; // azúcares de la etiqueta (si los trae)
         // Bebidas: si el nombre empieza por otra marca conocida (Aquarius dentro de Coca-Cola, Kas dentro de Pepsi…), va con esa marca
-        let brandOut = BRAND[b] || b;
+        let brandOut = BRAND[b] || (TANDA === 'v7' && String(p.brands || '').split(',')[0].trim()) || b; // v7: marcas sin traducir → su nombre en la etiqueta
         if (TANDA === 'v6') { const nb = norm(lab).replace(/^bitter /, ''); const m = Object.values(BRAND).find(B => B !== brandOut && (nb === norm(B) || nb.startsWith(norm(B) + ' '))); if (m) brandOut = m; }
         out.push({ label: lab, brand: brandOut, off: String(p.code), offName: raw, kcal: Math.round(kcal), p: r1(P), c: r1(C), f: r1(G), fib: r1(Fi), sug: Su, serv: serving(p, liquid, name), em: '', ml: liquid ? 1 : 0, raw: RAW.test(name) && kcal > 250 ? 1 : 0, scans: p.unique_scans_n || 0 });
         taken++; report.ok++;
