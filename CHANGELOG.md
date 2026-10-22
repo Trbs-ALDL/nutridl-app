@@ -6,7 +6,6 @@
 - Revisados **uno a uno**: nombre claro en español y la marca de la tienda (no la razón social); fuera 29 (solo de Francia/Italia, sin marca, datos imposibles o nombre dudoso) y 13 repetidos con otro nombre. Mismas reglas de siempre: las calorías tienen que cuadrar con la etiqueta.
 - Proceso repetible: `node tools/marcas/off_fetch7.js` → `off_build3.js v7` → `off_v7_revision.js` → `off_embed.js` → `npm run seo`.
 - El cruasán genérico también se encuentra buscando «croissant». Páginas «Calorías de…»: 2.022.
-
 - Más robusto: si una copia de seguridad antigua trae una comida sin proteína/hidratos/grasa, el diario muestra 0 en vez de «NaN».
 ## 3.14.0 · 22 de octubre de 2026
 
