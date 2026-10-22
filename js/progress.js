@@ -68,9 +68,10 @@ function renderTracker() {
     const dLabel = d => new Date(d + 'T12:00:00').toLocaleDateString(locale(), { day: 'numeric', month: 'short' });
     const gw = num(state.goalWeight);
     lineChart($('trk-chart'), {
-        aria: tr('Gráfica de peso'), legend: tr('— media de 7 días   ● registros'), dotColor: '#9c9084',
+        // 3.17.1 (Ángel): la línea une TODOS tus registros, no la media de 7 días
+        aria: tr('Gráfica de peso'), legend: tr('— tu peso cada vez que lo apuntaste'), dotColor: '#dcc19c',
         points: L.map(e => ({ x: dayNum(e.d), y: e.w, tip: `${dLabel(e.d)}: ${fmt(e.w, 1)} kg` })),
-        line: L.map(e => ({ x: dayNum(e.d), y: avgAround(dayNum(e.d), L) })),
+        line: L.map(e => ({ x: dayNum(e.d), y: e.w })),
         goal: gw ? { y: gw, label: tr('Objetivo {k} kg', { k: fmt(gw, 1) }) } : null,
         xLabels: [dLabel(first.d), dLabel(last.d)],
     });
@@ -150,7 +151,7 @@ function renderProgress() {
     renderMeasureChart();
     if (!profiles.current) { box.innerHTML = `<div class="nd-card p-6 text-center space-y-3"><p class="text-sm text-neutral-300">${tr('Crea tu perfil para ver tu progreso.')}</p><button onclick="newProfile()" class="nd-btn-primary mx-auto">${tr('Empezar gratis')}</button></div>`; $('prog-ach').innerHTML = ''; return; }
     const S = streakInfo(), W = calWeekStats(), T = weightTrend(), L = insightsList();
-    const days = W.days.map((d, i) => { const on = loggedOn(d), t = on ? diaryTotals(d) : null, ok = t && calc.prot && t.p >= calc.prot * .9, fut = d > todayISO(); return `<div class="flex flex-col items-center gap-1 flex-1 ${fut ? 'opacity-40' : ''}"><span class="text-[10px] font-bold ${d === todayISO() ? 'text-mint-300' : 'text-neutral-500'}">${dowLetters()[i]}</span><span class="w-8 h-8 rounded-full grid place-items-center text-xs ${on ? (ok ? 'bg-mint-500 text-neutral-950' : 'bg-mint-600/40 text-mint-200') : 'bg-neutral-800 text-neutral-600'}">${on ? (ok ? '<i class="fa-solid fa-check"></i>' : '•') : ''}</span></div>`; }).join('');
+    const days = W.days.map((d, i) => { const on = loggedOn(d), t = on ? diaryTotals(d) : null, ok = t && calc.prot && t.p >= calc.prot * .9, fut = d > todayISO(); return `<div class="flex flex-col items-center gap-1 flex-1 ${fut ? 'opacity-40' : ''}"><span class="text-[10px] font-bold ${d === todayISO() ? 'text-mint-300' : 'text-neutral-500'}">${dowLetters()[i]}</span><span class="w-8 h-8 rounded-full grid place-items-center text-xs ${on ? (ok ? 'bg-ok-500 text-ok-900' : 'bg-mint-600/40 text-mint-200') : 'bg-neutral-800 text-neutral-600'}">${on ? (ok ? '<i class="fa-solid fa-check"></i>' : '•') : ''}</span></div>`; }).join('');
     const stat = (l, v, s) => `<div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[11px] font-bold uppercase text-neutral-400">${l}</div><div class="text-lg font-extrabold text-neutral-50">${v}</div>${s ? `<div class="text-[11px] text-neutral-400">${s}</div>` : ''}</div>`;
     const gw = num(state.goalWeight), toGoal = gw && T ? T.now - gw : null;
     box.innerHTML = `<div class="grid lg:grid-cols-5 gap-4">
@@ -164,7 +165,7 @@ function renderProgress() {
             <p class="text-[11px] text-neutral-500">${tr('De lunes a domingo. ● registrado · ✓ proteína cumplida.')}</p>
         </div>
         <div class="lg:col-span-2 space-y-3">
-            <div class="nd-card p-5 flex items-center gap-4"><span class="nd-ic-lg">${icon('🔥')}</span><div><div class="text-2xl font-extrabold text-neutral-50">${tr(S.cur === 1 ? '{k} día seguido' : '{k} días seguidos', { k: S.cur })}</div><div class="text-xs text-neutral-400">${tr('Mejor racha: {k}', { k: S.best })} · ${S.today ? tr('hoy ya has apuntado ✓') : tr('apunta algo hoy para mantenerla')}</div></div></div>
+            <div class="nd-card p-5 flex items-center gap-4"><span class="nd-ic-lg ${S.cur > 0 ? 'text-ok-400' : ''}">${icon('🔥')}</span><div><div class="text-2xl font-extrabold text-neutral-50">${tr(S.cur === 1 ? '{k} día seguido' : '{k} días seguidos', { k: S.cur })}</div><div class="text-xs text-neutral-400">${tr('Mejor racha: {k}', { k: S.best })} · ${S.today ? tr('hoy ya has apuntado ✓') : tr('apunta algo hoy para mantenerla')}</div></div></div>
             ${S.total ? `<button onclick="shareProgress()" class="w-full py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-sm font-extrabold text-neutral-100 hover:border-mint-400"><i class="fa-solid fa-share-nodes text-mint-400"></i> ${tr('Compartir mi semana')}</button>` : ''}
             ${T ? `<div class="nd-card p-5 space-y-1"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Peso medio (7 días)')}</div><div class="text-2xl font-extrabold text-neutral-50">${fmt(T.now, 1)} kg</div><div class="text-xs text-neutral-400">${T.week != null ? tr('{k} kg respecto a la semana anterior', { k: (T.week > 0 ? '+' : '') + fmt(T.week, 1) }) : tr('Con 2 semanas de registros verás la tendencia')}${toGoal != null ? ` · ${Math.abs(toGoal) < .3 ? tr('¡en tu objetivo!') : tr('{k} kg para tu objetivo', { k: fmt(Math.abs(toGoal), 1) })}` : ''}</div></div>` : ''}
         </div>

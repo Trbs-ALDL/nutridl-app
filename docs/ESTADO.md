@@ -10,7 +10,8 @@
 > **22-10-2026 · 3.14.0:** HECHO lo que aprobó Ángel: titular «Cuenta calorías gratis de verdad», promesa pública de gratuidad (portada, FAQ y Play), objetivo de recomposición corporal y macros a mano. 60 pruebas pasan.
 > **22-10-2026 · 3.15.0:** +111 productos más escaneados en España (2.391 alimentos; 2.022 páginas SEO). Tanda v7 en tools/marcas (off_fetch7 → off_build3 v7 → off_v7_revision → off_embed).
 > **23-10-2026 · 3.16.0:** auditoría total (seguridad, datos, Coach). Arreglado: Coach que apuntaba sin preguntar, guardado silencioso con almacenamiento lleno, «NaN» con comidas sin macros. Modelo de amenazas en `docs/SEGURIDAD-Y-PUBLICACION.md`. semgrep: 18 avisos, todos falsos positivos en `tools/` (scripts locales). 68 pruebas. Copia «appdura 21.0» = 3.15.0.
-> **23-10-2026 · 3.17.0:** paleta mixta C (verde `ok-*` en tailwind solo para «vas bien»), editar nombre/macros en el diario, editar/borrar mis alimentos, renombrar/ordenar/ocultar ejercicios. 72 pruebas. Copia «appdura 22.0» = 3.16.0 (la próxima es la 23.0).
+> **23-10-2026 · 3.17.0:** paleta mixta C (verde `ok-*` en tailwind solo para «vas bien»), editar nombre/macros en el diario, editar/borrar mis alimentos, renombrar/ordenar/ocultar ejercicios. 72 pruebas. Copia «appdura 22.0» = 3.16.0.
+> **23-10-2026 · 3.18.0:** verde en TODO lo de «bien» (decisión de Ángel), superseries de 2 ejercicios (e.ss en el primero; ssFix en gym.js), gráfica de peso con todos los registros. 74 pruebas. Copia «appdura 23.0» = 3.17.0 (la próxima es la 24.0).
 > **Quedan como opción (Ángel no las eligió):** exportar a Excel/CSV y capturas de Play con textos.
 
 ## 1. Lo que ya está medido (no repetir)
@@ -108,7 +109,7 @@ Marca cada fase como HECHA aquí al terminarla.
 
 - Copia de seguridad **antes de cualquier cambio**:
   `node tools/bundle.js "C:/Users/angel/Desktop/Trbs-aldl/Nutri versions/appdura N.0.html"`
-  Hecha hasta la **22.0** → la próxima es la 23.0.
+  Hecha hasta la **23.0** → la próxima es la 24.0.
 - Tras tocar `js/data/foods.js`: `npm run seo`. Tras tocar clases o iconos: `npm run build`.
 - Publicar: subir `APP_VERSION` (js/core.js), `package.json` y `CHANGELOG.md`, luego commit y push a `main`.
 - Los códigos PRO están **fuera del repo**, en `Desktop/Trbs-aldl/Nutri versions/`. Nunca mostrarlos.

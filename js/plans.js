@@ -67,7 +67,7 @@ function renderLocks() { document.querySelectorAll('[data-lock]').forEach(i => i
 const lockIc = feature => canUse(feature) ? '' : ' <i class="fa-solid fa-lock text-[10px] text-amber-300" aria-label="PRO"></i>';
 
 function proTable() {
-    const ck = on => on ? '<i class="fa-solid fa-check text-mint-400"></i>' : '<span class="text-neutral-600">—</span>';
+    const ck = on => on ? '<i class="fa-solid fa-check text-ok-400"></i>' : '<span class="text-neutral-600">—</span>';
     return `<div class="rounded-2xl border border-neutral-800 overflow-hidden text-sm">
         <div class="grid grid-cols-[1fr_4rem_4rem] bg-neutral-900 px-4 py-2.5 text-[11px] font-extrabold uppercase tracking-wider text-neutral-400"><span>${tr('Función')}</span><span class="text-center">${tr('Gratis')}</span><span class="text-center text-mint-300">PRO</span></div>
         ${PLAN_FEATURES.map(([l, f, p]) => `<div class="grid grid-cols-[1fr_4rem_4rem] px-4 py-2.5 border-t border-neutral-800 items-center"><span class="text-neutral-200">${tr(l)}</span><span class="text-center">${ck(f)}</span><span class="text-center">${ck(p)}</span></div>`).join('')}

@@ -1908,5 +1908,14 @@ const LANG_EN = {
     "Nombre cambiado": "Name changed",
     "Quitado de tus ejercicios: {n}": "Removed from your exercises: {n}",
     "Quitar {n} de tus ejercicios": "Remove {n} from your exercises",
+    // 3.17.1
+    "— tu peso cada vez que lo apuntaste": "— your weight every time you logged it",
+    "Superserie": "Superset",
+    "Separar": "Split",
+    "Haz una serie de cada uno seguidas, sin descanso entre ellos. Descansa al terminar los dos.": "Do one set of each back to back, with no rest in between. Rest after finishing both.",
+    "Hacer superserie de {a} con {b}": "Make a superset of {a} with {b}",
+    "Superserie con el siguiente": "Superset with the next one",
+    "Ese ejercicio ya está en otra superserie": "That exercise is already in another superset",
+    "Superserie con {n}": "Superset with {n}",
     "Ese peso queda por debajo del rango saludable para tu estatura (IMC menor de 18,5). Antes de buscarlo, consúltalo con un profesional sanitario.": "That weight is below the healthy range for your height (BMI under 18.5). Please talk to a healthcare professional before aiming for it.",
 };

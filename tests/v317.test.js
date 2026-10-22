@@ -89,3 +89,32 @@ test('Paleta mixta: el verde solo aparece al llegar al objetivo', () => {
     assert.match(run('kcalBar(1500, 2000)'), /6fcf97/);
     assert.match(run('kcalBar(2300, 2000)'), /c2603f/, 'pasarse no es verde');
 });
+
+test('Gym 3.17.1: superserie de 2 ejercicios (unir, separar, nunca tríos, se guarda en el entreno)', () => {
+    const { run, json } = loadApp();
+    run("state.gym = { level: 'beginner', days: 1, eq: 'gym', myDays: 1, plan: [{ name: '', ex: [] }] }; gymDay = 0; saveGymDay.length");
+    run("addGymEx('', 'Curl'); addGymEx('', 'Extensión tríceps'); addGymEx('', 'Elevaciones laterales')");
+    run('toggleSS(0)');
+    assert.equal(json('!!curDay().ex[0].ss'), true, 'unidos');
+    run('toggleSS(1)'); // el segundo de un par no puede abrir otro
+    assert.equal(json('!!curDay().ex[1].ss'), false, 'nunca tres seguidos');
+    assert.match(run('gymExList(curDay().ex)'), /nd-ss/);
+    // Guardar: la superserie queda en el entreno
+    run("curDay().ex.forEach(e => { e.s = [{ kg: '10', r: '10' }]; }); saveGymDay()");
+    assert.deepEqual(json('state.workouts[0].ex.map(e => !!e.ss)'), [true, false, false]);
+    // Quitar el segundo deja al primero como ejercicio normal
+    run('removeGymEx(1)');
+    assert.equal(json('!!curDay().ex[0].ss'), false);
+    run('__undo()');
+    assert.equal(json('!!curDay().ex[0].ss'), true, 'deshacer recupera la superserie');
+    // Separar
+    run('toggleSS(0)');
+    assert.equal(json('curDay().ex.some(e => e.ss)'), false);
+});
+
+test('Gym 3.17.1: si solo hay series en uno de los dos, no se guarda como superserie', () => {
+    const { run, json } = loadApp();
+    run("state.gym = { level: 'beginner', days: 1, eq: 'gym', myDays: 1, plan: [{ name: '', ex: [] }] }; gymDay = 0");
+    run("addGymEx('', 'Curl'); addGymEx('', 'Extensión tríceps'); toggleSS(0); curDay().ex[0].s = [{ kg: '10', r: '10' }]; saveGymDay()");
+    assert.deepEqual(json('state.workouts[0].ex.map(e => !!e.ss)'), [false]);
+});

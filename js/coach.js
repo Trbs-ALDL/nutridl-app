@@ -755,7 +755,7 @@ function renderMenuView() {
         return;
     }
     const T = menuTotals(mn);
-    const bar = (l, v, t, col) => `<div class="space-y-1"><div class="flex justify-between text-[11px] font-bold"><span class="text-neutral-400">${l}</span><span class="text-neutral-200">${fmt(v)}/${fmt(t)}</span></div><div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full" style="width:${Math.min(100, v / t * 100)}%;background:${col}"></div></div></div>`;
+    const bar = (l, v, t, col) => `<div class="space-y-1"><div class="flex justify-between text-[11px] font-bold"><span class="text-neutral-400">${l}</span><span class="text-neutral-200">${fmt(v)}/${fmt(t)}</span></div><div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full" style="width:${Math.min(100, v / t * 100)}%;background:${t > 0 && v >= t * .95 ? '#6fcf97' : col}"></div></div></div>`;
     box.innerHTML = `<div class="nd-card p-5 space-y-4">
             <div class="flex items-end justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Total del menú')}</div><div class="text-3xl font-extrabold text-neutral-50">${fmt(T.kcal)} <span class="text-sm text-neutral-400">/ ${fmt(calc.target)} kcal</span></div></div>${tagPill('rec')}</div>
             <div class="grid grid-cols-3 gap-3">${bar(tr('Proteína'), T.p, calc.prot, '#c49a6c')}${bar(tr('Hidratos'), T.c, calc.carbs, '#e6d3b3')}${bar(tr('Grasas'), T.f, calc.fat, '#f59e0b')}</div>

@@ -1,5 +1,12 @@
 # Cambios de nutriDL
 
+## 3.18.0 · 23 de octubre de 2026
+
+- **Verde con sentido en toda la app** (decisión de Ángel): todo lo que significa «bien», «hecho» o «conseguido» es verde. Nuevos en verde: «Quedan X kcal», racha (chip de Hoy y tarjeta de Progreso), logros conseguidos, días cumplidos del calendario semanal, celebraciones, lista de la compra (barra y casillas compradas), barras del menú del día al cumplir, «Mis pesos más altos», ✓ de «PDF creado» y de lo incluido en Gratis/PRO. Botones y marca siguen en caramelo.
+- **Superseries en el gym**: botón 🔗 para unir un ejercicio con el siguiente. Se ven juntos en un bloque «Superserie» con la indicación de hacerlos seguidos; cada uno guarda sus series y pesos (no se pierde el historial ni los récords). «Separar» para deshacerlo. Siempre de 2 en 2; mover o quitar uno deja al otro como ejercicio normal. Se guarda en el entreno y se ve en el historial («Superserie con…»).
+- **Gráfica de peso**: la línea une todas las veces que apuntaste tu peso (antes seguía la media de 7 días). Las cifras de media y ritmo semanal siguen igual.
+- 2 pruebas nuevas: 74 en total.
+
 ## 3.17.0 · 23 de octubre de 2026
 
 Editar todo rápido y paleta mixta (elegida por Ángel).

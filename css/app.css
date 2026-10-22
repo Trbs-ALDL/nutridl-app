@@ -188,7 +188,7 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 .nd-quick span { font-size: 12px; font-weight: 800; }
 .nd-wide { display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: 3.25rem; border-radius: 1.1rem; background: var(--nd-card); border: 1px solid var(--nd-line); font-size: .875rem; font-weight: 800; color: #f2ede6; }
 .nd-goal { display: inline-flex; align-items: center; gap: .45rem; padding: .55rem 1rem; border-radius: 999px; background: var(--nd-card); border: 1px solid var(--nd-line); font-size: .875rem; font-weight: 800; color: #f2ede6; }
-.nd-streak { display: inline-flex; align-items: center; gap: .3rem; padding: .45rem .8rem; border-radius: 999px; background: rgba(245, 158, 11, .12); border: 1px solid rgba(245, 158, 11, .32); color: #fde68a; font-weight: 800; font-size: .95rem; font-variant-numeric: tabular-nums; }
+.nd-streak { display: inline-flex; align-items: center; gap: .3rem; padding: .45rem .8rem; border-radius: 999px; background: rgba(111, 207, 151, .12); border: 1px solid rgba(111, 207, 151, .34); color: #9fe0bb; font-weight: 800; font-size: .95rem; font-variant-numeric: tabular-nums; }
 
 /* Barras de progreso */
 .nd-kbar { height: 12px; border-radius: 999px; background: #2a2521; overflow: hidden; }
@@ -258,7 +258,7 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 .nd-recipe { padding-top: .75rem; border-top: 1px solid var(--nd-line); }
 .nd-shop { display: flex; align-items: center; gap: .75rem; min-height: 3rem; padding: .55rem .7rem; border-radius: .9rem; cursor: pointer; color: #f2ede6; font-size: .95rem; font-weight: 600; }
 .nd-shop:hover { background: rgba(255, 255, 255, .03); }
-.nd-shop input { width: 1.25rem; height: 1.25rem; accent-color: #9a6b40; flex: none; }
+.nd-shop input { width: 1.25rem; height: 1.25rem; accent-color: #4fbf80; flex: none; } /* comprado = verde */
 .nd-shop.on > span { text-decoration: line-through; opacity: .5; }
 .nd-bigmic { width: 5.5rem; height: 5.5rem; border-radius: 999px; background: var(--nd-brand); color: #fff; font-size: 2rem; box-shadow: 0 16px 40px -14px rgba(154, 107, 64, .8); }
 .nd-rec { position: relative; background: #c2603f !important; color: #fff !important; }
@@ -268,7 +268,8 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 .nd-photo.has { padding: 0; border-style: solid; overflow: hidden; }
 .nd-photo:focus-within { border-color: #c59a6d; }
 .nd-ach { display: flex; flex-direction: column; align-items: center; text-align: center; gap: .25rem; padding: .8rem .5rem; border-radius: 1rem; background: #151312; border: 1px solid var(--nd-line); opacity: .55; }
-.nd-ach.on { opacity: 1; background: rgba(245, 158, 11, .06); border-color: rgba(245, 158, 11, .28); }
+.nd-ach.on { opacity: 1; background: rgba(111, 207, 151, .07); border-color: rgba(111, 207, 151, .32); }
+.nd-ach.on .nd-ic { color: #6fcf97; } /* 3.17.1: logro conseguido = verde */
 
 /* Barra inferior: el Coach destaca un poco */
 .nd-coach-tab { display: grid; place-items: center; width: 2.2rem; height: 1.7rem; border-radius: .7rem; transition: background-color .2s ease; }
@@ -276,8 +277,9 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 #tabbar-bottom button { min-height: 3.5rem; }
 
 /* Celebraciones (proteína conseguida, día completado, racha, logros): arriba, discreto, 3 s */
-#nd-celebrate { position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 95; display: flex; align-items: center; gap: .75rem; max-width: calc(100% - 2rem); padding: .8rem 1.1rem; border-radius: 1.25rem; background: rgba(32, 26, 20, .97); border: 1px solid rgba(245, 158, 11, .38); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .9); transform: translate(-50%, -140%); opacity: 0; pointer-events: none; transition: transform .35s var(--ease-out), opacity .25s ease; }
+#nd-celebrate { position: fixed; left: 50%; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 95; display: flex; align-items: center; gap: .75rem; max-width: calc(100% - 2rem); padding: .8rem 1.1rem; border-radius: 1.25rem; background: rgba(32, 26, 20, .97); border: 1px solid rgba(111, 207, 151, .45); box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .9); transform: translate(-50%, -140%); opacity: 0; pointer-events: none; transition: transform .35s var(--ease-out), opacity .25s ease; }
 #nd-celebrate.show { transform: translate(-50%, 0); opacity: 1; }
+#nd-celebrate .nd-ic { color: #6fcf97; } /* 3.17.1: celebrar = verde */
 
 /* Hojas y entrada del contenido */
 [data-panel]:not(.hidden) { animation: nd-fade .18s ease-out; }
@@ -374,6 +376,7 @@ h1 { line-height: 1.06; }
 /* Iconos en cuadrado suave (sustituyen a los emojis grandes del panel) */
 .nd-ic { flex: none; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: .75rem; background: rgba(196, 154, 108, .12); color: var(--nd-sand); font-size: 1.05rem; line-height: 1; }
 .nd-ic-lg { display: grid; place-items: center; width: 3.5rem; height: 3.5rem; border-radius: 1rem; background: rgba(196, 154, 108, .12); color: var(--nd-sand); font-size: 1.5rem; }
+.nd-ic-lg.text-ok-400 { color: #6fcf97; background: rgba(111, 207, 151, .12); } /* racha activa = verde */
 .gym-daybtn { background: var(--nd-raise); border-color: #3a332c; }
 .uppercase:is(.text-\[10px\], .text-\[11px\], .text-xs) { text-transform: none; letter-spacing: 0; font-weight: 600; }
 .text-neutral-600 { color: #928679; } /* texto apagado con contraste suficiente (≥ 4,5:1) */
@@ -404,7 +407,7 @@ h1 { line-height: 1.06; }
 .nd-quick { background: #1d1915; border-color: transparent; }
 .nd-quick span { color: #cfc5b8; font-weight: 600; }
 .nd-goal { border-radius: var(--nd-r-md); padding: .5rem .85rem; font-weight: 600; }
-.nd-streak { background: transparent; border-color: rgba(245, 158, 11, .35); color: #fcd34d; font-weight: 600; }
+.nd-streak { background: transparent; border-color: rgba(111, 207, 151, .38); color: #9fe0bb; font-weight: 600; }
 .cta-glow, .mint-glow { box-shadow: none; }
 
 /* Cifras: serifa con dígitos alineados (se leen como un marcador, no como un texto) */

@@ -123,7 +123,7 @@ function renderGym() {
             <div class="flex justify-between gap-1">${W.strip.map(x => `<div class="flex flex-col items-center gap-1.5 flex-1"><span class="text-[10px] font-bold ${x.today ? 'text-mint-300' : 'text-neutral-500'}">${x.l}</span><span class="w-8 h-8 rounded-full flex items-center justify-center text-xs ${x.done ? 'bg-ok-500 text-ok-900' : x.today ? 'border-2 border-mint-500 text-mint-300' : 'bg-neutral-800/80 text-neutral-600'}">${x.done ? '<i class="fa-solid fa-check"></i>' : ''}</span></div>`).join('')}</div>
             <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-ok-500 gym-bar" style="width:${pct}%"></div></div>
             ${g.unlocked
-                ? `<button onclick="openRecords()" class="w-full py-3.5 rounded-2xl bg-amber-400/15 border border-amber-400/40 text-amber-200 font-extrabold text-sm hover:bg-amber-400/25 flex items-center justify-center gap-2"><i class="fa-solid fa-trophy"></i> ${tr('Mis pesos más altos')}</button>`
+                ? `<button onclick="openRecords()" class="w-full py-3.5 rounded-2xl bg-ok-500/15 border border-ok-400/40 text-ok-300 font-extrabold text-sm hover:bg-ok-500/25 flex items-center justify-center gap-2"><i class="fa-solid fa-trophy"></i> ${tr('Mis pesos más altos')}</button>`
                 : `<div class="w-full py-3.5 rounded-2xl border border-dashed border-neutral-700 text-neutral-400 font-bold text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-lock"></i> ${tr('Completa tus {k} días para ver tus pesos más altos', { k: N })}</div>`}
         </div>
 
@@ -133,7 +133,7 @@ function renderGym() {
             <label class="block"><span class="sr-only">${tr('Nombre del día')}</span>
                 <input value="${esc(day.name)}" maxlength="40" placeholder="${tr('Día {k} · ponle nombre', { k: gymDay + 1 })}" oninput="myGym().plan[${gymDay}].name=this.value; gymSave()" onchange="renderGym()" class="w-full bg-transparent text-xl font-extrabold text-neutral-100 placeholder:text-neutral-600 outline-none border-b border-neutral-800 focus:border-mint-500 pb-2"></label>
             ${sessHtml()}
-            <div id="gym-ex" class="space-y-3">${day.ex.length ? day.ex.map((e, k) => gymExHtml(e, k)).join('') : `<div class="p-6 rounded-2xl border border-dashed border-neutral-700 text-center text-sm text-neutral-400"><i class="fa-solid fa-dumbbell text-2xl text-neutral-600 block mb-2"></i>${tr('Añade tu primer ejercicio')}</div>`}</div>
+            <div id="gym-ex" class="space-y-3">${day.ex.length ? gymExList(day.ex) : `<div class="p-6 rounded-2xl border border-dashed border-neutral-700 text-center text-sm text-neutral-400"><i class="fa-solid fa-dumbbell text-2xl text-neutral-600 block mb-2"></i>${tr('Añade tu primer ejercicio')}</div>`}</div>
             <div class="space-y-3">
                 <div class="relative">
                     <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 text-sm"></i>
@@ -150,13 +150,48 @@ function renderGym() {
     clearInterval(sessT); sessT = null;
     if (g.sess && !g.sess.pausedAt) sessT = setInterval(sessTick, 1000);
 }
+// ----- Superseries: dos ejercicios seguidos, una serie de cada uno sin descanso -----
+// e.ss = true en el PRIMERO del par (va unido al siguiente). Siempre parejas: nunca tres seguidos ni el último solo.
+function ssFix(ex) {
+    let second = false;
+    ex.forEach((e, i) => {
+        if (second) { delete e.ss; second = false; return; }
+        if (e.ss && i < ex.length - 1) second = true; else delete e.ss;
+    });
+    return ex;
+}
+const ssSecond = (ex, k) => k > 0 && !!ex[k - 1].ss; // ¿es el segundo de una superserie?
+function toggleSS(k) {
+    const ex = curDay().ex; if (!ex[k] || k >= ex.length - 1) return;
+    if (ex[k].ss) delete ex[k].ss;
+    else { if (ssSecond(ex, k) || ex[k + 1].ss) { toast('Ese ejercicio ya está en otra superserie'); return; } ex[k].ss = true; }
+    ssFix(ex); save(); renderGym();
+    const el = document.querySelector(`#gym-ex [data-k="${k}"]`); if (el) ndAnim(el.closest('.nd-ss') || el, [{ opacity: .5 }, { opacity: 1 }], 200);
+}
+function gymExList(ex) {
+    ssFix(ex);
+    let html = '';
+    for (let k = 0; k < ex.length; k++) {
+        if (ex[k].ss && ex[k + 1]) {
+            html += `<div class="nd-ss rounded-3xl border border-mint-500/40 bg-mint-500/5 p-2 space-y-2">
+                <div class="flex items-center justify-between gap-2 px-2 pt-1"><span class="text-xs font-extrabold uppercase tracking-wider text-mint-300"><i class="fa-solid fa-link"></i> ${tr('Superserie')}</span>
+                    <button type="button" onclick="toggleSS(${k})" class="px-2.5 py-1 rounded-lg text-[11px] font-bold text-neutral-400 hover:bg-neutral-800"><i class="fa-solid fa-link-slash"></i> ${tr('Separar')}</button></div>
+                <p class="px-2 text-[11px] text-neutral-400">${tr('Haz una serie de cada uno seguidas, sin descanso entre ellos. Descansa al terminar los dos.')}</p>
+                ${gymExHtml(ex[k], k)}${gymExHtml(ex[k + 1], k + 1)}</div>`;
+            k++;
+        } else html += gymExHtml(ex[k], k);
+    }
+    return html;
+}
 function gymExHtml(e, k) {
     const lp = lastPerfOf(e) || [];
+    const ex = curDay().ex, canLink = k < ex.length - 1 && !e.ss && !ssSecond(ex, k) && !ex[k + 1].ss;
     return `<div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3 space-y-2" data-k="${k}">
         <div class="flex items-start justify-between gap-2">
             <button type="button" onclick="renameGymEx(${k})" class="min-w-0 flex-1 text-left" aria-label="${tr('Cambiar el nombre de {n}', { n: esc(exLabel(e)) })}"><div class="text-sm font-extrabold text-mint-300 truncate" title="${esc(exLabel(e))}">${esc(exLabel(e))} <i class="fa-solid fa-pen text-[10px] text-neutral-500" aria-hidden="true"></i></div>
                 ${lp.length ? `<div class="text-[11px] text-neutral-400 truncate">${tr('Última vez:')} ${perfText(lp)}</div>` : ''}</button>
             <div class="flex shrink-0">
+                ${canLink ? `<button onclick="toggleSS(${k})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-mint-300 hover:bg-neutral-800" aria-label="${tr('Hacer superserie de {a} con {b}', { a: esc(exLabel(e)), b: esc(exLabel(ex[k + 1])) })}" title="${tr('Superserie con el siguiente')}"><i class="fa-solid fa-link"></i></button>` : ''}
                 ${k > 0 ? `<button onclick="moveGymEx(${k},-1)" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800" aria-label="${tr('Subir {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-arrow-up"></i></button>` : ''}
                 ${k < curDay().ex.length - 1 ? `<button onclick="moveGymEx(${k},1)" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800" aria-label="${tr('Bajar {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-arrow-down"></i></button>` : ''}
                 <button onclick="removeGymEx(${k})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-trash-can"></i></button>
@@ -205,13 +240,16 @@ function addGymSet(k) {
 }
 function removeGymSet(k, i) { const s = curDay().ex[k].s; if (s.length > 1) s.splice(i, 1); save(); renderGym(); }
 function removeGymEx(k) {
-    const d = curDay(), di = gymDay, [gone] = d.ex.splice(k, 1);
-    save(); renderGym();
-    toastUndo(tr('{n} quitado', { n: exLabel(gone) }), () => { myGym().plan[di].ex.splice(k, 0, gone); save(); renderGym(); });
+    const d = curDay(), di = gymDay, prevSS = ssSecond(d.ex, k), [gone] = d.ex.splice(k, 1);
+    if (prevSS) delete d.ex[k - 1].ss; // su pareja se queda como ejercicio normal
+    ssFix(d.ex); save(); renderGym();
+    toastUndo(tr('{n} quitado', { n: exLabel(gone) }), () => { const ex = myGym().plan[di].ex; ex.splice(k, 0, gone); if (prevSS && ex[k - 1]) ex[k - 1].ss = true; ssFix(ex); save(); renderGym(); });
 }
 function moveGymEx(k, dir) {
     const ex = curDay().ex, j = k + dir; if (j < 0 || j >= ex.length) return;
-    [ex[k], ex[j]] = [ex[j], ex[k]]; save(); renderGym();
+    // Mover rompe la superserie de los que cambian de sitio (para no unir ejercicios por sorpresa)
+    [k, j].forEach(i => { delete ex[i].ss; if (i > 0) delete ex[i - 1].ss; });
+    [ex[k], ex[j]] = [ex[j], ex[k]]; ssFix(ex); save(); renderGym();
     const el = document.querySelector(`#gym-ex [data-k="${j}"]`); if (el) ndAnim(el, [{ opacity: .4 }, { opacity: 1 }], 180);
 }
 // Cambiar el nombre de un ejercicio. Si eliges «en todo», también en tus otros días y en los entrenos guardados,
@@ -308,11 +346,14 @@ function renderGymSearch() {
 function saveGymDay() {
     const d = curDay();
     const kr = x => ({ kg: Math.max(0, num(x.kg) || 0), reps: Math.max(0, Math.round(num(x.r) || 0)) });
-    const ex = d.ex.map(e => ({ id: e.id || '', name: e.n, sets: e.s.map(s => {
+    ssFix(d.ex);
+    const rows = d.ex.map((e, i) => ({ i, ss: !!e.ss, x: { id: e.id || '', name: e.n, sets: e.s.map(s => {
         const set = kr(s);
         if (s.t === 'drop') { const drop = (s.d || []).map(kr).filter(x => x.reps > 0); if (drop.length) set.drop = drop; }
         return set;
-    }).filter(s => s.reps > 0) })).filter(e => e.sets.length);
+    }).filter(s => s.reps > 0) } })).filter(r => r.x.sets.length);
+    // La superserie se guarda solo si los dos ejercicios tienen series apuntadas
+    const ex = rows.map((r, j) => (r.ss && rows[j + 1] && rows[j + 1].i === r.i + 1 ? { ...r.x, ss: 1 } : r.x));
     if (!ex.length) { toast('Apunta al menos las repeticiones de una serie'); return; }
     const t = todayISO(), title = d.name || `Día ${gymDay + 1}`; // i18n-ignore (dato: se traduce al enseñarlo con wTitle)
     const before = weekInfo().done;
@@ -441,7 +482,7 @@ function openWorkout(id) {
     const vol = w.ex.reduce((a, e) => a + exVol(e), 0);
     openSheet(`<i class="fa-solid fa-dumbbell text-mint-400"></i> ${esc(wTitle(w.t))}`, `<div class="space-y-4">
         <div class="text-sm text-neutral-400 first-letter:uppercase">${new Date(w.d + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}${w.dur ? ` · <i class="fa-solid fa-stopwatch"></i> ${durTxt(w.dur)}` : ''}${vol ? ` · ${tr('{k} kg movidos', { k: fmt(vol) })}` : ''}</div>
-        ${w.ex.map(e => `<div class="rounded-2xl bg-neutral-800/50 border border-neutral-800 p-3 space-y-1.5"><button type="button" onclick="closeSheet();openProgress('${exKey(e).replace(/'/g, '')}')" class="text-sm font-extrabold text-mint-300 text-left">${esc(exLabel(e))} <i class="fa-solid fa-chart-line text-[11px] text-neutral-500"></i></button>
+        ${w.ex.map((e, k) => `<div class="rounded-2xl bg-neutral-800/50 border ${e.ss || (k > 0 && w.ex[k - 1].ss) ? 'border-mint-500/40' : 'border-neutral-800'} p-3 space-y-1.5">${e.ss && w.ex[k + 1] ? `<div class="text-[11px] font-extrabold uppercase tracking-wider text-mint-300"><i class="fa-solid fa-link"></i> ${tr('Superserie con {n}', { n: esc(exLabel(w.ex[k + 1])) })}</div>` : ''}<button type="button" onclick="closeSheet();openProgress('${exKey(e).replace(/'/g, '')}')" class="text-sm font-extrabold text-mint-300 text-left">${esc(exLabel(e))} <i class="fa-solid fa-chart-line text-[11px] text-neutral-500"></i></button>
             ${e.sets.map((st, i) => `<div class="flex justify-between gap-3 text-sm"><span class="text-neutral-400 shrink-0">${tr('Serie {k}', { k: i + 1 })}${isDrop(st) ? ' <span class="nd-droptag">Dropset</span>' : ''}</span><span class="font-bold text-neutral-100 text-right">${setText(st)} ${tr('reps')}</span></div>`).join('')}</div>`).join('')}
         <div class="grid grid-cols-2 gap-2"><button type="button" onclick="editWorkout(${+w.id || 0})" class="py-3 rounded-xl bg-neutral-800 font-bold text-sm"><i class="fa-solid fa-pen"></i> ${tr('Editar')}</button><button type="button" onclick="closeSheet();delWorkout(${+w.id || 0})" class="py-3 rounded-xl border border-neutral-700 text-roseAccent-400 font-bold text-sm"><i class="fa-solid fa-trash-can"></i> ${tr('Borrar')}</button></div>
     </div>`);

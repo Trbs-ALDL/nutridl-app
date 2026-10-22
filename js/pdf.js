@@ -262,7 +262,7 @@ async function makePdf(mode) {
     document.body.appendChild(a); a.click(); a.remove();
     // Por si el navegador no permite descargas (algunos navegadores dentro de apps): enlace para abrirlo
     $('pdf-result').innerHTML = `<div class="p-3 rounded-xl bg-mint-500/10 border border-mint-500/30 text-xs text-neutral-200 space-y-1">
-        <p><i class="fa-solid fa-circle-check text-mint-400"></i> ${tr('{n} creado ({k} KB).', { n: '<b>' + esc(filename) + '</b>', k: Math.max(1, Math.round(bytes.length / 1024)) })}</p>
+        <p><i class="fa-solid fa-circle-check text-ok-400"></i> ${tr('{n} creado ({k} KB).', { n: '<b>' + esc(filename) + '</b>', k: Math.max(1, Math.round(bytes.length / 1024)) })}</p>
         <p>${tr('¿No se ha descargado? {a} y guárdalo o compártelo desde ahí.', { a: `<a href="${pdfUrl}" target="_blank" rel="noopener" class="underline font-bold text-mint-300">${tr('Abrir el PDF')}</a>` })}</p></div>`;
     toast('PDF descargado');
 }

@@ -180,7 +180,7 @@ function renderDiary() {
             <div><div class="text-3xl font-extrabold text-neutral-100">${fmt(t.kcal)} <span class="text-sm text-neutral-400">kcal</span></div><div class="text-xs text-neutral-400">${tr('P')} ${fmt(t.p)} · ${tr('G')} ${fmt(t.f)} · ${tr('HC')} ${fmt(t.c)} g</div></div>
             <button onclick="showTab('calc')" class="px-4 py-2.5 rounded-xl bg-mint-600 text-white text-xs font-extrabold"><i class="fa-solid fa-calculator"></i> ${tr('Calcular mi objetivo')}</button></div>` : `
         <div class="md:col-span-3 flex flex-col items-center gap-1">${ring(t.kcal, c.target, 120)}
-            <div class="text-xs font-bold ${left >= 0 ? 'text-mint-400' : 'text-roseAccent-400'}">${left >= 0 ? tr('Quedan {k} kcal', { k: fmt(left) }) : tr('+{k} kcal sobre tu objetivo', { k: fmt(-left) })}</div></div>
+            <div class="text-xs font-bold ${left >= 0 ? 'text-ok-400' : 'text-roseAccent-400'}">${left >= 0 ? tr('Quedan {k} kcal', { k: fmt(left) }) : tr('+{k} kcal sobre tu objetivo', { k: fmt(-left) })}</div></div>
         <div class="md:col-span-9 space-y-3">
             <div class="text-xs text-neutral-400">${dayRel || new Date(diaryDate + 'T12:00:00').toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' })} · ${tr('objetivo {k} kcal', { k: fmt(c.target) })} · ${tr('fibra {a} / {b} g', { a: fmt(t.fib), b: c.fiber })}${t.sugN ? ` · ${tr('azúcares {k} g', { k: fmt(t.sug) })}` : ''}</div>
             ${macroBar(tr('Proteína'), t.p, c.prot, '#a0714b')}${macroBar(tr('Grasa'), t.f, c.fat, '#f59e0b')}${macroBar(tr('Hidratos'), t.c, c.carbs, '#e6d3b3')}

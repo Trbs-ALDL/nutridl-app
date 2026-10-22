@@ -52,7 +52,7 @@ function renderDashboard() {
     const head = `<div class="flex items-start justify-between gap-3">
             <div class="min-w-0"><h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-50 truncate">${tr('Hola, {n}', { n: esc(cur.name) })}</h1>
                 <p class="text-sm text-neutral-400 first-letter:uppercase">${dateTxt}</p></div>
-            <button onclick="showTab('progress')" class="nd-streak shrink-0" aria-label="${tr('Racha de {k} días', { k: S.cur })}"><i class="fa-solid fa-fire text-amber-400" aria-hidden="true"></i> ${S.cur}</button>
+            <button onclick="showTab('progress')" class="nd-streak shrink-0" aria-label="${tr('Racha de {k} días', { k: S.cur })}"><i class="fa-solid fa-fire text-ok-400" aria-hidden="true"></i> ${S.cur}</button>
         </div>`;
     if (!calc.target) {
         box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}
@@ -92,7 +92,7 @@ function renderDashboard() {
                 <div class="flex items-end justify-between gap-3">
                     <div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Calorías')}</div>
                         <div class="text-4xl font-extrabold text-neutral-50 leading-tight tabular-nums">${fmt(t.kcal)}<span class="text-base font-bold text-neutral-400"> / ${fmt(c.target)} kcal</span></div></div>
-                    <div class="text-right"><div class="text-2xl font-extrabold ${left >= 0 ? 'text-mint-300' : 'text-roseAccent-400'} tabular-nums">${fmt(Math.abs(left))}</div><div class="text-[11px] font-bold text-neutral-400">${left >= 0 ? tr('quedan') : tr('de más')}</div></div>
+                    <div class="text-right"><div class="text-2xl font-extrabold ${left >= 0 ? 'text-ok-300' : 'text-roseAccent-400'} tabular-nums">${fmt(Math.abs(left))}</div><div class="text-[11px] font-bold text-neutral-400">${left >= 0 ? tr('quedan') : tr('de más')}</div></div>
                 </div>
                 ${kcalBar(t.kcal, c.target)}
                 <div class="space-y-4">${macroRow(tr('Proteína'), t.p, c.prot, '#c49a6c')}${macroRow(tr('Carbohidratos'), t.c, c.carbs, '#e6d3b3')}${macroRow(tr('Grasas'), t.f, c.fat, '#f59e0b')}</div>
