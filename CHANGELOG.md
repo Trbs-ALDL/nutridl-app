@@ -1,5 +1,15 @@
 # Cambios de nutriDL
 
+## 3.17.0 · 23 de octubre de 2026
+
+Editar todo rápido y paleta mixta (elegida por Ángel).
+
+- **Paleta mixta**: el caramelo sigue siendo la marca (botones, logo); el **verde solo significa «vas bien»**: barra y anillo de calorías mientras no te pasas, macro cumplida (≥ 95 %) con ✓, días entrenados del gym y «Añadido». Contraste 10:1 sobre el fondo.
+- **Diario**: al tocar un alimento apuntado, nuevo botón «Cambiar nombre o macros» (conserva cantidad y comida). En «solo calorías», si dejas las kcal vacías se calculan solas con las macros (4·P + 4·HC + 9·G). «Quitar» también desde ese editor.
+- **Mis alimentos**: ya se pueden **editar** (mismo formulario, relleno) y **borrar** (con Deshacer). Lo ya apuntado no cambia.
+- **Gym**: tocar el nombre de un ejercicio para **cambiarlo** (opción de cambiarlo también en tus otros días y entrenos guardados, sin perder «Última vez» ni tus récords); flechas para **subir/bajar** ejercicios; «Editar» en «Tus ejercicios» para quitar los que ya no usas (vuelven si los usas otra vez).
+- 4 pruebas nuevas (`tests/v317.test.js`): 72 en total.
+
 ## 3.16.0 · 23 de octubre de 2026
 
 Auditoría de seguridad, datos y Coach (modelo de amenazas completo en `docs/SEGURIDAD-Y-PUBLICACION.md`).

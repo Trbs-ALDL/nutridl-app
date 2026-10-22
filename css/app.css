@@ -192,7 +192,7 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 
 /* Barras de progreso */
 .nd-kbar { height: 12px; border-radius: 999px; background: #2a2521; overflow: hidden; }
-.nd-kbar > div { height: 100%; border-radius: 999px; background: linear-gradient(90deg, #c49a6c, #dcc19c); transition: width .6s var(--ease-out); }
+.nd-kbar > div { height: 100%; border-radius: 999px; background: #6fcf97; transition: width .6s var(--ease-out); }
 .nd-grow { transition: width .6s var(--ease-out); }
 
 /* Bienvenida (landing) */
@@ -252,7 +252,7 @@ button.w-5.h-5::after, button.w-6.h-6::after, button.w-7.h-7::after { content: '
 .nd-gin input:focus { outline: none; border-color: #c59a6d; }
 .nd-gin span { font-size: 12px; font-weight: 700; color: #aea396; }
 .nd-est { color: #fcd34d; font-weight: 700; }
-.nd-done { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 2.75rem; font-size: .875rem; font-weight: 800; color: #eadcc6; }
+.nd-done { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; min-height: 2.75rem; font-size: .875rem; font-weight: 800; color: #6fcf97; } /* 3.17: verde = hecho */
 .nd-meal { display: grid; gap: .75rem; padding: 1rem; border-radius: 1.25rem; background: rgba(30, 27, 24, .95); border: 1px solid var(--nd-line); }
 .nd-dot { display: inline-block; width: 8px; height: 8px; border-radius: 999px; margin-right: 4px; vertical-align: 1px; }
 .nd-recipe { padding-top: .75rem; border-top: 1px solid var(--nd-line); }
@@ -355,7 +355,7 @@ h1 { line-height: 1.06; }
 .nd-seg { background: #15120f; }
 .nd-seg button, .nd-quick span, .nd-wide, .nd-goal { font-weight: 700; }
 .nd-kbar { background: #2a2521; }
-.nd-kbar > div { background: #c49a6c; }
+.nd-kbar > div { background: #6fcf97; }
 .nd-feature-ic { background: none; width: auto; height: auto; place-items: start; font-size: 1.25rem; color: var(--nd-sand); }
 /* Radios algo más contenidos: contenedores suaves, piezas interiores más rectas */
 .rounded-3xl, .nd-card, .nd-feature, .nd-step, .nd-now { border-radius: 1.25rem; }

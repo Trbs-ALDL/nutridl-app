@@ -120,14 +120,14 @@ function renderGym() {
                 <div><div class="text-4xl font-extrabold text-neutral-100 leading-none">${W.done}<span class="text-lg text-neutral-400"> / ${N} ${tr(N === 1 ? 'día' : 'días')}</span></div><div class="text-sm font-semibold text-neutral-400 mt-1">${tr('entrenados esta semana')}</div></div>
 
             </div>
-            <div class="flex justify-between gap-1">${W.strip.map(x => `<div class="flex flex-col items-center gap-1.5 flex-1"><span class="text-[10px] font-bold ${x.today ? 'text-mint-300' : 'text-neutral-500'}">${x.l}</span><span class="w-8 h-8 rounded-full flex items-center justify-center text-xs ${x.done ? 'bg-mint-600 text-white' : x.today ? 'border-2 border-mint-500 text-mint-300' : 'bg-neutral-800/80 text-neutral-600'}">${x.done ? '<i class="fa-solid fa-check"></i>' : ''}</span></div>`).join('')}</div>
-            <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-mint-500 gym-bar" style="width:${pct}%"></div></div>
+            <div class="flex justify-between gap-1">${W.strip.map(x => `<div class="flex flex-col items-center gap-1.5 flex-1"><span class="text-[10px] font-bold ${x.today ? 'text-mint-300' : 'text-neutral-500'}">${x.l}</span><span class="w-8 h-8 rounded-full flex items-center justify-center text-xs ${x.done ? 'bg-ok-500 text-ok-900' : x.today ? 'border-2 border-mint-500 text-mint-300' : 'bg-neutral-800/80 text-neutral-600'}">${x.done ? '<i class="fa-solid fa-check"></i>' : ''}</span></div>`).join('')}</div>
+            <div class="h-2 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-ok-500 gym-bar" style="width:${pct}%"></div></div>
             ${g.unlocked
                 ? `<button onclick="openRecords()" class="w-full py-3.5 rounded-2xl bg-amber-400/15 border border-amber-400/40 text-amber-200 font-extrabold text-sm hover:bg-amber-400/25 flex items-center justify-center gap-2"><i class="fa-solid fa-trophy"></i> ${tr('Mis pesos más altos')}</button>`
                 : `<div class="w-full py-3.5 rounded-2xl border border-dashed border-neutral-700 text-neutral-400 font-bold text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-lock"></i> ${tr('Completa tus {k} días para ver tus pesos más altos', { k: N })}</div>`}
         </div>
 
-        <div class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 gym-tabs" role="tablist" aria-label="${tr('Días de entrenamiento')}">${g.plan.slice(0, N).map((p, i) => `<button role="tab" aria-selected="${i === gymDay}" onclick="pickGymDay(${i})" class="shrink-0 px-4 py-2.5 rounded-2xl text-sm font-extrabold border transition ${i === gymDay ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-mint-500/40'}">${W.doneDi.has(i) ? '<i class="fa-solid fa-check text-xs"></i> ' : ''}${dayName(i)}</button>`).join('')}</div>
+        <div class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 gym-tabs" role="tablist" aria-label="${tr('Días de entrenamiento')}">${g.plan.slice(0, N).map((p, i) => `<button role="tab" aria-selected="${i === gymDay}" onclick="pickGymDay(${i})" class="shrink-0 px-4 py-2.5 rounded-2xl text-sm font-extrabold border transition ${i === gymDay ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-mint-500/40'}">${W.doneDi.has(i) ? '<i class="fa-solid fa-check text-xs text-ok-400"></i> ' : ''}${dayName(i)}</button>`).join('')}</div>
 
         <div class="glass-card rounded-3xl p-4 sm:p-6 space-y-4 border border-neutral-800">
             <label class="block"><span class="sr-only">${tr('Nombre del día')}</span>
@@ -154,9 +154,13 @@ function gymExHtml(e, k) {
     const lp = lastPerfOf(e) || [];
     return `<div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3 space-y-2" data-k="${k}">
         <div class="flex items-start justify-between gap-2">
-            <div class="min-w-0"><div class="text-sm font-extrabold text-mint-300 truncate" title="${esc(exLabel(e))}">${esc(exLabel(e))}</div>
-                ${lp.length ? `<div class="text-[11px] text-neutral-400 truncate">${tr('Última vez:')} ${perfText(lp)}</div>` : ''}</div>
-            <button onclick="removeGymEx(${k})" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-trash-can"></i></button>
+            <button type="button" onclick="renameGymEx(${k})" class="min-w-0 flex-1 text-left" aria-label="${tr('Cambiar el nombre de {n}', { n: esc(exLabel(e)) })}"><div class="text-sm font-extrabold text-mint-300 truncate" title="${esc(exLabel(e))}">${esc(exLabel(e))} <i class="fa-solid fa-pen text-[10px] text-neutral-500" aria-hidden="true"></i></div>
+                ${lp.length ? `<div class="text-[11px] text-neutral-400 truncate">${tr('Última vez:')} ${perfText(lp)}</div>` : ''}</button>
+            <div class="flex shrink-0">
+                ${k > 0 ? `<button onclick="moveGymEx(${k},-1)" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800" aria-label="${tr('Subir {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-arrow-up"></i></button>` : ''}
+                ${k < curDay().ex.length - 1 ? `<button onclick="moveGymEx(${k},1)" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800" aria-label="${tr('Bajar {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-arrow-down"></i></button>` : ''}
+                <button onclick="removeGymEx(${k})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
         </div>
         <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500 px-1"><span class="text-center">${tr('Serie')}</span><span class="text-center">kg</span><span class="text-center">${tr('Reps')}</span><span></span></div>
         ${e.s.map((s, i) => { const drop = s.t === 'drop', ld = (lp[i] && lp[i].drop) || []; return `<div class="gset-grid items-center">
@@ -205,10 +209,43 @@ function removeGymEx(k) {
     save(); renderGym();
     toastUndo(tr('{n} quitado', { n: exLabel(gone) }), () => { myGym().plan[di].ex.splice(k, 0, gone); save(); renderGym(); });
 }
+function moveGymEx(k, dir) {
+    const ex = curDay().ex, j = k + dir; if (j < 0 || j >= ex.length) return;
+    [ex[k], ex[j]] = [ex[j], ex[k]]; save(); renderGym();
+    const el = document.querySelector(`#gym-ex [data-k="${j}"]`); if (el) ndAnim(el, [{ opacity: .4 }, { opacity: 1 }], 180);
+}
+// Cambiar el nombre de un ejercicio. Si eliges «en todo», también en tus otros días y en los entrenos guardados,
+// para no perder «Última vez», el progreso ni tus pesos más altos.
+function renameGymEx(k) {
+    const e = curDay().ex[k]; if (!e) return;
+    openSheet('<i class="fa-solid fa-pen text-mint-400"></i> ' + tr('Cambiar nombre'), `
+        <form onsubmit="event.preventDefault(); renameGymExSave(${k})" class="space-y-4">
+            <label class="block"><span class="text-xs font-bold text-neutral-400">${tr('Nombre del ejercicio')}</span>
+                <input id="rx-name" maxlength="50" value="${esc(exLabel(e))}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></label>
+            <label class="flex items-center gap-3 text-sm text-neutral-300"><input id="rx-all" type="checkbox" checked class="w-5 h-5 accent-[#9a6b40]"> ${tr('Cambiarlo también en mis otros días y en mis entrenos guardados')}</label>
+            <button class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-check"></i> ${tr('Guardar')}</button>
+        </form>`);
+    setTimeout(() => { const i = $('rx-name'); if (i) { i.focus(); i.select(); } }, 50);
+}
+function renameGymExSave(k) {
+    const e = curDay().ex[k], name = ($('rx-name').value || '').trim().slice(0, 50); if (!e) return;
+    if (!name) { toast('Escribe un nombre'); return; }
+    if (name === exLabel(e)) { closeSheet(); return; }
+    if (curDay().ex.some((x, i) => i !== k && norm(exLabel(x)) === norm(name))) { toast('Ese ejercicio ya está en este día'); return; }
+    const oldKey = exKey(e), all = $('rx-all') && $('rx-all').checked;
+    let n = 0;
+    if (all) {
+        myGym().plan.forEach(d => (d && Array.isArray(d.ex) ? d.ex : []).forEach(x => { if (exKey(x) === oldKey) { x.id = ''; x.n = name; } }));
+        state.workouts.forEach(w => (w && Array.isArray(w.ex) ? w.ex : []).forEach(x => { if (exKey(x) === oldKey) { x.id = ''; x.name = name; n++; } }));
+    } else { e.id = ''; e.n = name; }
+    save(); closeSheet(); renderGym();
+    toast(n ? tr('Nombre cambiado (también en {k} entrenos guardados)', { k: n }) : 'Nombre cambiado');
+}
 function addGymEx(id, name) {
     const d = curDay(); name = (name || '').trim().slice(0, 50); if (!name) return;
     if (d.ex.some(e => exKey(e) === exKey({ id, name }))) { toast('Ese ejercicio ya está en este día'); return; }
     d.ex.push({ id: id || '', n: name, s: [{ kg: '', r: '' }, { kg: '', r: '' }, { kg: '', r: '' }] });
+    const g = myGym(); if (!id && Array.isArray(g.hideEx)) g.hideEx = g.hideEx.filter(x => x !== norm(name)); // si lo vuelves a usar, vuelve a «Tus ejercicios»
     save(); renderGym();
     const last = document.querySelector('#gym-ex > div:last-child'); if (last) { last.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); ndAnim(last, [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'none' }], 220); }
 }
@@ -225,12 +262,24 @@ function myExercises() {
     const list = a => Array.isArray(a) ? a : [];
     for (let i = state.workouts.length - 1; i >= 0; i--) list(state.workouts[i] && state.workouts[i].ex).forEach(e => { if (e && !e.id) add(e.name); });
     myGym().plan.forEach(d => list(d && d.ex).forEach(e => { if (e && !e.id) add(e.n); }));
-    return out;
+    const hidden = new Set(list(myGym().hideEx));
+    return out.filter(n => !hidden.has(norm(n)));
 }
-function addMyEx(i) { const n = myExShown[i]; if (n) addGymEx('', n); }
+function addMyEx(i) { const n = myExShown[i]; if (n) { if (myExEdit) hideMyEx(i); else addGymEx('', n); } }
+// Quitar de «Tus ejercicios» los que ya no usas (solo se ocultan de la lista: tus entrenos guardados no cambian)
+let myExEdit = false;
+function toggleMyExEdit() { myExEdit = !myExEdit; renderGymSearch(); }
+function hideMyEx(i) {
+    const n = myExShown[i]; if (!n) return;
+    const g = myGym(); g.hideEx = Array.isArray(g.hideEx) ? g.hideEx : [];
+    g.hideEx.push(norm(n)); save(); renderGymSearch();
+    toastUndo(tr('Quitado de tus ejercicios: {n}', { n }), () => { g.hideEx = g.hideEx.filter(x => x !== norm(n)); save(); renderGymSearch(); });
+}
 const myExBtn = (n, i, big) => big
     ? `<button onclick="addMyEx(${i})" class="text-left px-3 py-2.5 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-sm font-bold text-neutral-100 flex items-center justify-between gap-2"><span class="truncate">${esc(n)}</span><span class="text-[11px] font-semibold text-mint-300 whitespace-nowrap"><i class="fa-solid fa-user"></i> ${tr('Tuyo')}</span></button>`
-    : `<button onclick="addMyEx(${i})" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(n)}</button>`;
+    : myExEdit
+        ? `<button onclick="addMyEx(${i})" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-roseAccent-400/40 text-xs font-bold text-neutral-200" aria-label="${tr('Quitar {n} de tus ejercicios', { n: esc(n) })}"><i class="fa-solid fa-xmark text-roseAccent-400"></i> ${esc(n)}</button>`
+        : `<button onclick="addMyEx(${i})" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(n)}</button>`;
 // Buscador de ejercicios + recomendaciones opcionales (multiarticulares básicos primero)
 function renderGymSearch() {
     const qi = $('gym-q'); if (!qi) return;
@@ -251,7 +300,8 @@ function renderGymSearch() {
     const off = (gymDay * 5) % Math.max(1, top.length);
     const sugg = [...top.slice(off), ...top.slice(0, off)].slice(0, 6);
     myExShown = mine.slice(0, 8);
-    $('gym-sugg').innerHTML = (myExShown.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">${tr('Tus ejercicios')}</div>
+    if (!myExShown.length) myExEdit = false;
+    $('gym-sugg').innerHTML = (myExShown.length ? `<div class="flex items-center justify-between mb-2"><span class="text-[11px] font-bold uppercase tracking-wider text-neutral-500">${tr('Tus ejercicios')}</span><button type="button" onclick="toggleMyExEdit()" class="px-2.5 py-1 rounded-lg text-[11px] font-bold ${myExEdit ? 'bg-mint-600 text-white' : 'text-neutral-400 hover:bg-neutral-800'}">${myExEdit ? '<i class="fa-solid fa-check"></i> ' + tr('Listo') : '<i class="fa-solid fa-pen"></i> ' + tr('Editar')}</button></div>
         <div class="flex flex-wrap gap-2 mb-3">${myExShown.map((n, i) => myExBtn(n, i)).join('')}</div>` : '') + (sugg.length ? `<div class="text-[11px] font-bold uppercase tracking-wider text-neutral-500 mb-2">${tr('Recomendados')}</div>
         <div class="flex flex-wrap gap-2">${sugg.map(e => `<button onclick="addGymEx('${e.id}', getEx('${e.id}').name)" class="px-3 py-2 rounded-xl bg-neutral-800/60 border border-neutral-800 hover:border-mint-500/40 text-xs font-bold text-neutral-200"><i class="fa-solid fa-plus text-mint-400"></i> ${esc(tr(e.name))}</button>`).join('')}</div>` : '');
 }

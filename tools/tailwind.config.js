@@ -44,6 +44,13 @@ module.exports = {
           "700": "#e0c6a6",
           "800": "#eddcc6"
         },
+        // 3.17 · paleta mixta (C): el verde SOLO significa «vas bien» (objetivo cumplido, día entrenado, hecho)
+        "ok": {
+          "300": "#9fe0bb",
+          "400": "#6fcf97",
+          "500": "#4fbf80",
+          "900": "#0f2a1b"
+        },
         "slateDark": {
           "800": "#262626",
           "850": "#1c1a17",

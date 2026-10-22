@@ -284,7 +284,7 @@ function defaultPortion(f) { const u = defUnit(f); return u ? { unit: u, n: 1, g
 const portionLabel = (u, n, f) => u.key === 'g' ? `${fmt(n)} ${u.label}` : `${fmt(n, n % 1 ? 1 : 0)} ${tr(n === 1 ? u.label : u.plural)} (${fmt(u.g * n)} ${f && f.ml ? 'ml' : 'g'})`;
 
 function openFoodSheet(slot) {
-    fs.slot = slot || slotByHour(); fs.mode = 'list'; fs.food = null; fs.editId = null; fs.q = '';
+    fs.slot = slot || slotByHour(); fs.mode = 'list'; fs.food = null; fs.editId = null; fs.cfEdit = null; fs.q = '';
     fs.tab = recentFoods().length ? 'recent' : 'all';
     $('fs-slot').innerHTML = DSLOTS.map(([k, n]) => `<option value="${k}">${tr(n)}</option>`).join('');
     $('fs-q').value = '';
@@ -308,10 +308,10 @@ function pendingFoodLink() {
     if (id && profiles.current) setTimeout(() => openFoodFromLink(id), 350);
 }
 function closeFoodSheet() { $('food-sheet').classList.add('hidden'); document.body.style.overflow = ''; }
-function fsBack() { fs.mode = 'list'; fs.food = null; fs.editId = null; fsRender(); setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 30); }
+function fsBack() { fs.mode = 'list'; fs.food = null; fs.editId = null; fs.cfEdit = null; fsRender(); setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 30); }
 function fsRenderTitle() {
     const n = (DSLOTS.find(s => s[0] === fs.slot) || [])[1] || '';
-    $('fs-title').innerText = fs.editId ? tr('Editar en') : fs.mode === 'create' ? tr('Crear alimento') : fs.mode === 'quick' ? tr('Solo calorías en') : tr('Añadir a');
+    $('fs-title').innerText = fs.editId ? tr('Editar en') : fs.mode === 'create' ? tr(fs.cfEdit ? 'Editar alimento' : 'Crear alimento') : fs.mode === 'quick' ? tr('Solo calorías en') : tr('Añadir a');
     $('fs-slot').value = fs.slot;
     const btn = $('fs-detail-add'); if (btn && !fs.editId) btn.innerHTML = `<i class="fa-solid fa-plus"></i> ${tr('Añadir a {x}', { x: tr(n).toLowerCase() })}`;
 }
@@ -410,6 +410,11 @@ function fsRenderDetail() {
             ${fs.editId ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();dupEntry(id)" class="py-3.5 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-regular fa-copy"></i> ${tr('Duplicar')}</button>` : ''}
             <button id="fs-detail-add" type="button" onclick="fsConfirm()" class="py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${fs.editId ? '<i class="fa-solid fa-check"></i> ' + tr('Guardar cambios') : ''}</button>
         </div>
+        ${fs.editId || f.custom ? `<div class="flex flex-wrap gap-2 pt-1">
+            ${fs.editId ? `<button type="button" onclick="fs.mode='quick';fsRender()" class="nd-mbtn flex-1"><i class="fa-solid fa-pen"></i> ${tr('Cambiar nombre o macros')}</button>` : ''}
+            ${f.custom ? `<button type="button" onclick="fsEditCustom('${f.id}')" class="nd-mbtn flex-1"><i class="fa-solid fa-pen-to-square"></i> ${tr('Editar mi alimento')}</button>
+            <button type="button" onclick="delCustomFood('${f.id}')" class="nd-mbtn flex-1"><i class="fa-solid fa-trash-can"></i> ${tr('Borrar mi alimento')}</button>` : ''}
+        </div>` : ''}
     </div>`;
     fsRenderTitle(); fsUpdateDetail();
 }
@@ -447,43 +452,60 @@ function fsRenderQuick() {
     $('fs-body').innerHTML = `<div class="space-y-3">
         ${inp('fq-name', tr('Nombre'), e ? esc(e.name) : '', `type="text" maxlength="40" placeholder="${tr('Ej: Menú del día')}"`)}
         <div class="grid grid-cols-2 gap-2">
-            ${inp('fq-kcal', 'Kcal', e ? e.kcal : '', 'type="number" inputmode="decimal" min="0"')}
+            ${inp('fq-kcal', 'Kcal', e ? e.kcal : '', `type="number" inputmode="decimal" min="0" placeholder="${tr('sale de las macros')}"`)}
             ${inp('fq-p', tr('Proteína (g)'), e ? e.p : '', `type="number" inputmode="decimal" min="0" placeholder="${tr('opcional')}"`)}
             ${inp('fq-f', tr('Grasa (g)'), e ? e.f : '', `type="number" inputmode="decimal" min="0" placeholder="${tr('opcional')}"`)}
             ${inp('fq-c', tr('Hidratos (g)'), e ? e.c : '', `type="number" inputmode="decimal" min="0" placeholder="${tr('opcional')}"`)}
         </div>
         <button type="button" onclick="fsQuickSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr(e ? 'Guardar cambios' : 'Apuntar')}</button>
-        ${e ? `<button type="button" onclick="const id=fs.editId;closeFoodSheet();dupEntry(id)" class="w-full py-3 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-regular fa-copy"></i> ${tr('Duplicar')}</button>` : ''}
+        ${e ? `<div class="grid grid-cols-2 gap-2"><button type="button" onclick="const id=fs.editId;closeFoodSheet();diaryDel(id)" class="py-3 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-solid fa-trash"></i> ${tr('Quitar')}</button>
+            <button type="button" onclick="const id=fs.editId;closeFoodSheet();dupEntry(id)" class="py-3 rounded-2xl border border-neutral-700 text-neutral-300 font-bold hover:bg-neutral-800"><i class="fa-regular fa-copy"></i> ${tr('Duplicar')}</button></div>` : ''}
     </div>`;
     setTimeout(() => { const el = $('fq-name'); if (el) el.focus(); }, 30);
 }
 function fsQuickSave() {
-    const name = $('fq-name').value.trim(), kcal = num($('fq-kcal').value);
-    if (!name || !kcal || kcal < 0 || kcal > 5000) { toast('Escribe un nombre y sus calorías'); return; }
-    const entry = { slot: fs.slot, name, kcal: Math.round(kcal), p: num($('fq-p').value) || 0, f: num($('fq-f').value) || 0, c: num($('fq-c').value) || 0, fib: 0 };
+    const name = $('fq-name').value.trim().slice(0, 40);
+    const p = Math.max(0, num($('fq-p').value) || 0), f = Math.max(0, num($('fq-f').value) || 0), c = Math.max(0, num($('fq-c').value) || 0);
+    // Sin calorías pero con macros: se calculan solas (4 kcal/g proteína e hidratos, 9 kcal/g grasa)
+    let kcal = num($('fq-kcal').value);
+    if (!kcal && (p || f || c)) kcal = p * 4 + c * 4 + f * 9;
+    if (!name) { toast('Escribe un nombre'); $('fq-name').focus(); return; }
+    if (!kcal || kcal < 0 || kcal > 5000) { toast('Escribe sus calorías o sus macros'); $('fq-kcal').focus(); return; }
+    const entry = { slot: fs.slot, name, kcal: Math.round(kcal), p: round1(p), f: round1(f), c: round1(c), fib: 0 };
     let id = fs.editId;
-    if (id) { const list = state.diary[diaryDate || todayISO()] || [], i = list.findIndex(x => x.id === id); if (i >= 0) list[i] = { id, ...entry }; else id = null; }
+    if (id) {
+        const list = state.diary[diaryDate || todayISO()] || [], i = list.findIndex(x => x.id === id);
+        if (i >= 0) {
+            // Se conserva la cantidad y la marca; deja de estar ligado al alimento de la base (sus macros ya son las tuyas)
+            const { fid, sug, est, ...old } = list[i];
+            list[i] = { ...old, ...entry, fib: old.fib || 0, id, ...(fid ? { edited: 1 } : {}) };
+        } else id = null;
+    }
+    const editing = !!id;
     if (!id) { id = pushDiary(entry); track('food_logged'); }
     save(); renderDiary(); renderDashboard(); closeFoodSheet(); animDiaryRow(id); checkDayMoments(); checkAchievements();
-    toast(tr('✓ Apuntado: {n}', { n: name }));
+    toast(editing ? 'Cambios guardados' : tr('✓ Apuntado: {n}', { n: name }));
 }
 // Crear un alimento propio con los datos de su etiqueta (queda en «Mis alimentos» y también sirve para el menú)
 function fsRenderCreate() {
+    // fs.cfEdit = id de un alimento tuyo que se está editando (mismo formulario, ya relleno)
+    const E = fs.cfEdit && getFood(fs.cfEdit), v = x => E && x != null ? ` value="${esc(String(x))}"` : '';
     const inp = (id, label, extra = '') => `<label class="block"><span class="text-xs font-bold text-neutral-400">${label}</span><input id="${id}" ${extra} class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></label>`;
     $('fs-body').innerHTML = `<div class="space-y-3">
-        ${inp('fc-name', tr('Nombre'), `type="text" maxlength="40" placeholder="${tr('Ej: Wrap de pollo')}"`)}
-        ${inp('fc-brand', tr('Marca (opcional)'), `type="text" maxlength="30" placeholder="${tr('Ej: {x}', { x: 'Hacendado' })}"`)}
+        ${inp('fc-name', tr('Nombre'), `type="text" maxlength="40" placeholder="${tr('Ej: Wrap de pollo')}"${v(E && E.name)}`)}
+        ${inp('fc-brand', tr('Marca (opcional)'), `type="text" maxlength="30" placeholder="${tr('Ej: {x}', { x: 'Hacendado' })}"${v(E && E.brand)}`)}
         <div class="text-xs font-bold text-neutral-300 pt-1">${tr('Por cada 100 g (tabla nutricional)')}</div>
         <div class="grid grid-cols-2 gap-2">
-            ${inp('fc-kcal', tr('Energía (kcal)'), `type="number" inputmode="decimal" min="0" max="950" placeholder="${tr('Opcional')}"`)}
-            ${inp('fc-f', tr('Grasas (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-c', tr('Hidratos (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-sug', tr('de los cuales azúcares (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-p', tr('Proteínas (g)'), 'type="number" inputmode="decimal" min="0" max="100"')}
-            ${inp('fc-fib', tr('Fibra (g, opcional)'), 'type="number" inputmode="decimal" min="0" max="100" value="0"')}
+            ${inp('fc-kcal', tr('Energía (kcal)'), `type="number" inputmode="decimal" min="0" max="950" placeholder="${tr('Opcional')}"${v(E && E.kcal)}`)}
+            ${inp('fc-f', tr('Grasas (g)'), `type="number" inputmode="decimal" min="0" max="100"${v(E && E.f)}`)}
+            ${inp('fc-c', tr('Hidratos (g)'), `type="number" inputmode="decimal" min="0" max="100"${v(E && E.c)}`)}
+            ${inp('fc-sug', tr('de los cuales azúcares (g)'), `type="number" inputmode="decimal" min="0" max="100"${v(E && E.sug)}`)}
+            ${inp('fc-p', tr('Proteínas (g)'), `type="number" inputmode="decimal" min="0" max="100"${v(E && E.p)}`)}
+            ${inp('fc-fib', tr('Fibra (g, opcional)'), `type="number" inputmode="decimal" min="0" max="100"${E ? v(E.fib) : ' value="0"'}`)}
         </div>
-        ${inp('fc-serv', tr('Peso de una ración (g, opcional)'), `type="number" inputmode="decimal" min="1" max="2000" placeholder="${tr('Ej: {x}', { x: '60' })}"`)}
-        <button type="button" onclick="fsCreateSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr('Crear y elegir cantidad')}</button>
+        ${inp('fc-serv', tr('Peso de una ración (g, opcional)'), `type="number" inputmode="decimal" min="1" max="2000" placeholder="${tr('Ej: {x}', { x: '60' })}"${v(E && E.serv && E.serv[0])}`)}
+        <button type="button" onclick="fsCreateSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${E ? '<i class="fa-solid fa-check"></i> ' + tr('Guardar cambios') : tr('Crear y elegir cantidad')}</button>
+        ${E ? `<p class="text-xs text-neutral-400">${tr('Lo que ya apuntaste no cambia: los cambios cuentan desde ahora.')}</p>` : ''}
     </div>`;
     setTimeout(() => { const el = $('fc-name'); if (el) el.focus(); }, 30);
 }
@@ -496,13 +518,34 @@ function fsCreateSave() {
     if (sug != null && sug > c + 0.5) { toast('Los azúcares no pueden ser más que los hidratos'); $('fc-sug').focus(); return; }
     if (kcal != null && (kcal < 0 || kcal > 950)) { toast('Las kcal por 100 g deben estar entre 0 y 950'); $('fc-kcal').focus(); return; }
     const role = p * 4 >= Math.max(c * 4, f * 9) ? 'protein' : f * 9 > c * 4 ? 'fat' : 'carb';
-    const food = { id: 'c_' + Date.now().toString(36), name, brand, cat: 'custom', role, meals: 'BSLD', p, f, c, fib, min: role === 'fat' ? 5 : 30, max: role === 'fat' ? 60 : 300, flags: '', custom: true };
+    const editId = fs.cfEdit && getFood(fs.cfEdit) ? fs.cfEdit : null;
+    const food = { id: editId || 'c_' + Date.now().toString(36), name, brand, cat: 'custom', role, meals: 'BSLD', p, f, c, fib, min: role === 'fat' ? 5 : 30, max: role === 'fat' ? 60 : 300, flags: '', custom: true };
     if (kcal != null && kcal > 0) food.kcal = Math.round(kcal); // las kcal de la etiqueta mandan
     if (sug != null) food.sug = sug;
     if (serv && serv > 0) food.serv = [serv, tk('ración'), tk('raciones')];
+    if (editId) {
+        // Se cambia el mismo objeto (en FOODS y en tus alimentos) para que el buscador y los menús lo vean al momento
+        const live = getFood(editId), i = state.customFoods.findIndex(x => x.id === editId);
+        Object.keys(live).forEach(k => delete live[k]); Object.assign(live, food);
+        if (i >= 0) state.customFoods[i] = live; else state.customFoods.push(live);
+        fs.cfEdit = null; save(); fsOpen(editId);
+        toast('Cambios guardados');
+        return;
+    }
     registerCustom(food); state.customFoods.push(food); save();
     fsOpen(food.id);
     toast(tr('«{n}» creado', { n: name }));
+}
+function fsEditCustom(id) { if (!getFood(id)) return; fs.cfEdit = id; fs.mode = 'create'; fsRender(); }
+// Borrar un alimento tuyo: lo ya apuntado se queda tal cual (cada entrada guarda sus propios valores)
+async function delCustomFood(id) {
+    const f = getFood(id); if (!f || !f.custom) return;
+    if (!(await askConfirm(tr('¿Borrar «{n}» de tus alimentos? Lo que ya apuntaste no se borra.', { n: f.name }), 'Borrar'))) return;
+    const iF = FOODS.indexOf(f), iS = state.customFoods.findIndex(x => x.id === id), saved = state.customFoods[iS];
+    if (iF >= 0) FOODS.splice(iF, 1);
+    if (iS >= 0) state.customFoods.splice(iS, 1);
+    save(); fsBack();
+    toastUndo(tr('Borrado: {n}', { n: f.name }), () => { if (saved) { state.customFoods.splice(Math.min(iS, state.customFoods.length), 0, saved); registerCustom(saved); save(); const sh = $('food-sheet'); if (sh && !sh.classList.contains('hidden')) fsRender(); } });
 }
 function pushDiary(entry, date) {
     const d = date || diaryDate || todayISO();
