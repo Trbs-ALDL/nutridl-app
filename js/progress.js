@@ -166,7 +166,7 @@ function renderProgress() {
         </div>
         <div class="lg:col-span-2 space-y-3">
             <div class="nd-card p-5 flex items-center gap-4"><span class="nd-ic-lg ${S.cur > 0 ? 'text-ok-400' : ''}">${icon('🔥')}</span><div><div class="text-2xl font-extrabold text-neutral-50">${tr(S.cur === 1 ? '{k} día seguido' : '{k} días seguidos', { k: S.cur })}</div><div class="text-xs text-neutral-400">${tr('Mejor racha: {k}', { k: S.best })} · ${S.today ? tr('hoy ya has apuntado ✓') : tr('apunta algo hoy para mantenerla')}</div></div></div>
-            ${S.total ? `<button onclick="shareProgress()" class="w-full py-3 rounded-2xl bg-neutral-800/70 border border-neutral-700 text-sm font-extrabold text-neutral-100 hover:border-mint-400"><i class="fa-solid fa-share-nodes text-mint-400"></i> ${tr('Compartir mi semana')}</button>` : ''}
+            ${S.total ? `<button onclick="shareProgress()" class="w-full p-4 rounded-2xl bg-mint-500/10 border border-mint-500/40 hover:bg-mint-500/15 text-left flex items-center gap-3"><span class="nd-ic shrink-0"><i class="fa-solid fa-share-nodes"></i></span><span class="flex-1 min-w-0"><span class="block text-sm font-extrabold text-neutral-50">${tr('Compartir mi semana')}</span><span class="block text-xs text-neutral-400">${tr('Tarjeta para historias y chats, sin tu peso')}</span></span><i class="fa-solid fa-chevron-right text-neutral-500"></i></button>` : ''}
             ${T ? `<div class="nd-card p-5 space-y-1"><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Peso medio (7 días)')}</div><div class="text-2xl font-extrabold text-neutral-50">${fmt(T.now, 1)} kg</div><div class="text-xs text-neutral-400">${T.week != null ? tr('{k} kg respecto a la semana anterior', { k: (T.week > 0 ? '+' : '') + fmt(T.week, 1) }) : tr('Con 2 semanas de registros verás la tendencia')}${toGoal != null ? ` · ${Math.abs(toGoal) < .3 ? tr('¡en tu objetivo!') : tr('{k} kg para tu objetivo', { k: fmt(Math.abs(toGoal), 1) })}` : ''}</div></div>` : ''}
         </div>
     </div>
@@ -178,50 +178,169 @@ function renderProgress() {
 }
 
 // Semana de calendario (lunes a domingo): lo que llevas de esta semana
-// Tarjeta para compartir tu semana (imagen 1080×1350 sin librerías). Por privacidad no lleva peso ni medidas.
+// =====================================================================
+//  COMPARTIR MI SEMANA (3.19): una tarjeta de la que dé gusto presumir y que explique qué es nutriDL a quien la vea.
+//  · Vista previa antes de compartir · formato Historia (9:16, Instagram/WhatsApp) o Publicación (4:5)
+//  · El titular sale de lo MEJOR de tu semana (siempre un dato real) · calendario con tus días en verde
+//  · Invitación clara para quien la recibe («gratis, sin anuncios» = la promesa pública de la app)
+//  Por privacidad NUNCA lleva peso ni medidas. Se dibuja en el propio móvil, sin servidores ni librerías.
+// =====================================================================
 const SHARE_URL = 'trbs-aldl.github.io/nutridl-app';
-async function shareProgress() {
-    const S = streakInfo(), W = calWeekStats(), A = Object.keys(state.ach || {}).length;
-    const cv = document.createElement('canvas'); cv.width = 1080; cv.height = 1350;
-    const g = cv.getContext('2d'), F = (w, s) => `${w} ${s}px 'Plus Jakarta Sans', sans-serif`;
-    try { await document.fonts.load(F(800, 40)); await document.fonts.load(F(600, 40)); } catch (e) { }
-    const bg = g.createLinearGradient(0, 0, 0, 1350); bg.addColorStop(0, '#1d1814'); bg.addColorStop(1, '#0d0b0a');
-    g.fillStyle = bg; g.fillRect(0, 0, 1080, 1350);
-    const glow = g.createRadialGradient(840, 220, 0, 840, 220, 620); glow.addColorStop(0, 'rgba(154,107,64,.35)'); glow.addColorStop(1, 'rgba(154,107,64,0)');
-    g.fillStyle = glow; g.fillRect(0, 0, 1080, 1350);
-    const box = (x, y, w, h, r, fill) => { g.beginPath(); g.roundRect(x, y, w, h, r); g.fillStyle = fill; g.fill(); };
+let shareFmt = 'story', shareBlob = null, shareImg = null, shareSeq = 0;
+function weekShareData() {
+    const S = streakInfo(), W = calWeekStats(), c = calc, t0 = todayISO();
+    const days = W.days.map(d => { const t = loggedOn(d) ? diaryTotals(d) : null; return { d, on: !!t, prot: !!(t && c.prot && t.p >= c.prot * .9), fut: d > t0 }; });
+    const wk = (state.workouts || []).filter(w => w && w.d >= W.days[0] && w.d <= W.days[6]);
+    const vol = Math.round(wk.reduce((a, w) => a + (w.ex || []).reduce((b, e) => b + exVol(e), 0), 0));
+    return { S, W, days, past: W.past, logged: W.logged, protOk: W.protOk, workouts: wk.length, vol };
+}
+// El titular: lo mejor de la semana, en este orden. Nunca se inventa nada: todo sale de tus registros.
+function weekHero(D) {
+    if (D.past >= 3 && D.logged === D.past) return { n: `${D.logged}/${D.past}`, t: tr('días apuntados esta semana'), s: tr('Sin fallar ni uno.') };
+    if (D.S.cur >= 3) return { n: String(D.S.cur), t: tr('días seguidos cuidando lo que como'), s: '' };
+    if (D.workouts >= 2) return { n: String(D.workouts), t: tr('entrenos esta semana'), s: D.vol ? tr('{k} kg levantados en total', { k: fmt(D.vol) }) : '' };
+    if (D.protOk >= 2) return { n: String(D.protOk), t: tr('días con mi proteína cumplida'), s: '' };
+    if (D.logged) return { n: `${D.logged}/${D.past}`, t: tr('días apuntados esta semana'), s: '' };
+    return { n: '', t: tr('Empiezo a cuidarme con nutriDL'), s: '' };
+}
+const weekRange = D => {
+    const a = new Date(D.W.days[0] + 'T12:00:00'), b = new Date(D.W.days[6] + 'T12:00:00'), o = { day: 'numeric', month: 'short' };
+    return a.getMonth() === b.getMonth() ? `${a.getDate()}–${b.toLocaleDateString(locale(), o)}` : `${a.toLocaleDateString(locale(), o)} – ${b.toLocaleDateString(locale(), o)}`;
+};
+function weekShareText(D) {
+    const bits = [];
+    if (D.logged) bits.push(tr('{a}/{b} días apuntados', { a: D.logged, b: D.past }));
+    if (D.protOk) bits.push(tr(D.protOk === 1 ? 'proteína cumplida {k} día' : 'proteína cumplida {k} días', { k: D.protOk }));
+    if (D.workouts) bits.push(tr(D.workouts === 1 ? '{k} entreno' : '{k} entrenos', { k: D.workouts }));
+    if (D.S.cur >= 2) bits.push(tr('racha de {k} días', { k: D.S.cur }));
+    return (bits.length ? tr('Mi semana: {x}.', { x: bits.join(' · ') }) + ' ' : '') + tr('Lo llevo con nutriDL: calorías, macros, escáner y gym, gratis y sin anuncios. Calcula tu plan en 2 minutos: {u}', { u: `https://${SHARE_URL}/` });
+}
+const loadImg = src => new Promise(res => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = src; });
+async function drawWeekCard(fmtKey, D) {
+    const story = fmtKey === 'story', W = 1080, H = story ? 1920 : 1350, P = 90;
+    const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+    const g = cv.getContext('2d');
+    const SANS = (w, s) => `${w} ${s}px 'Plus Jakarta Sans', sans-serif`, SERIF = (w, s) => `${w} ${s}px 'Newsreader', Georgia, serif`, ICON = s => `900 ${s}px "Font Awesome 6 Free"`;
+    try { await Promise.all([SANS(800, 40), SANS(600, 40), SANS(700, 40), SERIF(600, 40), ICON(40)].map(f => document.fonts.load(f))); } catch (e) { }
+    const txt = (s, x, y, font, col, align = 'left') => { g.font = font; g.fillStyle = col; g.textAlign = align; g.fillText(s, x, y); g.textAlign = 'left'; };
+    // Letra que se encoge hasta caber (cifras largas, palabras largas en inglés)
+    const fit = (s, maxW, mk, size, min = 12) => { let z = size; g.font = mk(z); while (z > min && g.measureText(s).width > maxW) { z -= 2; g.font = mk(z); } return mk(z); };
+    const box = (x, y, w, h, r, fill, stroke) => { g.beginPath(); g.roundRect(x, y, w, h, r); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = 2; g.stroke(); } };
+    // Varias líneas: devuelve dónde termina
+    const wrap = (s, x, y, maxW, font, col, lh) => {
+        g.font = font; const words = String(s).split(' '); let line = '';
+        for (const w of words) { const t = line ? line + ' ' + w : w; if (g.measureText(t).width > maxW && line) { txt(line, x, y, font, col); y += lh; line = w; } else line = t; }
+        if (line) { txt(line, x, y, font, col); y += lh; }
+        return y;
+    };
+    // Fondo: los mismos marrones de la app, con luz caramelo arriba y un toque verde (= vas bien)
+    const bg = g.createLinearGradient(0, 0, 0, H); bg.addColorStop(0, '#1c1612'); bg.addColorStop(1, '#0c0a09');
+    g.fillStyle = bg; g.fillRect(0, 0, W, H);
+    const glow = (x, y, r, col) => { const gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, col); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(0, 0, W, H); };
+    glow(W * .9, H * .08, 720, 'rgba(154,107,64,.34)'); glow(0, H * .55, 640, 'rgba(111,207,151,.09)');
     g.textBaseline = 'alphabetic';
-    // Marca
-    g.fillStyle = '#f2ebe3'; g.font = F(800, 52); g.fillText('nutri', 90, 140); const wn = g.measureText('nutri').width;
-    g.fillStyle = '#dcc19c'; g.fillText('DL', 90 + wn, 140);
-    g.fillStyle = '#a89c90'; g.font = F(600, 34); g.fillText(tr('Mi semana'), 90, 200);
-    // Racha
-    g.fillStyle = '#f2ebe3'; g.font = F(800, 260); g.fillText(String(S.cur), 80, 520);
-    const wr = g.measureText(String(S.cur)).width;
-    g.font = F(800, 64); g.fillStyle = '#dcc19c'; g.fillText('🔥', 110 + wr, 520);
-    g.fillStyle = '#e4dcd2'; g.font = F(700, 44); g.fillText(S.cur === 1 ? tr('día seguido cuidando lo que como') : tr('días seguidos cuidando lo que como'), 90, 600);
-    // Datos de la semana
-    const tiles = [[tr('Días registrados'), `${W.logged}/${W.past}`], [tr('Proteína cumplida'), calc.prot ? `${W.protOk}/${W.past}` : '—'], [tr('Entrenos'), String(W.workouts)], [tr('Logros'), String(A)]];
-    tiles.forEach(([l, v], i) => {
-        const x = 90 + (i % 2) * 460, y = 680 + Math.floor(i / 2) * 230;
-        box(x, y, 440, 200, 36, 'rgba(255,255,255,.06)');
-        g.fillStyle = '#a89c90'; g.font = F(700, 30); g.fillText(l.toUpperCase(), x + 40, y + 70);
-        g.fillStyle = '#f2ebe3'; g.font = F(800, 84); g.fillText(v, x + 40, y + 160);
+    // Marca + semana (en historia se deja aire arriba: ahí Instagram pone su barra)
+    let y = story ? 230 : 140;
+    const logo = await loadImg('icons/icon-192.png');
+    if (logo) { g.save(); g.beginPath(); g.roundRect(P, y - 64, 84, 84, 24); g.clip(); g.drawImage(logo, P, y - 64, 84, 84); g.restore(); }
+    const lx = P + (logo ? 106 : 0);
+    txt('nutri', lx, y, SANS(800, 52), '#f2ebe3'); g.font = SANS(800, 52);
+    txt('DL', lx + g.measureText('nutri').width, y, SANS(800, 52), '#dcc19c');
+    txt(tr('MI SEMANA'), W - P, y - 30, SANS(800, 26), '#8f8478', 'right');
+    txt(weekRange(D), W - P, y + 6, SANS(700, 32), '#dcc19c', 'right');
+    // Titular
+    const HH = weekHero(D);
+    y += story ? 300 : 230;
+    if (HH.n) { txt(HH.n, P - 8, y, fit(HH.n, W - 2 * P, z => SERIF(600, z), story ? 300 : 230), '#f6efe7'); y += story ? 92 : 78; }
+    y = wrap(HH.t, P, y, W - 2 * P, SANS(800, story ? 62 : 52), '#eadfd2', story ? 74 : 62);
+    if (HH.s) { txt(HH.s, P, y + 4, SANS(700, story ? 40 : 34), '#6fcf97'); y += story ? 56 : 48; }
+    // Calendario de la semana: verde = proteína cumplida, caramelo = apuntado
+    y += story ? 70 : 40;
+    const cell = (W - 2 * P) / 7, R = story ? 48 : 40, L = dowLetters();
+    D.days.forEach((x, i) => {
+        const cx = P + cell * i + cell / 2, cy = y + 30 + R;
+        txt(L[i], cx, y, SANS(800, 26), x.d === todayISO() ? '#dcc19c' : '#8f8478', 'center');
+        g.globalAlpha = x.fut ? .35 : 1;
+        g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2);
+        if (x.prot) { g.fillStyle = '#4fbf80'; g.fill(); txt('', cx, cy + R * .34, ICON(R * .95), '#0f2a1b', 'center'); }
+        else if (x.on) { g.fillStyle = 'rgba(196,154,108,.18)'; g.fill(); g.strokeStyle = '#c49a6c'; g.lineWidth = 3; g.stroke(); g.beginPath(); g.arc(cx, cy, R * .2, 0, Math.PI * 2); g.fillStyle = '#dcc19c'; g.fill(); }
+        else { g.fillStyle = 'rgba(255,255,255,.06)'; g.fill(); }
+        g.globalAlpha = 1;
     });
-    // Llamada a la acción
-    box(90, 1170, 900, 110, 55, '#9a6b40');
-    g.fillStyle = '#ffffff'; g.font = F(800, 36); g.textAlign = 'center'; g.fillText(tr('Calcula tu plan gratis · {u}', { u: SHARE_URL }), 540, 1238); g.textAlign = 'left';
+    y += 30 + 2 * R + (story ? 56 : 44);
+    txt(tr('✓ proteína cumplida   ● día apuntado'), P, y, SANS(600, story ? 28 : 24), '#8f8478');
+    // Cifras: icono verde si hay algo que celebrar
+    y += story ? 60 : 36;
+    const tiles = [['', tr('Días apuntados'), `${D.logged}/${D.past}`, D.logged > 0], ['', tr('Proteína cumplida'), tr(D.protOk === 1 ? '{k} día' : '{k} días', { k: D.protOk }), D.protOk > 0],
+        ['', tr('Entrenos'), String(D.workouts), D.workouts > 0], ['', tr('Racha'), tr(D.S.cur === 1 ? '{k} día' : '{k} días', { k: D.S.cur }), D.S.cur > 0]];
+    const cols = 4, gap = story ? 20 : 18, tw = (W - 2 * P - gap * (cols - 1)) / cols, th = story ? 250 : 190;
+    tiles.forEach(([ic, l, v, good], i) => {
+        const x = P + (i % cols) * (tw + gap), ty = y + Math.floor(i / cols) * (th + gap);
+        box(x, ty, tw, th, story ? 36 : 28, 'rgba(255,255,255,.05)', 'rgba(255,255,255,.07)');
+        const pad = story ? 26 : 24;
+        txt(ic, x + pad, ty + pad + (story ? 34 : 28), ICON(story ? 34 : 28), good ? '#6fcf97' : '#6d6359');
+        const inner = tw - 2 * pad;
+        txt(l.toUpperCase(), x + pad, ty + th - (story ? 92 : 76), fit(l.toUpperCase(), inner, z => SANS(800, z), story ? 20 : 18), '#a89c90');
+        txt(v, x + pad, ty + th - pad, fit(v, inner, z => SERIF(600, z), story ? 64 : 54), '#f6efe7');
+    });
+    // Invitación para quien la ve (abajo, por encima de la zona de respuesta de las historias)
+    const ch = story ? 300 : 250, cy0 = H - (story ? 220 : 56) - ch;
+    box(P, cy0, W - 2 * P, ch, story ? 44 : 36, 'rgba(154,107,64,.16)', 'rgba(196,154,108,.45)');
+    const ip = story ? 48 : 38;
+    txt(tr('¿Te animas? Es gratis.'), P + ip, cy0 + ip + (story ? 50 : 40), SERIF(600, story ? 58 : 46), '#f6efe7');
+    { const sub = tr('Calorías, macros, escáner y gym · sin anuncios'); txt(sub, P + ip, cy0 + ip + (story ? 104 : 84), fit(sub, W - 2 * P - 2 * ip, z => SANS(600, z), story ? 32 : 26), '#cfc5b8'); }
+    const pill = SHARE_URL; g.font = SANS(800, story ? 32 : 26); const pw = g.measureText(pill).width + (story ? 64 : 48), ph = story ? 72 : 56;
+    box(P + ip, cy0 + ch - ip - ph, pw, ph, ph / 2, '#9a6b40');
+    txt(pill, P + ip + pw / 2, cy0 + ch - ip - ph / 2 + (story ? 11 : 9), SANS(800, story ? 32 : 26), '#ffffff', 'center');
+    return cv;
+}
+async function shareProgress() {
+    if (!profiles.current) { toast('Crea tu perfil para ver tu progreso.'); return; }
+    openSheet('<i class="fa-solid fa-share-nodes text-mint-400"></i> ' + tr('Compartir mi semana'), `<div class="space-y-4">
+        <div class="grid grid-cols-2 gap-2" role="radiogroup" aria-label="${tr('Formato')}">${[['story', tk('Historia'), tk('Instagram y WhatsApp')], ['post', tk('Publicación'), tk('Feed y chats')]].map(([k, l, s]) => `<button type="button" role="radio" data-shfmt="${k}" onclick="shareSetFmt('${k}')" class="nd-shfmt p-3 rounded-2xl border text-left"><span class="block text-sm font-extrabold">${tr(l)}</span><span class="block text-[11px] text-neutral-400">${tr(s)}</span></button>`).join('')}</div>
+        <div id="sh-prev" class="rounded-2xl bg-neutral-950 border border-neutral-800 grid place-items-center p-2 min-h-[240px]" aria-live="polite"><i class="fa-solid fa-circle-notch fa-spin text-neutral-500"></i></div>
+        <p class="text-xs text-neutral-400"><i class="fa-solid fa-lock"></i> ${tr('Sin tu peso ni tus medidas: solo tus hábitos de la semana.')}</p>
+        <button type="button" onclick="shareSend()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold"><i class="fa-solid fa-share-nodes"></i> ${tr('Compartir')}</button>
+        <div class="grid grid-cols-2 gap-2"><button type="button" onclick="shareSave()" class="nd-mbtn"><i class="fa-solid fa-download"></i> ${tr('Guardar imagen')}</button><button type="button" onclick="shareCopy()" class="nd-mbtn"><i class="fa-regular fa-copy"></i> ${tr('Copiar texto')}</button></div>
+    </div>`);
+    track('share_open');
+    shareSetFmt(shareFmt);
+}
+async function shareSetFmt(k) {
+    shareFmt = k === 'post' ? 'post' : 'story';
+    document.querySelectorAll('[data-shfmt]').forEach(b => { const on = b.dataset.shfmt === shareFmt; b.setAttribute('aria-checked', on); b.className = 'nd-shfmt p-3 rounded-2xl border text-left ' + (on ? 'border-mint-500 bg-mint-500/10 text-neutral-50' : 'border-neutral-800 bg-neutral-900 text-neutral-300'); });
+    const seq = ++shareSeq, cv = await drawWeekCard(shareFmt, weekShareData());
     const blob = await new Promise(r => cv.toBlob(r, 'image/png'));
-    if (!blob) { toast('No se pudo crear la imagen'); return; }
-    const file = new File([blob], 'mi-semana-nutridl.png', { type: 'image/png' });
+    if (seq !== shareSeq) return; // se cambió de formato mientras se dibujaba
+    shareBlob = blob;
+    if (shareImg) URL.revokeObjectURL(shareImg);
+    shareImg = blob ? URL.createObjectURL(blob) : null;
+    const box = $('sh-prev'); if (!box) return;
+    box.innerHTML = shareImg ? `<img src="${shareImg}" alt="${tr('Vista previa de tu tarjeta de la semana')}" class="max-h-[52vh] w-auto rounded-xl">` : `<p class="text-sm text-neutral-400">${tr('No se pudo crear la imagen')}</p>`;
+}
+const shareFile = () => shareBlob && new File([shareBlob], `mi-semana-nutridl-${shareFmt === 'story' ? 'historia' : 'post'}.png`, { type: 'image/png' });
+async function shareSend() {
+    const file = shareFile(); if (!file) { toast('No se pudo crear la imagen'); return; }
+    const text = weekShareText(weekShareData());
     track('share_progress');
     if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        try { await navigator.share({ files: [file], text: tr(S.cur === 1 ? 'Llevo {k} día seguido con nutriDL. Calcula tu plan gratis: {u}' : 'Llevo {k} días seguidos con nutriDL. Calcula tu plan gratis: {u}', { k: S.cur, u: `https://${SHARE_URL}/` }) }); return; }
+        try { await navigator.share({ files: [file], text }); return; }
         catch (e) { if (e && e.name === 'AbortError') return; }
     }
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; a.click();
+    // Sin «compartir» del sistema (ordenador): se guarda la imagen y se copia el texto para pegarlo
+    shareSave(true);
+    try { await navigator.clipboard.writeText(text); toast('Imagen guardada y texto copiado: pégalo donde la compartas'); } catch (e) { toast('Imagen guardada: compártela donde quieras'); }
+}
+function shareSave(quiet) {
+    const file = shareFile(); if (!file) { toast('No se pudo crear la imagen'); return; }
+    const a = document.createElement('a'); a.href = URL.createObjectURL(file); a.download = file.name;
+    document.body.appendChild(a); a.click(); a.remove();
     setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-    toast('Imagen guardada: compártela donde quieras');
+    if (quiet !== true) toast('Imagen guardada: compártela donde quieras');
+}
+async function shareCopy() {
+    try { await navigator.clipboard.writeText(weekShareText(weekShareData())); toast('Texto copiado'); }
+    catch (e) { toast('No se pudo copiar el texto'); }
 }
 
 function calWeekStats() {

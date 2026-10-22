@@ -118,3 +118,19 @@ test('Gym 3.17.1: si solo hay series en uno de los dos, no se guarda como supers
     run("addGymEx('', 'Curl'); addGymEx('', 'Extensión tríceps'); toggleSS(0); curDay().ex[0].s = [{ kg: '10', r: '10' }]; saveGymDay()");
     assert.deepEqual(json('state.workouts[0].ex.map(e => !!e.ss)'), [false]);
 });
+
+test('Compartir mi semana 3.19: titular verdadero, texto sin peso y con enlace', () => {
+    const { run, json } = loadApp();
+    // Semana con todos los días pasados apuntados → «N/N días apuntados»
+    run(`(() => { const W = calWeekStats(); W.days.filter(d => d <= todayISO()).forEach(d => { state.diary[d] = [{ id: 'x' + d, slot: 'L', name: 'Pollo', kcal: 500, p: 200, c: 0, f: 5 }]; }); state.weights = [{ d: todayISO(), w: 87.3 }]; })()`);
+    const D = json('(() => { const D = weekShareData(); return { past: D.past, logged: D.logged, hero: weekHero(D), text: weekShareText(D) }; })()');
+    assert.equal(D.logged, D.past);
+    if (D.past >= 3) assert.equal(D.hero.n, `${D.past}/${D.past}`);
+    assert.doesNotMatch(D.text, /87[,.]3|87 kg/, 'nunca el peso');
+    assert.match(D.text, /https:\/\/trbs-aldl\.github\.io\/nutridl-app\//);
+    assert.match(D.text, /gratis y sin anuncios/);
+    // Sin nada apuntado: un titular de bienvenida, sin cifras inventadas
+    const { run: run2, json: json2 } = loadApp();
+    run2('state.diary = {}; state.workouts = []');
+    assert.equal(json2('weekHero(weekShareData()).n'), '');
+});

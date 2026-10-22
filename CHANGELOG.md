@@ -1,5 +1,18 @@
 # Cambios de nutriDL
 
+## 3.19.0 · 23 de octubre de 2026
+
+**«Compartir mi semana» rehecho** (skill `referrals`: el resultado que compartes es la mejor publicidad de la app).
+
+- **Vista previa** antes de compartir (antes se compartía a ciegas) y 2 formatos: **Historia 9:16** (Instagram y WhatsApp, con márgenes para sus barras) y **Publicación 4:5**.
+- **Titular automático con lo mejor de tu semana**, siempre un dato real: «5/5 días apuntados · Sin fallar ni uno», racha, entrenos (con kg levantados) o días con la proteína cumplida.
+- **Calendario de la semana** con tus días en verde (proteína cumplida) y caramelo (apuntado), igual que en la app.
+- 4 cifras con iconos dibujados (antes un emoji 🔥 que cada móvil pinta distinto) y la letra se encoge sola si no cabe (también en inglés).
+- **Invitación para quien la ve**: «¿Te animas? Es gratis. Calorías, macros, escáner y gym · sin anuncios» + la dirección de la app.
+- **Texto ya escrito** al compartir con tus datos de la semana y el enlace; «Guardar imagen» y «Copiar texto» por separado. En ordenador, guarda la imagen y copia el texto.
+- Nunca lleva peso ni medidas (prueba automática). Botón de Progreso más visible.
+- 1 prueba nueva: 75 en total.
+
 ## 3.18.0 · 23 de octubre de 2026
 
 - **Verde con sentido en toda la app** (decisión de Ángel): todo lo que significa «bien», «hecho» o «conseguido» es verde. Nuevos en verde: «Quedan X kcal», racha (chip de Hoy y tarjeta de Progreso), logros conseguidos, días cumplidos del calendario semanal, celebraciones, lista de la compra (barra y casillas compradas), barras del menú del día al cumplir, «Mis pesos más altos», ✓ de «PDF creado» y de lo incluido en Gratis/PRO. Botones y marca siguen en caramelo.
