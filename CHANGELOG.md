@@ -7,6 +7,7 @@
 - Proceso repetible: `node tools/marcas/off_fetch7.js` → `off_build3.js v7` → `off_v7_revision.js` → `off_embed.js` → `npm run seo`.
 - El cruasán genérico también se encuentra buscando «croissant». Páginas «Calorías de…»: 2.022.
 - Más robusto: si una copia de seguridad antigua trae una comida sin proteína/hidratos/grasa, el diario muestra 0 en vez de «NaN».
+
 ## 3.14.0 · 22 de octubre de 2026
 
 Los puntos débiles que salieron de las reseñas de la competencia y de la revisión de la portada (`docs/COMPETENCIA.md`):
