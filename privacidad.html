@@ -6,6 +6,8 @@
     <title>Privacidad · nutriDL</title>
     <meta name="description" content="Qué datos guarda nutriDL, dónde y cómo borrarlos.">
     <meta name="theme-color" content="#110f0d">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/legal.css">
@@ -14,7 +16,7 @@
     <main>
         <a class="back" href="./">← Volver a nutriDL</a>
         <h1>Privacidad</h1>
-        <p class="meta">Versión 4.1 · 14 de octubre de 2026 (nutriDL 3.4: copias automáticas, registro de errores sin datos personales y base de alimentos ampliada)</p>
+        <p class="meta">Versión 4.2 · 23 de octubre de 2026 (nutriDL 3.16: se detalla qué puede ver Open Food Facts al escanear un código)</p>
 
         <h2>En resumen</h2>
         <ul>
@@ -33,7 +35,7 @@
 
         <h2>Cuándo sale algo de tu dispositivo</h2>
         <ul>
-            <li><strong>Escáner de código de barras:</strong> al escanear o escribir un código, se envía solo ese número a <a href="https://world.openfoodfacts.org">Open Food Facts</a> para obtener la información nutricional del producto. No se envía ningún dato tuyo.</li>
+            <li><strong>Escáner de código de barras:</strong> al escanear o escribir un código, se envía solo ese número a <a href="https://world.openfoodfacts.org">Open Food Facts</a> para obtener la información nutricional del producto. No se envía tu nombre, tu peso, tu diario ni ningún otro dato de la app. Como en cualquier visita a una web, Open Food Facts puede ver la dirección IP y el tipo de navegador de tu conexión; su uso lo rige su propia política de privacidad.</li>
             <li><strong>Cámara:</strong> se usa solo mientras el escáner está abierto, para leer el código. Las imágenes no se guardan ni se envían.</li>
             <li><strong>Foto de la nevera:</strong> igual que la del plato, solo se ve en tu pantalla mientras marcas lo que tienes. No se guarda ni se envía.</li>
             <li><strong>Foto del plato:</strong> la foto se muestra solo en tu pantalla mientras marcas qué hay en el plato. No se guarda ni se envía.</li>

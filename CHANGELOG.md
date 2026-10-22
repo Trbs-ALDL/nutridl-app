@@ -1,5 +1,19 @@
 # Cambios de nutriDL
 
+## 3.16.0 · 23 de octubre de 2026
+
+Auditoría de seguridad, datos y Coach (modelo de amenazas completo en `docs/SEGURIDAD-Y-PUBLICACION.md`).
+
+- **El Coach ya no apunta nada sin preguntar cuando adivina**: enseña lo que ha entendido, con gramos editables, y pide «Añadir al diario». Antes, «No tengo pollo» apuntaba Nocilla y pollo.
+- El lector de comidas ignora lo negado («no tengo…», «ni pan») y las palabras de 1-2 letras solo valen enteras («no» ya no es «Nocilla»).
+- El Coach entiende más: «Añade dos huevos a la comida», «Cambia el arroz por patata» (mismas calorías, botón para cambiarlo y Deshacer), «No tengo pollo» (ideas sin pollo), «Dame una comida barata» (ingredientes económicos), «¿Qué preparo mañana?» y «¿Qué puedo comer ahora?» (antes respondía «Sí, puedes»).
+- **Guardar sin espacio**: si el almacenamiento del móvil se llena, se borran primero las copias automáticas antiguas; si aun así no cabe, avisa (antes fallaba en silencio y se podían perder datos).
+- Cargar una copia: archivos de más de 20 MB se rechazan, y si sustituye perfiles, antes se guarda una copia automática para poder volver atrás.
+- Aviso prudente si el peso objetivo queda por debajo del rango saludable (IMC < 18,5).
+- Los avisos largos se quedan más tiempo en pantalla (hasta 7 s) para poder leerlos.
+- Privacidad: la política explica que Open Food Facts puede ver la IP y el navegador al escanear; `no-referrer` en todas las páginas y CSP estricta (sin scripts) en las páginas legales.
+- 8 pruebas nuevas (`tests/v316.test.js`): 68 en total.
+
 ## 3.15.0 · 22 de octubre de 2026
 
 - **111 productos nuevos (2.391 alimentos en total)**: los **más escaneados en España** en Open Food Facts, de cualquier marca (la mejor medida pública de lo que la gente apunta en las apps de calorías). Gullón Zero, Old El Paso, Wasa, Oatly, Alpro, Carrefour, Lidl (Milbona, Alesto, Crownfield…), Príncipe, Lotus Biscoff, Barilla, Weetabix, Hacendado y más.

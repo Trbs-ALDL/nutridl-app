@@ -20,7 +20,7 @@ function mergeState(s) {
     delete m.gym.style; // el método FST-7 se quitó: todas las rutinas son las basadas en evidencia
     return m;
 }
-function persistProfiles() { try { profiles.v = 1; localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles)); } catch (e) { } }
+function persistProfiles() { profiles.v = 1; return storeSet(PROFILES_KEY, JSON.stringify(profiles)); }
 function refreshAll() {
     calcEditing = false;
     syncCustomFoods();
@@ -238,6 +238,8 @@ function importProfiles() {
     inp.type = 'file'; inp.accept = '.json,application/json';
     inp.onchange = () => {
         const file = inp.files && inp.files[0]; if (!file) return;
+        // Una copia real ocupa como mucho unos pocos MB: un archivo enorme no se lee (bloquearía el móvil)
+        if (file.size > 20 * 1024 * 1024) { toast('Ese archivo es demasiado grande para ser una copia de NutriDL'); return; }
         const r = new FileReader();
         r.onload = async () => {
             let data; try { data = JSON.parse(r.result); } catch (e) { toast('Ese archivo no es una copia de NutriDL'); return; }
@@ -250,6 +252,8 @@ function importProfiles() {
             // Mismo perfil (mismo id) ya en este dispositivo: solo se sustituye si lo confirmas
             const clash = entries.filter(([id]) => profiles.list[id]);
             const replace = clash.length ? await askConfirm(tr(clash.length === 1 ? 'La copia trae datos de {n}, que ya existe en este dispositivo. ¿Sustituirlos por los de la copia? Si eliges no, solo se añadirán los perfiles nuevos.' : 'La copia trae datos de {n}, que ya existen en este dispositivo. ¿Sustituirlos por los de la copia? Si eliges no, solo se añadirán los perfiles nuevos.', { n: clash.map(([id]) => profiles.list[id].name).join(', ') }), 'Sustituir') : false;
+            // Si se van a sustituir perfiles, lo de antes queda en «Copias automáticas» para poder volver atrás
+            if (replace) autoBackup(true);
             let added = 0, updated = 0;
             entries.forEach(([id, p]) => {
                 if (profiles.list[id] && !replace) return;

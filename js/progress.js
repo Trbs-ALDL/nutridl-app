@@ -123,6 +123,9 @@ function setGoalWeight(v) {
     const g = num(v);
     state.goalWeight = g && g >= 35 && g <= 250 ? round1(g) : '';
     save(); renderTracker(); renderProgress();
+    // Un objetivo por debajo del peso saludable (IMC < 18,5) no se anima: se avisa con cuidado
+    const h = num(state.height) / 100;
+    if (state.goalWeight && h > 1 && state.goalWeight / (h * h) < 18.5) { toast('Ese peso queda por debajo del rango saludable para tu estatura (IMC menor de 18,5). Antes de buscarlo, consúltalo con un profesional sanitario.'); return; }
     toast(state.goalWeight ? tr('Peso objetivo: {k} kg', { k: fmt(state.goalWeight, 1) }) : 'Peso objetivo quitado');
 }
 let msKey = 'waist';

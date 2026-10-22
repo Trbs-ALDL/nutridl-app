@@ -76,3 +76,37 @@ Forma recomendada: **Trusted Web Activity (TWA)** con Bubblewrap o PWABuilder (e
 - **Importante:**
   - No cambiar los nombres ya publicados de `marcas.json` ni de `marcas_v3.json` (ni su orden): el id de cada producto sale de su marca y su nombre, y los diarios guardan ese id. Si se vuelve a descargar Open Food Facts, añadir los productos nuevos en un archivo aparte.
   - Cada entrada del diario guarda sus propias calorías y macros, así que corregir un alimento no cambia los días ya apuntados.
+
+## Modelo de amenazas y estado (3.16 · 23-10-2026)
+
+Riesgos reales de esta app (sin servidor, datos en `localStorage`, alojada en GitHub Pages) y lo que hay hecho.
+✅ = comprobado con prueba automática o en el navegador · ⚠️ = mitigado en parte · ⏳ = pendiente.
+
+| Riesgo | Medidas | Estado |
+|---|---|---|
+| Código inyectado (XSS) por nombres de alimentos, perfiles, rutinas o ejercicios | Todo texto del usuario pasa por `esc()`; en atributos `onclick` se usa `esc(JSON.stringify(x))`. Probado en el navegador con nombres trampa en perfil, alimento propio, diario, entreno, ejercicio y chat: no se ejecuta nada | ✅ |
+| Copias de seguridad manipuladas | `cleanImported()` quita `< > " ' \` \`, claves raras y `__proto__`; el chat se convierte a texto; ids saneados; archivos de más de 20 MB se rechazan sin leerlos; si se sustituyen perfiles, antes se guarda una copia automática | ✅ |
+| Pérdida de datos por almacenamiento lleno | `storeSet()` (core.js): si no cabe, borra copias automáticas antiguas y reintenta; si aun así falla, avisa al usuario y lo anota en el registro de errores (antes fallaba en silencio) | ✅ |
+| Datos ilegibles al abrir | Se apartan en `nutridl_profiles_rescate` antes de que nada los pise | ✅ (ya existía) |
+| El Coach cambia el diario sin querer | Desde la 3.16 solo apunta directo ante una orden clara («he comido…», «añade…»); si adivina, enseña lo entendido y pide confirmar. Lo negado («no tengo pollo») nunca se apunta. Cambios de alimento solo con botón y con Deshacer | ✅ |
+| Fugas a terceros | La única petición externa es Open Food Facts con el código de barras (solo dígitos, máx. 8/min, 8 s de espera). `Referrer-Policy: no-referrer` por meta. Sin analítica de terceros, sin cookies, sin IA remota | ✅ |
+| Dependencias comprometidas | Solo hay dependencias de construcción (no llegan al móvil). osv-scanner: 2 avisos en `braces` y `postcss-selector-parser`, ambos solo de construcción | ⚠️ aceptado |
+| Scripts de terceros | Ninguno: todo se sirve desde el propio dominio. CSP por meta en `index.html` (`script-src 'self' 'unsafe-inline'`) y CSP estricta sin scripts en las páginas legales | ⚠️ `unsafe-inline` |
+| Dispositivo compartido | Los perfiles separan datos pero **no** los protegen: quien tenga el móvil puede verlos. No hay cifrado ni contraseña (una contraseña olvidada borraría los datos para siempre). Recomendación: usar el bloqueo del móvil | ⚠️ límite conocido |
+| Actualizaciones de la PWA | Caché con versión por contenido (`build-sw.js`), `?v=` en cada script, se borran cachés viejas al activar | ✅ |
+| Consejos peligrosos | Mínimo 1.500/1.200 kcal; el Coach deriva a un profesional en embarazo, diabetes, TCA, medicación, menores, etc.; aviso si el peso objetivo da IMC < 18,5; edad 18-90 | ✅ |
+
+**Límites de GitHub Pages** (no se pueden arreglar desde el repositorio): no permite cabeceras HTTP propias.
+`X-Content-Type-Options`, `Permissions-Policy`, `frame-ancestors` (anti-clickjacking) y HSTS de dominio propio
+**no tienen efecto** puestas como `<meta>`. Si algún día se usa Cloudflare Pages o Netlify (gratis), añadir:
+
+```
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+Referrer-Policy: no-referrer
+Permissions-Policy: camera=(self), microphone=(self), geolocation=(), payment=()
+```
+
+**Para quitar `unsafe-inline`** habría que cambiar los cientos de `onclick="…"` por `addEventListener`: es un cambio grande que no se hace sin plan propio.
+
+**Legal (revisar con un profesional antes de un lanzamiento comercial):** peso, medidas y alimentación pueden considerarse datos de salud (art. 9 RGPD). Hoy no salen del dispositivo, lo que reduce mucho las obligaciones, pero al añadir nube (Supabase), pagos o analítica habrá que revisar base legal, consentimiento explícito, encargados de tratamiento y la política de privacidad.

@@ -76,6 +76,8 @@ const SLOT_HINTS = [[/\b(desayun\w*|breakfast)\b/, 'B'], [/\b(almuerz\w*|media m
 const enNameOf = f => f.en || (typeof FOOD_EN !== 'undefined' && FOOD_EN[f.id]) || '';
 const stem = w => w.length > 4 && w.endsWith('es') && !/[aeiou]es$/.test(w.slice(-3)) ? w.slice(0, -2) : w.length > 3 && w.endsWith('s') ? w.slice(0, -1) : w;
 function tokMatch(t, w) {
+    // Palabras de 1-2 letras solo valen enteras: «no» no es el principio de «Nocilla», ni «te» el de «ternera»
+    if (t.length < 3) return w === t ? 3 : 0;
     if (w.startsWith(t)) return 3;
     const a = stem(t), b = stem(w);
     if (a === b || (a.length >= 4 && b.startsWith(a)) || (b.length >= 4 && a.startsWith(b))) return 2.5;
@@ -205,6 +207,8 @@ function parseFoodText(text) {
     let s = norm(String(text || '')).replace(/(\d),(\d)/g, '$1.$2').replace(/(\d)\s*(g|gr|ml|kg)\b/g, '$1 $2');
     let slot = null;
     for (const [re, k] of SLOT_HINTS) if (re.test(s)) { slot = k; break; }
+    // Lo negado no se ha comido: «no tengo pollo», «no he cenado nada», «ni pan» (hasta la coma o el punto)
+    s = s.replace(/\b(no|ni|nada de|not|never)\b[^,;.\n]*/g, ' , ');
     s = s.replace(/\b(tengo|tenemos|hay|me queda|me quedan|en (la|mi) nevera|en casa)\b/g, ' , ')
         .replace(/\b(me he|he|hemos|acabo de|voy a|quiero|para)\s+(comido|tomado|bebido|desayunado|cenado|merendado|almorzado|picado|comer|tomar|cenar|desayunar|merendar)\b/g, ' , ')
         .replace(/\b(de|en el|en la|para)\s+(desayuno|comida|cena|merienda|almuerzo)\b/g, ' , ')

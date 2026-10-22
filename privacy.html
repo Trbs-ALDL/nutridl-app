@@ -6,6 +6,8 @@
     <title>Privacy · nutriDL</title>
     <meta name="description" content="What data nutriDL stores, where, and how to delete it.">
     <meta name="theme-color" content="#110f0d">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
     <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/legal.css">
@@ -14,7 +16,7 @@
     <main>
         <a class="back" href="./">← Back to nutriDL</a>
         <h1>Privacy</h1>
-        <p class="meta">Version 4.1 · 14 October 2026 (nutriDL 3.4: automatic backups, error log without personal data and an expanded food database)</p>
+        <p class="meta">Version 4.2 · 23 October 2026 (nutriDL 3.16: details what Open Food Facts can see when you scan a code)</p>
 
         <h2>In short</h2>
         <ul>
@@ -33,7 +35,7 @@
 
         <h2>When something leaves your device</h2>
         <ul>
-            <li><strong>Barcode scanner:</strong> when you scan or type a code, only that number is sent to <a href="https://world.openfoodfacts.org">Open Food Facts</a> to get the product's nutrition information. None of your data is sent.</li>
+            <li><strong>Barcode scanner:</strong> when you scan or type a code, only that number is sent to <a href="https://world.openfoodfacts.org">Open Food Facts</a> to get the product's nutrition information. Your name, weight, diary and any other app data are never sent. As with any website visit, Open Food Facts may see your connection's IP address and browser type; that is governed by its own privacy policy.</li>
             <li><strong>Camera:</strong> used only while the scanner is open, to read the code. Images are not stored or sent.</li>
             <li><strong>Fridge photo:</strong> like the meal photo, it is only shown on your screen while you tick what you have. It is not stored or sent.</li>
             <li><strong>Meal photo:</strong> the photo is only shown on your screen while you mark what is on the plate. It is not stored or sent.</li>

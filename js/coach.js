@@ -220,6 +220,12 @@ const RX = {
     estancado: /\b(no (bajo|adelgazo|pierdo|subo)|me he estancado|estancad\w*|no avanzo|sigo igual|no se mueve|llevo semanas)\b|\b(not losing|not dropping|not gaining|i.?m stuck|im stuck|plateau|stalled|no progress|same weight|for weeks)\b/,
     pasado: /\b(me he pasado|me pase|he comido (de )?mas|comi de mas|me he excedido|dia libre|comida trampa|cheat meal|he picado mucho|me siento culpable|culpa)\b|\b(i overate|i over ate|went over|ate too much|i binged|cheat day|day off|snacked a lot|i feel guilty|guilty)\b/,
     sinHambre: /\b(no tengo hambre|sin hambre|no me entra|no puedo comer mas|me cuesta comer|me cuesta llegar)\b|\b(not hungry|no appetite|can.?t eat (any)?more|cannot eat more|i struggle to eat|hard to (eat|hit))\b/,
+    // 3.16: órdenes, cambios, lo que falta en casa y el día siguiente
+    add: /^(anade|anademe|apunta|apuntame|pon|ponme|mete|meteme|registra|suma|add|log|track|put)\b/,
+    swap: /\b(?:cambia\w*|sustitu\w*|reemplaz\w*|swap|replace)\b\s+(?:el |la |los |las |mi |mis |the |my )?(.+?)\s+(?:por|con|with|for)\s+(?:el |la |los |las |un |una |unos |unas |the |a |an |some )?(.+)$/,
+    notHave: /^(no (tengo|me queda\w*|hay|quiero|me apetece\w*)|i (don.?t|do not) (have|want)|i.?m out of|there.?s no|no more)\s+(.+)$/,
+    manana: /\b(?:que|what)\b.*\b(?<!media |esta )manana\b|\b(?<!media |esta )manana\b.*\b(preparo|preparar|cocino|cocinar|hago|hacer|como|comer|desayuno|ceno)\b|\btomorrow\b/,
+    barato: /\b(barat\w*|economic\w*|low cost|cheap\w*|budget|affordable)\b/,
 }; // i18n-ignore-end
 // ---------- Memoria de la conversación ----------
 // Sin esto cada mensaje empieza de cero y «¿y de cena?» no significa nada.
@@ -264,6 +270,12 @@ function coachReply(raw) {
     if (RX.tooLow.test(q)) return { r: 'c', tags: ['rec'], html: `<p>${tr('Comer tan poco no es seguro sin supervisión médica: aumenta la pérdida de músculo y el riesgo de déficit de nutrientes. Tu plan nunca baja de {k} kcal. Si quieres avanzar más rápido, suma pasos y entrenamiento de fuerza.', { k: fmt(calc.male ? 1500 : 1200) })}</p>` };
     if (!calc.target && !RX.logged.test(q)) return { r: 'c', tags: ['rec'], html: `<p>${tr('Para responderte con tus números necesito tu plan (2 minutos): objetivo, datos y actividad.')}</p><button onclick="${profiles.current ? "showTab('calc')" : 'newProfile()'}" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold">${tr('Completar mi plan')}</button>` };
     if (RX.hello.test(q) && q.length < 25) { const sl = (nextMeal() || {}).slot || slotByHour(); remember('hello', '', { offer: 'que tomo de ' + slotEs(sl) }); return { r: 'c', tags: ['dato'], html: `<p>${tr('¡Hola!')} ${leftLine()} ${tr('¿Te propongo algo para {x}?', { x: slotArt(sl) })}</p>` }; } // i18n-ignore (frase interna que lee el Coach)
+    // «Añade dos huevos a la comida»: es una orden clara → se apunta (con Deshacer)
+    if (RX.add.test(q) && !RX.menu.test(q) && !RX.shop.test(q)) { const r = replyLog(q.replace(RX.add, ' ').trim()); if (r) return r; }
+    // «Cambia el arroz por patata»: se propone el cambio con las mismas calorías; el diario solo se toca si lo confirmas
+    if (RX.swap.test(q)) { const r = replySwap(q); if (r) return r; }
+    // «No tengo pollo»: ideas sin eso (nunca se apunta nada)
+    if (RX.notHave.test(q)) { const r = replyNotHave(q); if (r) return r; }
     if (RX.logged.test(q) || (!RX.suggest.test(q) && !RX.left.test(q) && !RX.info.test(q) && !RX.progress.test(q) && !RX.out.test(q) && !RX.protein.test(q) && !RX.menu.test(q) && !RX.shop.test(q) && /^\s*(\d|un |una |dos |medio |media )/.test(q))) {
         const r = replyLog(raw); if (r) return r;
     }
@@ -273,6 +285,12 @@ function coachReply(raw) {
         const wantsPlan = /\b(\d+ dias?|\d+ days?|semana|week|fitness|me gusta|i like|sin |without |no |vegetarian|vegan|barat|economic|cheap|budget)/.test(q); // i18n-ignore (lo que se entiende)
         setTimeout(() => { coachView('shop'); if (wantsPlan) shopAsk(raw); }, 400);
         return { r: 'c', tags: ['rec'], html: '<p>' + (wantsPlan ? tr('Te preparo la compra con lo que me dices y te la abro. Luego puedes cambiar lo que quieras: «cambia el salmón por merluza», «quita la leche»…') : tr('Te abro la compra: dime qué quieres (días, lo que te gusta, lo que no) y te la preparo con cantidades.')) + '</p>' };
+    }
+    if (RX.manana.test(q) && !RX.logged.test(q)) {
+        // Sin PRO también hay respuesta útil: ideas para la comida principal de mañana
+        if (!canUse('menu')) { const r = replySuggest(slotFromText(q) ? q : 'que tomo de comida', { fresh: true }); if (r.opts) r.html = `<p>${tr('Una idea para mañana:')}</p>` + r.html; return r; } // i18n-ignore (frase interna)
+        setTimeout(() => coachView('menu'), 400);
+        return { r: 'c', tags: ['rec'], html: '<p>' + tr('Para organizar mañana te abro el menú del día: se calcula con tus calorías, tus macros y tus preferencias. Cambia los platos que quieras y, si te sirve, crea la lista de la compra desde ahí.') + '</p>' };
     }
     if (RX.fridge.test(q)) { const r = replyFridge(raw, q); if (r) return r; }
     if (RX.out.test(q)) return replyOut(q);
@@ -284,7 +302,8 @@ function coachReply(raw) {
     if (RX.supl.test(q)) return replySupl();
     if (RX.alcohol.test(q) && !RX.suggest.test(q)) return replyAlcohol();
     if (RX.comparar.test(q)) { const r = replyComparar(q); if (r) return r; }
-    if (RX.puedo.test(q)) return replyPuedo(q);
+    // «¿Qué puedo comer ahora?» es pedir ideas; «¿Puedo comer pizza?» es preguntar por un alimento
+    if (RX.puedo.test(q) && (foodIn(q, RX.puedo) || !RX.suggest.test(q))) return replyPuedo(q);
     if (RX.cuando.test(q)) return replyCuando();
     if (RX.estancado.test(q)) return replyEstancado();
     if (RX.protein.test(q)) return replyProtein();
@@ -296,8 +315,9 @@ function coachReply(raw) {
     if (RX.progress.test(q)) return replyProgress();
     // Una pregunta no es apuntar: «¿y el arroz?» no debe meter arroz en el diario.
     // Solo se apunta en silencio si no es pregunta, o si lleva una cantidad («¿2 huevos?»).
+    // Y como aquí el Coach está adivinando, no apunta directamente: enseña lo que ha entendido y pregunta.
     const esPregunta = /[?¿]/.test(raw) && !/\d/.test(raw);
-    if (!esPregunta) { const r = replyLog(raw, true); if (r) return r; }
+    if (!esPregunta) { const r = replyLogAsk(raw); if (r) return r; }
     // Última oportunidad: si en la frase hay un alimento conocido, mejor hablar de él que decir «no te entiendo»
     const guess = foodIn(q, /\b(que|como|cuanto|cuanta|sobre|dime|oye|cosa|rara|raro|ese|esa|esto)\b/g)
         || q.replace(/[?¿!¡.,;]/g, ' ').replace(RELLENO, ' ').split(/\s+/).filter(w => w.length > 3)
@@ -394,10 +414,53 @@ function targetFor(slot) {
     const T = dayTargets()[slot] || dayTargets().S || { kcal: calc.target * .12, p: calc.prot * .12, f: calc.fat * .12, c: calc.carbs * .12 };
     return { ...T };
 }
-function replySuggest(q) {
+// Lo que el Coach cree haber leído, para que lo confirmes antes de guardarlo (no se apunta solo)
+function replyLogAsk(raw) {
+    const P = parseFoodText(raw);
+    if (!P.items.length) return null;
+    const id = 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    newPending(P.items, P.slot || slotByHour(), { id, chat: true });
+    return { id, r: 'c', tags: ['base'], p: pend[id], html: `<p>${tr('¿Quieres apuntar esto? Revisa las cantidades y pulsa «Añadir al diario».')}</p>` };
+}
+// «Cambia el arroz por patata»: misma energía con el alimento nuevo
+function replySwap(q) {
+    const m = q.match(RX.swap); if (!m) return null;
+    const from = matchFoods(m[1], 1)[0], to = matchFoods(m[2].replace(/\b(en|a|de|para|in|for)\s+(el|la|mi|the|my)?\s*(desayuno|comida|cena|merienda|almuerzo|breakfast|lunch|dinner|snack)\b.*$/, ''), 1)[0];
+    if (!from || !to || from.id === to.id || !kcal100(to)) return null;
+    const list = state.diary[todayISO()] || [];
+    const e = [...list].reverse().find(x => x.fid === from.id) || [...list].reverse().find(x => x.fid && (getFood(x.fid) || {}).name && norm(getFood(x.fid).name).split(' ')[0] === norm(from.name).split(' ')[0]);
+    const g1 = e ? e.g : ((from.serv && from.serv[0]) || 100), k1 = e ? e.kcal : macrosOf(from, g1).kcal;
+    const g2 = Math.max(1, Math.round(k1 / kcal100(to) * 100)), m2 = macrosOf(to, g2);
+    const a = e ? { p: e.p || 0, c: e.c || 0, f: e.f || 0 } : macrosOf(from, g1);
+    const html = `<p>${tr('{a} de {x} ({k} kcal) equivalen a unos <b>{b} de {y}</b> con las mismas calorías.', { a: amountText(from, g1), x: esc(foodName(from)), k: fmt(k1), b: amountText(to, g2), y: esc(foodName(to)) })}</p>
+        <p class="text-xs text-neutral-400 mt-1">${tr('Proteína {a} → {b} g · hidratos {c} → {d} g · grasa {e} → {f} g', { a: fmt(a.p), b: fmt(m2.p), c: fmt(a.c), d: fmt(m2.c), e: fmt(a.f), f: fmt(m2.f) })}</p>`;
+    if (!e) return { r: 'c', tags: ['base'], html: html + `<p class="text-xs text-neutral-400 mt-1">${tr('Hoy no tienes {x} en el diario, así que no he cambiado nada.', { x: esc(foodName(from)) })}</p>` };
+    return { r: 'c', tags: ['base'], html: html + `<button type="button" onclick="coachSwap(${esc(JSON.stringify(e.id))},${esc(JSON.stringify(to.id))},${g2})" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold"><i class="fa-solid fa-arrows-rotate"></i> ${tr('Cambiarlo en el diario')}</button>` };
+}
+function coachSwap(eid, fid, g) {
+    const d = todayISO(), list = state.diary[d] || [], i = list.findIndex(x => x.id === eid), f = getFood(fid);
+    if (i < 0 || !f) { toast('Esa comida ya no está en el diario'); return; }
+    const old = list[i];
+    list[i] = { id: old.id, ...entryFrom(f, g, old.slot, false) };
+    afterLog();
+    toastUndo(tr('Cambiado: {n}', { n: foodName(f) }), () => { const L = state.diary[d] || [], j = L.findIndex(x => x.id === eid); if (j >= 0) L[j] = old; save(); renderDiary(); renderDashboard(); });
+}
+// «No tengo pollo»: ideas para la próxima comida sin ese alimento
+function replyNotHave(q) {
+    const m = q.match(RX.notHave), word = norm(m[m.length - 1]).replace(/[?¿!¡.,;]/g, ' ').replace(RELLENO, ' ').trim().split(/\s+/)[0] || '';
+    if (word.length < 3) return null;
+    const ids = FOODS.filter(f => !f.brand && norm(f.name).split(/[^a-z0-9ñ]+/).some(w => tokMatch(word, w))).map(f => f.id);
+    if (!ids.length) return null;
+    const p = myPrefs();
+    const r = replySuggest(q, { prefs: { ...p, dislikes: [...new Set(p.dislikes.concat(ids))] } });
+    if (r.opts) r.html = `<p>${tr('Sin {x}, estas opciones te encajan:', { x: esc(word) })}</p>` + r.html;
+    return r;
+}
+function replySuggest(q, extra = {}) {
     const nm = nextMeal();
     let slot = slotFromText(q) || (nm && nm.slot) || slotByHour();
-    let tg = targetFor(slot);
+    // Para mañana cuenta el plan completo de esa comida, no lo que queda de hoy
+    let tg = extra.fresh ? { ...(dayTargets()[slot] || targetFor(slot)) } : targetFor(slot);
     const mk = q.match(/(\d{2,4})\s*(kcal|calorias|calories|cal)\b/);
     const mp = q.match(/(\d{1,3})\s*(g|gr|gramos|grams?)\s*(de\s+|of\s+)?(proteina|protein)/) || q.match(/(proteina\w*|protein)\s*(de\s*|of\s*)?(\d{1,3})\s*(g|gr|gramos|grams?)?/);
     const pg0 = mp ? +((mp[1] && /^\d+$/.test(mp[1])) ? mp[1] : (mp[3] || mp[2])) : 0;
@@ -407,12 +470,13 @@ function replySuggest(q) {
     if (/mucha proteina|alto en proteina|rica? en proteina|proteic|hiperproteic|lots of protein|high (in )?protein|protein rich/.test(q)) tg.p = Math.max(tg.p, tg.kcal * .35 / 4);
     if (mp && !mk) tg.kcal = Math.max(tg.kcal, tg.p * 4 / .35);
     if (tg.kcal < 90) return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('Ya casi has completado tu día ({x}). Si tienes hambre, elige algo muy ligero: una infusión, verduras crudas, un yogur natural o una pieza de fruta.', { x: leftLine() })}</p>` };
-    const opts = suggestMeals(slot, tg, { n: 3, seed: Date.now() % 100000 });
+    const cheap = RX.barato.test(q), prefs = extra.prefs || (cheap ? { ...myPrefs(), budget: 'low' } : null);
+    const opts = suggestMeals(slot, tg, { n: 3, seed: Date.now() % 100000, ...(prefs ? { prefs } : {}) });
     if (!opts.length) return { r: 'c', tags: ['rec'], html: '<p>' + tr('Con tus preferencias no encuentro platos para esa comida. Revisa tus alergias y los alimentos que no te gustan en Preferencias.') + '</p><button onclick="openPrefs()" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">' + tr('Preferencias') + '</button>' };
     tags.push('rec', 'base');
     ev('suggest_' + slot);
     remember('suggest', q, { slot });
-    return { r: 'c', tags, slot, opts, html: `<p>${tr('Para {x} (≈ <b>{k} kcal</b> y <b>{p} g de proteína</b>) te propongo:', { x: slotArt(slot), k: fmt(tg.kcal), p: fmt(tg.p) })}</p>` };
+    return { r: 'c', tags, slot, opts, html: `<p>${tr('Para {x} (≈ <b>{k} kcal</b> y <b>{p} g de proteína</b>) te propongo:', { x: slotArt(slot), k: fmt(tg.kcal), p: fmt(tg.p) })}${cheap ? ' ' + tr('(con ingredientes económicos)') : ''}</p>` };
 }
 function coachAddOpt(mid, i) {
     const m = state.chat.find(x => x.id === mid); if (!m || !m.opts[i]) return;

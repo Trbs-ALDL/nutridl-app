@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.15.0';
+const APP_VERSION = '3.16.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -63,13 +63,30 @@ const icon = (e, cls = '') => { const k = String(e || '').replace(/️/g, ''); r
 // =====================================================================
 //  PERSISTENCIA
 // =====================================================================
+// Guardar sin perder nada: si el almacenamiento está lleno se sacrifican primero las copias automáticas
+// (la más antigua antes), nunca los datos de verdad. Si aun así no cabe, se avisa una vez (antes fallaba en silencio).
+let storeWarned = false;
+function storeSet(key, val) {
+    try { localStorage.setItem(key, val); return true; } catch (e) {
+        try {
+            const AK = 'nutridl_autobackup', L = JSON.parse(localStorage.getItem(AK) || '[]');
+            while (Array.isArray(L) && L.length) {
+                L.pop();
+                if (L.length) localStorage.setItem(AK, JSON.stringify(L)); else localStorage.removeItem(AK);
+                try { localStorage.setItem(key, val); return true; } catch (e2) { }
+            }
+        } catch (e3) { }
+        logErr('No se pudo guardar (' + key + '): ' + e.message); // i18n-ignore (registro interno)
+        if (!storeWarned && typeof toast === 'function') { storeWarned = true; toast('No queda espacio para guardar en este dispositivo. Guarda una copia de seguridad (menú del perfil) para no perder datos.'); }
+        return false;
+    }
+}
 function save() {
-    try {
-        if (profiles.current && profiles.list[profiles.current]) {
-            profiles.list[profiles.current].state = state;
-            localStorage.setItem(PROFILES_KEY, JSON.stringify(profiles));
-        } else localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    } catch (e) { }
+    if (profiles.current && profiles.list[profiles.current]) {
+        profiles.list[profiles.current].state = state;
+        return storeSet(PROFILES_KEY, JSON.stringify(profiles));
+    }
+    return storeSet(STORAGE_KEY, JSON.stringify(state));
 }
 function load() {
     try {
@@ -131,7 +148,8 @@ function toast(msg) {
     t.style.opacity = '1'; t.style.transform = 'translate(-50%, 0)';
     clearTimeout(toastTimer);
     t.style.transitionDuration = '';
-    toastTimer = setTimeout(() => { t.style.transitionDuration = '.18s'; t.style.opacity = '0'; t.style.transform = 'translate(-50%, 10px)'; }, 2600);
+    // Los avisos largos se quedan más tiempo para que dé tiempo a leerlos (hasta 7 s)
+    toastTimer = setTimeout(() => { t.style.transitionDuration = '.18s'; t.style.opacity = '0'; t.style.transform = 'translate(-50%, 10px)'; }, Math.min(7000, 2600 + Math.max(0, t.innerText.length - 60) * 40));
 }
 
 function update() {
