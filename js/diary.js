@@ -158,7 +158,7 @@ function savedMealsHtml() {
 const DSLOTS = [['B', tk('Desayuno'), 'fa-mug-hot'], ['M', tk('Media mañana'), 'fa-sun'], ['L', tk('Comida'), 'fa-bowl-rice'], ['S', tk('Merienda'), 'fa-apple-whole'], ['D', tk('Cena'), 'fa-moon'], ['X', tk('Otros'), 'fa-cookie-bite']];
 let diaryDate = null, diarySel = null;
 function diaryTotals(d) {
-    return (state.diary[d] || []).reduce((a, e) => { a.kcal += e.kcal; a.p += e.p; a.f += e.f; a.c += e.c; a.fib += e.fib || 0; if (e.sug != null) { a.sug += e.sug; a.sugN++; } return a; }, { kcal: 0, p: 0, f: 0, c: 0, fib: 0, sug: 0, sugN: 0 });
+    return (state.diary[d] || []).reduce((a, e) => { a.kcal += e.kcal || 0; a.p += e.p || 0; a.f += e.f || 0; a.c += e.c || 0; a.fib += e.fib || 0; if (e.sug != null) { a.sug += e.sug; a.sugN++; } return a; }, { kcal: 0, p: 0, f: 0, c: 0, fib: 0, sug: 0, sugN: 0 });
 }
 function slotByHour() { const h = new Date().getHours(); return h < 11 ? 'B' : h < 13 ? 'M' : h < 16 ? 'L' : h < 19 ? 'S' : 'D'; }
 function diaryShift(n) { const d = new Date((diaryDate || todayISO()) + 'T12:00:00'); d.setDate(d.getDate() + n); diaryDate = new Date(d - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); renderDiary(); }
@@ -191,7 +191,7 @@ function renderDiary() {
     const showM = (state.prefs && state.prefs.meals === 5) || entries.some(e => e.slot === 'M');
     $('diary-meals').innerHTML = DSLOTS.filter(([k]) => k !== 'M' || showM).map(([k, n, ic]) => {
         const list = entries.filter(e => e.slot === k);
-        const tot = list.reduce((a, e) => ({ kcal: a.kcal + e.kcal, p: a.p + e.p, f: a.f + e.f, c: a.c + e.c }), { kcal: 0, p: 0, f: 0, c: 0 });
+        const tot = list.reduce((a, e) => ({ kcal: a.kcal + (e.kcal || 0), p: a.p + (e.p || 0), f: a.f + (e.f || 0), c: a.c + (e.c || 0) }), { kcal: 0, p: 0, f: 0, c: 0 });
         const canCopy = !list.length && yest.some(e => e.slot === k);
         return `<div class="rounded-2xl bg-neutral-900 border border-neutral-800">
             <div class="flex items-center gap-3 p-3.5">

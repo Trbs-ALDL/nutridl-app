@@ -228,7 +228,7 @@ function deEmoji(html) {
     });
 }
 // Línea de macros con su punto de color: P (proteína) · HC (hidratos) · G (grasa)
-const macroLine = (p, c, f) => `<span class="nd-m nd-m-p">${tr('P')} ${fmt(p)}</span> <span class="nd-m nd-m-c">${tr('HC')} ${fmt(c)}</span> <span class="nd-m nd-m-f">${tr('G')} ${fmt(f)}</span>`;
+const macroLine = (p, c, f) => `<span class="nd-m nd-m-p">${tr('P')} ${fmt(p || 0)}</span> <span class="nd-m nd-m-c">${tr('HC')} ${fmt(c || 0)}</span> <span class="nd-m nd-m-f">${tr('G')} ${fmt(f || 0)}</span>`;
 const emo = f => `<span class="nd-fi" aria-hidden="true"><i class="fa-solid ${foodIcon(f)}"></i></span>`;
 
 // =====================================================================
