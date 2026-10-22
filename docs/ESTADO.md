@@ -13,6 +13,7 @@
 > **23-10-2026 · 3.17.0:** paleta mixta C (verde `ok-*` en tailwind solo para «vas bien»), editar nombre/macros en el diario, editar/borrar mis alimentos, renombrar/ordenar/ocultar ejercicios. 72 pruebas. Copia «appdura 22.0» = 3.16.0.
 > **23-10-2026 · 3.18.0:** verde en TODO lo de «bien» (decisión de Ángel), superseries de 2 ejercicios (e.ss en el primero; ssFix en gym.js), gráfica de peso con todos los registros. 74 pruebas. Copia «appdura 23.0» = 3.17.0.
 > **23-10-2026 · 3.19.0:** «Compartir mi semana» rehecho (vista previa, historia 9:16 y post 4:5, titular con lo mejor de la semana, calendario, invitación «gratis, sin anuncios», texto ya escrito; drawWeekCard en progress.js). 75 pruebas. Copia «appdura 24.0» = 3.18.0 (la próxima es la 25.0).
+> **23-10-2026 · 3.20.0:** Coach mucho más listo: quitar/deshacer hablando, guardar el peso, «¿qué entreno hoy?», metas realistas («5 kg en un mes»), deporte, dolor (deriva al profesional), sueño, fibra, azúcar, músculo, cardio… (bloque 3.20 en coach.js, después de replySinHambre). 81 pruebas. Copia «appdura 25.0» = 3.19.0 (la próxima es la 26.0). `RX.weight` en coach.js no se usa (preguntar a Ángel antes de quitarlo).
 > **Quedan como opción (Ángel no las eligió):** exportar a Excel/CSV y capturas de Play con textos.
 
 ## 1. Lo que ya está medido (no repetir)

@@ -52,7 +52,7 @@ function renderDashboard() {
     const head = `<div class="flex items-start justify-between gap-3">
             <div class="min-w-0"><h1 class="text-3xl sm:text-4xl font-extrabold text-neutral-50 truncate">${tr('Hola, {n}', { n: esc(cur.name) })}</h1>
                 <p class="text-sm text-neutral-400 first-letter:uppercase">${dateTxt}</p></div>
-            <button onclick="showTab('progress')" class="nd-streak shrink-0" aria-label="${tr('Racha de {k} días', { k: S.cur })}"><i class="fa-solid fa-fire text-ok-400" aria-hidden="true"></i> ${S.cur}</button>
+            <button onclick="showTab('progress')" class="nd-streak shrink-0${S.cur ? '' : ' nd-streak-0'}" aria-label="${tr('Racha de {k} días', { k: S.cur })}"><i class="fa-solid fa-fire ${S.cur ? 'text-ok-400' : 'text-neutral-500'}" aria-hidden="true"></i> ${S.cur}</button>
         </div>`;
     if (!calc.target) {
         box.innerHTML = `<div class="space-y-5 max-w-5xl mx-auto">${head}

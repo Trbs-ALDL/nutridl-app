@@ -157,7 +157,7 @@ function msgHtml(m) {
 }
 function chatSuggestions() {
     const h = new Date().getHours(), slot = h < 11 ? tk('¿Qué desayuno?') : h < 16 ? tk('¿Qué como hoy?') : h < 19 ? tk('¿Qué meriendo?') : tk('¿Qué ceno?');
-    return [tk('¿Cuánto me queda?'), slot, tk('He comido pollo con arroz'), tk('Tengo huevos, patata y espinacas, ¿qué ceno?'), tk('Compra fitness para la semana'), tk('Quiero un desayuno de 40 g de proteína'), tk('Voy a cenar fuera'), tk('¿Cómo llego a mis proteínas?'), tk('¿Cómo voy esta semana?')];
+    return [tk('¿Cuánto me queda?'), slot, tk('He comido pollo con arroz'), tk('Tengo huevos, patata y espinacas, ¿qué ceno?'), tk('Compra fitness para la semana'), tk('Quiero un desayuno de 40 g de proteína'), tk('Voy a cenar fuera'), tk('¿Cómo llego a mis proteínas?'), tk('¿Cómo voy esta semana?')].concat(typeof gymDays === 'function' && gymDays() ? [tk('¿Qué entreno hoy?')] : []);
 }
 function pushMsg(m) {
     m.id = m.id || 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
@@ -195,13 +195,13 @@ const RX = {
     safety: /\b(embaraz\w*|lactanc\w*|amamant\w*|diabet\w*|insulin\w*|medicac\w*|anorex\w*|bulimi\w*|atracon\w*|trastorno\w* (de la )?(conducta )?alimentari\w*|vomit\w*|purg\w*|laxante\w*|renal|rinon\w*|hipertens\w*|cancer|quimio\w*|menor de edad|tengo 1[0-7] anos)\b|\b(pregnan\w*|breastfeed\w*|nursing|diabetic|medication|anorexi\w*|bulimi\w*|binge eat\w*|eating disorder|purging|laxative\w*|kidney (disease|failure)|hypertens\w*|chemo\w*|under 18|i am 1[0-7]|im 1[0-7])\b/,
     tooLow: /\b([1-9]\d{2})\s*(kcal|calorias|calories)\b.*\b(al dia|diarias|cada dia|a day|per day|daily)\b|\bdejar de comer\b|\bno comer nada\b|\bayun\w* de [3-9] dias\b|\bstop eating\b|\bnot eat(ing)? anything\b|\bfast(ing)? for [3-9] days\b/,
     hello: /^(hola|buenas|hey|buenos dias|buenas tardes|buenas noches|que tal|hi|hello|good morning|good afternoon|good evening|how are you)\b/,
-    left: /((calorias|kcal|proteina\w*) me queda|cuant\w* me queda|que me queda|me queda(n)? (algo|mucho|poco)|cuant\w* llevo|como voy hoy|resumen de hoy|cuant\w* (calorias|kcal) (he|llevo))|\bhow (much|many)\b.*\b(left|remaining)\b|\bwhat.?s left\b|\bwhat is left\b|\bhow (many|much) (calories|kcal|protein)\b.*\b(do i have|left)\b|\bhow am i doing today\b|\btoday.?s summary\b|\bhow (many|much) (calories|kcal) have i\b/,
+    left: /(cuant\w* (calorias|kcal|proteina\w*|hidratos|carbohidratos|grasas?) (llevo|he (comido|tomado|consumido))|\bhow (much|many) (calories|kcal|protein|carbs|fat) (have i (had|eaten)|did i (eat|have))\b|(calorias|kcal|proteina\w*) me queda|cuant\w* me queda|que me queda|me queda(n)? (algo|mucho|poco)|cuant\w* llevo|como voy hoy|resumen de hoy|cuant\w* (calorias|kcal) (he|llevo))|\bhow (much|many)\b.*\b(left|remaining)\b|\bwhat.?s left\b|\bwhat is left\b|\bhow (many|much) (calories|kcal|protein)\b.*\b(do i have|left)\b|\bhow am i doing today\b|\btoday.?s summary\b|\bhow (many|much) (calories|kcal) have i\b/,
     logged: /\b(he|me he|hemos|acabo de|ya he)\s+(comido|tomado|cenado|desayunado|merendado|bebido|almorzado|picado)\b|\bi\s*(just\s+|already\s+)?(ate|had|have eaten|have had|drank)\b(?! too much| too many| way too)/,
     out: /\b(fuera|restaurante\w*|pedir|pido|menu del dia|bar|tapas?|italiano|pizzeria|japones|sushi|chino|hamburgueseria|burger|mexicano|kebab|comida rapida|fast food|cumpleanos|boda|cena de empresa)\b|\b(eating out|eat out|restaurant|takeaway|take away|take-away|order in|italian|japanese|chinese|mexican|birthday|wedding|work dinner)\b/,
-    suggest: /\b(que (puedo )?(como|ceno|desayuno|meriendo|comer|cenar|desayunar|merendar|tomo|pico)|quiero (un|una|algo)|dame|ideas?|sugier\w*|recomiend\w*|opciones|propon\w*|que hago de)\b|\bme quedan? \d+|\bwhat (can|should|do) i (eat|have|cook|make)\b|\bwhat.?s for (breakfast|lunch|dinner|supper)\b|\bi want (a|an|some|something)\b|\b(give me|suggest|recommend|options|any ideas?|some ideas?)\b|\bi have \d+ kcal\b/,
+    suggest: /\b(que (puedo )?(como|ceno|desayuno|meriendo|comer|cenar|desayunar|merendar|tomo|pico)|quiero (un|una|algo)|dame|ideas?|sugier\w*|recomiend\w*|opciones|propon\w*|que hago de)\b|\bme quedan? \d+|\btengo \d+ (kcal|calorias)\b|\bwhat (can|should|do) i (eat|have|cook|make)\b|\bwhat.?s for (breakfast|lunch|dinner|supper)\b|\bi want (a|an|some|something)\b|\b(give me|suggest|recommend|options|any ideas?|some ideas?)\b|\bi have \d+ kcal\b/,
     protein: /\b(lleg\w*|alcanz\w*|cumpl\w*|sub\w*|aument\w*|complet\w*|falt\w*|mas)\b.*\bproteina\w*|\bproteina\w*\b.*\b(lleg\w*|alcanz\w*|cumpl\w*|falt\w*)\b|\b(hit|reach|get to|meet|complete|more|missing|increase)\b.*\bprotein\b|\bprotein\b.*\b(hit|reach|left|missing|target|goal)\b/,
     info: /\b(cuant\w* (calorias|kcal|proteina\w*|hidratos|grasas?)|que (tiene|aporta)|macros de|valor\w* nutricional\w*|informacion de)\b|\bhow (many|much) (calories|kcal|protein|carbs|carbohydrates|fat)\b|\bmacros (of|in|for)\b|\bnutrition(al)? (info|information|value|facts)\b|\bwhat.?s in\b/,
-    progress: /\b(como voy|progreso|tendencia|mi semana|esta semana|resumen semanal|evolucion|he bajado|he subido|racha)\b|\b(how am i doing|my progress|trend|my week|this week|weekly summary|have i lost|have i gained|streak)\b/,
+    progress: /\b(como voy|voy bien|lo (estoy )?(haciendo|hago) bien|progreso|tendencia|mi semana|esta semana|resumen semanal|evolucion|he bajado|he subido|racha)\b|\b(how am i doing|my progress|trend|my week|this week|weekly summary|have i lost|have i gained|streak)\b/,
     menu: /\b((genera\w*|crea\w*|haz|hazme|quiero|dame|ver) (un |el |mi )?menu|menu (para hoy|completo|semanal|de hoy)|planifica\w*|plan de comidas)\b|\b(generate|create|make|give me|show|see|build)( me)? (a |the |my )?(daily )?menu\b|\bmenu for today\b|\b(full|whole) day menu\b|\bmeal plan\b|\bplan my (meals|day)\b/,
     shop: /\b(lista de (la )?compra|que compro|hacer (la |una )?compra|compra (fitness|sana|semanal|para)|haz(me)? (la |una )?compra)\b|\b(shopping list|grocery list|groceries list)\b|\bwhat (do|should) i buy\b|\b(do|make|build|create|give me) (the |my |a )?(shopping|groceries|grocery)\b|\bshopping for \d+\b/,
     fridge: /\b(tengo|me queda\w*|hay)\b.*\b(nevera|frigo|casa|despensa)\b|\b(en (la|mi) nevera|en casa) (tengo|hay|me queda)\b|^tengo\b|\bcon lo que tengo\b|\b(i have|i.?ve got|there (is|are))\b.*\b(fridge|freezer|pantry|at home)\b|\bin (the|my) (fridge|freezer|pantry)\b|^i have\b|^i.?ve got\b|\bwith what i have\b/,
@@ -226,6 +226,26 @@ const RX = {
     notHave: /^(no (tengo|me queda\w*|hay|quiero|me apetece\w*)|i (don.?t|do not) (have|want)|i.?m out of|there.?s no|no more)\s+(.+)$/,
     manana: /\b(?:que|what)\b.*\b(?<!media |esta )manana\b|\b(?<!media |esta )manana\b.*\b(preparo|preparar|cocino|cocinar|hago|hacer|como|comer|desayuno|ceno)\b|\btomorrow\b/,
     barato: /\b(barat\w*|economic\w*|low cost|cheap\w*|budget|affordable)\b/,
+    // 3.20
+    del: /^(?:borra\w*|quita\w*|elimina\w*|saca\w*|delete|remove|take off|take out)\s+(?:el |la |los |las |lo |mi |mis |un |una |the |my |that |this )?(.+)$/,
+    gym: /\b(?:que|cual) (?:entreno|entrenamiento|rutina|ejercicios? hago)\b|\b(?:entreno|entrenamiento|rutina|gym|gimnasio) (?:de |para )?hoy\b|\bque (?:me )?toca (?:hoy )?(?:en el gym|entrenar|en el gimnasio)\b|\bwhat (?:workout|should i train|do i train|is my workout)\b|\btoday.?s workout\b|\bwhat.?s my workout\b/,
+    antojo: /\b(antojo\w*|ansiedad por (comer|la comida|el dulce|lo dulce|dulce)|me apetece (algo )?(dulce|chocolate)|ganas de (algo )?dulce|ganas de picar|tengo hambre|hambre todo el (rato|dia)|siempre tengo hambre|no paro de picar)\b|\b(cravings?|sweet tooth|i.?m (always )?hungry|always hungry|can.?t stop snacking)\b/,
+    pesoIdeal: /\b(cuanto (deberia|debo|tendria que|tengo que) pesar|peso (ideal|sano|saludable|correcto|normal)|cual es mi peso)\b|\b(ideal weight|healthy weight|how much should i weigh|what should i weigh)\b/,
+    quemo: /\b(cuant\w* (calorias|kcal) (quemo|quemas|quema|gasto|gastas|se queman|se gastan)|(quemo|gasto|quema|queman) (\w+ )?(calorias|kcal)|calorias (quemadas|gastadas))\b|\b(how many (calories|kcal) (do i |does |will i )?burn|calories burned|burn(s|ed)? (how many )?calories)\b/,
+    dolor: /\b(me duele\w*|dolor\w*|lesion\w*|lesionad\w*|esguince|tendinitis|contractura|me he hecho dano|me he torcido)\b|\b(it hurts|hurts|painful|pain|injur\w*|sprain\w*|tendinitis|pulled a muscle)\b/,
+    protNeed: /\b(cuanta|cuantos gramos de) proteina\w* (necesito|debo|tengo que|hay que|al dia|diaria)|\bproteina\w* (necesito|al dia|diaria)\b|\bhow much protein (do i need|should i|per day|a day)\b/,
+    cansado: /\b(cansad\w*|agotad\w*|sin energia|sin fuerzas|duermo (poco|mal)|no duermo|dormir (mejor|poco|mal)|insomnio|sueno)\b|\b(tired|exhausted|no energy|low energy|sleep (badly|poorly)|can.?t sleep|insomnia)\b/,
+    pasos: /\bcuant\w* pasos\b|\bpasos al dia\b|\bhow many steps\b/,
+    tarde: /\b(cenar|comer|picar) (tarde|de noche|por la noche|antes de dormir)\b|\b(es malo|engorda) cenar\b|\b(eat(ing)?|dinner) (late|at night|before bed)\b/,
+    veces: /\bcuant\w* (veces|comidas)\b.*\b(comer|al dia|debo|tengo que|hago)\b|\bhow many (meals|times)\b.*\b(eat|a day|per day)\b/,
+    entreno: /\b(antes|despues|tras)\s+(de\s+|del\s+|de la\s+)?(entrenar|entreno|entrenamiento|gym|gimnasio|correr|pesas)\b|\b(pre|post)[- ]?(entreno|workout|entrenamiento)\b|\b(before|after) (training|the gym|workout|my workout|running|lifting)\b/,
+    fibra: /\b(cuanta|cuanto) fibra\b|\bfibra (al dia|necesito|debo)\b|\bhow much (fibre|fiber)\b/,
+    azucar: /\bcuant\w* azucar\w*\b.*\b(puedo|debo|al dia|maximo|tomar)\b|\bazucar\w* (al dia|maxim\w*)\b|\bhow much sugar\b/,
+    undo: /^(deshaz\w*|deshacer|desacer|undo)\b/,
+    peso: /\b(?:me peso|peso|me he pesado|mi peso (?:es|hoy es)|i weigh|my weight is|weighed)\b\D{0,15}?(\d{2,3}(?:[.,]\d{1,2})?)\s*(?:kg|kgs|kilos?)?\s*(?:hoy|today)?\s*[.!]?$/,
+    musculo: /\b(ganar|aumentar|coger|hacer|subir) (masa muscular|musculo|musculatura)\b|\b(definir|definicion|recomposicion)\b|\b(build|gain) muscle\b|\b(bulk(ing)?|lean bulk|cutting|recomp)\b/,
+    cardio: /\bcardio\b|\b(pesas|fuerza) o correr\b|\bcorrer o (pesas|fuerza)\b|\b(weights|lifting|strength) or running\b|\brunning or (weights|lifting|strength)\b/,
+    meta: /\b(perder|bajar|adelgazar|quitarme|ganar|subir|lose|drop|gain|put on)\b.{0,20}?(\d+(?:[.,]\d+)?)\s*(?:kg|kgs|kilos?|kilogramos?|kilograms?)\b(?:.{0,15}?\b(?:en|in)\s+(\d+|un|una|dos|tres|cuatro|seis|a|one|two|three|four|six)\s*(semanas?|mes(?:es)?|dias?|weeks?|months?|days?)\b)?/,
 }; // i18n-ignore-end
 // ---------- Memoria de la conversación ----------
 // Sin esto cada mensaje empieza de cero y «¿y de cena?» no significa nada.
@@ -269,6 +289,13 @@ function coachReply(raw) {
     if (RX.safety.test(q)) return { r: 'c', tags: ['rec'], html: `<p>${tr('En tu situación las necesidades cambian y conviene que lo valore un profesional sanitario: tu médico o un dietista-nutricionista. nutriDL es orientativa y no puede adaptar un plan con seguridad en ese caso.')}</p><p class="mt-2">${tr('Sí puedo ayudarte a apuntar lo que comes para que lo compartas con tu profesional.')}</p>` };
     if (RX.tooLow.test(q)) return { r: 'c', tags: ['rec'], html: `<p>${tr('Comer tan poco no es seguro sin supervisión médica: aumenta la pérdida de músculo y el riesgo de déficit de nutrientes. Tu plan nunca baja de {k} kcal. Si quieres avanzar más rápido, suma pasos y entrenamiento de fuerza.', { k: fmt(calc.male ? 1500 : 1200) })}</p>` };
     if (!calc.target && !RX.logged.test(q)) return { r: 'c', tags: ['rec'], html: `<p>${tr('Para responderte con tus números necesito tu plan (2 minutos): objetivo, datos y actividad.')}</p><button onclick="${profiles.current ? "showTab('calc')" : 'newProfile()'}" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold">${tr('Completar mi plan')}</button>` };
+    // Dolor o lesión: primero la seguridad
+    if (RX.dolor.test(q) && !RX.logged.test(q)) return replyDolor();
+    // «Quiero perder 5 kilos en un mes»: si es realista y cuánto tardarías a tu ritmo
+    if (RX.meta.test(q) && !RX.logged.test(q)) { const r = replyMeta(q); if (r) return r; }
+    // «Me peso 84,2»: se propone guardarlo (un toque)
+    if (RX.peso.test(q) && !RX.meta.test(q)) { const r = replyPeso(q); if (r) return r; }
+    if (RX.undo.test(q)) return replyUndo();
     if (RX.hello.test(q) && q.length < 25) { const sl = (nextMeal() || {}).slot || slotByHour(); remember('hello', '', { offer: 'que tomo de ' + slotEs(sl) }); return { r: 'c', tags: ['dato'], html: `<p>${tr('¡Hola!')} ${leftLine()} ${tr('¿Te propongo algo para {x}?', { x: slotArt(sl) })}</p>` }; } // i18n-ignore (frase interna que lee el Coach)
     // «Añade dos huevos a la comida»: es una orden clara → se apunta (con Deshacer)
     if (RX.add.test(q) && !RX.menu.test(q) && !RX.shop.test(q)) { const r = replyLog(q.replace(RX.add, ' ').trim()); if (r) return r; }
@@ -276,6 +303,22 @@ function coachReply(raw) {
     if (RX.swap.test(q)) { const r = replySwap(q); if (r) return r; }
     // «No tengo pollo»: ideas sin eso (nunca se apunta nada)
     if (RX.notHave.test(q)) { const r = replyNotHave(q); if (r) return r; }
+    // «Quita el pan»: es una orden clara → se quita del diario de hoy (con Deshacer)
+    if (RX.del.test(q)) { const r = replyDel(q); if (r) return r; }
+    if (RX.gym.test(q)) return replyGym();
+    if (RX.pesoIdeal.test(q)) return replyPesoIdeal();
+    if (RX.quemo.test(q)) return replyQuemo(q);
+    if (RX.antojo.test(q) && !RX.sinHambre.test(q)) return replyAntojo();
+    if (RX.protNeed.test(q)) return replyProtNeed();
+    if (RX.entreno.test(q) && !RX.logged.test(q)) return replyEntreno(q);
+    if (RX.tarde.test(q)) return replyTarde();
+    if (RX.veces.test(q)) return replyVeces();
+    if (RX.cansado.test(q)) return replyCansado(q);
+    if (RX.pasos.test(q)) return replyPasos();
+    if (RX.fibra.test(q)) return replyFibra();
+    if (RX.azucar.test(q)) return replyAzucar();
+    if (RX.musculo.test(q) && !RX.logged.test(q)) return replyMusculo();
+    if (RX.cardio.test(q) && !RX.logged.test(q)) return replyCardio();
     if (RX.logged.test(q) || (!RX.suggest.test(q) && !RX.left.test(q) && !RX.info.test(q) && !RX.progress.test(q) && !RX.out.test(q) && !RX.protein.test(q) && !RX.menu.test(q) && !RX.shop.test(q) && /^\s*(\d|un |una |dos |medio |media )/.test(q))) {
         const r = replyLog(raw); if (r) return r;
     }
@@ -337,7 +380,7 @@ function coachReply(raw) {
 }
 function replyLeft() {
     const R = remainingToday(), nm = nextMeal();
-    let html = `<p>${tr('Hoy llevas <b>{a}</b> de {b} kcal.', { a: fmt(R.t.kcal), b: fmt(calc.target) })} ${R.kcal >= 0 ? tr('Te quedan <b>{k} kcal</b>: {p} g de proteína, {c} g de hidratos y {f} g de grasa.', { k: fmt(R.kcal), p: fmt(Math.max(0, R.p)), c: fmt(Math.max(0, R.c)), f: fmt(Math.max(0, R.f)) }) : tr('Vas <b>{k} kcal</b> por encima. No pasa nada por un día: lo que cuenta es la media de la semana.', { k: fmt(-R.kcal) })}</p>`;
+    let html = `<p>${tr('Hoy llevas <b>{a}</b> de {b} kcal.', { a: fmt(R.t.kcal), b: fmt(calc.target) })} ${tr('Proteína: <b>{a}</b> de {b} g.', { a: fmt(R.t.p), b: fmt(calc.prot) })} ${R.kcal >= 0 ? tr('Te quedan <b>{k} kcal</b>: {p} g de proteína, {c} g de hidratos y {f} g de grasa.', { k: fmt(R.kcal), p: fmt(Math.max(0, R.p)), c: fmt(Math.max(0, R.c)), f: fmt(Math.max(0, R.f)) }) : tr('Vas <b>{k} kcal</b> por encima. No pasa nada por un día: lo que cuenta es la media de la semana.', { k: fmt(-R.kcal) })}</p>`;
     const tags = ['dato'];
     if (nm && nm.slot && nm.tg.kcal > 120) { const ofr = 'que tomo de ' + slotEs(nm.slot); remember('left', '', { offer: ofr }); html += `<p class="mt-2">${tr('Para {x} te recomiendo unas <b>{k} kcal</b> con <b>{p} g de proteína</b>.', { x: slotArt(nm.slot), k: fmt(nm.tg.kcal), p: fmt(nm.tg.p) })}</p><button onclick="coachSend(${esc(JSON.stringify(tr('¿Qué tomo de {x}?', { x: slotLow(nm.slot) })))},'${ofr}')" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold">${tr('Ver opciones')}</button>`; tags.push('rec'); } // i18n-ignore (frase interna que lee el Coach)
     return { r: 'c', tags, html };
@@ -524,7 +567,9 @@ function replyAyuda() {
         <li>${tr('<b>Proponerte platos</b>: «¿Qué ceno con 600 kcal y mucha proteína?»')}</li>
         <li>${tr('<b>Resolver dudas</b>: «¿puedo comer pizza?», «¿arroz o pasta?», «¿cuánta agua?»')}</li>
         <li>${tr('<b>Comer fuera</b>, <b>tu nevera</b>, <b>el menú del día</b> y <b>la compra</b>')}</li>
-        <li>${tr('<b>Contarte cómo vas</b> esta semana')}</li></ul>
+        <li>${tr('<b>Contarte cómo vas</b> esta semana')}</li>
+        <li>${tr('<b>Quitar o cambiar</b> lo apuntado: «quita el pan», «cambia el arroz por patata»')}</li>
+        <li>${tr('<b>Tu entreno de hoy</b>, lo que quemas haciendo deporte y <b>guardar tu peso</b>: «me peso 80,5»')}</li></ul>
         <p class="mt-2 text-neutral-300">${tr('Y me acuerdo de lo que acabamos de hablar: si te propongo cenas, con un «otra» te doy más.')}</p>` };
 }
 const replyGracias = () => ({ r: 'c', tags: ['dato'], html: `<p>${vary([tr('A ti. Sigue apuntando, que es lo que marca la diferencia.'), tr('Para eso estoy.') + ' ' + leftLine(), tr('Un placer. Lo que de verdad funciona es la constancia, y esa la pones tú.')])}</p>` });
@@ -640,6 +685,199 @@ function replySinHambre() {
         <li>${tr('<b>Más tomas pequeñas</b> en vez de tres platos grandes.')}</li></ul>
         ${L.length ? `<p class="mt-2">${tr('De tu base, los que más calorías dan por bocado: {x}.', { x: L.map(f => `${emo(f)} ${esc(foodName(f).toLowerCase())}`).join(', ') })}</p>` : ''}
         <p class="mt-2 text-neutral-300">${tr('Y si hoy no llegas, no pasa nada: cuenta la media de la semana.')}</p>` };
+}
+// ---------- 3.20: borrar, entreno de hoy, antojos, peso sano, deporte, dolor y metas ----------
+let coachLastDel = null;
+function replyDel(q) {
+    const name = q.match(RX.del)[1].replace(/\b(del|de mi|de la|de el|from|of)\s+(diario|registro|desayuno|comida|cena|merienda|almuerzo|hoy|today|diary|log|breakfast|lunch|dinner|snack)\b.*$/, '').replace(/[?¿!¡.,;]/g, ' ').trim();
+    if (name.length < 2 || /\b(chat|conversacion|mensajes|historial|conversation|messages|history)\b/.test(name)) return null;
+    const d = todayISO(), list = state.diary[d] || [], f = matchFoods(name, 1)[0], w = norm(name);
+    const hit = e => (f && e.fid === f.id) || norm(e.name).includes(w) || (e.fid && norm(foodName(getFood(e.fid) || e)).includes(w));
+    const idx = list.map((e, i) => [e, i]).reverse().find(([e]) => hit(e));
+    if (!idx) return { r: 'c', tags: ['dato'], html: `<p>${tr('Hoy no tienes «{x}» en el diario, así que no he quitado nada.', { x: esc(name) })}</p><button onclick="showTab('diary')" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Abrir el diario')}</button>` };
+    const [e, i] = idx;
+    list.splice(i, 1); if (!list.length) delete state.diary[d];
+    coachLastDel = { d, i, e };
+    afterLog();
+    toastUndo(tr('Quitado: {n}', { n: e.name }), coachUndoDel);
+    return { r: 'c', tags: ['dato'], html: `<p>${tr('Quitado del diario: <b>{n}</b> · {k} kcal.', { n: esc(e.fid && getFood(e.fid) ? foodName(getFood(e.fid)) : e.name), k: fmt(e.kcal || 0) })} ${leftLine()}</p><button onclick="coachUndoDel()" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold"><i class="fa-solid fa-rotate-left"></i> ${tr('Deshacer')}</button>` };
+}
+function coachUndoDel() {
+    const x = coachLastDel; if (!x) { toast('Ya estaba deshecho'); return; }
+    coachLastDel = null;
+    const cur = state.diary[x.d] || []; cur.splice(Math.min(x.i, cur.length), 0, x.e); state.diary[x.d] = cur;
+    afterLog(); toast('Deshecho');
+}
+function replyGym() {
+    const g = myGym(), N = gymDays();
+    const btn = (t, i) => `<button onclick="${i != null ? `gymDay=${i};gymAutoDay=true;` : ''}showTab('gym')" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold"><i class="fa-solid fa-dumbbell"></i> ${t}</button>`;
+    if (!N || !g.plan.length) return { r: 'c', tags: ['rec'], html: `<p>${tr('Aún no tienes tu rutina. En el apartado Gym eliges cuántos días entrenas y añades tus ejercicios; te recomiendo algunos para empezar.')}</p>${btn(tr('Ir a mi rutina'))}` };
+    const W = weekInfo(), dow = todayDow(), wd = g.wd || [];
+    if (W.done >= N) return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('Ya has hecho todos los entrenos de esta semana ({k}). Hoy toca <b>descansar</b>: el músculo crece mientras recuperas. Si te apetece moverte, camina.', { k: N })}</p>` };
+    let i = wd.indexOf(dow); const rest = wd.length > 0 && i < 0;
+    if (i < 0 || i >= N || W.doneDi.has(i)) i = [...Array(N).keys()].find(k => !W.doneDi.has(k)) ?? 0;
+    const day = g.plan[i] || { ex: [] }, ex = day.ex || [];
+    const nm = esc(day.name || tr('Día {k}', { k: i + 1 }));
+    const head = rest ? tr('Hoy no es uno de tus días de entreno. Si quieres entrenar igual, te toca <b>{d}</b>:', { d: nm }) : tr('Hoy te toca <b>{d}</b>:', { d: nm });
+    if (!ex.length) return { r: 'c', tags: ['dato'], html: `<p>${head} ${tr('aún no tiene ejercicios. Añádelos en el gym y la próxima vez te los digo.')}</p>${btn(tr('Ir al gym'), i)}` };
+    const li = ex.slice(0, 8).map(e => { const L = lastPerfOf(e); return `<li><b>${esc(exLabel(e))}</b>${L ? ` · <span class="text-neutral-400">${tr('la última vez: {x}', { x: esc(perfText(L)) })}</span>` : ''}</li>`; }).join('');
+    return { r: 'c', tags: ['dato', 'rec'], html: `<p>${head}</p><ul class="nd-list">${li}</ul>${ex.length > 8 ? `<p class="text-xs text-neutral-400">${tr('…y {k} más.', { k: ex.length - 8 })}</p>` : ''}
+        <p class="mt-2">${tr('Llevas {a} de {b} entrenos esta semana.', { a: W.done, b: N })} ${tr(vary([tk('Intenta superar en una repetición o un poco de peso lo de la última vez.'), tk('Calienta con una serie ligera antes de la primera de verdad.'), tk('Come algo con proteína en las 2-3 horas después de entrenar.')]))}</p>${btn(tr('Empezar el entreno'), i)}` };
+}
+function replyPesoIdeal() {
+    const c = calc;
+    return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('Para tu estatura ({h} cm), el rango de peso saludable según el IMC va de <b>{a} a {b} kg</b>. Ahora pesas {w} kg (IMC {i}).', { h: fmt(c.hcm), a: fmt(c.minIdeal, 1), b: fmt(c.maxIdeal, 1), w: fmt(c.w, 1), i: fmt(c.bmi, 1) })}</p>
+        <p class="mt-2">${tr('Ojo: el IMC no distingue músculo de grasa. Si entrenas fuerza, mira también la cintura: que mida <b>menos de la mitad de tu estatura</b> (menos de {x} cm) es buena señal.', { x: fmt(c.hcm / 2) })}</p>
+        <p class="mt-2 text-neutral-300">${tr('No hay un número perfecto: el mejor peso es uno que puedas mantener comiendo bien y sintiéndote con energía.')}</p>` };
+}
+const QUEMA = [[/corr|running|\brun\b|jog|trot/, tk('Correr (8 km/h)'), 8.3], [/camin|andar|anda\b|pasos|walk/, tk('Caminar a buen paso'), 4.3], [/bici|ciclis|spinning|cycl|bike/, tk('Bici o spinning'), 7.5], [/nad|swim/, tk('Nadar'), 6], [/pesas|gym|gimnasio|fuerza|weights|lifting|strength/, tk('Pesas'), 5], [/padel|tenis|tennis/, tk('Pádel o tenis'), 6.5], [/futbol|football|soccer|basket|baloncesto/, tk('Fútbol o baloncesto'), 7], [/hiit|crossfit|comba|cuerda|jump rope/, tk('HIIT o comba'), 8], [/yoga|pilates|estira|stretch/, tk('Yoga o pilates'), 3]];
+function replyQuemo(q) {
+    const kg = calc.w || 70, mm = q.match(/(\d+(?:[.,]\d+)?)\s*(min|minutos?|minutes?|h\b|horas?|hours?)/);
+    const min = mm ? Math.min(600, parseFloat(mm[1].replace(',', '.')) * (/^h/.test(mm[2]) ? 60 : 1)) : 30;
+    const k = met => Math.round(met * kg * min / 60);
+    const hit = QUEMA.find(([re]) => re.test(q));
+    const body = hit ? `<p>${tr('{a} durante {m} min: unas <b>{k} kcal</b> para tu peso ({w} kg).', { a: tr(hit[1]), m: fmt(min), k: fmt(k(hit[2])), w: fmt(kg, 1) })}</p>`
+        : `<p>${tr('Lo que gastas en {m} min con tu peso ({w} kg), más o menos:', { m: fmt(min), w: fmt(kg, 1) })}</p><ul class="nd-list">${QUEMA.slice(0, 7).map(([, n, met]) => `<li>${tr(n)}: <b>${fmt(k(met))} kcal</b></li>`).join('')}</ul>`;
+    return { r: 'c', tags: ['dato', 'rec'], html: body + `<p class="mt-2">${tr('Son estimaciones: cada persona gasta distinto y los relojes suelen exagerar.')} ${tr('Tu plan ya cuenta tu actividad habitual, así que <b>no hace falta comerte estas calorías de más</b>.')}</p>
+        <p class="mt-2 text-neutral-300">${tr('Para perder grasa, la comida pesa más que el ejercicio; el ejercicio, sobre todo la fuerza, es lo que hace que lo que pierdas sea grasa y no músculo.')}</p>` };
+}
+function replyAntojo() {
+    const R = remainingToday(), p = myPrefs();
+    const L = [['fresas'], ['skyr'], ['choco', 20], ['manzana'], ['kiwi'], ['mandarina']].map(([id, g]) => { const f = getFood(id); if (!f || !foodOk(f, p)) return null; const d = g ? { g, unit: 'g', n: g } : defaultPortion(f); return { f, d, k: macrosOf(f, d.g).kcal }; }).filter(Boolean).slice(0, 4);
+    return { r: 'c', tags: ['rec', 'base'], html: `<p>${tr('Tener antojos es normal, sobre todo comiendo menos. Lo que mejor funciona:')}</p><ul class="nd-list">
+        <li>${tr('<b>No te lo prohíbas</b>: un capricho pequeño y planeado evita el atracón de después.')}</li>
+        <li>${tr('<b>Proteína en cada comida</b>: es lo que más sacia. Si cenas con poca proteína, a las 23:00 aparece el hambre.')}</li>
+        <li>${tr('<b>Bebe agua o una infusión</b> y espera 10 minutos: muchas veces se pasa.')}</li>
+        <li>${tr('<b>Duerme bien</b>: dormir poco dispara las ganas de dulce al día siguiente.')}</li></ul>
+        ${L.length ? `<p class="mt-2">${tr('Dulces que caben fácil:')} ${L.map(x => `${emo(x.f)} ${esc(foodName(x.f).toLowerCase())} (${fmt(x.k)} kcal)`).join(', ')}.</p>` : ''}
+        <p class="mt-2">${R.kcal >= 150 ? tr('Te quedan <b>{k} kcal</b> hoy: un capricho de 150 kcal te cabe sin problema.', { k: fmt(R.kcal) }) : leftLine()}</p>` };
+}
+function replyDolor() {
+    return { r: 'c', tags: ['rec'], html: `<p>${tr('Si algo te duele al entrenar, <b>para ese ejercicio</b>: seguir con dolor suele empeorar la lesión.')}</p><ul class="nd-list">
+        <li>${tr('<b>Dolor que pincha, hinchazón, o que no mejora en unos días</b>: ve al fisioterapeuta o al médico. Yo no puedo valorarlo.')}</li>
+        <li>${tr('<b>Agujetas</b> (dolor muscular repartido 1-3 días después de entrenar): son normales y se pasan solas.')}</li>
+        <li>${tr('Mientras te recuperas, entrena lo que no duela. En el gym puedes cambiar o quitar ese ejercicio del día.')}</li>
+        <li>${tr('Sigue comiendo tu proteína: ayuda a recuperar.')}</li></ul>
+        <button onclick="showTab('gym')" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Ir al gym')}</button>` };
+}
+const NUMW = { un: 1, una: 1, a: 1, one: 1, dos: 2, two: 2, tres: 3, three: 3, cuatro: 4, four: 4, seis: 6, six: 6 };
+function replyMeta(q) {
+    const m = q.match(RX.meta), kg = parseFloat(m[2].replace(',', '.'));
+    if (!(kg > 0 && kg <= 80) || !calc.w) return null;
+    const gain = /^(ganar|subir|gain|put on)$/.test(m[1]);
+    const n = m[3] ? (NUMW[m[3]] || parseFloat(m[3])) : 0, u = m[4] || '';
+    const weeks = n ? (/^(mes|month)/.test(u) ? n * 4.35 : /^(dia|day)/.test(u) ? n / 7 : n) : 0;
+    const max = calc.w * (gain ? 0.005 : 0.01); // ritmo máximo razonable: 1 % del peso a la semana al perder, 0,5 % al ganar
+    const rate = Math.abs(calc.weeklyKg || 0), sameWay = gain ? calc.weeklyKg > 0 : calc.weeklyKg < 0;
+    const out = [];
+    if (weeks) {
+        const need = kg / weeks;
+        out.push(tr(gain ? 'Para ganar {k} kg en {w} semanas tendrías que subir <b>{r} kg por semana</b>.' : 'Para perder {k} kg en {w} semanas tendrías que bajar <b>{r} kg por semana</b>.', { k: fmt(kg, kg % 1 ? 1 : 0), w: fmt(weeks, weeks % 1 ? 1 : 0), r: fmt(need, 2) }));
+        out.push(need > max * 1.05
+            ? tr(gain ? 'Es demasiado rápido: por encima de unos {m} kg por semana casi todo lo que sube es grasa, no músculo.' : 'Es demasiado rápido para hacerlo bien: por encima de unos {m} kg por semana (el 1 % de tu peso) se pierde músculo, da mucha hambre y suele recuperarse.', { m: fmt(max, 2) })
+            : tr('Es posible y sano, aunque exigente: tendrás que cumplir casi todos los días.'));
+    }
+    if (rate && sameWay) {
+        const w = Math.ceil(kg / rate), when = new Date(Date.now() + w * 7 * 864e5).toLocaleDateString(locale(), { day: 'numeric', month: 'long' });
+        out.push(tr('A tu ritmo actual (<b>{r} kg por semana</b>) lo conseguirías en unas <b>{w} semanas</b>, hacia el {d}.', { r: fmt(rate, 2), w, d: when }));
+    } else out.push(tr('Ahora tu plan no va en esa dirección. Cambia tu objetivo en «Mi plan» y recalculo tus calorías.'));
+    return { r: 'c', tags: ['dato', 'rec'], html: out.map((t, i) => `<p${i ? ' class="mt-2"' : ''}>${t}</p>`).join('') + `<p class="mt-2 text-neutral-300">${tr('Las primeras semanas la báscula se mueve más por el agua; fíate de la tendencia, no del día suelto.')}</p><button onclick="showTab('calc')" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Ver mi plan')}</button>` };
+}
+function replyPeso(q) {
+    const w = parseFloat(q.match(RX.peso)[1].replace(',', '.'));
+    if (!(w >= 30 && w <= 300)) return null;
+    const L = state.weights || [], last = L.length ? L[L.length - 1] : null, dif = last ? Math.round((w - last.w) * 10) / 10 : 0;
+    const vs = last && last.d !== todayISO() && dif ? ' ' + tr(dif < 0 ? '{k} kg menos que la última vez.' : '{k} kg más que la última vez.', { k: fmt(Math.abs(dif), 1) }) : '';
+    return { r: 'c', tags: ['dato'], html: `<p>${tr('¿Guardo <b>{w} kg</b> como tu peso de hoy?', { w: fmt(w, w % 1 ? 1 : 0) })}${vs}</p>
+        <button type="button" onclick="coachWeight(${w}, this)" class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold"><i class="fa-solid fa-weight-scale"></i> ${tr('Guardar mi peso')}</button>
+        <p class="mt-2 text-xs text-neutral-400">${tr('Un día suelto no dice mucho: lo que cuenta es la tendencia de las semanas.')}</p>` };
+}
+function coachWeight(w, btn) {
+    const d = todayISO();
+    state.weights = (state.weights || []).filter(e => e.d !== d).concat([{ d, w }]).sort((a, b) => a.d.localeCompare(b.d));
+    syncWeightFromLog(); save(); track('weight_logged'); checkAchievements(); renderDashboard();
+    if (btn) { btn.disabled = true; btn.innerHTML = `<i class="fa-solid fa-check"></i> ${tr('Guardado')}`; }
+    toast('Registro guardado. Tus calorías y macros se han actualizado');
+}
+function replyUndo() {
+    if (coachLastDel) { const n = coachLastDel.e.name; coachUndoDel(); return { r: 'c', tags: ['dato'], html: `<p>${tr('Hecho: he vuelto a poner <b>{n}</b> en el diario.', { n: esc(n) })} ${leftLine()}</p>` }; }
+    const m = [...(state.chat || [])].reverse().find(x => x.logged && !x.logged.undone);
+    if (m) { const n = m.logged.items.map(it => foodName(getFood(it.fid) || {})).filter(Boolean).join(', '); logUndo(m.id); return { r: 'c', tags: ['dato'], html: `<p>${tr('Hecho: he quitado lo último que apunté ({n}).', { n: esc(n) })} ${leftLine()}</p>` }; }
+    return { r: 'c', tags: ['dato'], html: `<p>${tr('Para deshacer algo que he apuntado, pulsa «Deshacer» en ese mensaje o quítalo desde el diario.')}</p><button onclick="showTab('diary')" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Abrir el diario')}</button>` };
+}
+function replyProtNeed() {
+    const t = diaryTotals(todayISO()), n = planSlots().length || 4;
+    return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('Tu objetivo es <b>{p} g de proteína al día</b> ({g} g por kg de peso). Hoy llevas {a} g.', { p: fmt(calc.prot), g: fmt(calc.gkg, 1), a: fmt(t.p) })}</p>
+        <p class="mt-2">${tr('Repartida en tus {n} comidas son unos <b>{x} g por comida</b>: más o menos una pechuga, una lata grande de atún o dos yogures proteicos.', { n, x: fmt(calc.prot / n) })}</p>
+        <p class="mt-2 text-neutral-300">${tr('Para quien entrena, lo que dice la ciencia es 1,6-2,2 g por kg. Tomar más no da más músculo, solo más calorías.')}</p>
+        <button ${askBtn('¿Cómo llego a mis proteínas?')} class="mt-3 px-4 py-2.5 rounded-xl bg-mint-600 text-white text-sm font-extrabold">${tr('Cómo llegar hoy')}</button>` };
+}
+function replyEntreno(q) {
+    const after = /\b(despues|tras|post|after)\b/.test(q);
+    const tip = after
+        ? `<p>${tr('<b>Después de entrenar</b>: en las 2-3 horas siguientes, una comida con <b>20-40 g de proteína</b> e hidratos. No hace falta batido ni correr a comer en 30 minutos: cuenta el total del día.')}</p>`
+        : `<p>${tr('<b>Antes de entrenar</b>: si faltan 2-3 horas, tu comida normal con hidratos y algo de proteína. Si falta menos de una hora, algo ligero y fácil de digerir: un plátano, un yogur o una tostada con miel. Justo antes, mejor poca grasa y poca fibra.')}</p>`;
+    const r = replySuggest(after ? 'que meriendo con 30 g de proteina' : 'que meriendo con 250 kcal'); // i18n-ignore (frase interna)
+    r.html = tip + (r.opts ? `<p class="mt-2">${tr('Ideas que te encajan:')}</p>` : '') + r.html;
+    return r;
+}
+function replyTarde() {
+    return { r: 'c', tags: ['rec'], html: `<p>${tr('Cenar tarde <b>no engorda por sí mismo</b>: lo que cuenta es el total del día.')}</p>
+        <p class="mt-2">${tr('Lo que sí pasa: de noche se pica más, y una cena muy grande justo antes de dormir hace que se duerma peor. Si puedes, deja una hora o dos entre la cena y la cama, y que la cena lleve proteína y verdura.')}</p>
+        <p class="mt-2">${leftLine()}</p>` };
+}
+function replyVeces() {
+    const n = planSlots().length || 4;
+    return { r: 'c', tags: ['rec'], html: `<p>${tr('Las que mejor te vengan: <b>3, 4 o 5 comidas dan el mismo resultado</b> si el total del día cuadra. Comer cada 3 horas no acelera el metabolismo.')}</p>
+        <p class="mt-2">${tr('Tu plan está repartido en {n} comidas. Si te viene mejor otro número, cámbialo en las preferencias del Coach.', { n })}</p>
+        <p class="mt-2 text-neutral-300">${tr('Lo que sí ayuda: que cada comida lleve algo de proteína.')}</p>
+        <button onclick="openPrefs()" class="mt-3 px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Preferencias')}</button>` };
+}
+function replyCansado(q) {
+    if (/(duermo|dormir|insomnio|sueno|sleep|insomnia)/.test(q)) return { r: 'c', tags: ['rec'], html: `<p>${tr('Dormir poco lo complica todo: da más hambre, más ganas de dulce y recuperas peor del entreno. Lo que más ayuda:')}</p><ul class="nd-list">
+        <li>${tr('<b>Horario fijo</b> para acostarte y levantarte, también el fin de semana.')}</li>
+        <li>${tr('<b>Café</b> solo hasta media tarde.')}</li>
+        <li>${tr('<b>Pantallas fuera</b> media hora antes de dormir, y la habitación fresca y a oscuras.')}</li>
+        <li>${tr('<b>Cena normal</b>, ni enorme ni con hambre.')}</li></ul>
+        <p class="mt-2 text-neutral-300">${tr('Si duermes mal durante semanas, coméntaselo a tu médico.')}</p>` };
+    return { r: 'c', tags: ['rec'], html: `<p>${tr('Comiendo menos es normal notar algo menos de energía las primeras semanas. Revisa esto, por orden:')}</p><ol class="nd-list">
+        <li>${tr('<b>Sueño</b>: 7-9 horas. Dormir poco sube el hambre y las ganas de dulce, y baja el rendimiento.')}</li>
+        <li>${tr('<b>Agua</b>: la sed se nota como cansancio.')}</li>
+        <li>${tr('<b>Hidratos alrededor del entreno</b>: no los quites del todo; dan energía para entrenar.')}</li>
+        <li>${tr('<b>Un descanso de la dieta</b>: si llevas muchas semanas en déficit, una semana comiendo en mantenimiento recarga mucho.')}</li></ol>
+        <p class="mt-2 text-neutral-300">${tr('Si el cansancio dura semanas, o viene con mareos o falta de aire, consúltalo con tu médico.')}</p>` };
+}
+function replyPasos() {
+    const k = Math.round((calc.w || 70) * 0.375);
+    return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('Una buena meta son <b>7.000-10.000 pasos al día</b>. Con tu peso, cada 1.000 pasos gastas unas <b>{k} kcal</b>.', { k })}</p>
+        <p class="mt-2">${tr('Si ahora haces menos, súmale 1.000-2.000 cada semana. Caminar casi no da hambre, por eso es el mejor aliado para perder grasa.')}</p>` };
+}
+function replyFibra() {
+    const t = diaryTotals(todayISO());
+    return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('Te conviene tomar unos <b>{b} g de fibra al día</b>. Hoy llevas {a} g.', { b: fmt(calc.fiber), a: fmt(t.fib) })}</p>
+        <p class="mt-2">${tr('Dónde está: legumbres, verdura, fruta con piel, avena, pan y pasta integrales y frutos secos. Además sacia mucho.')}</p>
+        <p class="mt-2 text-neutral-300">${tr('Si subes la fibra, hazlo poco a poco y bebe más agua.')}</p>` };
+}
+function replyAzucar() {
+    const a = Math.round(calc.target * 0.10 / 4), b = Math.round(calc.target * 0.05 / 4);
+    return { r: 'c', tags: ['dato', 'rec'], html: `<p>${tr('La OMS recomienda que el azúcar <b>añadido</b> (el de bollería, refrescos, zumos, miel…) sea menos del 10 % de tus calorías, y mejor menos del 5 %. Para ti: <b>menos de {a} g al día</b>, idealmente unos {b} g.', { a, b })}</p>
+        <p class="mt-2">${tr('El azúcar de la fruta entera y de la leche no cuenta para ese límite.')}</p>
+        <p class="mt-2 text-neutral-300">${tr('Orientación: una lata de refresco lleva unos 35 g y un vaso de zumo, unos 20 g.')}</p>` };
+}
+function replyMusculo() {
+    const g = (GOAL_TYPES[(calc.G || {}).t] || [''])[0];
+    return { r: 'c', tags: ['rec'], html: `<p>${tr('Para ganar músculo hacen falta cuatro cosas:')}</p><ol class="nd-list">
+        <li>${tr('<b>Entrenar fuerza</b> e ir subiendo poco a poco el peso o las repeticiones.')}</li>
+        <li>${tr('<b>Proteína</b>: tus {p} g al día.', { p: fmt(calc.prot) })}</li>
+        <li>${tr('<b>Calorías</b>: un superávit pequeño (5-10 %) si estás delgado; si te sobra grasa, recomposición: comer en mantenimiento con mucha proteína.')}</li>
+        <li>${tr('<b>Dormir</b> 7-9 horas: el músculo se construye descansando.')}</li></ol>
+        <p class="mt-2 text-neutral-300">${tr('Ganar músculo sin nada de grasa no es realista si subes de peso, pero con un superávit pequeño la grasa es mínima.')}${g ? ' ' + tr('Tu objetivo ahora: {g}.', { g: tr(g) }) : ''}</p>
+        <div class="flex flex-wrap gap-2 mt-3"><button onclick="showTab('calc')" class="px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Ver mi plan')}</button><button onclick="showTab('gym')" class="px-4 py-2.5 rounded-xl bg-neutral-800 text-sm font-extrabold">${tr('Ir al gym')}</button></div>` };
+}
+function replyCardio() {
+    return { r: 'c', tags: ['rec'], html: `<p>${tr('Las dos suman, pero si quieres cambiar tu cuerpo, <b>prioriza las pesas</b>: hacen que lo que pierdas sea grasa y no músculo.')}</p>
+        <p class="mt-2">${tr('El cardio es muy bueno para el corazón y suma gasto. Una mezcla que funciona: <b>3 días de fuerza</b>, caminar a diario y, si te gusta, 1-2 días de cardio.')}</p>
+        <p class="mt-2 text-neutral-300">${tr('Para perder grasa, lo que más pesa sigue siendo la comida.')}</p>` };
 }
 function replyProgress() {
     const L = insightsList().slice(0, 4), S = streakInfo();

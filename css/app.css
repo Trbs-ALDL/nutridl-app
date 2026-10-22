@@ -408,6 +408,7 @@ h1 { line-height: 1.06; }
 .nd-quick span { color: #cfc5b8; font-weight: 600; }
 .nd-goal { border-radius: var(--nd-r-md); padding: .5rem .85rem; font-weight: 600; }
 .nd-streak { background: transparent; border-color: rgba(111, 207, 151, .38); color: #9fe0bb; font-weight: 600; }
+.nd-streak.nd-streak-0 { border-color: rgba(255, 255, 255, .14); color: #a3a3a3; }
 .cta-glow, .mint-glow { box-shadow: none; }
 
 /* Cifras: serifa con dígitos alineados (se leen como un marcador, no como un texto) */

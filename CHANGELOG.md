@@ -1,5 +1,20 @@
 # Cambios de nutriDL
 
+## 3.20.0 · 23 de octubre de 2026
+
+**Coach mucho más listo** (se probó con ~50 preguntas reales; muchas no las entendía o respondía mal).
+
+- **Quitar lo apuntado hablando**: «quita el pan», «borra el café» → se quita del diario de hoy con «Deshacer». Antes «borra el café» proponía *añadirlo*.
+- **«Deshaz»**: vuelve a poner lo último que quitaste, o quita lo último que apuntó el Coach.
+- **«Me peso 84,2»**: propone guardar el peso (un toque) y te dice cuánto ha cambiado desde la última vez. No se guarda sin pulsar.
+- **«¿Qué entreno hoy?»**: te dice qué día de tu rutina toca, con lo que levantaste la última vez en cada ejercicio, y te lleva al gym. Antes proponía queso brie.
+- **«Quiero perder 5 kilos en un mes»**: calcula el ritmo que haría falta, avisa si es demasiado rápido (más del 1 % del peso a la semana) y da la fecha realista a tu ritmo.
+- Respuestas nuevas: cuánta proteína necesito, cuánto llevo de proteína, antojos y ansiedad por el dulce, peso saludable para tu estatura, calorías que quemas haciendo deporte (9 actividades, con los minutos que digas), dolor o lesión (siempre deriva al profesional), cansancio, dormir mal, pasos al día, cenar tarde, cuántas comidas al día, qué comer antes y después de entrenar, fibra, azúcar (límite de la OMS), ganar músculo, cardio o pesas, «¿voy bien?» y «tengo 600 kcal para cenar».
+- «¿Qué puedes hacer?» y las sugerencias rápidas incluyen lo nuevo («¿Qué entreno hoy?» si tienes gym).
+- Arreglado: «no tengo hambre» ya no se confunde con un antojo.
+- La racha en **0 días** ya no sale en verde (verde = vas bien).
+- Todo en español e inglés (cobertura 100 %). 6 pruebas nuevas (81 en total).
+
 ## 3.19.0 · 23 de octubre de 2026
 
 **«Compartir mi semana» rehecho** (skill `referrals`: el resultado que compartes es la mejor publicidad de la app).
