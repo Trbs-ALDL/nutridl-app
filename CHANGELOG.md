@@ -13,6 +13,8 @@
 - «¿Qué puedes hacer?» y las sugerencias rápidas incluyen lo nuevo («¿Qué entreno hoy?» si tienes gym).
 - Arreglado: «no tengo hambre» ya no se confunde con un antojo.
 - La racha en **0 días** ya no sale en verde (verde = vas bien).
+- Números iguales en toda la app: siempre con punto de miles («2.324 kcal», antes «2324» dentro de la app y «2.100» en la portada).
+- Quitado del código un patrón del Coach que no se usaba (con permiso de Ángel).
 - Todo en español e inglés (cobertura 100 %). 6 pruebas nuevas (81 en total).
 
 ## 3.19.0 · 23 de octubre de 2026

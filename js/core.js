@@ -44,7 +44,7 @@ window.addEventListener('unhandledrejection', e => logErr('Promesa: ' + ((e.reas
 let profiles = { current: null, list: {} }; // list[id] = { name, created, state }
 
 const $ = id => document.getElementById(id);
-const fmt = (n, d = 0) => Number(n).toLocaleString(typeof locale === 'function' ? locale() : 'es-ES', { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt = (n, d = 0) => Number(n).toLocaleString(typeof locale === 'function' ? locale() : 'es-ES', { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: 'always' });
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 // Iconos de línea en lugar de emojis en toda la app (los emojis se veían infantiles).
 // Las claves van sin el selector de variante (U+FE0F): icon() lo quita antes de buscar.
