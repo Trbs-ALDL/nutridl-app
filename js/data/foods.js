@@ -447,7 +447,7 @@ CHAIN_FOODS.forEach(([id, name, brand, kcal, p, c, f, fib, sug, serv, ml, src]) 
     FOODS.push({ id, name, brand, cat: 'marca', fast: 1, role, meals: 'BSLD', p, f, c, fib, kcal, min: 0, max: 0, flags: '', diaryOnly: 1, ...(serv ? { serv } : {}), ...(sug != null ? { sug } : {}), ...(ml ? { ml: 1 } : {}), src });
 });
 // </cadenas>
-// <usda> (lo genera tools/genericos/embed.js · USDA FoodData Central: SR Legacy y FNDDS, dominio público · ICBF: Tabla de Composición de Alimentos Colombianos 2018 · 2026-10-17)
+// <usda> (lo genera tools/genericos/embed.js · USDA FoodData Central: SR Legacy y FNDDS, dominio público · ICBF: Tabla de Composición de Alimentos Colombianos 2018 · 2026-10-23)
 // Alimentos crudos y cocinados con su ficha oficial (fdc = ficha del USDA · icbf = código de la tabla colombiana). HC sin fibra, como las etiquetas de la UE.
 D("u_pollo_asado_sin", "Pechuga de pollo asada (sin piel)", 'prot', 31, 3.6, 0, 0, [120,"filete","filetes"], '', 'M', {"sug":0,"fdc":171477});
 D("u_pollo_guisado", "Pechuga de pollo guisada / hervida", 'prot', 29, 3, 0, 0, [120,"filete","filetes"], '', 'M', {"sug":0,"fdc":171478});
@@ -852,8 +852,150 @@ D("u_co_mazamorra_chiquita", "Mazamorra chiquita", 'platos', 9.8, 5, 3.1, 3, [40
 D("u_co_cuy_asado", "Cuy asado", 'platos', 24.4, 7.8, 13.7, 1.1, [250,"ración","raciones"], '', 'M', {"icbf":"S010","kcal":229});
 D("u_co_friche", "Friche de chivo", 'platos', 29.7, 12.9, 0.8, 0.8, [250,"ración","raciones"], '', 'M', {"icbf":"S015","kcal":243});
 D("u_co_viudo_bocachico", "Viudo de bocachico", 'platos', 13.2, 4.1, 6.7, 1.1, [450,"plato","platos"], '', 'P', {"icbf":"S033","kcal":123});
+D("u_almendras_sal", "Almendras tostadas con sal", 'grasa', 21, 52.5, 10.1, 10.9, [30,"puñado","puñados"], '', 'N', {"sug":4.9,"fdc":168596});
+D("u_almendras_fritas", "Almendras fritas con sal", 'grasa', 21.2, 55.2, 7.2, 10.5, [30,"puñado","puñados"], '', 'N', {"sug":4.6,"fdc":169419});
+D("u_almendras_miel", "Almendras garrapiñadas (con miel)", 'grasa', 18.2, 49.9, 14.2, 13.7, [30,"puñado","puñados"], '', 'V', {"fdc":168592});
+D("u_anacardos_sal", "Anacardos tostados con sal", 'grasa', 15.3, 46.4, 29.7, 3, [30,"puñado","puñados"], '', 'N', {"sug":5,"fdc":169421});
+D("u_crema_anacardo", "Crema de anacardo", 'grasa', 12.1, 53, 27.3, 3, [20,"cucharada","cucharadas"], '', 'N', {"sug":9.1,"fdc":168597});
+D("u_macadamia_sal", "Nueces de macadamia tostadas", 'grasa', 7.8, 76.1, 4.8, 8, [30,"puñado","puñados"], '', 'N', {"sug":4.1,"fdc":168598});
+D("u_coctel_tostado", "Cóctel de frutos secos tostado", 'grasa', 17.3, 51.4, 16.4, 9, [30,"puñado","puñados"], '', 'N', {"sug":4.8,"fdc":168599});
+D("u_coctel_frito", "Cóctel de frutos secos frito", 'grasa', 20, 54, 14, 7, [30,"puñado","puñados"], '', 'N', {"sug":4.2,"fdc":168600});
+D("u_cacahuetes_sal", "Cacahuetes tostados con sal", 'grasa', 24.4, 49.7, 12.9, 8.4, [30,"puñado","puñados"], '', 'N', {"sug":4.9,"fdc":174262});
+D("u_cacahuetes_fritos", "Cacahuetes fritos con sal", 'grasa', 28, 52.5, 5.9, 9.4, [30,"puñado","puñados"], '', 'N', {"sug":4.2,"fdc":174261});
+D("u_pipas_girasol_sal", "Pipas de girasol fritas con sal", 'grasa', 20.1, 51.3, 12.3, 10.6, [30,"puñado","puñados"], '', 'N', {"sug":3.1,"fdc":168593});
+D("u_pipas_calabaza_sal", "Pipas de calabaza tostadas con sal", 'grasa', 29.8, 49, 8.2, 6.5, [30,"puñado","puñados"], '', 'N', {"sug":1.3,"fdc":169415});
+D("u_sesamo_tostado", "Semillas de sésamo tostadas", 'grasa', 17, 48, 9.1, 16.9, [10,"cucharada","cucharadas"], '', 'N', {"sug":0.5,"fdc":169416});
+D("u_crema_girasol", "Crema de pipas de girasol", 'grasa', 17.3, 55.2, 17.6, 5.7, [20,"cucharada","cucharadas"], '', 'N', {"sug":10.5,"fdc":168595});
+D("u_coco_endulzado", "Coco rallado endulzado", 'grasa', 2.9, 35.5, 43.2, 4.5, [20,"ración","raciones"], '', 'V', {"sug":43.2,"fdc":168586});
+D("u_castanas_crudas", "Castañas crudas", 'hc', 1.6, 1.3, 44.2, 0, [60,"ración","raciones"], '', 'N', {"fdc":170575});
+D("u_nueces_crudas2", "Nueces de nogal (mitades)", 'grasa', 15.2, 65.2, 7, 6.7, [30,"puñado","puñados"], '', 'N', {"sug":2.6,"fdc":170187});
+D("u_pistachos_sal", "Pistachos tostados con sal", 'grasa', 21, 45.8, 17.3, 10.3, [30,"puñado","puñados"], '', 'N', {"sug":7.7,"fdc":169426});
+D("u_avellanas_tostadas2", "Avellanas tostadas sin sal", 'grasa', 15, 62.4, 8.2, 9.4, [30,"puñado","puñados"], '', 'N', {"sug":4.9,"fdc":170583});
+D("u_nispero", "Níspero", 'fruta', 0.4, 0.2, 10.4, 1.7, [100,"ración","raciones"], '', 'N', {"fdc":169908});
+D("u_carambola", "Carambola (fruta estrella)", 'fruta', 1, 0.3, 3.9, 2.8, [100,"ración","raciones"], '', 'N', {"sug":3.9,"fdc":171715});
+D("u_kumquat", "Kumquat", 'fruta', 1.9, 0.9, 9.4, 6.5, [60,"ración","raciones"], '', 'N', {"sug":9.4,"fdc":168154});
+D("u_tamarindo", "Tamarindo", 'fruta', 2.8, 0.6, 57.4, 5.1, [50,"ración","raciones"], '', 'N', {"sug":38.8,"fdc":167763});
+D("u_chumbo", "Higo chumbo", 'fruta', 0.7, 0.5, 6, 3.6, [100,"ración","raciones"], '', 'N', {"fdc":167750});
+D("u_arandano_rojo", "Arándanos rojos frescos", 'fruta', 0.5, 0.1, 8.4, 3.6, [80,"ración","raciones"], '', 'N', {"sug":4.3,"fdc":171722});
+D("u_grosella_negra", "Grosellas negras", 'fruta', 1.4, 0.4, 15.4, 0, [80,"ración","raciones"], '', 'N', {"fdc":173963});
+D("u_yaca", "Yaca (jackfruit)", 'fruta', 1.7, 0.6, 21.7, 1.5, [100,"ración","raciones"], '', 'N', {"sug":19.1,"fdc":174687});
+D("u_platano_maduro_cocido", "Plátano macho maduro cocido", 'hc', 1.5, 0.2, 39.2, 2.2, [150,"ración","raciones"], '', 'N', {"sug":21.3,"fdc":169131});
+D("u_manzana_lata", "Manzana en conserva (endulzada)", 'fruta', 0.2, 0.4, 14.8, 2, [120,"ración","raciones"], '', 'N', {"sug":14.8,"fdc":173930});
+D("u_mango_seco", "Mango deshidratado", 'fruta', 2.5, 1.2, 76.2, 2.4, [30,"ración","raciones"], '', 'N', {"sug":66.3,"fdc":169091});
+D("u_manzana_deshidratada", "Manzana deshidratada", 'fruta', 0.9, 0.3, 57.2, 8.7, [30,"ración","raciones"], '', 'N', {"sug":57.2,"fdc":171691});
+D("u_pera_almibar", "Pera en almíbar", 'fruta', 0.2, 0.1, 17.6, 1.6, [120,"ración","raciones"], '', 'N', {"sug":15.2,"fdc":169939});
+D("u_mandarina_lata", "Mandarina en almíbar", 'fruta', 0.5, 0.1, 15.5, 0.7, [120,"ración","raciones"], '', 'N', {"sug":15.5,"fdc":169924});
+D("u_fresas_congeladas", "Fresas congeladas (sin azúcar)", 'fruta', 0.4, 0.1, 7, 2.1, [100,"ración","raciones"], '', 'N', {"sug":4.6,"fdc":168173});
+D("u_frambuesas_cong", "Frambuesas congeladas (sin azúcar)", 'fruta', 1.2, 0.8, 8.3, 4.3, [100,"ración","raciones"], '', 'N', {"sug":6.5,"fdc":168209});
+D("u_melon_cantalupo", "Melón cantalupo", 'fruta', 0.8, 0.2, 7.3, 0.9, [150,"ración","raciones"], '', 'N', {"sug":7.3,"fdc":169092});
+D("u_melon_honeydew", "Melón honeydew", 'fruta', 0.5, 0.1, 8.3, 0.8, [150,"ración","raciones"], '', 'N', {"sug":8.1,"fdc":169911});
+D("u_queso_gruyere", "Queso gruyère", 'lacteo', 29.8, 32.3, 0.4, 0, [30,"ración","raciones"], '', 'VL', {"sug":0.4,"fdc":171242});
+D("u_queso_suizo", "Queso suizo", 'lacteo', 27, 31, 1.4, 0, [30,"loncha","lonchas"], '', 'VL', {"sug":0,"fdc":171251});
+D("u_queso_muenster", "Queso muenster", 'lacteo', 23.4, 30, 1.1, 0, [30,"loncha","lonchas"], '', 'VL', {"sug":1.1,"fdc":171245});
+D("u_queso_fontina", "Queso fontina", 'lacteo', 25.6, 31.1, 1.6, 0, [30,"ración","raciones"], '', 'VL', {"sug":1.6,"fdc":170843});
+D("u_queso_roquefort", "Queso roquefort", 'lacteo', 21.5, 30.6, 2, 0, [30,"ración","raciones"], '', 'VL', {"fdc":171250});
+D("u_queso_monterey", "Queso monterey", 'lacteo', 24.5, 30.3, 0.7, 0, [30,"loncha","lonchas"], '', 'VL', {"sug":0.5,"fdc":170844});
+D("u_queso_suizo_light", "Queso suizo light", 'lacteo', 28.4, 5.1, 3.4, 0, [30,"loncha","lonchas"], '', 'VL', {"sug":1.3,"fdc":168141});
+D("u_suero_leche", "Suero de leche (buttermilk)", 'lacteo', 3.3, 1.1, 4.8, 0, [250,"vaso","vasos"], '', 'VL', {"ml":1,"sug":4.8,"fdc":170874});
+D("u_leche_polvo_entera", "Leche en polvo entera", 'lacteo', 26.3, 26.7, 38.4, 0, [25,"cucharada","cucharadas"], '', 'VL', {"sug":38.4,"fdc":170876});
+D("u_nata_ligera", "Nata ligera para café", 'lacteo', 3, 19.1, 3.7, 0, [15,"cucharada","cucharadas"], '', 'VL', {"ml":1,"sug":3.7,"fdc":170857});
+D("u_nata_mitad", "Nata para café (half and half)", 'lacteo', 3.1, 11.5, 4.3, 0, [15,"cucharada","cucharadas"], '', 'VL', {"ml":1,"sug":4.1,"fdc":171255});
+D("u_yogur_vainilla", "Yogur de vainilla desnatado", 'lacteo', 2.9, 0, 17, 0, [125,"unidad","unidades"], '', 'VL', {"sug":5.9,"fdc":170906});
+D("u_yogur_frutas_des", "Yogur de frutas desnatado", 'lacteo', 4.4, 0.2, 19, 0, [125,"unidad","unidades"], '', 'VL', {"sug":19,"fdc":169898});
+D("u_queso_provolone_light", "Queso provolone light", 'lacteo', 24.7, 17.6, 3.5, 0, [30,"loncha","lonchas"], '', 'VL', {"sug":0.6,"fdc":172215});
+D("u_queso_cheddar_light", "Queso cheddar light", 'lacteo', 27.4, 20.4, 2.7, 0, [30,"loncha","lonchas"], '', 'VL', {"sug":0.3,"fdc":171292});
+D("u_pollo_frito_rebozado", "Pollo frito rebozado (con piel)", 'prot', 22.8, 17.5, 9, 0, [120,"ración","raciones"], '', 'MG', {"fdc":171048});
+D("u_pollo_frito_harina", "Pollo frito enharinado (con piel)", 'prot', 28.6, 15.3, 3.3, 0, [120,"ración","raciones"], '', 'MG', {"fdc":171049});
+D("u_pollo_frito_solo", "Pollo frito sin piel", 'prot', 30.6, 9.1, 1.6, 0.1, [120,"ración","raciones"], '', 'M', {"sug":0,"fdc":171053});
+D("u_contramuslo_frito", "Contramuslo de pollo frito rebozado", 'prot', 21.8, 18.6, 9.4, 0, [100,"contramuslo","contramuslos"], '', 'MG', {"fdc":171063});
+D("u_contramuslo_empanado_cong", "Contramuslo de pollo empanado (congelado, al horno)", 'prot', 18.7, 22.4, 14.1, 0.1, [100,"ración","raciones"], '', 'MG', {"sug":0,"fdc":168961});
+D("u_pescado_empanado_frito", "Pescado empanado y frito", 'prot', 18.2, 12.7, 7.1, 0.4, [120,"ración","raciones"], '', 'PG', {"fdc":171957});
+D("u_bagre_empanado", "Bagre empanado y frito", 'prot', 18.1, 13.3, 7.3, 0.7, [120,"ración","raciones"], '', 'PG', {"fdc":174187});
+D("u_abadejo_cocido2", "Abadejo de Alaska cocido", 'prot', 23.5, 1.2, 0, 0, [100,"ración","raciones"], '', 'P', {"sug":0,"fdc":173681});
+D("u_gambas_rebozadas", "Gambas rebozadas fritas", 'prot', 21.4, 12.3, 11.1, 0.4, [100,"ración","raciones"], '', 'PG', {"sug":0.8,"fdc":171970});
+D("u_calamar_frito", "Calamares fritos (rabas)", 'prot', 17.9, 7.5, 7.8, 0, [100,"ración","raciones"], '', 'PG', {"fdc":171982});
+D("u_vieiras_rebozadas", "Vieiras rebozadas fritas", 'prot', 18.1, 10.9, 10.1, 0, [100,"ración","raciones"], '', 'PG', {"fdc":174221});
+D("u_almejas_rebozadas", "Almejas rebozadas fritas", 'prot', 14.2, 11.2, 10.3, 0, [100,"ración","raciones"], '', 'PG', {"fdc":171974});
+D("u_salchichas_italianas", "Salchichas frescas de cerdo (hechas)", 'prot', 16.1, 8.4, 2.1, 0, [80,"salchicha","salchichas"], '', 'M', {"sug":0,"fdc":172952});
+D("u_salchicha_pavo", "Salchichas de pavo y cerdo (hechas)", 'prot', 22.7, 23, 0.7, 0, [80,"salchicha","salchichas"], '', 'M', {"sug":0,"fdc":167694});
+D("u_mortadela", "Mortadela", 'prot', 11.5, 19.3, 2.6, 0, [30,"loncha","lonchas"], '', 'M', {"sug":0,"fdc":167685});
+D("u_salchicha_viena", "Salchichas tipo viena (lata)", 'prot', 10.5, 19.4, 2.6, 0, [50,"ración","raciones"], '', 'M', {"sug":0,"fdc":172942});
+D("u_jamon_lonchas", "Jamón cocido en lonchas (11 % grasa)", 'prot', 16.6, 8.8, 2.3, 1.3, [50,"ración","raciones"], '', 'M', {"sug":1,"fdc":173864});
+D("u_cerdo_asado_paleta", "Paletilla de cerdo guisada", 'prot', 26.6, 13.2, 0, 0, [130,"ración","raciones"], '', 'M', {"sug":0,"fdc":168261});
+D("u_costillas_cerdo_asadas", "Costillas de cerdo asadas", 'prot', 25.6, 17.6, 0, 0, [150,"ración","raciones"], '', 'M', {"sug":0,"fdc":169200});
+D("u_ternera_asada_lomo", "Lomo de ternera asado", 'prot', 29.5, 8.4, 0, 0, [130,"filete","filetes"], '', 'M', {"sug":0,"fdc":168632});
+D("u_huevo_tortilla_usda", "Tortilla / huevo cuajado con grasa", 'prot', 10.6, 11.7, 0.6, 0, [120,"ración","raciones"], '', 'V', {"sug":0.3,"fdc":172185});
+D("u_patata_frita_horno", "Patatas fritas congeladas (al horno)", 'hc', 2.6, 3.8, 24.4, 2.6, [120,"ración","raciones"], '', 'N', {"sug":0.3,"fdc":168445});
+D("u_patata_cocida_piel", "Patata cocida con piel", 'hc', 1.9, 0.1, 18.3, 1.8, [180,"patata mediana","patatas medianas"], '', 'N', {"sug":0.9,"fdc":170438});
+D("u_patata_microondas", "Patata al microondas (con piel)", 'hc', 2.4, 0.1, 21.9, 2.3, [180,"patata mediana","patatas medianas"], '', 'N', {"fdc":170094});
+D("u_pure_patata_leche", "Puré de patata (con leche)", 'hc', 1.9, 0.6, 16.1, 1.5, [200,"ración","raciones"], '', 'VL', {"sug":1.5,"fdc":170493});
+D("u_aros_cebolla", "Aros de cebolla rebozados", 'hc', 4.9, 19.3, 38.1, 2.6, [80,"ración","raciones"], '', 'VG', {"sug":4.7,"fdc":169027});
+D("u_cebolla_cocida2", "Cebolla cocida (guarnición)", 'verdura', 1.4, 0.2, 8.8, 1.4, [80,"ración","raciones"], '', 'N', {"sug":4.7,"fdc":170001});
+D("u_pimiento_rojo_cocido", "Pimiento rojo cocido", 'verdura', 0.9, 0.2, 5.5, 1.2, [100,"ración","raciones"], '', 'N', {"sug":4.4,"fdc":170110});
+D("u_champi_cocidos2", "Champiñones cocidos", 'verdura', 2.2, 0.5, 3.1, 2.2, [100,"ración","raciones"], '', 'N', {"sug":2.3,"fdc":169252});
+D("u_espinacas_congeladas", "Espinacas congeladas cocidas", 'verdura', 4, 0.9, 1.1, 3.7, [150,"ración","raciones"], '', 'N', {"sug":0.5,"fdc":169288});
+D("u_judias_verdes_lata", "Judías verdes de lata", 'verdura', 1.1, 0.4, 2.3, 1.9, [120,"ración","raciones"], '', 'N', {"sug":1.4,"fdc":169143});
+D("u_guisantes_lata", "Guisantes de lata (escurridos)", 'legum', 4.3, 1, 11.8, 0, [120,"ración","raciones"], '', 'N', {"fdc":170015});
+D("u_menestra_congelada", "Menestra congelada cocida", 'verdura', 2.9, 0.2, 8.7, 4.4, [150,"ración","raciones"], '', 'N', {"sug":3.1,"fdc":170472});
+D("u_brocoli_congelado", "Brócoli congelado cocido", 'verdura', 3.1, 0.1, 2.3, 3, [150,"ración","raciones"], '', 'N', {"sug":1.5,"fdc":169969});
+D("u_coliflor_congelada", "Coliflor congelada cocida", 'verdura', 1.6, 0.2, 1, 2.7, [150,"ración","raciones"], '', 'N', {"sug":1,"fdc":170399});
+D("u_alubias_tomate", "Alubias con tomate (lata)", 'legum', 4.8, 0.4, 17, 4.1, [150,"ración","raciones"], '', 'N', {"sug":8,"fdc":175182});
+D("u_garbanzos_lata2", "Garbanzos de bote (escurridos)", 'legum', 7.1, 2.8, 16.1, 6.4, [150,"ración","raciones"], '', 'N', {"sug":4,"fdc":173800});
+D("u_maiz_cocido", "Maíz dulce cocido", 'verdura', 3.4, 1.5, 18.6, 2.4, [120,"ración","raciones"], '', 'N', {"sug":4.5,"fdc":169999});
+D("u_arroz_medio_cocido", "Arroz blanco cocido (grano medio)", 'hc', 2.4, 0.2, 28.6, 0, [180,"ración","raciones"], '', 'N', {"fdc":168930});
+D("u_arroz_vapor", "Arroz blanco al vapor (precocido)", 'hc', 2.2, 0.5, 26.2, 0.6, [180,"ración","raciones"], '', 'N', {"sug":0,"fdc":169710});
+D("u_pasta_integral_cocida2", "Macarrones integrales cocidos", 'hc', 6, 1.7, 26.2, 3.9, [200,"ración","raciones"], '', 'NG', {"sug":0.8,"fdc":168910});
+D("u_pan_pita_integral", "Pan de pita integral", 'hc', 9.8, 1.7, 49.8, 6.1, [60,"pan","panes"], '', 'NG', {"sug":2.9,"fdc":174916});
+D("u_pan_centeno2", "Pan de centeno (rebanada)", 'hc', 8.5, 3.3, 42.5, 5.8, [35,"rebanada","rebanadas"], '', 'NG', {"sug":3.9,"fdc":172684});
+D("u_pan_avena", "Pan de avena (rebanada)", 'hc', 8.4, 4.4, 44.5, 4, [35,"rebanada","rebanadas"], '', 'NG', {"sug":8.1,"fdc":172678});
+D("u_pan_maiz", "Pan de maíz (con leche y huevo)", 'hc', 6.6, 9.6, 52.2, 2.3, [60,"ración","raciones"], '', 'VG', {"sug":16,"fdc":174909});
+D("u_picatostes", "Picatostes / croûtons", 'hc', 10.8, 18.3, 58.5, 5, [20,"ración","raciones"], '', 'NG', {"sug":4.4,"fdc":172752});
+D("u_boca_atun", "Bocadillo de atún con lechuga y tomate", 'platos', 12.3, 12, 15.3, 0.7, [250,"bocadillo","bocadillos"], '', 'PG', {"sug":1.9,"fdc":170299});
+D("u_boca_pavo_jamon", "Bocadillo de pavo, jamón y roast beef", 'platos', 10.7, 2.4, 19, 1.4, [250,"bocadillo","bocadillos"], '', 'MG', {"sug":3.2,"fdc":170308});
+D("u_boca_pollo_horno", "Bocadillo de pollo asado", 'platos', 10.8, 3.2, 20.2, 1.2, [250,"bocadillo","bocadillos"], '', 'MG', {"sug":3,"fdc":170309});
+D("u_boca_roastbeef", "Bocadillo de roast beef", 'platos', 12.2, 2.7, 19.6, 0.7, [250,"bocadillo","bocadillos"], '', 'MG', {"sug":3,"fdc":170298});
+D("u_boca_bacon", "Bocadillo de bacon, lechuga y tomate", 'platos', 10.1, 6.4, 25.1, 1.6, [220,"bocadillo","bocadillos"], '', 'MG', {"sug":3.6,"fdc":170313});
+D("u_boca_ternera_queso", "Bocadillo de ternera con queso", 'platos', 12.3, 5.3, 20.3, 1.2, [250,"bocadillo","bocadillos"], '', 'MGL', {"sug":3.4,"fdc":170311});
+D("u_sand_pollo_plancha", "Sándwich de pollo a la plancha", 'platos', 17.3, 4.6, 15.9, 0.9, [200,"sándwich","sándwiches"], '', 'MG', {"sug":3.1,"fdc":170368});
+D("u_sand_pollo_crujiente", "Sándwich de pollo crujiente", 'platos', 10.9, 13.6, 26, 1.4, [200,"sándwich","sándwiches"], '', 'MG', {"sug":3.4,"fdc":170318});
+D("u_sand_pescado", "Sándwich de pescado con salsa tártara", 'platos', 10.3, 12.4, 25.7, 1, [160,"sándwich","sándwiches"], '', 'PG', {"sug":3.5,"fdc":170296});
+D("u_sand_pescado_queso", "Sándwich de pescado con queso", 'platos', 11.3, 14.6, 25.6, 0.8, [180,"sándwich","sándwiches"], '', 'PGL', {"sug":3.7,"fdc":170297});
+D("u_sand_pollo_pepinillos", "Sándwich de pollo con pepinillos", 'platos', 16.3, 11.2, 19.5, 1.4, [180,"sándwich","sándwiches"], '', 'MG', {"sug":3.6,"fdc":170295});
+D("u_sand_pollo_teriyaki", "Bocadillo de pollo teriyaki", 'platos', 10.9, 2.4, 21.3, 1.2, [250,"bocadillo","bocadillos"], '', 'MG', {"sug":6.1,"fdc":170306});
+D("u_donut_chocolate", "Dónut de chocolate", 'hc', 4.5, 19.9, 55.2, 2.2, [60,"unidad","unidades"], '', 'VGL', {"sug":31.9,"fdc":174993});
+D("u_donut_relleno", "Dónut relleno de crema", 'hc', 6.4, 24.5, 29.2, 0.8, [85,"unidad","unidades"], '', 'VGL', {"sug":14.6,"fdc":172757});
+D("u_bizcocho_chocolate", "Bizcocho de chocolate", 'hc', 3.5, 20, 50.6, 2.2, [80,"ración","raciones"], '', 'VGL', {"sug":40,"fdc":174934});
+D("u_tarta_manzana", "Tarta de manzana", 'hc', 1.9, 11, 32.4, 1.6, [120,"ración","raciones"], '', 'VG', {"sug":15.6,"fdc":175011});
+D("u_galletas_avena", "Galletas de avena", 'hc', 6.2, 18.1, 65.9, 2.8, [30,"galleta","galletas"], '', 'VG', {"sug":24.7,"fdc":172725});
+D("u_galletas_mantequilla", "Galletas de mantequilla", 'hc', 6.1, 18.8, 68.1, 0.8, [25,"galleta","galletas"], '', 'VGL', {"sug":20.2,"fdc":174950});
+D("u_barquitas_fruta", "Rollitos de fruta (snack)", 'hc', 0.1, 3, 85.8, 0, [20,"unidad","unidades"], '', 'N', {"sug":49.2,"fdc":167541});
+D("u_magdalena_usda", "Magdalena de arándanos", 'hc', 4.5, 16.1, 51.9, 1.1, [70,"unidad","unidades"], '', 'VGL', {"sug":31.5,"fdc":172765});
+D("u_bollo_dulce", "Bollo dulce", 'hc', 10, 7.4, 50.5, 3.1, [60,"unidad","unidades"], '', 'VGL', {"sug":15.4,"fdc":174107});
+D("u_brownie_usda", "Brownie de chocolate", 'hc', 4.8, 16.3, 61.8, 2.1, [60,"unidad","unidades"], '', 'VGL', {"sug":36.6,"fdc":172713});
+D("u_donut_masa", "Dónut de masa sin glasear", 'hc', 5.3, 24.9, 45.4, 1.7, [50,"unidad","unidades"], '', 'VG', {"sug":18.2,"fdc":174990});
+D("u_tarta_queso_usda", "Tarta de queso (porción)", 'hc', 5.5, 22.5, 25.1, 0.4, [100,"ración","raciones"], '', 'VGL', {"sug":21.8,"fdc":172711});
+D("u_natillas_usda2", "Natillas caseras", 'lacteo', 2.7, 2.9, 19.7, 0, [125,"unidad","unidades"], '', 'VL', {"sug":18,"fdc":168785});
+D("u_helado_vainilla_usda", "Helado de vainilla (tarrina)", 'lacteo', 3.5, 11, 22.9, 0.7, [100,"bola","bolas"], '', 'VL', {"sug":21.2,"fdc":167575});
+D("u_zumo_pomelo", "Zumo de pomelo natural", 'bebida', 0.5, 0.1, 9.1, 0.1, [250,"vaso","vasos"], '', 'N', {"ml":1,"sug":9.1,"fdc":173039});
+D("u_zumo_arandano", "Zumo de arándanos", 'bebida', 0.4, 0.1, 12.1, 0.1, [250,"vaso","vasos"], '', 'N', {"ml":1,"sug":12.1,"fdc":168117});
+D("u_zumo_melocoton", "Néctar de melocotón", 'bebida', 0.2, 0.5, 11.8, 0.1, [250,"vaso","vasos"], '', 'N', {"ml":1,"sug":11.2,"fdc":168185});
+D("u_zumo_pera", "Néctar de pera", 'bebida', 0.1, 0, 15.2, 0.6, [250,"vaso","vasos"], '', 'N', {"ml":1,"sug":15.2,"fdc":169940});
+D("u_zumo_zanahoria", "Zumo de zanahoria", 'bebida', 1, 0.2, 8.5, 0.8, [250,"vaso","vasos"], '', 'N', {"ml":1,"sug":3.9,"fdc":170491});
+D("u_limonada", "Limonada", 'bebida', 0, 0, 3.6, 0, [250,"vaso","vasos"], '', 'N', {"ml":1,"sug":3.5,"fdc":174859});
+D("u_te_verde", "Té verde (sin azúcar)", 'bebida', 0.2, 0, 0, 0, [250,"taza","tazas"], '', 'N', {"ml":1,"sug":0,"fdc":171917});
+D("u_te_negro", "Té negro (sin azúcar)", 'bebida', 0, 0, 0.3, 0, [250,"taza","tazas"], '', 'N', {"ml":1,"sug":0,"fdc":173227});
+D("u_te_verde_desca", "Té verde descafeinado", 'bebida', 0, 0, 0, 0, [250,"taza","tazas"], '', 'N', {"ml":1,"sug":0,"fdc":171910});
+D("u_cafe_americano", "Café americano (sin azúcar)", 'bebida', 0.1, 0, 0, 0, [250,"taza","tazas"], '', 'N', {"ml":1,"sug":0,"fdc":171890});
+D("u_cafe_descafeinado", "Café descafeinado", 'bebida', 0.1, 0, 0, 0, [250,"taza","tazas"], '', 'N', {"ml":1,"sug":0,"fdc":171889});
+D("u_agua_gas", "Agua con gas", 'bebida', 0, 0, 0, 0, [330,"botella","botellas"], '', 'N', {"ml":1,"sug":0,"fdc":174842});
+D("u_tonica", "Tónica", 'bebida', 0, 0, 8.8, 0, [250,"vaso","vasos"], '', 'N', {"ml":1,"sug":8.8,"fdc":171869});
+D("u_refresco_uva", "Refresco de uva", 'bebida', 0, 0, 11.2, 0, [330,"lata","latas"], '', 'N', {"ml":1,"fdc":173203});
+D("u_vino_blanco", "Vino blanco", 'bebida', 0.1, 0, 2.6, 0, [150,"copa","copas"], '', 'N', {"ml":1,"sug":1,"fdc":174837});
+D("u_vino_chenin", "Vino blanco Chenin Blanc", 'bebida', 0.1, 0, 3.3, 0, [150,"copa","copas"], '', 'N', {"ml":1,"fdc":173195});
+D("u_vino_borgona", "Vino tinto Borgoña", 'bebida', 0.1, 0, 3.7, 0, [150,"copa","copas"], '', 'N', {"ml":1,"fdc":173208});
+D("u_whey_isolate", "Proteína whey aislada (polvo)", 'vprot', 58.1, 1.2, 29.1, 0, [30,"cacito","cacitos"], '', 'VL', {"sug":1.2,"fdc":173177});
 // </usda>
-// <marcas> (lo genera tools/marcas/off_embed.js · datos: Open Food Facts, licencia ODbL · 2026-10-21)
+// <marcas> (lo genera tools/marcas/off_embed.js · datos: Open Food Facts, licencia ODbL · 2026-10-23)
 const BRAND_FOODS = [
     ["m_hacendado_spaghetti","Spaghetti","Hacendado",361,13,72,1.5,0,[80,"ración","raciones"],"🍝",0,1,"8480000063311",3.6],
     ["m_hacendado_spaghetti_integral","Spaghetti integral","Hacendado",345,13.5,62,2.4,10,[80,"ración","raciones"],"🍝",0,1,"8402001010200",3.7],
@@ -2310,7 +2452,437 @@ const BRAND_FOODS = [
     ["m_wasa_pan_crujiente_de_fibra","Pan crujiente de fibra","Wasa",333,12,47,5,26,[10,"ración","raciones"],"",0,0,"7300400481588",2],
     ["m_wasa_pan_crujiente_original","Pan crujiente original","Wasa",334,9,62,1.5,19,[11,"ración","raciones"],"",0,0,"7300400118101",1],
     ["m_weetabix_cereales_crispy_minis_de","Cereales Crispy Minis de chocolate","Weetabix",386,10,70,5.1,10,[40,"ración","raciones"],"",0,0,"5010029229110",17],
-    ["m_weetabix_cereales_weetabix_origin","Cereales Weetabix original","Weetabix",355,11,68,2,10,[38,"ración","raciones"],"",0,0,"5010029000801",4.2]
+    ["m_weetabix_cereales_weetabix_origin","Cereales Weetabix original","Weetabix",355,11,68,2,10,[38,"ración","raciones"],"",0,0,"5010029000801",4.2],
+    ["m_alesto_anacardos","Anacardos","Alesto",600,20.5,19.8,47.6,5.2,[30,"ración","raciones"],"",0,0,"20267605",6.5],
+    ["m_alesto_almendras","Almendras","Alesto",621,24.5,4.8,53.3,12.1,[30,"ración","raciones"],"",0,0,"4056489440116",4.8],
+    ["m_hacendado_pan_100_integral_fino","Pan 100% Integral Fino","Hacendado",223,9.1,38,2.5,0,[100,"ración","raciones"],"",0,0,"8424465915228",0.9],
+    ["m_hacendado_almendra_al_natural","Almendra al natural","Hacendado",642,25.2,5.9,54.8,12.2,[100,"ración","raciones"],"",0,0,"8480000348654",5.9],
+    ["m_lidl_avellana_tostada_0_sal","Avellana Tostada 0% Sal","Lidl",723,14.3,3.5,70.5,8.2,[30,"ración","raciones"],"",0,0,"4056489033042",3.5],
+    ["m_carrefour_cacahuetes_fritos","Cacahuetes fritos","Carrefour",622,27,9.7,51,8.6,[30,"puñado","puñados"],"",0,0,"3560071084042",5],
+    ["m_lidl_mix_proteina_frutos_seco","Mix proteína. Frutos secos y soja","Lidl",587,30.8,6.8,45.9,11.3,[100,"ración","raciones"],"",0,0,"4056489357117",3.8],
+    ["m_hacendado_pan_de_molde_natural_tri","Pan de molde natural trigo espelta 100% integral","Hacendado",240,12,38,4.1,7.4,[40,"ración","raciones"],"",0,0,"8480000864673",3.7],
+    ["m_hacendado_pan_de_molde_100_integra22","Pan de molde 100% integral sin corteza","Hacendado",225,9.3,32.9,4.6,6.4,[28,"ración","raciones"],"",0,0,"8402001021541",1.8],
+    ["m_hacendado_cacahuete_frito_con_sal","Cacahuete frito con sal","Hacendado",600,23,14,48.1,8.2,[100,"ración","raciones"],"",0,0,"8480000348203",4.6],
+    ["m_lidl_pistacho_tostado_sal","Pistacho tostado sal","Lidl",613,23.6,7.8,51.6,12.1,[30,"ración","raciones"],"",1,0,"4335619014480",7.7],
+    ["m_hacendado_crema_de_cacahuete_100_c","Crema de cacahuete 100% crunchy","Hacendado",608,30,12,47,8.2,[15,"ración","raciones"],"",0,0,"8480000228369",5.4],
+    ["m_carrefour_anacardos_fritos","Anacardos fritos","Carrefour",614,20,22,49,5.2,[125,"ración","raciones"],"",0,0,"3245412901454",5.2],
+    ["m_hacendado_aceite_de_girasol_refina","Aceite de girasol refinado 0,2º","Hacendado",821,0,0,92,0,[10,"cucharada","cucharadas"],"",1,0,"8480000040404",0],
+    ["m_carrefour_cacahuetes_fritos_salado","Cacahuetes fritos salados","Carrefour",615,26,9.6,50,8.5,[30,"puñado","puñados"],"",0,0,"3560071084059",5],
+    ["m_hacendado_pechuga_de_pavo_reducido","Pechuga de pavo reducido en sal finas lonchas","Hacendado",76,16.5,1.3,0.5,0,[100,"ración","raciones"],"",0,0,"8480000602435",1.3],
+    ["m_hacendado_mantequilla_light","Mantequilla Light","Hacendado",384,1.8,1.9,41,0,[100,"ración","raciones"],"",0,0,"8480000909336",null],
+    ["m_hacendado_queso_crema_finas_hierba","Queso Crema Finas Hierbas","Hacendado",167,5.9,6.4,13,0,[30,"ración","raciones"],"",0,0,"8480000512086",5],
+    ["m_alesto_anacardos_tostados_y_con","Anacardos tostados y con sal","Alesto",621,21.3,22,48.8,4.2,[100,"ración","raciones"],"",0,0,"4056489105381",5.7],
+    ["m_carrefour_pistachos_tostados","Pistachos tostados","Carrefour",622,24,10,52,8.9,[25,"ración","raciones"],"",0,0,"3560070223145",8.9],
+    ["m_hacendado_aceite_de_oliva_virgen_e22","Aceite de oliva virgen extra gran selección","Hacendado",822,0,0,91,0,[10,"cucharada","cucharadas"],"",1,0,"8480000047069",0],
+    ["m_hacendado_caldo_de_pollo_frango","Caldo De Pollo Frango","Hacendado",7,0.5,0.5,0.8,0.5,[250,"ración","raciones"],"",1,0,"8402001028823",0.5],
+    ["m_hacendado_tomate_tamizado_sin_piel","Tomate tamizado sin piel","Hacendado",35,1.4,6.6,0.2,0,[250,"vaso","vasos"],"",1,0,"8480000160126",3.8],
+    ["m_hacendado_jamon_cocido","Jamón cocido","Hacendado",101,18.6,0.9,2.5,0,[100,"ración","raciones"],"",0,0,"8480000603296",0.9],
+    ["m_hacendado_salsa_piri_piri","Salsa Piri Piri","Hacendado",14,0.6,0.7,0.7,1.4,[250,"vaso","vasos"],"",1,0,"8480000173966",0.1],
+    ["m_hacendado_salsa_miel_y_mostaza","Salsa miel y mostaza","Hacendado",158,1.3,36,1.1,0.5,[100,"ración","raciones"],"",0,0,"8402001013218",34],
+    ["m_hacendado_sesamo","Sésamo","Hacendado",575,17,11.7,48,14,[100,"ración","raciones"],"",0,0,"8402001002014",0.1],
+    ["m_hacendado_pan_tradicional","Pan Tradicional","Hacendado",250,9.4,48,1.4,4.2,[30,"ración","raciones"],"",0,0,"8480000096272",4.7],
+    ["m_classic_cacahuetes","Cacahuetes","Classic",615,26,9.6,50,8.5,[25,"ración","raciones"],"",0,0,"3560070142224",5],
+    ["m_hacendado_queso_crema_sin_lactosa","Queso Crema Sin Lactosa","Hacendado",288,4.1,2.6,29,0,[30,"ración","raciones"],"",0,0,"8480000512123",2.6],
+    ["m_hacendado_tomate_pelado_troceado","Tomate Pelado Troceado","Hacendado",31,1.1,6,0.1,0,[250,"vaso","vasos"],"",1,0,"8480000160225",4.8],
+    ["m_hacendado_margarina_con_sal","Margarina con sal","Hacendado",543,0.5,0.5,60,0,[100,"ración","raciones"],"",0,0,"8480000603074",0.5],
+    ["m_hacendado_patatas_cocidas","Patatas Cocidas","Hacendado",53,1.2,11,0,1.5,[100,"ración","raciones"],"",1,0,"8402001014253",1],
+    ["m_hacendado_panes_especiales_tomate_","Panes especiales tomate y orégano","Hacendado",483,9.6,57.6,23.1,3.3,[100,"ración","raciones"],"",0,0,"8480000223968",4.6],
+    ["m_hacendado_pan_sin_gluten_sin_lacto","Pan sin gluten sin lactosa","Hacendado",282,1,40,11,9,[100,"ración","raciones"],"",0,0,"8402001009402",3.3],
+    ["m_hacendado_combinado_de_frutos_seco","Combinado de frutos secos","Hacendado",494,14.4,36,31.3,4.3,[20,"ración","raciones"],"",1,0,"8480000168337",32.7],
+    ["m_carrefour_anacardos","Anacardos","Carrefour",615,19,21,49,5.2,[30,"puñado","puñados"],"",0,0,"3560071083991",5.4],
+    ["m_hacendado_salsa_de_soja_sin_gluten","Salsa de soja sin gluten","Hacendado",57,10,2,0.5,1.6,[100,"ración","raciones"],"",0,0,"8480000173829",0.1],
+    ["m_hacendado_anitines_panes_especiale","Anitines panes especiales pizza","Hacendado",493,13,50,26,4.7,[80,"ración","raciones"],"",0,0,"8480000223975",3.4],
+    ["m_hacendado_salsa_pesto_con_albahaca","Salsa pesto con albahaca","Hacendado",570,5.9,7.7,57,0,[100,"ración","raciones"],"",0,0,"8402001009051",1.4],
+    ["m_hacendado_caldo_cocido","Caldo Cocido","Hacendado",4,0,1,0,0,[250,"vaso","vasos"],"",1,0,"8402001013928",0.5],
+    ["m_hacendado_atun_en_aceite_de_giraso","Atún en aceite de girasol","Hacendado",262,20,0.5,20,0,[10,"cucharada","cucharadas"],"",0,0,"8480000180865",0.5],
+    ["m_hacendado_crema_soja","Crema soja","Hacendado",141,1.8,6.3,12,0.2,[100,"ración","raciones"],"",0,0,"8480000103765",3.8],
+    ["m_carrefour_cacahuetes","Cacahuetes","Carrefour",623,27,18,48,6.6,[30,"puñado","puñados"],"",0,0,"3270190175216",6.6],
+    ["m_carrefour_pistachos_tostados_salad","Pistachos Tostados salados","Carrefour",608,24,11,50,8.9,[25,"ración","raciones"],"",0,0,"3560071008574",9.2],
+    ["m_hacendado_maiz_crujiente_y_tierno","Maíz crujiente y tierno","Hacendado",522,6.4,52,31,5.5,[100,"ración","raciones"],"",0,0,"8480000348210",1],
+    ["m_hacendado_nuez_pecana_natural","Nuez pecana natural","Hacendado",715,11.4,4,72.2,10,[30,"puñado","puñados"],"",0,0,"8480000349972",3.2],
+    ["m_hacendado_avellana_tostada_0_sal_a","Avellana tostada 0% sal añadida","Hacendado",710,18,3,68,9.4,[30,"puñado","puñados"],"",0,0,"8480000340252",3],
+    ["m_hacendado_pajaritas_con_vegetales","Pajaritas con vegetales","Hacendado",347,13,68,1.5,4.2,[100,"ración","raciones"],"",0,0,"8480000063052",3.1],
+    ["m_hacendado_hamburguesas_de_pollo","Hamburguesas de pollo","Hacendado",123,16,1.6,5.8,0,[90,"ración","raciones"],"",0,0,"8436021418586",0],
+    ["m_hacendado_patatas_kebab","Patatas Kebab","Hacendado",186,7,16,10,1.7,[370,"ración","raciones"],"",0,0,"8402001021442",1],
+    ["m_hacendado_arroz_vaporizado","Arroz vaporizado","Hacendado",345,7.9,76,0.7,0,[100,"ración","raciones"],"",0,1,"8480000050205",0.6],
+    ["m_hacendado_salsa_light","Salsa light","Hacendado",294,0.7,6.5,31,0,[250,"vaso","vasos"],"",1,0,"8480000157935",3.5],
+    ["m_hacendado_patatas_horno_air_fryer","Patatas Horno Air Fryer","Hacendado",151,2.3,23,5.8,2.8,[100,"ración","raciones"],"",0,0,"8402001017223",0.9],
+    ["m_hacendado_pate_de_salmon","Paté de salmón","Hacendado",280,7.9,1.7,26.8,0,[100,"ración","raciones"],"",0,0,"8480000523365",1.7],
+    ["m_hacendado_huevos_cocidos","Huevos cocidos","Hacendado",121,13,0.4,7.7,0,[50,"ración","raciones"],"",0,0,"8480000310101",0.4],
+    ["m_hacendado_picos_saladitos","Picos saladitos","Hacendado",466,9.7,63.9,18.3,0,[100,"ración","raciones"],"",0,0,"8480000136312",1.2],
+    ["m_alesto_pistachos_de_california_","Pistachos de California tostados y salados","Alesto",605,26,10,49,7,[100,"ración","raciones"],"",0,0,"20005719",5],
+    ["m_hacendado_crema_camembert","Crema Camembert","Hacendado",218,13,1,18,0,[100,"ración","raciones"],"",0,0,"8480000511812",0],
+    ["m_hacendado_nuez_de_brasil_natural","Nuez de Brasil Natural","Hacendado",674,16.7,5.1,63.4,8.3,[100,"ración","raciones"],"",0,0,"8480000342362",1.6],
+    ["m_hacendado_sardinillas_picantes_en_","Sardinillas picantes en aceite de girasol","Hacendado",270,15.5,0.1,23.1,0,[10,"cucharada","cucharadas"],"",0,0,"8480000182128",0],
+    ["m_hacendado_crema_de_queso_viejo_tos","Crema de Queso Viejo Tostado","Hacendado",249,13,4.2,20,0,[100,"ración","raciones"],"",0,0,"8480000227805",2.2],
+    ["m_hacendado_nidos_al_huevo","Nidos al Huevo","Hacendado",357,14,67,2.7,4.1,[100,"ración","raciones"],"",0,0,"8480000063212",3.5],
+    ["m_hacendado_salchichas_cocidas_de_ce","Salchichas cocidas de cerdo estilo Bratwurst","Hacendado",287,13,2.4,25,7,[100,"ración","raciones"],"",0,0,"8480000058157",0.5],
+    ["m_hacendado_patatas_fritas_sabor_chi","Patatas fritas sabor chili y lima","Hacendado",494,6.5,57.4,27.8,6.1,[100,"ración","raciones"],"",0,0,"8402001023088",2],
+    ["m_hacendado_atun_claro_aceite_oliva","Atún Claro Aceite Oliva","Hacendado",170,26,1,6.9,0,[10,"cucharada","cucharadas"],"",0,0,"8480000180544",0.5],
+    ["m_hacendado_garfitos_de_maiz_sabor_q","Garfitos de maíz sabor queso","Hacendado",504,5.7,61,26,1.9,[100,"ración","raciones"],"",0,0,"8480000138897",3.3],
+    ["m_hacendado_fumet_caldo_de_pescado","Fumet caldo de pescado","Hacendado",26,0.9,1.3,1.9,0,[100,"ración","raciones"],"",0,0,"8480000220813",1.2],
+    ["m_hacendado_pipas_calabaza_tostadas_","Pipas calabaza tostadas agua-sal","Hacendado",624,34.1,3,52.4,8,[30,"puñado","puñados"],"",0,0,"8480000340955",2.5],
+    ["m_hacendado_queso_de_cabra_pre_corta","Queso de cabra pre-cortado","Hacendado",270,14,1.7,23,0,[13,"ración","raciones"],"",0,0,"8480000049292",1.7],
+    ["m_hacendado_grissini_sesamo","Grissini sésamo","Hacendado",441,11.5,67.7,13,3.6,[100,"ración","raciones"],"",0,0,"8480000824646",2.8],
+    ["m_hacendado_masa_fresca_de_pizza_con","Masa fresca de pizza con cereales y semillas","Hacendado",270,7.9,47.2,4.8,0,[260,"ración","raciones"],"",0,0,"8480000634771",2],
+    ["m_hacendado_sopa_miso_100_vegetal","Sopa miso 100% vegetal","Hacendado",111,10.2,5.9,4.3,0,[26,"ración","raciones"],"",0,0,"8480000800572",4.7],
+    ["m_hacendado_pizza_pollo_bacon","Pizza Pollo Bacon","Hacendado",245,14.7,26,9.1,0,[200,"ración","raciones"],"",0,0,"8480000636454",3.3],
+    ["m_hacendado_bonito_del_norte_aceite_","Bonito Del Norte Aceite Oliva","Hacendado",364,19,5,32,0,[10,"cucharada","cucharadas"],"",0,0,"8480000181022",0],
+    ["m_hacendado_aros_de_maiz","Aros de maíz","Hacendado",474,4.9,67.2,19.7,3.9,[100,"ración","raciones"],"",0,0,"8480000157577",1.6],
+    ["m_hacendado_picos_sin_gluten","Picos sin gluten","Hacendado",392,2.9,86,3.5,2.3,[100,"ración","raciones"],"",0,0,"8480000134509",2],
+    ["m_dia_nueces","Nueces","Dia",674,19.9,3.8,62.4,0,[30,"puñado","puñados"],"",0,0,"8480017162663",1.8],
+    ["m_hacendado_empanadillas_de_atun_ult","Empanadillas de Atún Ultracongeladas","Hacendado",257,5.6,28,13.5,0,[100,"ración","raciones"],"",0,0,"8480000634078",4.7],
+    ["m_hacendado_sandwich_pollo","Sandwich pollo","Hacendado",321,12,20,21,0,[185,"ración","raciones"],"",0,0,"8480000865885",2.3],
+    ["m_hacendado_salsa_de_queso","Salsa de queso","Hacendado",272,4.4,14.3,21.7,0,[250,"vaso","vasos"],"",1,0,"8402001007798",3.4],
+    ["m_hacendado_caldo_verduras","Caldo verduras","Hacendado",190,13.7,23.8,4.1,1.7,[20,"ración","raciones"],"",0,0,"8402001015083",2.6],
+    ["m_hacendado_filetes_de_caballa_del_s2","Filetes de caballa del sur en tomate","Hacendado",115,17,2.8,3.5,0,[90,"ración","raciones"],"",0,0,"8480000183132",0.4],
+    ["m_carrefour_almendras_naturales_de_e","Almendras naturales de España","Carrefour",616,23,5.4,54,8,[30,"puñado","puñados"],"",0,0,"3560071251819",4],
+    ["m_hacendado_pollo_crispy_estilo_amer","Pollo crispy estilo americano","Hacendado",210,15,23,6.2,0,[100,"ración","raciones"],"",0,0,"8480000603067",0.6],
+    ["m_hacendado_lasana_de_pollo","Lasaña de pollo","Hacendado",170,6.6,13,10,1,[350,"ración","raciones"],"",0,0,"8402001030963",1.5],
+    ["m_hacendado_mortadela_de_pavo_con_ac","Mortadela de pavo con aceitunas","Hacendado",169,10.5,5.2,11.8,0,[15,"ración","raciones"],"",0,0,"8402001029455",1],
+    ["m_alesto_mix_frutos_secos_y_fruta","Mix frutos secos y fruta deshidratada","Alesto",517,16.7,36,32,6.7,[30,"ración","raciones"],"",0,0,"20559601",31],
+    ["m_hacendado_leche_evaporada","Leche evaporada","Hacendado",109,7.4,11,4,0,[100,"ración","raciones"],"",1,0,"8480000155993",11],
+    ["m_hacendado_pizza_prosciutto","Pizza prosciutto","Hacendado",198,13.7,22.3,5.6,0,[400,"ración","raciones"],"",0,0,"8480000223432",1.3],
+    ["m_hacendado_aceitunas_verdes_rellena","Aceitunas Verdes Rellenas de Anchoa","Hacendado",150,1.6,0.9,15,0,[100,"ración","raciones"],"",0,0,"8402001001321",0.5],
+    ["m_hacendado_jamon_de_pavo","Jamón de pavo","Hacendado",85,14,1.5,2.5,0,[100,"ración","raciones"],"",0,0,"8480000592187",1.5],
+    ["m_hacendado_alubias_a_la_jardinera","Alubias a la jardinera","Hacendado",85,4.8,10.3,1.9,0,[420,"ración","raciones"],"",0,0,"8480000261144",0.5],
+    ["m_hacendado_sandwich_atun","Sandwich atún","Hacendado",246,12,19,13,1.5,[185,"ración","raciones"],"",0,0,"8402001021176",2.6],
+    ["m_alesto_pistacho_tostada_0_sal","Pistacho tostada 0%sal","Alesto",605,26.5,10.3,49.2,7.6,[30,"ración","raciones"],"",0,0,"20337292",5.6],
+    ["m_hacendado_anchoa_en_aceite_de_gira","Anchoa en aceite de girasol","Hacendado",172,24,0.9,9.7,0,[10,"cucharada","cucharadas"],"",0,0,"8480000184078",0],
+    ["m_hacendado_aceitunas_sin_hueso_alin","Aceitunas sin hueso aliñadas","Hacendado",134,1.9,0,13,0,[100,"ración","raciones"],"",0,0,"8480000331212",0],
+    ["m_hacendado_aceitunas_con_hueso","Aceitunas con hueso","Hacendado",172,1.7,0,17,0,[100,"ración","raciones"],"",0,0,"8480000332059",0],
+    ["m_hacendado_queso_crema_azul","Queso crema azul","Hacendado",235,4.9,5.3,21,0,[100,"ración","raciones"],"",0,0,"8480000512116",2.2],
+    ["m_hacendado_salchichon_de_pavo","Salchichón de pavo","Hacendado",273,25,5,17,0,[38,"ración","raciones"],"",0,0,"8480000591593",5],
+    ["m_hacendado_longaniza_de_pavo","Longaniza de Pavo","Hacendado",315,31,3.1,18,0,[100,"ración","raciones"],"",0,0,"8480000591654",2.7],
+    ["m_hacendado_yakisoba_sabor_soja","Yakisoba sabor soja","Hacendado",204,4.4,26.1,8.5,0,[100,"ración","raciones"],"",0,0,"8480000087300",3],
+    ["m_hacendado_sticks_de_patata","Sticks de patata","Hacendado",529,2.1,57,32,2.2,[100,"ración","raciones"],"",0,0,"8480000225689",0.3],
+    ["m_hacendado_aceitunas_sin_hueso","Aceitunas sin hueso","Hacendado",172,1,0,18,0,[100,"ración","raciones"],"",0,0,"8402001001581",0],
+    ["m_hacendado_arroz_com_legumes","Arroz Com Legumes","Hacendado",101,2.8,21,0.4,0,[200,"ración","raciones"],"",0,0,"8402001030932",0],
+    ["m_alesto_almendra_natural","Almendra Natural","Alesto",595,21,9,50,0,[30,"puñado","puñados"],"",0,0,"20764074",4.4],
+    ["m_hacendado_yogur_sabor_coco_0","Yogur sabor coco 0%","Hacendado",35,4.3,4.4,0.1,0,[125,"unidad","unidades"],"",0,0,"8480000213631",4.4],
+    ["m_hacendado_harina_fina_de_maiz","Harina Fina de Maíz","Hacendado",359,0.3,90,0.5,0.8,[100,"ración","raciones"],"",0,1,"8480000095886",0.5],
+    ["m_hacendado_aceitunas_partidas_alina","Aceitunas partidas aliñadas estilo casero","Hacendado",184,1.2,0,19,0,[100,"ración","raciones"],"",0,0,"8402001000775",0],
+    ["m_hacendado_seitan","Seitan","Hacendado",124,24.1,2.9,1.8,0.1,[250,"ración","raciones"],"",0,0,"8480000865274",0.4],
+    ["m_hacendado_pasta_rellena_de_parmigi","Pasta rellena de parmigiano reggiano y trufa","Hacendado",268,11,30,12,2.3,[100,"ración","raciones"],"",0,1,"8402001001451",4.9],
+    ["m_hacendado_cacao","Cacao","Hacendado",522,5.5,61,27.7,0,[100,"ración","raciones"],"",0,0,"8480000142399",38.9],
+    ["m_hacendado_lomo_embuchado","Lomo embuchado","Hacendado",199,38,0.5,5,0,[31,"ración","raciones"],"",0,0,"8480000590756",0.5],
+    ["m_hacendado_salsa_de_tomate_con_alba","Salsa de tomate con albahaca","Hacendado",34,1.1,5.8,0.5,0,[400,"ración","raciones"],"",1,0,"8402001023712",5.2],
+    ["m_hacendado_topping_choco_avellana","Topping choco avellana","Hacendado",584,4.9,51,40,1.8,[15,"ración","raciones"],"",0,0,"8402001028151",50],
+    ["m_hacendado_queso_de_vaca_madurado","Queso de Vaca Madurado","Hacendado",368,21,0.5,31,0,[25,"ración","raciones"],"",0,0,"8402001036736",0.5],
+    ["m_carrefour_almendras","Almendras","Carrefour",647,24,8.5,55,11,[25,"ración","raciones"],"",0,0,"3560070778546",4.6],
+    ["m_carrefour_anacardos_tostados_sin_s","Anacardos tostados sin sal añadida","Carrefour",613,21,27,46,4.4,[200,"ración","raciones"],"",0,0,"3560071237981",6.2],
+    ["m_hacendado_palomitas_sabor_mantequi","Palomitas sabor mantequilla para microondas","Hacendado",433,13.9,47,17.8,15.6,[90,"ración","raciones"],"",0,0,"8480000342126",1],
+    ["m_hacendado_salchichas_bocata","Salchichas bocata","Hacendado",211,13.5,0.7,17,0,[100,"ración","raciones"],"",0,0,"8480000530325",0.5],
+    ["m_hacendado_queso_cheddar","Queso Cheddar","Hacendado",392,26,0,32,0,[20,"ración","raciones"],"",0,0,"8480000550170",null],
+    ["m_hacendado_pizza_4_quesos","Pizza 4 quesos","Hacendado",267,14.4,27.6,11,0,[100,"ración","raciones"],"",0,0,"8480000635808",2.2],
+    ["m_hacendado_patatas_paja","Patatas paja","Hacendado",545,6.9,51,34,0,[100,"ración","raciones"],"",0,0,"8480000336248",0],
+    ["m_hacendado_tomate_doble_concentrado","Tomate doble concentrado","Hacendado",115,5.3,21,0.6,0,[100,"ración","raciones"],"",1,0,"8480000160744",15.2],
+    ["m_hacendado_sopa_hortelana","Sopa hortelana","Hacendado",72,1.3,11,2.4,0.9,[350,"ración","raciones"],"",0,0,"8402001042669",1.2],
+    ["m_carrefour_nueces_peladas","Nueces peladas","Carrefour",686,16,5.3,65,7.3,[30,"puñado","puñados"],"",0,0,"3560071251802",3.5],
+    ["m_alesto_anacardos_tostados_y_sal","Anacardos tostados y salados","Alesto",618,18.5,21.7,50,3.7,[30,"ración","raciones"],"",0,0,"20413422",5.8],
+    ["m_carrefour_cacahuete_y_pistacho","Cacahuete y Pistacho","Carrefour",581,25,20,43,4.9,[30,"puñado","puñados"],"",0,0,"8431876327052",5.6],
+    ["m_hacendado_cacahuete_tostado_sal","Cacahuete tostado sal","Hacendado",609,28,8.9,49,9.2,[30,"puñado","puñados"],"",0,0,"8480000340160",5.5],
+    ["m_hacendado_guisantes","Guisantes","Hacendado",82,6,11,0.4,5,[200,"ración","raciones"],"",1,0,"8480000612151",2.8],
+    ["m_hacendado_pasta_tiburon","Pasta tiburón","Hacendado",361,13,72,1.5,3.5,[500,"ración","raciones"],"",0,1,"8480000062444",3.6],
+    ["m_hacendado_tomate_para_untar_con_ac","Tomate para untar con aceite de oliva","Hacendado",62,1.1,5,4,0,[10,"cucharada","cucharadas"],"",1,0,"8480000160041",3.9],
+    ["m_hacendado_3_barras_de_pan","3 barras de pan","Hacendado",268,8.9,54,1.3,2.9,[100,"ración","raciones"],"",0,0,"8480000832030",2.7],
+    ["m_hacendado_salmon_marinado","Salmón marinado","Hacendado",237,20,0.5,18,0,[80,"ración","raciones"],"",0,0,"8480000534460",0.5],
+    ["m_hacendado_girasoles_queso_de_cabra","Girasoles queso de cabra y cebolla caramelizada","Hacendado",273,9.2,35,11,2.7,[100,"ración","raciones"],"",0,0,"8402001008894",4.9],
+    ["m_hacendado_pizza_formaggi","Pizza Formaggi","Hacendado",280,14.7,27,12.3,0,[400,"ración","raciones"],"",0,0,"8480000679475",1.8],
+    ["m_hacendado_pasta_rellena_de_calabaz","Pasta rellena de calabaza y crema de quesos","Hacendado",227,7.3,35,6.5,1.9,[100,"ración","raciones"],"",0,0,"8402001001475",7.2],
+    ["m_hacendado_queso_burgos_desnatado","Queso burgos desnatado","Hacendado",67,12,3.9,0.4,0,[100,"ración","raciones"],"",0,0,"8480000524072",3.9],
+    ["m_carrefour_anacardo","Anacardo","Carrefour",595,21,22,47,3.4,[30,"puñado","puñados"],"",0,0,"3560071195434",5.2],
+    ["m_hacendado_pipas_de_girasol_bbq","Pipas de girasol BBQ","Hacendado",622,31.5,3.6,51.7,8.2,[30,"puñado","puñados"],"",0,0,"8480000340436",3],
+    ["m_hacendado_pan_tostado_con_pasas","Pan tostado con pasas","Hacendado",417,9.8,71,9.7,3.3,[100,"ración","raciones"],"",0,0,"8480000826657",16],
+    ["m_hacendado_aceite_de_oliva","Aceite de oliva","Hacendado",822,0,6.9,91,0,[10,"cucharada","cucharadas"],"",1,0,"8480000046413",0],
+    ["m_hacendado_harina_de_maiz_blanco_pr","Harina de Maíz Blanco Precocida","Hacendado",357,9.2,75,1.6,3,[100,"ración","raciones"],"",0,1,"8480000291653",0.6],
+    ["m_hacendado_pizza_fresca_serrana","Pizza fresca serrana","Hacendado",261,15.5,28.6,9.4,0,[400,"ración","raciones"],"",0,0,"8480000635518",2.4],
+    ["m_hacendado_mantequilla_sin_lactosa_","Mantequilla sin lactosa con sal","Hacendado",734,0.5,0.8,81,0,[100,"ración","raciones"],"",0,0,"8480000212696",0.8],
+    ["m_hacendado_tomate_seco","Tomate Seco","Hacendado",140,2.9,7.8,9.5,5.7,[250,"vaso","vasos"],"",1,0,"8480000160461",5.2],
+    ["m_hacendado_pate_de_atun","Paté de Atún","Hacendado",216,9.6,5.8,17.1,0,[80,"ración","raciones"],"",0,0,"8480000138675",0.7],
+    ["m_hacendado_tarteletes_fresa","Tarteletes Fresa","Hacendado",443,4.6,71,15,1.8,[100,"ración","raciones"],"",0,0,"8480000141736",36],
+    ["m_hacendado_cacao_a_la_taza","Cacao a la taza","Hacendado",374,6,78,2.6,7.4,[100,"ración","raciones"],"",0,0,"8480000125859",58],
+    ["m_hacendado_turron_de_chocolate_cruj","Turrón de chocolate crujiente","Hacendado",519,6.9,58,28,3.4,[18,"ración","raciones"],"",1,0,"8480000678751",48],
+    ["m_hacendado_snack_de_queso","Snack de Queso","Hacendado",355,23,0.5,29,0,[20,"ración","raciones"],"",0,0,"8480000509338",0.5],
+    ["m_hacendado_cacao_soluble","Cacao soluble","Hacendado",373,6.8,74,3.3,10,[15,"cucharada","cucharadas"],"",0,0,"8480000804693",70],
+    ["m_hacendado_queso_provolone","Queso provolone","Hacendado",365,24,2,29,0,[100,"ración","raciones"],"",0,0,"8480000048486",2],
+    ["m_hacendado_trottole_vegetales_veget","Trottole Vegetales Vegetais","Hacendado",362,13,72,1.5,4,[100,"ración","raciones"],"",0,0,"8402001021398",3],
+    ["m_hacendado_poke_salmon","Poke salmón","Hacendado",139,5.2,24,2.3,0,[100,"ración","raciones"],"",0,0,"8480000849977",7],
+    ["m_hacendado_turron_de_chocolate_y_ca","Turrón de chocolate y cacahuete frito con miel","Hacendado",532,9.2,53,31,2.7,[250,"vaso","vasos"],"",1,0,"8402001023965",52],
+    ["m_hacendado_bifidus_0_probioticos_ki","Bifidus 0% Probióticos Kiwi","Hacendado",48,3.9,7.7,0.1,0.3,[125,"ración","raciones"],"",0,0,"8402001040337",5.5],
+    ["m_dia_anacardos_fritos","Anacardos fritos","Dia",609,20.7,17.6,49.8,3.8,[30,"puñado","puñados"],"",0,0,"8480017253583",8.2],
+    ["m_hacendado_nueces_de_macadamia","Nueces de macadamia","Hacendado",758,8.6,5.8,77,6.3,[30,"puñado","puñados"],"",0,0,"8480000348388",3.5],
+    ["m_hacendado_chorizo_picante_extra","Chorizo picante extra","Hacendado",443,25,0.2,38,0,[100,"ración","raciones"],"",0,0,"8480000542106",0.2],
+    ["m_hacendado_lentejas","Lentejas","Hacendado",320,24.5,48.1,1.2,9.6,[100,"ración","raciones"],"",0,1,"8480000053251",1.3],
+    ["m_hacendado_mejillones_en_escabeche_","Mejillones en escabeche con aceite de girasol","Hacendado",158,18,6,7.1,0,[10,"cucharada","cucharadas"],"",0,0,"8480000186096",0.5],
+    ["m_hacendado_palitos_de_merluza_reboz","Palitos de merluza (rebozado)","Hacendado",193,6.8,32,4.4,0,[500,"ración","raciones"],"",0,0,"8480000631510",1.5],
+    ["m_hacendado_masa_fresca_pizza","Masa fresca pizza","Hacendado",270,8.6,49.5,4.2,0,[100,"ración","raciones"],"",0,0,"8480000634603",3.6],
+    ["m_hacendado_espinacas_a_la_crema","Espinacas a la crema","Hacendado",67,2.9,4,4,1.7,[100,"ración","raciones"],"",0,0,"8480000613684",2.2],
+    ["m_hacendado_galleta_rellena_de_crema","Galleta rellena de crema y recubierta de","Hacendado",499,6.3,65,23,3.2,[39,"ración","raciones"],"",0,0,"8480000141514",34],
+    ["m_hacendado_queso_fresco_villalon","Queso fresco villalón","Hacendado",183,11,3.3,14,0,[100,"ración","raciones"],"",0,0,"8480000503954",2],
+    ["m_hacendado_salteado_de_patata_y_sal","Salteado de patata y salchicha","Hacendado",149,4.3,17,6.6,2.1,[100,"ración","raciones"],"",0,0,"8480000610539",1.5],
+    ["m_hacendado_nuggets_pavo","Nuggets pavo","Hacendado",218,12.3,15.2,11.8,0.7,[100,"ración","raciones"],"",0,0,"8480000630070",0.3],
+    ["m_hacendado_pepinillos_agridulces_la","Pepinillos agridulces laminados","Hacendado",53,0.4,11,1,0.4,[250,"vaso","vasos"],"",1,0,"8480000331007",8.6],
+    ["m_hacendado_migas_de_bonito_del_nort","Migas de bonito del norte en aceite de oliva","Hacendado",192,25,0.6,10,0,[10,"cucharada","cucharadas"],"",0,0,"8480000168122",0.5],
+    ["m_hacendado_cafe_molido_descafeinado","Café molido descafeinado","Hacendado",327,14,13,13,52,[8,"ración","raciones"],"",0,0,"8480000135926",2.1],
+    ["m_hacendado_cafe_molido_mezcla","Café molido mezcla","Hacendado",321,17,8,9.5,49,[100,"ración","raciones"],"",0,0,"8480000159236",2.7],
+    ["m_hacendado_lasana_de_atun_congelada","Lasaña de atún congelada","Hacendado",161,9.6,15,6.7,0,[100,"ración","raciones"],"",0,0,"8480000865984",2.9],
+    ["m_hacendado_mini_helados","Mini helados","Hacendado",310,3.9,30.8,19,0.8,[41,"ración","raciones"],"",0,0,"8402001009259",30.4],
+    ["m_hacendado_mini_croissants_mantequi","Mini Croissants Mantequilla","Hacendado",503,7.9,48,31,0,[20,"ración","raciones"],"",0,0,"8433709132772",7.3],
+    ["m_hacendado_helado_peanut_butter_cup","Helado Peanut Butter Cups","Hacendado",289,6,25,18,1.4,[100,"ración","raciones"],"",0,0,"8402001019241",23],
+    ["m_hacendado_helices_vegetales","Hélices vegetales","Hacendado",362,13,76,1.5,4,[100,"ración","raciones"],"",0,0,"8402001015717",0],
+    ["m_hacendado_girasoles_quesos","Girasoles quesos","Hacendado",274,10,35,10,2.2,[250,"ración","raciones"],"",0,0,"8480000061454",6.7],
+    ["m_hacendado_funghi_salsa_fresca","Funghi salsa fresca","Hacendado",120,3,4.3,10,0.5,[100,"ración","raciones"],"",0,0,"8402001023392",4],
+    ["m_carrefour_pistachos","Pistachos","Carrefour",596,26,15,47,6.5,[25,"ración","raciones"],"",0,0,"3560070590179",5.9],
+    ["m_carrefour_cocktail_de_frutos_secos","Cocktail de frutos secos tostados y salados","Carrefour",657,25,5.6,58,7.3,[25,"ración","raciones"],"",0,0,"3560070713615",4.3],
+    ["m_carrefour_almendras_tostadas_y_sal","Almendras tostadas y saladas","Carrefour",627,27,6.4,53,8.5,[30,"puñado","puñados"],"",0,0,"3560071016951",4.4],
+    ["m_carrefour_cocktail_japanese_style","Cocktail japanese style","Carrefour",390,9.4,71,6.8,3.7,[100,"ración","raciones"],"",0,0,"3560070728596",8.9],
+    ["m_hacendado_pepinillos_en_vinagre","Pepinillos en vinagre","Hacendado",15,0.9,2.2,0.5,0.8,[250,"vaso","vasos"],"",1,0,"8480000331823",0.5],
+    ["m_hacendado_dados_queso","Dados queso","Hacendado",425,26,1.4,35,0,[25,"ración","raciones"],"",0,0,"8480000511119",0.4],
+    ["m_hacendado_queso_fresco_vaca_y_cabr","Queso fresco vaca y cabra","Hacendado",241,15,2.7,19,0,[100,"ración","raciones"],"",0,0,"8480000512000",2.7],
+    ["m_hacendado_patatas_fritas_corte_fin","Patatas fritas corte fino","Hacendado",156,2.5,24,5,2.5,[100,"ración","raciones"],"",0,0,"8480000614216",0.5],
+    ["m_hacendado_gelatina_de_fresa","Gelatina de fresa","Hacendado",56,1.4,13,0,0,[100,"ración","raciones"],"",0,0,"8480000323613",12],
+    ["m_hacendado_ensalada_4_estaciones","Ensalada 4 estaciones","Hacendado",17,0.9,2,0.2,2.4,[100,"ración","raciones"],"",1,0,"8425779044482",1.5],
+    ["m_hacendado_orejones_de_albaricoque","Orejones de albaricoque","Hacendado",208,2.8,46,0,6.5,[100,"ración","raciones"],"",0,0,"8480000138774",34.9],
+    ["m_hacendado_galletas_danesas","Galletas Danesas","Hacendado",499,5.3,66,23,0,[40,"unidad","unidades"],"",0,0,"8480000137906",29],
+    ["m_hacendado_magdalenas","Magdalenas","Hacendado",436,5.4,54,23,1.3,[34,"ración","raciones"],"",0,0,"8480000608468",28],
+    ["m_hacendado_pasta_rellena_de_jamon_y","Pasta rellena de jamón y queso","Hacendado",269,10,38,8.2,2.7,[100,"ración","raciones"],"",0,1,"8402001015724",4.9],
+    ["m_hacendado_pepinillos_agridulces","Pepinillos agridulces","Hacendado",56,0.9,11,0.5,1,[230,"ración","raciones"],"",1,0,"8480000054814",11],
+    ["m_hacendado_barrita_peanuts_cacahuet","Barrita peanuts cacahuete y caramelo","Hacendado",502,9.5,52,28,0,[36,"ración","raciones"],"",0,0,"8402001013102",42],
+    ["m_hacendado_queso_emmental_gratinar","Queso emmental gratinar","Hacendado",369,27,0.5,29,0,[100,"ración","raciones"],"",0,0,"8402001025778",0.5],
+    ["m_hacendado_chips_con_sabor_nata_y_c","Chips Con Sabor Nata Y Cebollas","Hacendado",552,3.7,56,34,3.4,[175,"ración","raciones"],"",0,0,"8402001023163",2.1],
+    ["m_dia_anacardo_al_natural","Anacardo al Natural","Dia",553,18.2,26.9,43.8,0,[30,"puñado","puñados"],"",0,0,"8480017241573",5.9],
+    ["m_naturmund_cacahuete_frito_salado","Cacahuete frito salado","Naturmund",603,28,5.9,52.5,8.2,[20,"ración","raciones"],"",0,0,"8480017230669",4.2],
+    ["m_carrefour_cocktail_aceitunas","Cocktail aceitunas","Carrefour",645,19,22,52,7.7,[200,"ración","raciones"],"",0,0,"3560071453572",4.9],
+    ["m_hacendado_bolas_de_cereal_banadas_","Bolas de cereal bañadas de chocolate","Hacendado",521,6.3,59,28.2,2.6,[100,"ración","raciones"],"",0,0,"8480000340467",42.3],
+    ["m_hacendado_arroz_congelado_para_mic","Arroz congelado para micro","Hacendado",126,2.7,28.1,0.3,0.4,[167,"ración","raciones"],"",0,0,"8480000613028",0],
+    ["m_hacendado_zanahoria","Zanahoria","Hacendado",39,0.6,7.8,0.5,1.6,[250,"vaso","vasos"],"",1,0,"8480000167521",6.2],
+    ["m_hacendado_sandwiches_de_jamon_y_qu","Sandwiches de jamón y queso","Hacendado",248,14.2,29.4,8.2,0,[120,"ración","raciones"],"",0,0,"8480000590329",1.7],
+    ["m_hacendado_ventresca_de_atun_claro_","Ventresca de atún claro en aceite de oliva","Hacendado",205,25,0.7,11,0,[10,"cucharada","cucharadas"],"",0,0,"8480000180117",0.5],
+    ["m_hacendado_mermelada_de_tomate","Mermelada de tomate","Hacendado",194,0.5,48,0,0,[250,"vaso","vasos"],"",1,0,"8480000150776",44],
+    ["m_hacendado_pan_rallado_sin_gluten","Pan rallado sin gluten","Hacendado",113,2.1,23.7,1.1,0.3,[100,"ración","raciones"],"",0,0,"8480000826565",0.1],
+    ["m_hacendado_coulant_chocolate","Coulant Chocolate","Hacendado",390,6.5,40.2,21.8,3.7,[90,"ración","raciones"],"",0,0,"8480000829382",34.8],
+    ["m_hacendado_barritas_choco_galleta","Barritas choco galleta","Hacendado",501,5.1,64,25,0,[40,"ración","raciones"],"",0,0,"8480000125408",45],
+    ["m_hacendado_filetes_de_anchoa","Filetes de Anchoa","Hacendado",208,25,0,12,0,[100,"ración","raciones"],"",0,0,"8480000184009",0],
+    ["m_hacendado_tequenos_de_queso_reboza","Tequeños de Queso (rebozado)","Hacendado",343,13.1,27.3,17.7,1.9,[100,"ración","raciones"],"",0,0,"8480000134134",3.4],
+    ["m_hacendado_pan_rallado_crujiente","Pan rallado crujiente","Hacendado",371,8.1,80,1.2,3.8,[100,"ración","raciones"],"",0,0,"8480000229328",3.8],
+    ["m_hacendado_helado_de_caramelo_salad","Helado de caramelo salado","Hacendado",275,3.8,28,16,0,[100,"ración","raciones"],"",0,0,"8480000229960",27],
+    ["m_hacendado_hamburguesas_merluza_y_g","Hamburguesas merluza y gambón","Hacendado",143,10.5,8.9,7.3,0,[100,"ración","raciones"],"",0,0,"8480000877314",0.6],
+    ["m_hacendado_chocolate_con_leche_fuss","Chocolate con leche fussion relleno de galleta","Hacendado",554,5.4,56,34,1.4,[7,"ración","raciones"],"",0,0,"8480000707567",41],
+    ["m_hacendado_pan_blanco_sin_corteza","Pan blanco sin corteza","Hacendado",229,8.6,41,2.9,3.2,[28,"ración","raciones"],"",0,0,"8480000867094",1.8],
+    ["m_hacendado_preparado_para_reposteri","Preparado para repostería y panificación sin gluten","Hacendado",335,2.9,78,0.1,6,[100,"ración","raciones"],"",0,0,"8480000802927",2.2],
+    ["m_hacendado_patatas_corte_grueso_tra","Patatas corte grueso tradicional","Hacendado",143,2.1,21,4.6,4.2,[100,"ración","raciones"],"",0,0,"8402001013485",0.5],
+    ["m_hacendado_panecillo_11_uds","Panecillo 11 Uds","Hacendado",243,7.4,51,0.9,1.4,[42,"ración","raciones"],"",0,0,"8425514008021",1.7],
+    ["m_hacendado_salsa_para_patatas_gajo_","Salsa para patatas gajo rústica","Hacendado",318,0.9,3.8,32.9,0,[100,"ración","raciones"],"",0,0,"8402001012105",null],
+    ["m_hacendado_cocos","Cocos","Hacendado",214,3.3,23.2,12,0.7,[120,"ración","raciones"],"",1,0,"8480000641663",21.2],
+    ["m_hacendado_barritas_de_barquillo_co","Barritas de barquillo con relleno de avellana","Hacendado",573,7.9,50,37,2,[21,"ración","raciones"],"",0,0,"8402001023750",41],
+    ["m_hacendado_aperitivo_queso_balls","Aperitivo queso balls","Hacendado",489,6.1,63,23,2.6,[100,"ración","raciones"],"",0,0,"8402001027109",8.7],
+    ["m_hacendado_cacao_instant","Cacao Instant","Hacendado",383,4.8,80,3.2,6.9,[15,"cucharada","cucharadas"],"",0,0,"8402001023354",77],
+    ["m_hacendado_patatas_corte_fino","Patatas corte fino","Hacendado",146,2.4,21,5.4,2,[100,"ración","raciones"],"",0,0,"8402001028168",0.5],
+    ["m_hacendado_bifidus_probiotics_0_fru","Bifidus Probiotics 0% Frutos Silvestre","Hacendado",47,4,7.5,0.1,0,[125,"ración","raciones"],"",0,0,"8402001040368",5.4],
+    ["m_dia_mezcla_de_frutos_secos_n","Mezcla De Frutos Secos Naturales Tostados Y Fritos","Dia",646,20.1,11.3,56.2,7.5,[100,"ración","raciones"],"",0,0,"8480017063533",3.7],
+    ["m_alesto_mezcla_de_frutos_secos_t","Mezcla de frutos secos tostados y salados","Alesto",635,21.9,12,53.9,7,[100,"ración","raciones"],"",0,0,"20532338",4.7],
+    ["m_hacendado_zumo_de_pina_y_uva","Zumo de piña y uva","Hacendado",54,0.6,12.9,0,0,[250,"vaso","vasos"],"",1,0,"8480000391292",12.9],
+    ["m_hacendado_pan_de_molde_blanco_fami","Pan de molde blanco familiar","Hacendado",255,9,48,2.2,3.5,[32,"ración","raciones"],"",0,0,"8480000823243",5],
+    ["m_hacendado_ensaimadas","Ensaimadas","Hacendado",454,9.9,36,27,2.6,[350,"ración","raciones"],"",0,0,"8480000820907",11],
+    ["m_hacendado_pak_6_latas_atun_claro_e","Pak 6 latas Atún claro en escabeche blanco","Hacendado",108,21,0.8,3.2,0,[100,"ración","raciones"],"",0,0,"8480000180315",null],
+    ["m_hacendado_pasta_infantil_con_veget","Pasta infantil con vegetales","Hacendado",358,12,72,1.5,4,[100,"ración","raciones"],"",0,1,"8480000063335",3],
+    ["m_hacendado_fiambre_magro_sandwich","Fiambre magro sandwich","Hacendado",118,12.5,8,4,0,[100,"ración","raciones"],"",0,0,"8480000592538",1.5],
+    ["m_hacendado_cafe_espresso_natural","Café espresso natural","Hacendado",334,16,14,13,49,[7,"ración","raciones"],"",0,0,"8480000117144",1.1],
+    ["m_hacendado_super_nata","Super nata","Hacendado",331,3.9,38,17.9,1.6,[103,"ración","raciones"],"",1,0,"8480000642004",28.8],
+    ["m_hacendado_cuidacol_fresa_0","Cuidacol fresa 0%","Hacendado",47,3.3,5.2,1.4,0,[250,"vaso","vasos"],"",1,0,"8480000220028",5],
+    ["m_hacendado_ensalada_de_la_casa","Ensalada de la casa","Hacendado",45,1.3,6,1.3,2.2,[250,"vaso","vasos"],"",1,0,"8437013139106",1.7],
+    ["m_hacendado_cannelloni_de_carne_y_bo","Cannelloni de carne y boletus","Hacendado",158,8.7,12,8,1.4,[100,"ración","raciones"],"",0,0,"8480000044938",2.1],
+    ["m_hacendado_pizza_bbq","Pizza BBQ","Hacendado",250,11.9,30.1,9.1,0,[100,"ración","raciones"],"",0,0,"8480000636133",1.3],
+    ["m_hacendado_fideos_granulados_de_cho","Fideos Granulados de Chocolate","Hacendado",495,6,61,24,7,[100,"ración","raciones"],"",0,1,"8480000322272",58],
+    ["m_hacendado_leche_calcio_semidesnata","Leche calcio semidesnatada","Hacendado",51,3.9,5.2,1.6,0,[250,"vaso","vasos"],"",1,0,"8480000106858",5.2],
+    ["m_hacendado_bizcocho_recubierto_de_c","Bizcocho recubierto de chocolate sin gluten","Hacendado",470,4.6,55.2,25.6,2.9,[100,"ración","raciones"],"",0,0,"8480000827449",38.3],
+    ["m_carrefour_mezcla_de_semillas_uvas_","Mezcla de semillas & uvas pasas","Carrefour",566,24,20,42,6,[100,"ración","raciones"],"",0,0,"3560071017934",16],
+    ["m_borges_nueces_de_california_en_","Nueces de California en grano","Borges",650,15,2.8,63,6.1,[30,"puñado","puñados"],"",0,0,"8410148501833",2.3],
+    ["m_consum_nuez_mondada_natural","Nuez mondada natural","Consum",655,14,3.3,63.3,5.2,[30,"puñado","puñados"],"",0,0,"8414807552150",2.6],
+    ["m_carrefour_almendras_tostadas_sin_s","Almendras Tostadas sin sal añadida","Carrefour",628,23,3.2,55,12,[30,"puñado","puñados"],"",0,0,"3560071231750",2.4],
+    ["m_hacendado_cacahuete_frito","Cacahuete frito","Hacendado",613,23,13,50,8.4,[30,"puñado","puñados"],"",0,0,"8480000348685",5.8],
+    ["m_alesto_pistacho_tostado","Pistacho Tostado","Alesto",617,24,12,51,7,[100,"ración","raciones"],"",0,0,"4335619185050",7],
+    ["m_hacendado_queso_de_cabra_fresco","Queso de cabra fresco","Hacendado",298,18,1.8,25,0,[100,"ración","raciones"],"",0,0,"8480000133779",1.8],
+    ["m_hacendado_pera_y_manzana","Pera y manzana","Hacendado",55,0.7,11,0.5,3.7,[130,"ración","raciones"],"",1,0,"8480000221940",11],
+    ["m_hacendado_turron_crema_almendras","Turron crema almendras","Hacendado",480,12,36,36,6.6,[250,"vaso","vasos"],"",1,0,"8480000158475",4],
+    ["m_hacendado_cafe_natural_extraforte","Café natural extraforte","Hacendado",303,19,12,8,53,[100,"ración","raciones"],"",0,0,"8480000110770",0],
+    ["m_hacendado_bifidus_cremoso_coco","Bífidus cremoso coco","Hacendado",93,4.6,12,3,0,[100,"ración","raciones"],"",0,0,"8480000679772",12],
+    ["m_hacendado_melocoton_y_uva","Melocotón y uva","Hacendado",55,0.7,12.3,0.2,0.8,[250,"ración","raciones"],"",1,0,"8480000860392",10.9],
+    ["m_hacendado_ice_tea_melocoton","Ice Tea Melocotón","Hacendado",21,0,4.8,0,0,[250,"vaso","vasos"],"",1,0,"8480000804785",4.7],
+    ["m_hacendado_azucar_moreno_de_cana","Azúcar Moreno de Caña","Hacendado",400,0,99,0,0,[7,"ración","raciones"],"",0,0,"8402001010545",99],
+    ["m_hacendado_piparra","Piparra","Hacendado",22,1.6,2.8,0,1.3,[130,"ración","raciones"],"",1,0,"8480000159670",0.7],
+    ["m_hacendado_mini_almendrado","Mini Almendrado","Hacendado",314,4.6,31.1,18.8,0.8,[44,"ración","raciones"],"",0,0,"8402001009235",30.6],
+    ["m_hacendado_mini_biscote_100_integra","Mini biscote 100% integral","Hacendado",405,13,59,10,10,[100,"ración","raciones"],"",0,0,"8480000222138",2.7],
+    ["m_hacendado_turron_yogur_con_frutos_","Turrón Yogur con Frutos Rojos","Hacendado",525,6.3,58,29,0,[250,"vaso","vasos"],"",1,0,"8402001024016",56],
+    ["m_hacendado_chorizo_extra","Chorizo Extra","Hacendado",452,17,1.5,42,0,[100,"ración","raciones"],"",0,0,"8402001030222",null],
+    ["m_hacendado_bolitas_de_coco","Bolitas De Coco","Hacendado",485,2.6,64,23,6,[100,"ración","raciones"],"",0,0,"8402001038365",63],
+    ["m_carrefour_pistachos_tostados_y_sal","Pistachos tostados y salados","Carrefour",583,19,12,49,9,[30,"puñado","puñados"],"",0,0,"3560071044510",7.5],
+    ["m_alcampo_nueces_mondadas","Nueces mondadas","Alcampo",712,6,18.4,68,1.6,[30,"puñado","puñados"],"",0,0,"8435177059162",3.6],
+    ["m_consum_cashews_anacardos_natura","Cashews Anacardos Natural","Consum",553,18,30,44,3.3,[100,"ración","raciones"],"",0,0,"8414807559937",5.6],
+    ["m_carrefour_cacahuetes_fritos_y_sala","Cacahuetes fritos y salados","Carrefour",613,26,11,50,8.3,[30,"puñado","puñados"],"",0,0,"3560071563158",5.8],
+    ["m_hacendado_mantequilla_sin_sal_anad","Mantequilla Sin Sal Añadida","Hacendado",743,0.5,0.8,82,0,[13,"ración","raciones"],"",0,0,"8480000208521",0.8],
+    ["m_hacendado_ensalada_california","Ensalada california","Hacendado",226,5.3,18,14,0,[192,"ración","raciones"],"",0,0,"8437004621771",8.6],
+    ["m_hacendado_fideo_mediano","Fideo mediano","Hacendado",366,12,74,1.5,4,[100,"ración","raciones"],"",0,1,"8480000062567",3.5],
+    ["m_hacendado_alino_de_aceite_con_pere","Aliño de aceite con perejil y ajo","Hacendado",725,0.5,12.6,75,0,[10,"cucharada","cucharadas"],"",1,0,"8480000172655",0.4],
+    ["m_hacendado_granizado_limon_sin_azuc","Granizado limón sin azúcar","Hacendado",35,0.1,9,0.1,2.5,[200,"ración","raciones"],"",1,0,"8480000641274",0.2],
+    ["m_hacendado_maxi_burger_pan","Maxi Burger pan","Hacendado",277,9.4,44,6.2,3.6,[75,"ración","raciones"],"",0,0,"8480000823304",4.7],
+    ["m_hacendado_ensalada_de_wakame","Ensalada de wakame","Hacendado",74,1.4,6,4,4.4,[100,"ración","raciones"],"",0,0,"8480000693839",3],
+    ["m_hacendado_pizza_4_quesos_sin_glute","Pizza 4 quesos sin gluten y sin lactosa","Hacendado",241,10.2,26.8,10.3,0,[100,"ración","raciones"],"",0,0,"8480000636232",2],
+    ["m_hacendado_helado_choco_nata","Helado Choco Nata","Hacendado",319,4,41,15,2.2,[100,"ración","raciones"],"",0,0,"8480000642516",30],
+    ["m_hacendado_petit_de_bolsillo_fresa","Petit de bolsillo fresa","Hacendado",97,6.3,12,2.6,0,[250,"vaso","vasos"],"",1,0,"8480000680891",11],
+    ["m_hacendado_pizza_carbonara_rebozado","Pizza carbonara (rebozado)","Hacendado",255,10.9,33,8.3,0,[100,"ración","raciones"],"",0,0,"8480000636324",2.7],
+    ["m_hacendado_berlina_al_cacao","Berlina al cacao","Hacendado",470,6.3,40,31.7,2.3,[60,"ración","raciones"],"",0,0,"8480000847850",14.8],
+    ["m_hacendado_cono_de_nata","Cono de nata","Hacendado",299,3.9,37,15,0,[390,"ración","raciones"],"",0,0,"8480000641960",28],
+    ["m_hacendado_helados_de_mango","Helados de mango","Hacendado",100,0,24.7,0,0,[77,"ración","raciones"],"",0,0,"8480000642202",18.2],
+    ["m_hacendado_roditas_chocolate_blanco","Roditas chocolate blanco","Hacendado",502,6.6,64,24,1.7,[9,"ración","raciones"],"",0,0,"8480000138118",35],
+    ["m_hacendado_chorizo_de_pavo","Chorizo de pavo","Hacendado",252,26,3.3,15,0,[38,"ración","raciones"],"",0,0,"8480000591586",3.3],
+    ["m_hacendado_lomo_de_pavo","Lomo de Pavo","Hacendado",215,40,0.7,5.8,0,[100,"ración","raciones"],"",0,0,"8480000591388",0.7],
+    ["m_hacendado_batido_vainilla","Batido vainilla","Hacendado",51,1.9,9.6,0.5,0,[250,"vaso","vasos"],"",1,0,"8402001000829",9.6],
+    ["m_hacendado_aceitunas_rellenas_de_an","Aceitunas rellenas de anchoa","Hacendado",143,1.4,0.5,15,0,[100,"ración","raciones"],"",0,0,"8480000229113",0],
+    ["m_hacendado_batido_de_frutos_silvest","Batido de Frutos silvestres +Proteinas","Hacendado",48,6.9,4.1,0.4,0,[160,"ración","raciones"],"",1,0,"8402001010286",3.7],
+    ["m_hacendado_leche_condensada_desnata","Leche Condensada Desnatada","Hacendado",274,8.5,59,0.5,0,[20,"ración","raciones"],"",1,0,"8480000603463",59],
+    ["m_hacendado_sardina_marinada","Sardina Marinada","Hacendado",271,20,0.8,20.9,0,[100,"ración","raciones"],"",0,0,"8402001013652",0],
+    ["m_hacendado_leche_calcio_desnatada","Leche calcio desnatada","Hacendado",40,3.9,5.3,0.3,0,[250,"vaso","vasos"],"",1,0,"8480000108470",5.3],
+    ["m_hacendado_tomate_pelado_entero","Tomate pelado entero","Hacendado",22,1,4.1,0,0,[480,"ración","raciones"],"",1,0,"8402001014413",3.4],
+    ["m_hacendado_pan_de_leche","Pan de leche","Hacendado",333,8.5,50,10,2.3,[40,"ración","raciones"],"",0,0,"8402001018831",17],
+    ["m_hacendado_cafe_con_leche_galao","Café con Leche Galao","Hacendado",24,1.6,2.6,0.8,1,[155,"ración","raciones"],"",0,0,"8402001022333",1.6],
+    ["m_hacendado_cafe_soluble_selection","Café soluble selection","Hacendado",261,24.7,28.4,0,24.3,[15,"cucharada","cucharadas"],"",0,0,"8402001015229",0],
+    ["m_hacendado_chocolate_72","Chocolate 72%","Hacendado",568,10,32,42,11,[100,"ración","raciones"],"",0,0,"8480000237866",27],
+    ["m_hacendado_bizcocho_de_yogur","Bizcocho de yogur","Hacendado",397,5,49,20,2.3,[125,"unidad","unidades"],"",0,0,"8402001037863",20],
+    ["m_aldi_crema_de_anacardo","Crema de anacardo","Aldi",594,18.2,30.2,43.8,3.3,[30,"puñado","puñados"],"",0,0,"2024060072324",5.9],
+    ["m_carrefour_almendra_en_polvo","Almendra en polvo","Carrefour",640,24,8.8,55,8.5,[15,"cucharada","cucharadas"],"",0,0,"3560071463229",4.6],
+    ["m_naturmundo_cacahuetes_tostados_sin_","Cacahuetes tostados sin sal","Naturmundo",587,27,11,46.2,0,[30,"puñado","puñados"],"",0,0,"8480017307576",5.5],
+    ["m_hacendado_pate_de_jamon","Paté de jamón","Hacendado",172,10.7,4.2,12.5,0,[100,"ración","raciones"],"",0,0,"8480000523358",1],
+    ["m_hacendado_helados_de_fresa","Helados de Fresa","Hacendado",94,0,23,0,0,[75,"ración","raciones"],"",1,0,"8480000644190",21],
+    ["m_hacendado_pan_rallado_con_ajo_y_pe","Pan rallado con ajo y perejil","Hacendado",365,10,76,1.4,3.8,[10,"ración","raciones"],"",0,0,"8480000822277",5.8],
+    ["m_hacendado_pizza_atun_ultracongelad","Pizza atún ultracongelada","Hacendado",262,12.7,25.1,12.3,0,[49,"ración","raciones"],"",0,0,"8480000635013",2.9],
+    ["m_hacendado_helados_de_naranja","Helados de naranja","Hacendado",89,0,22,0,0,[77,"ración","raciones"],"",1,0,"8480000640123",20],
+    ["m_hacendado_helados_mini_nata_sin_az","Helados mini nata sin azúcares","Hacendado",314,5.6,41.7,17.6,0,[100,"ración","raciones"],"",0,0,"8480000642479",3.6],
+    ["m_hacendado_alubia_blanca","Alubia blanca","Hacendado",292,21.4,40,1,18.9,[100,"ración","raciones"],"",0,0,"8480000051240",2.3],
+    ["m_hacendado_helado_choco_cookies","Helado Choco Cookies","Hacendado",298,5.5,32,16,2,[100,"ración","raciones"],"",0,0,"8480000644244",28],
+    ["m_hacendado_batido_sabor_fresa","Batido sabor fresa","Hacendado",60,1.9,12,0.5,0,[250,"vaso","vasos"],"",1,0,"8480000100542",12],
+    ["m_hacendado_pizza_de_atun_y_bacon","Pizza de atún y bacon","Hacendado",263,14,27,11,0,[100,"ración","raciones"],"",0,0,"8480000635822",1.6],
+    ["m_hacendado_aceitunas_verdes_rellena2","Aceitunas verdes rellenas de jalapeño","Hacendado",154,1.2,1.1,15.5,0,[50,"ración","raciones"],"",0,0,"8480000331786",0.5],
+    ["m_hacendado_alubia_granja","Alubia granja","Hacendado",74,5.1,9.9,0.4,0,[100,"ración","raciones"],"",0,0,"8480000260024",1.3],
+    ["m_hacendado_spaghetti_fino","Spaghetti fino","Hacendado",361,11,72,1.5,4,[100,"ración","raciones"],"",0,1,"8480000062772",3.5],
+    ["m_hacendado_ensalada_queso_de_cabra","Ensalada queso de cabra","Hacendado",137,4.5,12,7.6,1.4,[135,"ración","raciones"],"",0,0,"8480000694744",8.5],
+    ["m_hacendado_leche_crecimiento_cacao_","Leche crecimiento cacao y cereales","Hacendado",90,2.5,12.5,3.4,1,[200,"ración","raciones"],"",1,0,"8480000091901",6.8],
+    ["m_hacendado_boquerones_en_vinagre","Boquerones en vinagre","Hacendado",297,14.3,0.8,26.6,0,[100,"ración","raciones"],"",0,0,"8480000806925",0],
+    ["m_hacendado_nata_choco","Nata choco","Hacendado",251,3.2,25.5,14.9,0.8,[100,"ración","raciones"],"",0,0,"8480000707116",25],
+    ["m_hacendado_chocolate_con_leche_fuss2","Chocolate con leche fussion relleno de avellanas","Hacendado",558,6.7,52,35,2.4,[20,"ración","raciones"],"",0,0,"8480000155276",49],
+    ["m_hacendado_arroz_de_secreto_iberico","Arroz de secreto ibérico con setas","Hacendado",207,6.5,24.5,8.8,1.7,[280,"ración","raciones"],"",0,0,"8480000227676",1.3],
+    ["m_hacendado_filetes_de_caballa_del_s22","Filetes de caballa del sur","Hacendado",177,25,0.5,8.5,0,[100,"ración","raciones"],"",0,0,"8480000136282",0.1],
+    ["m_hacendado_cafe_soluble_descafeinad","Café soluble descafeinado","Hacendado",266,17,38,0.6,21,[15,"cucharada","cucharadas"],"",1,0,"8480000227195",0],
+    ["m_hacendado_pate_pollo_asado","Paté Pollo Asado","Hacendado",213,12,9.9,13.9,0,[100,"ración","raciones"],"",0,0,"8480000235961",1.7],
+    ["m_hacendado_batido_de_chocolate_90_l","Batido de chocolate 90% leche","Hacendado",81,3.5,11,2.5,0,[250,"vaso","vasos"],"",1,0,"8480000230508",10],
+    ["m_hacendado_triple_chocolate","Triple chocolate","Hacendado",354,3.2,32,23,3.3,[100,"ración","raciones"],"",0,0,"8006040610089",28],
+    ["m_hacendado_patatas_fritas_lisas","Patatas fritas lisas","Hacendado",519,6.9,56,29,4.6,[100,"ración","raciones"],"",0,0,"8402001001635",0.5],
+    ["m_hacendado_bebida_energetica_furiou","Bebida energética Furious","Hacendado",48,0,11.3,0,0,[250,"vaso","vasos"],"",1,0,"8480000403223",11.2],
+    ["m_hacendado_arroz_negro","Arroz negro","Hacendado",114,4.3,20,1.8,0.5,[100,"ración","raciones"],"",0,0,"8402001008757",0.7],
+    ["m_hacendado_chocolate_con_leche_alme","Chocolate con leche almendras troceadas","Hacendado",545,9.2,51,33,3.6,[30,"puñado","puñados"],"",0,0,"8480000238375",48],
+    ["m_hacendado_cream_cookies","Cream Cookies","Hacendado",524,4.9,59.4,29,3.1,[20,"ración","raciones"],"",0,0,"8402001018299",36.6],
+    ["m_hacendado_calzone_jamon_cocido_y_q","Calzone jamón cocido y queso","Hacendado",235,13.4,21.5,10.3,0,[100,"ración","raciones"],"",0,0,"8480000225498",1.4],
+    ["m_hacendado_salmon_con_verduras","Salmón con verduras","Hacendado",157,9.6,12,7.5,0,[400,"ración","raciones"],"",0,0,"8480000084842",1.1],
+    ["m_hacendado_crema_de_alcachofa","Crema de alcachofa","Hacendado",38,1.3,5.4,1,1.2,[100,"ración","raciones"],"",0,0,"8402001022395",1.8],
+    ["m_hacendado_mix_mini_barritas_de_cho","Mix mini barritas de chocolate","Hacendado",445,3.6,71,16,0,[20,"ración","raciones"],"",0,0,"8402001020520",61],
+    ["m_hacendado_sopa_de_cebolla","Sopa De Cebolla","Hacendado",13,0.4,1.9,0.3,0.2,[250,"ración","raciones"],"",1,0,"8402001017902",0.8],
+    ["m_hacendado_barritas_pop_corn","Barritas Pop Corn","Hacendado",425,8,45,19,21,[40,"unidad","unidades"],"",0,0,"8402001025983",17],
+    ["m_hacendado_patatas_bravas","Patatas bravas","Hacendado",164,2.2,16,9.7,0,[100,"ración","raciones"],"",0,0,"8402001028809",1.1],
+    ["m_hacendado_pizza_carnivora","Pizza carnívora","Hacendado",260,13.1,26.9,10.6,0,[100,"ración","raciones"],"",0,0,"8402001030796",2.9],
+    ["m_hacendado_bocadillo_pan","Bocadillo Pan","Hacendado",259,8.1,52,1.1,3.5,[130,"ración","raciones"],"",0,0,"8480000096647",2.8],
+    ["m_hacendado_golosinas_tubos_pica_sab","Golosinas tubos pica sabor fresa y nata","Hacendado",377,1,89,1.8,0,[100,"ración","raciones"],"",0,0,"8402001032813",44],
+    ["m_hacendado_topping_ensalada","Topping ensalada","Hacendado",382,13.5,21.6,24.4,11.2,[45,"ración","raciones"],"",0,0,"8402001034572",8.3],
+    ["m_hacendado_bizcocho_azucar_sin_glut","Bizcocho azúcar sin gluten","Hacendado",420,5,46,24,1,[100,"ración","raciones"],"",0,0,"8402001038211",22],
+    ["m_carrefour_helado_pistacho","Helado pistacho","Carrefour",179,2.2,26,7.5,0.6,[30,"puñado","puñados"],"",0,0,"3560071449315",21],
+    ["m_alcampo_almendra_natural","Almendra natural","Alcampo",617,25,4.6,53,11,[25,"ración","raciones"],"",0,0,"8435177059728",3.8],
+    ["m_alesto_pistacho","Pistacho","Alesto",612,25,11,50,0,[30,"puñado","puñados"],"",0,0,"4056489316022",8.8],
+    ["m_alesto_mix_frutos_secos_tostado","Mix frutos secos tostados con sal","Alesto",640,21.2,11.4,55.1,7,[30,"ración","raciones"],"",0,0,"4056489849988",4.5],
+    ["m_carrefour_almendra_molida","Almendra molida","Carrefour",637,26,5.9,54,9.4,[30,"puñado","puñados"],"",0,0,"3560071175405",4.1],
+    ["m_hacendado_pan_rallado_casero","Pan rallado casero","Hacendado",357,8.8,76.5,1.8,0,[100,"ración","raciones"],"",0,0,"8480000823526",2.7],
+    ["m_hacendado_sticks_longaniza_de_poll","Sticks longaniza de pollo","Hacendado",410,37,2.5,28,0,[50,"ración","raciones"],"",0,0,"8480000590817",0.7],
+    ["m_hacendado_pizza_fresca_jamon_y_que","Pizza fresca jamón y queso","Hacendado",224,14,25.2,7.5,0,[220,"ración","raciones"],"",0,0,"8480000635938",1.6],
+    ["m_hacendado_ensalada_jamon","Ensalada Jamón","Hacendado",202,12,5.2,15,1.2,[100,"ración","raciones"],"",0,0,"8437013139489",1.6],
+    ["m_hacendado_wrap_texas","Wrap texas","Hacendado",185,9.6,15,9.3,1.4,[100,"ración","raciones"],"",0,0,"8437013139250",2.2],
+    ["m_hacendado_miel_de_eucalipto","Miel de eucalipto","Hacendado",333,0.4,82.8,0.1,0,[100,"ración","raciones"],"",0,0,"8480000154514",79.3],
+    ["m_dia_avellanas_tostadas","Avellanas tostadas","Dia",675,15,8,62.5,0,[20,"ración","raciones"],"",0,0,"8480017072122",5],
+    ["m_alcampo_anacardos","Anacardos","Alcampo",595,18,30,44,3.3,[30,"puñado","puñados"],"",0,0,"8435177058820",4.9],
+    ["m_aperitivos_nueces_peladas","Nueces peladas","Aperitivos Flaper",715,15,14,65,0,[30,"puñado","puñados"],"",0,0,"8422915167203",3],
+    ["m_hacendado_nuez_natural","Nuez Natural","Hacendado",654,15.2,13.7,65.2,6.7,[30,"puñado","puñados"],"",0,0,"8480000607201",2.6],
+    ["m_carrefour_anacardos_pimienta_y_rom","Anacardos Pimienta y Romero","Carrefour",589,21,31,41,5.9,[30,"puñado","puñados"],"",0,0,"3560071305048",6.8],
+    ["m_hacendado_almendra_molida","Almendra Molida","Hacendado",604,26,7,50,9.7,[30,"puñado","puñados"],"",0,0,"8480000349217",4.2],
+    ["m_hacendado_anacardo_natural","Anacardo natural","Hacendado",586,19,25,46,3.4,[100,"ración","raciones"],"",0,0,"8402001017803",5.3],
+    ["m_carrefour_anacardos_sabor_indian_s","Anacardos sabor Indian Style","Carrefour",600,21,22,46,9.7,[100,"ración","raciones"],"",0,0,"3560071453589",6.5],
+    ["m_dia_almendras_tostadas_sin_s","Almendras tostadas sin sal","Dia",619,21,10.1,52.5,10.9,[30,"puñado","puñados"],"",0,0,"8480017253217",4.9],
+    ["m_dia_cacahuete_tostados_sin_s","Cacahuete tostados sin sal","Dia",618,26,7.8,52,7.5,[100,"ración","raciones"],"",0,0,"8480017298881",3.5],
+    ["m_dia_almendra_frita_y_salada","Almendra frita y salada","Dia",631,21.2,7.2,55.2,10.5,[30,"puñado","puñados"],"",0,0,"8480017170309",4.7],
+    ["m_dia_pistachos_tostados_con_s","Pistachos Tostados Con Sal","Dia",608,25.4,10.4,48.6,0,[30,"puñado","puñados"],"",0,0,"8480017241597",9.2],
+    ["m_dia_pistachos_tostados_sin_s","Pistachos tostados sin sal","Dia",594,23,15,47,0,[28,"ración","raciones"],"",0,0,"8480017241634",6.9],
+    ["m_consum_almendra_sin_piel_cruda","Almendra Sin Piel Cruda","Consum",630,26,4.2,55,7,[10,"ración","raciones"],"",0,0,"8414807559982",4.2],
+    ["m_consum_pistacho_crudo_natural","Pistacho crudo natural","Consum",609,23,11,51,8.6,[30,"puñado","puñados"],"",0,0,"8414807542069",6.8],
+    ["m_carrefour_avellana_tostada_crf","Avellana tostada CRF","Carrefour",695,18,6.8,65,7.1,[30,"puñado","puñados"],"",0,0,"3560071150587",3.9],
+    ["m_carrefour_anacardos_fritos_salados","Anacardos Fritos Salados","Carrefour",622,20,22,50,3.6,[30,"puñado","puñados"],"",0,0,"3560071231774",5.7],
+    ["m_borges_almendras_al_punto_de_sa","Almendras al punto de sal","Borges",619,25,4.2,54,0,[30,"puñado","puñados"],"",0,0,"8410148504612",3.7],
+    ["m_eroski_pistachos_tostados_salad","Pistachos tostados salados","Eroski",580,22,7.9,48,0,[30,"puñado","puñados"],"",0,0,"8480010176599",6.4],
+    ["m_eliges_anacardos_crudos","Anacardos crudos","Eliges",591,18,29,44,0,[250,"vaso","vasos"],"",1,0,"8480012028223",5.9],
+    ["m_justloadin_cacahuete_desgrasado_en_","Cacahuete desgrasado en polvo","Justloading",421,48.9,18.5,12.6,14.6,[15,"cucharada","cucharadas"],"",0,0,"8436587803147",7.9],
+    ["m_eagle_cacahuete_a_la_miel_y_sa","Cacahuete a la miel y sal","Eagle",611,25,17,48,0,[30,"ración","raciones"],"",0,0,"8410148511603",14],
+    ["m_alipende_nueces_peladas","Nueces Peladas","Alipende",688,14.7,10.8,63.8,0,[100,"ración","raciones"],"",0,0,"8421691661400",3],
+    ["m_carrefour_almendras_crudas","Almendras crudas","Carrefour",637,25,3.5,56,8.5,[25,"ración","raciones"],"",0,0,"3560070905973",3.5],
+    ["m_carrefour_almendras_laminadas","Almendras laminadas","Carrefour",635,26,5.8,55,6.3,[30,"puñado","puñados"],"",0,0,"3560071545420",5.6],
+    ["m_hacendado_almendra_tostada_sal","Almendra tostada sal","Hacendado",626,22.4,4.3,55,12,[100,"ración","raciones"],"",0,0,"8402001032707",4.3],
+    ["m_consum_nueces_troceadas_natural","Nueces Troceadas Natural","Consum",595,14,3.3,63,2.6,[30,"puñado","puñados"],"",0,0,"8414807560681",2.6],
+    ["m_eroski_mix_tostados_anacardo_ca","Mix Tostados - Anacardo, cacahuete, almendra y","Eroski",662,21,14,56,9.1,[25,"ración","raciones"],"",0,0,"8480010211658",4.1],
+    ["m_eliges_bolsa_de_nueces","Bolsa de nueces","Eliges",685,16,5.3,65,7.3,[100,"ración","raciones"],"",0,0,"8480012015544",3.5],
+    ["m_eliges_almendra_con_piel_tostad","Almendra con piel tostada sin sal","Eliges",622,25,3.8,57,0,[30,"puñado","puñados"],"",0,0,"8480012015247",2.1],
+    ["m_grefusa_pipas_g_con_sal","Pipas G con sal","Grefusa",263,13,1.4,22,0,[165,"ración","raciones"],"",0,0,"8413164003848",0.8],
+    ["m_bonarea_nueces","Nueces","bonÀrea",648,14,4.4,62.5,0,[30,"puñado","puñados"],"",0,0,"8413585016663",1.2],
+    ["m_carrefour_avellana","Avellana","Carrefour",410,7.4,65,13,4.7,[30,"puñado","puñados"],"",0,0,"3560070820238",25],
+    ["m_carrefour_avellanas_en_polvo","Avellanas En polvo","Carrefour",723,17,5,69,5.9,[15,"cucharada","cucharadas"],"",0,0,"3560071463250",3],
+    ["m_alcampo_nueces_de_brasil","Nueces de brasil","Alcampo",693,14,4.2,67,0,[30,"puñado","puñados"],"",0,0,"8435177059674",2.3],
+    ["m_alcampo_almendras_con_piel_tosta","Almendras con piel tostadas","Alcampo",600,21,21,53,0,[30,"puñado","puñados"],"",0,0,"8435177058608",4.9],
+    ["m_alcampo_almendras_sin_piel_frita","Almendras sin piel, fritas y saladas","Alcampo",622,22,8.8,53,9.8,[30,"puñado","puñados"],"",0,0,"8435177058639",5.2],
+    ["m_alcampo_avellanas","Avellanas","Alcampo",676,18,6,63,0,[30,"puñado","puñados"],"",0,0,"8435177059940",3.7],
+    ["m_alcampo_cacahuetes_fritos_sin_sa","Cacahuetes fritos sin sal","Alcampo",622,27,9.3,51,8.9,[25,"ración","raciones"],"",0,0,"8435177065804",4.6],
+    ["m_alcampo_cacahuetes_tostados_y_sa","Cacahuetes tostados y salados","Alcampo",618,26,9.2,51,0,[30,"puñado","puñados"],"",0,0,"8435177059278",4.5],
+    ["m_frit_ravic_almendras_tostadas_0_sal","Almendras tostadas 0% sal añadida","Frit ravich",659,26,4.9,58,7.5,[100,"ración","raciones"],"",0,0,"8410564006257",2.8],
+    ["m_trader_joe_anacardos","Anacardos","Trader Joe's",621,19,22,50,0,[30,"puñado","puñados"],"",0,0,"24045360",5.9],
+    ["m_eroski_anacardo_crudo","Anacardo crudo","Eroski",557,20,30,39,0,[30,"puñado","puñados"],"",0,0,"8480010192360",6],
+    ["m_eroski_anacardo_tostado_sin_sal","Anacardo Tostado Sin Sal","Eroski",556,20,30,39,3,[30,"puñado","puñados"],"",0,0,"8480010211665",6],
+    ["m_eliges_cacahuete_frito_y_salado","Cacahuete frito y salado","Eliges",626,26,8.7,52,0,[30,"puñado","puñados"],"",0,0,"8480012015322",0.5],
+    ["m_bonarea_cacahuete_con_miel","Cacahuete con miel","bonÀrea",524,16.2,44.7,29.4,8,[30,"puñado","puñados"],"",0,0,"8413585021025",39.6],
+    ["m_el_corte_i_nueces_peladas","Nueces peladas","El Corte Inglés",600,20,14,49,13,[30,"puñado","puñados"],"",0,0,"8433329088701",3.1],
+    ["m_frumesa_anacardos_crudos","Anacardos crudos","Frumesa",595,18,30,44,0,[30,"puñado","puñados"],"",0,0,"8412669240215",5.9],
+    ["m_frumesa_frutos_secos","Frutos secos","Frumesa",622,24,6.2,54,9.7,[200,"ración","raciones"],"",0,0,"8412669040242",2.2],
+    ["m_medina_semillas_de_calabaza_pel","Semillas de calabaza pelada cruda","Medina",586,24.4,14.2,46,8.8,[100,"ración","raciones"],"",0,0,"8412139009069",1.4],
+    ["m_bonpreu_cacahuetes","Cacahuetes","Bonpreu",632,27,9.3,52,0,[30,"puñado","puñados"],"",0,0,"8422410256983",4.2],
+    ["m_carrefour_nueces_pecanas_fritas_y_","Nueces pecanas fritas y saladas","Carrefour",714,12,6.2,69,9,[30,"puñado","puñados"],"",0,0,"3270190172079",3.1],
+    ["m_hacendado_almendra_con_piel_tostad","Almendra con piel tostada sal","Hacendado",628,23,3,57,11,[30,"puñado","puñados"],"",0,0,"8480000340139",1],
+    ["m_dia_almendra_cruda_natural","Almendra cruda natural","Dia",589,19.1,6.2,54.6,0,[15,"ración","raciones"],"",0,0,"8480017209573",5.3],
+    ["m_alcampo_pasas_sultanas","Pasas Sultanas","Alcampo",322,2.8,74,0.5,0,[100,"ración","raciones"],"",0,0,"8435177057809",64],
+    ["m_consum_almendras_tostadas","Almendras tostadas","Consum",620,21,3.8,55,12,[30,"puñado","puñados"],"",0,0,"8414807525895",2.7],
+    ["m_consum_coctel_ensalada_crudo_na","Cóctel ensalada crudo natural","Consum",454,12,46.8,26.9,5.4,[250,"vaso","vasos"],"",1,0,"8414807554765",37],
+    ["m_consum_pistachos_tostados_sin_s","Pistachos tostados sin sal","Consum",623,24,14,51,6.1,[30,"puñado","puñados"],"",0,0,"8414807554796",6.8],
+    ["m_consum_nueces_pecanas_natural","Nueces pecanas natural","Consum",691,9.2,4.3,72,9.6,[30,"puñado","puñados"],"",0,0,"8414807559845",4],
+    ["m_borges_almendras_fritas_y_salad","Almendras fritas y saladas","Borges",611,25,4.3,52,13,[30,"puñado","puñados"],"",0,0,"8410148501949",3.9],
+    ["m_borges_pizarro_nueces_imp_promo","Pizarro Nueces imp Promo","Borges",715,17,6,69,5.7,[30,"puñado","puñados"],"",0,0,"8410148511061",2.1],
+    ["m_borges_cacahuetes_fritos_y_sala","Cacahuetes fritos y salados","Borges",632,27,8.2,53,7.2,[30,"puñado","puñados"],"",0,0,"8410148501956",4.5],
+    ["m_eroski_almendra_cruda_sin_piel","Almendra cruda sin piel","Eroski",592,22,7,50,13,[25,"ración","raciones"],"",0,0,"8480010166927",4],
+    ["m_eliges_pistacho_tostado_sin_sal","Pistacho tostado sin sal añadida","Eliges",594,23,15,47,0,[30,"puñado","puñados"],"",0,0,"8480012026151",6.9],
+    ["m_eliges_pistachos_tostados_y_sal","Pistachos tostados y salados","Eliges",583,22,7.9,48,14,[300,"ración","raciones"],"",0,0,"8480012028230",6.4],
+    ["m_eliges_almendra_al_natural","Almendra al natural","Eliges",647,24,3.4,58,0,[30,"puñado","puñados"],"",0,0,"8480012026069",2.7],
+    ["m_bonarea_pistachos_tostados","Pistachos tostados","bonÀrea",614,18,12.6,52.7,8.5,[30,"puñado","puñados"],"",0,0,"8413585016670",3.5],
+    ["m_frumesa_nueces_mondadas","Nueces mondadas","Frumesa",696,16,11,64,0,[30,"puñado","puñados"],"",0,0,"8412669210058",2.4],
+    ["m_facundo_cocktail_de_frutos_secos","Cocktail de frutos secos","Facundo",539,18,34,35,8.1,[100,"ración","raciones"],"",0,0,"8413671026552",0.5],
+    ["m_gutbio_pipas_de_girasol_peladas","Pipas de girasol peladas","Gutbio",594,23,12,49,0,[15,"ración","raciones"],"",0,0,"24079846",0.5],
+    ["m_alteza_anacardos_crudos_sin_sal","Anacardos crudos sin sal","Alteza",591,18,29,44,3.3,[30,"puñado","puñados"],"",0,0,"8480024751379",5.9],
+    ["m_perlim_nueces","Nueces","Perlim",709,15.7,6.9,67.3,0,[250,"vaso","vasos"],"",1,0,"3271670103439",3],
+    ["m_wonderful_pistachos_tostados_sin_s","Pistachos tostados sin sal xxl","Wonderful",590,21,18,46,0,[30,"puñado","puñados"],"",0,0,"0014113910620",7.7],
+    ["m_consum_anacardos","Anacardos","Consum",581,16.9,30.2,47.8,3.3,[30,"puñado","puñados"],"",0,0,"8414807515223",5],
+    ["m_frit_ravic_pistachos","Pistachos","Frit ravich",639,23,9.1,55,0,[30,"puñado","puñados"],"",0,0,"8410564024107",6.9],
+    ["m_borges_natura_coctel_de_frutos_","Natura cóctel de frutos secos crudos","Borges",674,16,3.1,64,11,[30,"puñado","puñados"],"",0,0,"8410148503660",2.9],
+    ["m_bonarea_almendras","Almendras","bonÀrea",645,18.7,5.4,58,13.5,[30,"puñado","puñados"],"",0,0,"8413585006954",3.9],
+    ["m_bonarea_cacahuetes_con_sal","Cacahuetes con sal","bonÀrea",627,24.5,8.9,53,0,[30,"puñado","puñados"],"",0,0,"8413585009801",4.6]
 ];
 BRAND_FOODS.forEach(([id, name, brand, kcal, p, c, f, fib, serv, em, ml, raw, off, sug]) => {
     const role = p * 4 >= Math.max(c * 4, f * 9) ? 'protein' : f * 9 > c * 4 ? 'fat' : 'carb';

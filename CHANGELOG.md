@@ -1,5 +1,23 @@
 # Cambios de nutriDL
 
+## 3.21.0 · 24 de octubre de 2026
+
+**572 alimentos y bebidas nuevos (2.391 → 2.963)**
+
+- **+306 productos de Mercadona (Hacendado)**: ahora hay 805. Pan de molde, lácteos, fiambres, snacks, postres proteicos, congelados…
+- **Muchos más frutos secos**: almendras, anacardos, cacahuetes y pistachos tostados, fritos o con miel; cóctel de frutos secos; cremas de anacardo y de pipas; pipas de girasol y de calabaza; sésamo tostado. También de marca (Alesto, Borges, Carrefour, Lidl, Dia…).
+- **Comidas cocidas y fritas**, que es como se comen de verdad: pollo frito rebozado o enharinado, contramuslo empanado, pescado y bagre empanados, gambas y almejas rebozadas, calamares fritos, aros de cebolla, patata cocida con piel, al microondas o frita de bolsa al horno, puré con leche, verduras cocidas y congeladas, legumbres de bote.
+- **Bocadillos y sándwiches**: de atún, de pavo y jamón, de roast beef, de bacon con lechuga y tomate, de ternera con queso, de pollo (asado, a la plancha, crujiente, teriyaki) y de pescado.
+- **Bollos y dulces**: dónut de chocolate, relleno y de masa, bizcocho de chocolate, tarta de manzana y de queso, brownie, magdalena de arándanos, galletas de avena y de mantequilla, natillas y helado de vainilla.
+- **Más frutas**: níspero, carambola, kumquat, tamarindo, higo chumbo, arándanos rojos, grosellas negras, yaca, melón cantalupo y honeydew, fruta en almíbar, congelada y deshidratada.
+- **Más lácteos**: quesos gruyère, suizo, muenster, fontina, roquefort, monterey, provolone y cheddar light; suero de leche, leche en polvo, natas de café y yogures desnatados de vainilla y de frutas.
+- **Más bebidas**: zumos de pomelo, arándanos, zanahoria, néctares de melocotón y pera, limonada, té verde y negro (también descafeinado), café de filtro y descafeinado, agua con gas, tónica, refresco de uva y vinos.
+- Todo con su ficha oficial: los genéricos del USDA FoodData Central y los de marca de Open Food Facts, revisados uno a uno (las calorías de la etiqueta tienen que cuadrar con sus macros).
+- Las páginas públicas «Calorías de…» pasan de 2.022 a **2.596**.
+- Los alimentos genéricos nuevos también tienen su nombre en inglés.
+
+*Pendiente:* más productos de marca de lácteos, bolleria, sándwiches y bebidas. Open Food Facts estaba caído al preparar esta versión; la descarga se retoma cuando vuelva.
+
 ## 3.20.0 · 23 de octubre de 2026
 
 **Coach mucho más listo** (se probó con ~50 preguntas reales; muchas no las entendía o respondía mal).

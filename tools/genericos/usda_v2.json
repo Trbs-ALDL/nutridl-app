@@ -1,0 +1,2862 @@
+[
+ {
+  "id": "almendras_sal",
+  "name": "Almendras tostadas con sal",
+  "cat": "grasa",
+  "fdc": 168596,
+  "usda": "Nuts, almonds, dry roasted, with salt added",
+  "kcal": 598,
+  "p": 21,
+  "f": 52.5,
+  "c": 10.1,
+  "fib": 10.9,
+  "alc": 0,
+  "sug": 4.9,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "almendras_fritas",
+  "name": "Almendras fritas con sal",
+  "cat": "grasa",
+  "fdc": 169419,
+  "usda": "Nuts, almonds, oil roasted, with salt added",
+  "kcal": 607,
+  "p": 21.2,
+  "f": 55.2,
+  "c": 7.2,
+  "fib": 10.5,
+  "alc": 0,
+  "sug": 4.6,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "almendras_miel",
+  "name": "Almendras garrapiñadas (con miel)",
+  "cat": "grasa",
+  "fdc": 168592,
+  "usda": "Nuts, almonds, honey roasted, unblanched",
+  "kcal": 594,
+  "p": 18.2,
+  "f": 49.9,
+  "c": 14.2,
+  "fib": 13.7,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "V"
+ },
+ {
+  "id": "anacardos_sal",
+  "name": "Anacardos tostados con sal",
+  "cat": "grasa",
+  "fdc": 169421,
+  "usda": "Nuts, cashew nuts, dry roasted, with salt added",
+  "kcal": 574,
+  "p": 15.3,
+  "f": 46.4,
+  "c": 29.7,
+  "fib": 3,
+  "alc": 0,
+  "sug": 5,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "crema_anacardo",
+  "name": "Crema de anacardo",
+  "cat": "grasa",
+  "fdc": 168597,
+  "usda": "Nuts, cashew butter, plain, with salt added",
+  "kcal": 609,
+  "p": 12.1,
+  "f": 53,
+  "c": 27.3,
+  "fib": 3,
+  "alc": 0,
+  "sug": 9.1,
+  "serv": [
+   20,
+   "cucharada",
+   "cucharadas"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "macadamia_sal",
+  "name": "Nueces de macadamia tostadas",
+  "cat": "grasa",
+  "fdc": 168598,
+  "usda": "Nuts, macadamia nuts, dry roasted, with salt added",
+  "kcal": 716,
+  "p": 7.8,
+  "f": 76.1,
+  "c": 4.8,
+  "fib": 8,
+  "alc": 0,
+  "sug": 4.1,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "coctel_tostado",
+  "name": "Cóctel de frutos secos tostado",
+  "cat": "grasa",
+  "fdc": 168599,
+  "usda": "Nuts, mixed nuts, dry roasted, with peanuts, with salt added",
+  "kcal": 594,
+  "p": 17.3,
+  "f": 51.4,
+  "c": 16.4,
+  "fib": 9,
+  "alc": 0,
+  "sug": 4.8,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "coctel_frito",
+  "name": "Cóctel de frutos secos frito",
+  "cat": "grasa",
+  "fdc": 168600,
+  "usda": "Nuts, mixed nuts, oil roasted, with peanuts, with salt added",
+  "kcal": 607,
+  "p": 20,
+  "f": 54,
+  "c": 14,
+  "fib": 7,
+  "alc": 0,
+  "sug": 4.2,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "cacahuetes_sal",
+  "name": "Cacahuetes tostados con sal",
+  "cat": "grasa",
+  "fdc": 174262,
+  "usda": "Peanuts, all types, dry-roasted, with salt",
+  "kcal": 587,
+  "p": 24.4,
+  "f": 49.7,
+  "c": 12.9,
+  "fib": 8.4,
+  "alc": 0,
+  "sug": 4.9,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "cacahuetes_fritos",
+  "name": "Cacahuetes fritos con sal",
+  "cat": "grasa",
+  "fdc": 174261,
+  "usda": "Peanuts, all types, oil-roasted, with salt",
+  "kcal": 599,
+  "p": 28,
+  "f": 52.5,
+  "c": 5.9,
+  "fib": 9.4,
+  "alc": 0,
+  "sug": 4.2,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pipas_girasol_sal",
+  "name": "Pipas de girasol fritas con sal",
+  "cat": "grasa",
+  "fdc": 168593,
+  "usda": "Seeds, sunflower seed kernels, oil roasted, with salt added",
+  "kcal": 592,
+  "p": 20.1,
+  "f": 51.3,
+  "c": 12.3,
+  "fib": 10.6,
+  "alc": 0,
+  "sug": 3.1,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pipas_calabaza_sal",
+  "name": "Pipas de calabaza tostadas con sal",
+  "cat": "grasa",
+  "fdc": 169415,
+  "usda": "Seeds, pumpkin and squash seed kernels, roasted, with salt added",
+  "kcal": 574,
+  "p": 29.8,
+  "f": 49,
+  "c": 8.2,
+  "fib": 6.5,
+  "alc": 0,
+  "sug": 1.3,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "sesamo_tostado",
+  "name": "Semillas de sésamo tostadas",
+  "cat": "grasa",
+  "fdc": 169416,
+  "usda": "Seeds, sesame seed kernels, toasted, with salt added (decorticated)",
+  "kcal": 567,
+  "p": 17,
+  "f": 48,
+  "c": 9.1,
+  "fib": 16.9,
+  "alc": 0,
+  "sug": 0.5,
+  "serv": [
+   10,
+   "cucharada",
+   "cucharadas"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "crema_girasol",
+  "name": "Crema de pipas de girasol",
+  "cat": "grasa",
+  "fdc": 168595,
+  "usda": "Seeds, sunflower seed butter, with salt added (Includes foods for USDA's Food Distribution Program)",
+  "kcal": 617,
+  "p": 17.3,
+  "f": 55.2,
+  "c": 17.6,
+  "fib": 5.7,
+  "alc": 0,
+  "sug": 10.5,
+  "serv": [
+   20,
+   "cucharada",
+   "cucharadas"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "coco_endulzado",
+  "name": "Coco rallado endulzado",
+  "cat": "grasa",
+  "fdc": 168586,
+  "usda": "Nuts, coconut meat, dried (desiccated), sweetened, shredded",
+  "kcal": 501,
+  "p": 2.9,
+  "f": 35.5,
+  "c": 43.2,
+  "fib": 4.5,
+  "alc": 0,
+  "sug": 43.2,
+  "serv": [
+   20,
+   "ración",
+   "raciones"
+  ],
+  "flags": "V"
+ },
+ {
+  "id": "castanas_crudas",
+  "name": "Castañas crudas",
+  "cat": "hc",
+  "fdc": 170575,
+  "usda": "Nuts, chestnuts, european, raw, peeled",
+  "kcal": 196,
+  "p": 1.6,
+  "f": 1.3,
+  "c": 44.2,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   60,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "nueces_crudas2",
+  "name": "Nueces de nogal (mitades)",
+  "cat": "grasa",
+  "fdc": 170187,
+  "usda": "Nuts, walnuts, english",
+  "kcal": 654,
+  "p": 15.2,
+  "f": 65.2,
+  "c": 7,
+  "fib": 6.7,
+  "alc": 0,
+  "sug": 2.6,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pistachos_sal",
+  "name": "Pistachos tostados con sal",
+  "cat": "grasa",
+  "fdc": 169426,
+  "usda": "Nuts, pistachio nuts, dry roasted, with salt added",
+  "kcal": 569,
+  "p": 21,
+  "f": 45.8,
+  "c": 17.3,
+  "fib": 10.3,
+  "alc": 0,
+  "sug": 7.7,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "avellanas_tostadas2",
+  "name": "Avellanas tostadas sin sal",
+  "cat": "grasa",
+  "fdc": 170583,
+  "usda": "Nuts, hazelnuts or filberts, dry roasted, without salt added",
+  "kcal": 646,
+  "p": 15,
+  "f": 62.4,
+  "c": 8.2,
+  "fib": 9.4,
+  "alc": 0,
+  "sug": 4.9,
+  "serv": [
+   30,
+   "puñado",
+   "puñados"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "nispero",
+  "name": "Níspero",
+  "cat": "fruta",
+  "fdc": 169908,
+  "usda": "Loquats, raw",
+  "kcal": 47,
+  "p": 0.4,
+  "f": 0.2,
+  "c": 10.4,
+  "fib": 1.7,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "carambola",
+  "name": "Carambola (fruta estrella)",
+  "cat": "fruta",
+  "fdc": 171715,
+  "usda": "Carambola, (starfruit), raw",
+  "kcal": 31,
+  "p": 1,
+  "f": 0.3,
+  "c": 3.9,
+  "fib": 2.8,
+  "alc": 0,
+  "sug": 3.9,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "kumquat",
+  "name": "Kumquat",
+  "cat": "fruta",
+  "fdc": 168154,
+  "usda": "Kumquats, raw",
+  "kcal": 71,
+  "p": 1.9,
+  "f": 0.9,
+  "c": 9.4,
+  "fib": 6.5,
+  "alc": 0,
+  "sug": 9.4,
+  "serv": [
+   60,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "tamarindo",
+  "name": "Tamarindo",
+  "cat": "fruta",
+  "fdc": 167763,
+  "usda": "Tamarinds, raw",
+  "kcal": 239,
+  "p": 2.8,
+  "f": 0.6,
+  "c": 57.4,
+  "fib": 5.1,
+  "alc": 0,
+  "sug": 38.8,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "chumbo",
+  "name": "Higo chumbo",
+  "cat": "fruta",
+  "fdc": 167750,
+  "usda": "Prickly pears, raw",
+  "kcal": 41,
+  "p": 0.7,
+  "f": 0.5,
+  "c": 6,
+  "fib": 3.6,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "arandano_rojo",
+  "name": "Arándanos rojos frescos",
+  "cat": "fruta",
+  "fdc": 171722,
+  "usda": "Cranberries, raw",
+  "kcal": 46,
+  "p": 0.5,
+  "f": 0.1,
+  "c": 8.4,
+  "fib": 3.6,
+  "alc": 0,
+  "sug": 4.3,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "grosella_negra",
+  "name": "Grosellas negras",
+  "cat": "fruta",
+  "fdc": 173963,
+  "usda": "Currants, european black, raw",
+  "kcal": 63,
+  "p": 1.4,
+  "f": 0.4,
+  "c": 15.4,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "yaca",
+  "name": "Yaca (jackfruit)",
+  "cat": "fruta",
+  "fdc": 174687,
+  "usda": "Jackfruit, raw",
+  "kcal": 95,
+  "p": 1.7,
+  "f": 0.6,
+  "c": 21.7,
+  "fib": 1.5,
+  "alc": 0,
+  "sug": 19.1,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "platano_maduro_cocido",
+  "name": "Plátano macho maduro cocido",
+  "cat": "hc",
+  "fdc": 169131,
+  "usda": "Plantains, yellow, baked",
+  "kcal": 155,
+  "p": 1.5,
+  "f": 0.2,
+  "c": 39.2,
+  "fib": 2.2,
+  "alc": 0,
+  "sug": 21.3,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "manzana_lata",
+  "name": "Manzana en conserva (endulzada)",
+  "cat": "fruta",
+  "fdc": 173930,
+  "usda": "Apples, canned, sweetened, sliced, drained, heated",
+  "kcal": 67,
+  "p": 0.2,
+  "f": 0.4,
+  "c": 14.8,
+  "fib": 2,
+  "alc": 0,
+  "sug": 14.8,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "mango_seco",
+  "name": "Mango deshidratado",
+  "cat": "fruta",
+  "fdc": 169091,
+  "usda": "Mango, dried, sweetened",
+  "kcal": 319,
+  "p": 2.5,
+  "f": 1.2,
+  "c": 76.2,
+  "fib": 2.4,
+  "alc": 0,
+  "sug": 66.3,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "manzana_deshidratada",
+  "name": "Manzana deshidratada",
+  "cat": "fruta",
+  "fdc": 171691,
+  "usda": "Apples, dried, sulfured, uncooked",
+  "kcal": 243,
+  "p": 0.9,
+  "f": 0.3,
+  "c": 57.2,
+  "fib": 8.7,
+  "alc": 0,
+  "sug": 57.2,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pera_almibar",
+  "name": "Pera en almíbar",
+  "cat": "fruta",
+  "fdc": 169939,
+  "usda": "Pears, canned, heavy syrup pack, solids and liquids",
+  "kcal": 74,
+  "p": 0.2,
+  "f": 0.1,
+  "c": 17.6,
+  "fib": 1.6,
+  "alc": 0,
+  "sug": 15.2,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "mandarina_lata",
+  "name": "Mandarina en almíbar",
+  "cat": "fruta",
+  "fdc": 169924,
+  "usda": "Tangerines, (mandarin oranges), canned, light syrup pack",
+  "kcal": 61,
+  "p": 0.5,
+  "f": 0.1,
+  "c": 15.5,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 15.5,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "fresas_congeladas",
+  "name": "Fresas congeladas (sin azúcar)",
+  "cat": "fruta",
+  "fdc": 168173,
+  "usda": "Strawberries, frozen, unsweetened (Includes foods for USDA's Food Distribution Program)",
+  "kcal": 35,
+  "p": 0.4,
+  "f": 0.1,
+  "c": 7,
+  "fib": 2.1,
+  "alc": 0,
+  "sug": 4.6,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "frambuesas_cong",
+  "name": "Frambuesas congeladas (sin azúcar)",
+  "cat": "fruta",
+  "fdc": 168209,
+  "usda": "Raspberries, frozen, red, unsweetened",
+  "kcal": 56,
+  "p": 1.2,
+  "f": 0.8,
+  "c": 8.3,
+  "fib": 4.3,
+  "alc": 0,
+  "sug": 6.5,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "melon_cantalupo",
+  "name": "Melón cantalupo",
+  "cat": "fruta",
+  "fdc": 169092,
+  "usda": "Melons, cantaloupe, raw",
+  "kcal": 34,
+  "p": 0.8,
+  "f": 0.2,
+  "c": 7.3,
+  "fib": 0.9,
+  "alc": 0,
+  "sug": 7.3,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "melon_honeydew",
+  "name": "Melón honeydew",
+  "cat": "fruta",
+  "fdc": 169911,
+  "usda": "Melons, honeydew, raw",
+  "kcal": 36,
+  "p": 0.5,
+  "f": 0.1,
+  "c": 8.3,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 8.1,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "queso_gruyere",
+  "name": "Queso gruyère",
+  "cat": "lacteo",
+  "fdc": 171242,
+  "usda": "Cheese, gruyere",
+  "kcal": 413,
+  "p": 29.8,
+  "f": 32.3,
+  "c": 0.4,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0.4,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_suizo",
+  "name": "Queso suizo",
+  "cat": "lacteo",
+  "fdc": 171251,
+  "usda": "Cheese, swiss",
+  "kcal": 393,
+  "p": 27,
+  "f": 31,
+  "c": 1.4,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   30,
+   "loncha",
+   "lonchas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_muenster",
+  "name": "Queso muenster",
+  "cat": "lacteo",
+  "fdc": 171245,
+  "usda": "Cheese, muenster",
+  "kcal": 368,
+  "p": 23.4,
+  "f": 30,
+  "c": 1.1,
+  "fib": 0,
+  "alc": 0,
+  "sug": 1.1,
+  "serv": [
+   30,
+   "loncha",
+   "lonchas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_fontina",
+  "name": "Queso fontina",
+  "cat": "lacteo",
+  "fdc": 170843,
+  "usda": "Cheese, fontina",
+  "kcal": 389,
+  "p": 25.6,
+  "f": 31.1,
+  "c": 1.6,
+  "fib": 0,
+  "alc": 0,
+  "sug": 1.6,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_roquefort",
+  "name": "Queso roquefort",
+  "cat": "lacteo",
+  "fdc": 171250,
+  "usda": "Cheese, roquefort",
+  "kcal": 369,
+  "p": 21.5,
+  "f": 30.6,
+  "c": 2,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   30,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_monterey",
+  "name": "Queso monterey",
+  "cat": "lacteo",
+  "fdc": 170844,
+  "usda": "Cheese, monterey",
+  "kcal": 373,
+  "p": 24.5,
+  "f": 30.3,
+  "c": 0.7,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0.5,
+  "serv": [
+   30,
+   "loncha",
+   "lonchas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_suizo_light",
+  "name": "Queso suizo light",
+  "cat": "lacteo",
+  "fdc": 168141,
+  "usda": "Cheese, swiss, low fat",
+  "kcal": 179,
+  "p": 28.4,
+  "f": 5.1,
+  "c": 3.4,
+  "fib": 0,
+  "alc": 0,
+  "sug": 1.3,
+  "serv": [
+   30,
+   "loncha",
+   "lonchas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "suero_leche",
+  "name": "Suero de leche (buttermilk)",
+  "cat": "lacteo",
+  "fdc": 170874,
+  "usda": "Milk, buttermilk, fluid, cultured, lowfat",
+  "kcal": 40,
+  "p": 3.3,
+  "f": 1.1,
+  "c": 4.8,
+  "fib": 0,
+  "alc": 0,
+  "sug": 4.8,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "VL ml"
+ },
+ {
+  "id": "leche_polvo_entera",
+  "name": "Leche en polvo entera",
+  "cat": "lacteo",
+  "fdc": 170876,
+  "usda": "Milk, dry, whole, with added vitamin D",
+  "kcal": 496,
+  "p": 26.3,
+  "f": 26.7,
+  "c": 38.4,
+  "fib": 0,
+  "alc": 0,
+  "sug": 38.4,
+  "serv": [
+   25,
+   "cucharada",
+   "cucharadas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "nata_ligera",
+  "name": "Nata ligera para café",
+  "cat": "lacteo",
+  "fdc": 170857,
+  "usda": "Cream, fluid, light (coffee cream or table cream)",
+  "kcal": 195,
+  "p": 3,
+  "f": 19.1,
+  "c": 3.7,
+  "fib": 0,
+  "alc": 0,
+  "sug": 3.7,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "flags": "VL ml"
+ },
+ {
+  "id": "nata_mitad",
+  "name": "Nata para café (half and half)",
+  "cat": "lacteo",
+  "fdc": 171255,
+  "usda": "Cream, fluid, half and half",
+  "kcal": 131,
+  "p": 3.1,
+  "f": 11.5,
+  "c": 4.3,
+  "fib": 0,
+  "alc": 0,
+  "sug": 4.1,
+  "serv": [
+   15,
+   "cucharada",
+   "cucharadas"
+  ],
+  "flags": "VL ml"
+ },
+ {
+  "id": "yogur_vainilla",
+  "name": "Yogur de vainilla desnatado",
+  "cat": "lacteo",
+  "fdc": 170906,
+  "usda": "Yogurt, vanilla, non-fat",
+  "kcal": 78,
+  "p": 2.9,
+  "f": 0,
+  "c": 17,
+  "fib": 0,
+  "alc": 0,
+  "sug": 5.9,
+  "serv": [
+   125,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "yogur_frutas_des",
+  "name": "Yogur de frutas desnatado",
+  "cat": "lacteo",
+  "fdc": 169898,
+  "usda": "Yogurt, fruit variety, nonfat",
+  "kcal": 95,
+  "p": 4.4,
+  "f": 0.2,
+  "c": 19,
+  "fib": 0,
+  "alc": 0,
+  "sug": 19,
+  "serv": [
+   125,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_provolone_light",
+  "name": "Queso provolone light",
+  "cat": "lacteo",
+  "fdc": 172215,
+  "usda": "Cheese, provolone, reduced fat",
+  "kcal": 274,
+  "p": 24.7,
+  "f": 17.6,
+  "c": 3.5,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0.6,
+  "serv": [
+   30,
+   "loncha",
+   "lonchas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "queso_cheddar_light",
+  "name": "Queso cheddar light",
+  "cat": "lacteo",
+  "fdc": 171292,
+  "usda": "Cheese, cheddar, reduced fat (Includes foods for USDA's Food Distribution Program)",
+  "kcal": 316,
+  "p": 27.4,
+  "f": 20.4,
+  "c": 2.7,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   30,
+   "loncha",
+   "lonchas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "pollo_frito_rebozado",
+  "name": "Pollo frito rebozado (con piel)",
+  "cat": "prot",
+  "fdc": 171048,
+  "usda": "Chicken, broilers or fryers, meat and skin and giblets and neck, cooked, fried, batter",
+  "kcal": 291,
+  "p": 22.8,
+  "f": 17.5,
+  "c": 9,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "pollo_frito_harina",
+  "name": "Pollo frito enharinado (con piel)",
+  "cat": "prot",
+  "fdc": 171049,
+  "usda": "Chicken, broilers or fryers, meat and skin and giblets and neck, cooked, fried, flour",
+  "kcal": 272,
+  "p": 28.6,
+  "f": 15.3,
+  "c": 3.3,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "pollo_frito_solo",
+  "name": "Pollo frito sin piel",
+  "cat": "prot",
+  "fdc": 171053,
+  "usda": "Chicken, broilers or fryers, meat only, cooked, fried",
+  "kcal": 219,
+  "p": 30.6,
+  "f": 9.1,
+  "c": 1.6,
+  "fib": 0.1,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "contramuslo_frito",
+  "name": "Contramuslo de pollo frito rebozado",
+  "cat": "prot",
+  "fdc": 171063,
+  "usda": "Chicken, broilers or fryers, dark meat, meat and skin, cooked, fried, batter",
+  "kcal": 298,
+  "p": 21.8,
+  "f": 18.6,
+  "c": 9.4,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   100,
+   "contramuslo",
+   "contramuslos"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "contramuslo_empanado_cong",
+  "name": "Contramuslo de pollo empanado (congelado, al horno)",
+  "cat": "prot",
+  "fdc": 168961,
+  "usda": "Chicken, thighs, frozen, breaded, reheated",
+  "kcal": 334,
+  "p": 18.7,
+  "f": 22.4,
+  "c": 14.1,
+  "fib": 0.1,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "pescado_empanado_frito",
+  "name": "Pescado empanado y frito",
+  "cat": "prot",
+  "fdc": 171957,
+  "usda": "Fish, croaker, Atlantic, cooked, breaded and fried",
+  "kcal": 221,
+  "p": 18.2,
+  "f": 12.7,
+  "c": 7.1,
+  "fib": 0.4,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "bagre_empanado",
+  "name": "Bagre empanado y frito",
+  "cat": "prot",
+  "fdc": 174187,
+  "usda": "Fish, catfish, channel, cooked, breaded and fried",
+  "kcal": 229,
+  "p": 18.1,
+  "f": 13.3,
+  "c": 7.3,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "abadejo_cocido2",
+  "name": "Abadejo de Alaska cocido",
+  "cat": "prot",
+  "fdc": 173681,
+  "usda": "Fish, pollock, Alaska, cooked, dry heat (may contain additives to retain moisture)",
+  "kcal": 111,
+  "p": 23.5,
+  "f": 1.2,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "P"
+ },
+ {
+  "id": "gambas_rebozadas",
+  "name": "Gambas rebozadas fritas",
+  "cat": "prot",
+  "fdc": 171970,
+  "usda": "Crustaceans, shrimp, mixed species, cooked, breaded and fried",
+  "kcal": 242,
+  "p": 21.4,
+  "f": 12.3,
+  "c": 11.1,
+  "fib": 0.4,
+  "alc": 0,
+  "sug": 0.8,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "calamar_frito",
+  "name": "Calamares fritos (rabas)",
+  "cat": "prot",
+  "fdc": 171982,
+  "usda": "Mollusks, squid, mixed species, cooked, fried",
+  "kcal": 175,
+  "p": 17.9,
+  "f": 7.5,
+  "c": 7.8,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "vieiras_rebozadas",
+  "name": "Vieiras rebozadas fritas",
+  "cat": "prot",
+  "fdc": 174221,
+  "usda": "Mollusks, scallop, mixed species, cooked, breaded and fried",
+  "kcal": 216,
+  "p": 18.1,
+  "f": 10.9,
+  "c": 10.1,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "almejas_rebozadas",
+  "name": "Almejas rebozadas fritas",
+  "cat": "prot",
+  "fdc": 171974,
+  "usda": "Mollusks, clam, mixed species, cooked, breaded and fried",
+  "kcal": 202,
+  "p": 14.2,
+  "f": 11.2,
+  "c": 10.3,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "salchichas_italianas",
+  "name": "Salchichas frescas de cerdo (hechas)",
+  "cat": "prot",
+  "fdc": 172952,
+  "usda": "Sausage, Italian, sweet, links",
+  "kcal": 149,
+  "p": 16.1,
+  "f": 8.4,
+  "c": 2.1,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   80,
+   "salchicha",
+   "salchichas"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "salchicha_pavo",
+  "name": "Salchichas de pavo y cerdo (hechas)",
+  "cat": "prot",
+  "fdc": 167694,
+  "usda": "Sausage, turkey and pork, fresh, bulk, patty or link, cooked",
+  "kcal": 307,
+  "p": 22.7,
+  "f": 23,
+  "c": 0.7,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   80,
+   "salchicha",
+   "salchichas"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "mortadela",
+  "name": "Mortadela",
+  "cat": "prot",
+  "fdc": 167685,
+  "usda": "Bologna, beef and pork, low fat",
+  "kcal": 230,
+  "p": 11.5,
+  "f": 19.3,
+  "c": 2.6,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   30,
+   "loncha",
+   "lonchas"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "salchicha_viena",
+  "name": "Salchichas tipo viena (lata)",
+  "cat": "prot",
+  "fdc": 172942,
+  "usda": "Sausage, Vienna, canned, chicken, beef, pork",
+  "kcal": 230,
+  "p": 10.5,
+  "f": 19.4,
+  "c": 2.6,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "jamon_lonchas",
+  "name": "Jamón cocido en lonchas (11 % grasa)",
+  "cat": "prot",
+  "fdc": 173864,
+  "usda": "Ham, sliced, regular (approximately 11% fat)",
+  "kcal": 164,
+  "p": 16.6,
+  "f": 8.8,
+  "c": 2.3,
+  "fib": 1.3,
+  "alc": 0,
+  "sug": 1,
+  "serv": [
+   50,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "cerdo_asado_paleta",
+  "name": "Paletilla de cerdo guisada",
+  "cat": "prot",
+  "fdc": 168261,
+  "usda": "Pork, fresh, shoulder, (Boston butt), blade (steaks), separable lean only, cooked, braised",
+  "kcal": 233,
+  "p": 26.6,
+  "f": 13.2,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   130,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "costillas_cerdo_asadas",
+  "name": "Costillas de cerdo asadas",
+  "cat": "prot",
+  "fdc": 169200,
+  "usda": "Pork, fresh, loin, country-style ribs, separable lean and fat, bone-in, cooked, broiled",
+  "kcal": 260,
+  "p": 25.6,
+  "f": 17.6,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "ternera_asada_lomo",
+  "name": "Lomo de ternera asado",
+  "cat": "prot",
+  "fdc": 168632,
+  "usda": "Beef, loin, top loin steak, boneless, lip off, separable lean only, trimmed to 0\" fat, all grades, cooked, grilled",
+  "kcal": 202,
+  "p": 29.5,
+  "f": 8.4,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   130,
+   "filete",
+   "filetes"
+  ],
+  "flags": "M"
+ },
+ {
+  "id": "huevo_tortilla_usda",
+  "name": "Tortilla / huevo cuajado con grasa",
+  "cat": "prot",
+  "fdc": 172185,
+  "usda": "Egg, whole, cooked, omelet",
+  "kcal": 154,
+  "p": 10.6,
+  "f": 11.7,
+  "c": 0.6,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "V"
+ },
+ {
+  "id": "patata_frita_horno",
+  "name": "Patatas fritas congeladas (al horno)",
+  "cat": "hc",
+  "fdc": 168445,
+  "usda": "Potatoes, french fried, steak fries, salt added in processing, frozen, oven-heated",
+  "kcal": 148,
+  "p": 2.6,
+  "f": 3.8,
+  "c": 24.4,
+  "fib": 2.6,
+  "alc": 0,
+  "sug": 0.3,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "patata_cocida_piel",
+  "name": "Patata cocida con piel",
+  "cat": "hc",
+  "fdc": 170438,
+  "usda": "Potatoes, boiled, cooked in skin, flesh, without salt",
+  "kcal": 87,
+  "p": 1.9,
+  "f": 0.1,
+  "c": 18.3,
+  "fib": 1.8,
+  "alc": 0,
+  "sug": 0.9,
+  "serv": [
+   180,
+   "patata mediana",
+   "patatas medianas"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "patata_microondas",
+  "name": "Patata al microondas (con piel)",
+  "cat": "hc",
+  "fdc": 170094,
+  "usda": "Potatoes, microwaved, cooked in skin, flesh and skin, without salt",
+  "kcal": 105,
+  "p": 2.4,
+  "f": 0.1,
+  "c": 21.9,
+  "fib": 2.3,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   180,
+   "patata mediana",
+   "patatas medianas"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pure_patata_leche",
+  "name": "Puré de patata (con leche)",
+  "cat": "hc",
+  "fdc": 170493,
+  "usda": "Potatoes, mashed, home-prepared, whole milk added",
+  "kcal": 83,
+  "p": 1.9,
+  "f": 0.6,
+  "c": 16.1,
+  "fib": 1.5,
+  "alc": 0,
+  "sug": 1.5,
+  "serv": [
+   200,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "aros_cebolla",
+  "name": "Aros de cebolla rebozados",
+  "cat": "hc",
+  "fdc": 169027,
+  "usda": "Restaurant, family style, onion rings",
+  "kcal": 356,
+  "p": 4.9,
+  "f": 19.3,
+  "c": 38.1,
+  "fib": 2.6,
+  "alc": 0,
+  "sug": 4.7,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VG"
+ },
+ {
+  "id": "cebolla_cocida2",
+  "name": "Cebolla cocida (guarnición)",
+  "cat": "verdura",
+  "fdc": 170001,
+  "usda": "Onions, cooked, boiled, drained, without salt",
+  "kcal": 44,
+  "p": 1.4,
+  "f": 0.2,
+  "c": 8.8,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 4.7,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pimiento_rojo_cocido",
+  "name": "Pimiento rojo cocido",
+  "cat": "verdura",
+  "fdc": 170110,
+  "usda": "Peppers, sweet, red, cooked, boiled, drained, without salt",
+  "kcal": 28,
+  "p": 0.9,
+  "f": 0.2,
+  "c": 5.5,
+  "fib": 1.2,
+  "alc": 0,
+  "sug": 4.4,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "berenjena_cocida2",
+  "name": "Berenjena cocida",
+  "cat": "verdura",
+  "fdc": 169229,
+  "usda": "Eggplant, cooked, boiled, drained, without salt",
+  "kcal": 35,
+  "p": 0.8,
+  "f": 0.2,
+  "c": 6.2,
+  "fib": 2.5,
+  "alc": 0,
+  "sug": 3.2,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "champi_cocidos2",
+  "name": "Champiñones cocidos",
+  "cat": "verdura",
+  "fdc": 169252,
+  "usda": "Mushrooms, white, cooked, boiled, drained, without salt",
+  "kcal": 28,
+  "p": 2.2,
+  "f": 0.5,
+  "c": 3.1,
+  "fib": 2.2,
+  "alc": 0,
+  "sug": 2.3,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "espinacas_congeladas",
+  "name": "Espinacas congeladas cocidas",
+  "cat": "verdura",
+  "fdc": 169288,
+  "usda": "Spinach, frozen, chopped or leaf, cooked, boiled, drained, without salt",
+  "kcal": 34,
+  "p": 4,
+  "f": 0.9,
+  "c": 1.1,
+  "fib": 3.7,
+  "alc": 0,
+  "sug": 0.5,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "judias_verdes_lata",
+  "name": "Judías verdes de lata",
+  "cat": "verdura",
+  "fdc": 169143,
+  "usda": "Beans, snap, green, canned, regular pack, drained solids",
+  "kcal": 21,
+  "p": 1.1,
+  "f": 0.4,
+  "c": 2.3,
+  "fib": 1.9,
+  "alc": 0,
+  "sug": 1.4,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "guisantes_lata",
+  "name": "Guisantes de lata (escurridos)",
+  "cat": "legum",
+  "fdc": 170015,
+  "usda": "Peas, green, canned, drained solids, rinsed in tap water",
+  "kcal": 71,
+  "p": 4.3,
+  "f": 1,
+  "c": 11.8,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "menestra_congelada",
+  "name": "Menestra congelada cocida",
+  "cat": "verdura",
+  "fdc": 170472,
+  "usda": "Vegetables, mixed, frozen, cooked, boiled, drained, without salt",
+  "kcal": 65,
+  "p": 2.9,
+  "f": 0.2,
+  "c": 8.7,
+  "fib": 4.4,
+  "alc": 0,
+  "sug": 3.1,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "brocoli_congelado",
+  "name": "Brócoli congelado cocido",
+  "cat": "verdura",
+  "fdc": 169969,
+  "usda": "Broccoli, frozen, chopped, cooked, boiled, drained, without salt",
+  "kcal": 28,
+  "p": 3.1,
+  "f": 0.1,
+  "c": 2.3,
+  "fib": 3,
+  "alc": 0,
+  "sug": 1.5,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "coliflor_congelada",
+  "name": "Coliflor congelada cocida",
+  "cat": "verdura",
+  "fdc": 170399,
+  "usda": "Cauliflower, frozen, cooked, boiled, drained, without salt",
+  "kcal": 19,
+  "p": 1.6,
+  "f": 0.2,
+  "c": 1,
+  "fib": 2.7,
+  "alc": 0,
+  "sug": 1,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "alubias_tomate",
+  "name": "Alubias con tomate (lata)",
+  "cat": "legum",
+  "fdc": 175182,
+  "usda": "Beans, baked, canned, plain or vegetarian",
+  "kcal": 94,
+  "p": 4.8,
+  "f": 0.4,
+  "c": 17,
+  "fib": 4.1,
+  "alc": 0,
+  "sug": 8,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "garbanzos_lata2",
+  "name": "Garbanzos de bote (escurridos)",
+  "cat": "legum",
+  "fdc": 173800,
+  "usda": "Chickpeas (garbanzo beans, bengal gram), mature seeds, canned, drained solids",
+  "kcal": 139,
+  "p": 7.1,
+  "f": 2.8,
+  "c": 16.1,
+  "fib": 6.4,
+  "alc": 0,
+  "sug": 4,
+  "serv": [
+   150,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "maiz_cocido",
+  "name": "Maíz dulce cocido",
+  "cat": "verdura",
+  "fdc": 169999,
+  "usda": "Corn, sweet, yellow, cooked, boiled, drained, without salt",
+  "kcal": 96,
+  "p": 3.4,
+  "f": 1.5,
+  "c": 18.6,
+  "fib": 2.4,
+  "alc": 0,
+  "sug": 4.5,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "arroz_medio_cocido",
+  "name": "Arroz blanco cocido (grano medio)",
+  "cat": "hc",
+  "fdc": 168930,
+  "usda": "Rice, white, medium-grain, cooked, unenriched",
+  "kcal": 130,
+  "p": 2.4,
+  "f": 0.2,
+  "c": 28.6,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   180,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "arroz_vapor",
+  "name": "Arroz blanco al vapor (precocido)",
+  "cat": "hc",
+  "fdc": 169710,
+  "usda": "Rice, white, long-grain, precooked or instant, enriched, prepared",
+  "kcal": 124,
+  "p": 2.2,
+  "f": 0.5,
+  "c": 26.2,
+  "fib": 0.6,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   180,
+   "ración",
+   "raciones"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "pasta_integral_cocida2",
+  "name": "Macarrones integrales cocidos",
+  "cat": "hc",
+  "fdc": 168910,
+  "usda": "Pasta, whole-wheat, cooked (Includes foods for USDA's Food Distribution Program)",
+  "kcal": 149,
+  "p": 6,
+  "f": 1.7,
+  "c": 26.2,
+  "fib": 3.9,
+  "alc": 0,
+  "sug": 0.8,
+  "serv": [
+   200,
+   "ración",
+   "raciones"
+  ],
+  "flags": "NG"
+ },
+ {
+  "id": "pan_pita_integral",
+  "name": "Pan de pita integral",
+  "cat": "hc",
+  "fdc": 174916,
+  "usda": "Bread, pita, whole-wheat",
+  "kcal": 262,
+  "p": 9.8,
+  "f": 1.7,
+  "c": 49.8,
+  "fib": 6.1,
+  "alc": 0,
+  "sug": 2.9,
+  "serv": [
+   60,
+   "pan",
+   "panes"
+  ],
+  "flags": "NG"
+ },
+ {
+  "id": "pan_centeno2",
+  "name": "Pan de centeno (rebanada)",
+  "cat": "hc",
+  "fdc": 172684,
+  "usda": "Bread, rye",
+  "kcal": 259,
+  "p": 8.5,
+  "f": 3.3,
+  "c": 42.5,
+  "fib": 5.8,
+  "alc": 0,
+  "sug": 3.9,
+  "serv": [
+   35,
+   "rebanada",
+   "rebanadas"
+  ],
+  "flags": "NG"
+ },
+ {
+  "id": "pan_avena",
+  "name": "Pan de avena (rebanada)",
+  "cat": "hc",
+  "fdc": 172678,
+  "usda": "Bread, oatmeal",
+  "kcal": 269,
+  "p": 8.4,
+  "f": 4.4,
+  "c": 44.5,
+  "fib": 4,
+  "alc": 0,
+  "sug": 8.1,
+  "serv": [
+   35,
+   "rebanada",
+   "rebanadas"
+  ],
+  "flags": "NG"
+ },
+ {
+  "id": "pan_maiz",
+  "name": "Pan de maíz (con leche y huevo)",
+  "cat": "hc",
+  "fdc": 174909,
+  "usda": "Bread, cornbread, dry mix, prepared with 2% milk, 80% margarine, and eggs",
+  "kcal": 330,
+  "p": 6.6,
+  "f": 9.6,
+  "c": 52.2,
+  "fib": 2.3,
+  "alc": 0,
+  "sug": 16,
+  "serv": [
+   60,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VG"
+ },
+ {
+  "id": "picatostes",
+  "name": "Picatostes / croûtons",
+  "cat": "hc",
+  "fdc": 172752,
+  "usda": "Croutons, seasoned",
+  "kcal": 465,
+  "p": 10.8,
+  "f": 18.3,
+  "c": 58.5,
+  "fib": 5,
+  "alc": 0,
+  "sug": 4.4,
+  "serv": [
+   20,
+   "ración",
+   "raciones"
+  ],
+  "flags": "NG"
+ },
+ {
+  "id": "boca_atun",
+  "name": "Bocadillo de atún con lechuga y tomate",
+  "cat": "platos",
+  "fdc": 170299,
+  "usda": "Fast foods, submarine sandwich, tuna on white bread with lettuce and tomato",
+  "kcal": 218,
+  "p": 12.3,
+  "f": 12,
+  "c": 15.3,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 1.9,
+  "serv": [
+   250,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "boca_pavo_jamon",
+  "name": "Bocadillo de pavo, jamón y roast beef",
+  "cat": "platos",
+  "fdc": 170308,
+  "usda": "Fast foods, submarine sandwich, turkey, roast beef and ham on white bread with lettuce and tomato",
+  "kcal": 146,
+  "p": 10.7,
+  "f": 2.4,
+  "c": 19,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 3.2,
+  "serv": [
+   250,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "boca_pollo_horno",
+  "name": "Bocadillo de pollo asado",
+  "cat": "platos",
+  "fdc": 170309,
+  "usda": "Fast foods, submarine sandwich, oven roasted chicken on white bread with lettuce and tomato",
+  "kcal": 157,
+  "p": 10.8,
+  "f": 3.2,
+  "c": 20.2,
+  "fib": 1.2,
+  "alc": 0,
+  "sug": 3,
+  "serv": [
+   250,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "boca_roastbeef",
+  "name": "Bocadillo de roast beef",
+  "cat": "platos",
+  "fdc": 170298,
+  "usda": "Fast foods, submarine sandwich, roast beef on white bread with lettuce and tomato",
+  "kcal": 156,
+  "p": 12.2,
+  "f": 2.7,
+  "c": 19.6,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 3,
+  "serv": [
+   250,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "boca_bacon",
+  "name": "Bocadillo de bacon, lechuga y tomate",
+  "cat": "platos",
+  "fdc": 170313,
+  "usda": "Fast foods, submarine sandwich, bacon, lettuce, and tomato on white bread",
+  "kcal": 205,
+  "p": 10.1,
+  "f": 6.4,
+  "c": 25.1,
+  "fib": 1.6,
+  "alc": 0,
+  "sug": 3.6,
+  "serv": [
+   220,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "boca_ternera_queso",
+  "name": "Bocadillo de ternera con queso",
+  "cat": "platos",
+  "fdc": 170311,
+  "usda": "Fast foods, submarine sandwich, steak and cheese on white bread with cheese, lettuce and tomato",
+  "kcal": 183,
+  "p": 12.3,
+  "f": 5.3,
+  "c": 20.3,
+  "fib": 1.2,
+  "alc": 0,
+  "sug": 3.4,
+  "serv": [
+   250,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "MGL"
+ },
+ {
+  "id": "sand_pollo_plancha",
+  "name": "Sándwich de pollo a la plancha",
+  "cat": "platos",
+  "fdc": 170368,
+  "usda": "Fast Foods, grilled chicken filet sandwich, with lettuce, tomato and spread",
+  "kcal": 182,
+  "p": 17.3,
+  "f": 4.6,
+  "c": 15.9,
+  "fib": 0.9,
+  "alc": 0,
+  "sug": 3.1,
+  "serv": [
+   200,
+   "sándwich",
+   "sándwiches"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "sand_pollo_crujiente",
+  "name": "Sándwich de pollo crujiente",
+  "cat": "platos",
+  "fdc": 170318,
+  "usda": "Fast Foods, crispy chicken filet sandwich, with lettuce and mayonnaise",
+  "kcal": 276,
+  "p": 10.9,
+  "f": 13.6,
+  "c": 26,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 3.4,
+  "serv": [
+   200,
+   "sándwich",
+   "sándwiches"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "sand_pescado",
+  "name": "Sándwich de pescado con salsa tártara",
+  "cat": "platos",
+  "fdc": 170296,
+  "usda": "Fast foods, fish sandwich, with tartar sauce",
+  "kcal": 257,
+  "p": 10.3,
+  "f": 12.4,
+  "c": 25.7,
+  "fib": 1,
+  "alc": 0,
+  "sug": 3.5,
+  "serv": [
+   160,
+   "sándwich",
+   "sándwiches"
+  ],
+  "flags": "PG"
+ },
+ {
+  "id": "sand_pescado_queso",
+  "name": "Sándwich de pescado con queso",
+  "cat": "platos",
+  "fdc": 170297,
+  "usda": "Fast foods, fish sandwich, with tartar sauce and cheese",
+  "kcal": 279,
+  "p": 11.3,
+  "f": 14.6,
+  "c": 25.6,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 3.7,
+  "serv": [
+   180,
+   "sándwich",
+   "sándwiches"
+  ],
+  "flags": "PGL"
+ },
+ {
+  "id": "sand_pollo_pepinillos",
+  "name": "Sándwich de pollo con pepinillos",
+  "cat": "platos",
+  "fdc": 170295,
+  "usda": "Fast foods, chicken fillet sandwich, plain with pickles",
+  "kcal": 250,
+  "p": 16.3,
+  "f": 11.2,
+  "c": 19.5,
+  "fib": 1.4,
+  "alc": 0,
+  "sug": 3.6,
+  "serv": [
+   180,
+   "sándwich",
+   "sándwiches"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "sand_pollo_teriyaki",
+  "name": "Bocadillo de pollo teriyaki",
+  "cat": "platos",
+  "fdc": 170306,
+  "usda": "Fast foods, submarine sandwich, sweet onion chicken teriyaki on white bread with lettuce, tomato and sweet onion sauce",
+  "kcal": 155,
+  "p": 10.9,
+  "f": 2.4,
+  "c": 21.3,
+  "fib": 1.2,
+  "alc": 0,
+  "sug": 6.1,
+  "serv": [
+   250,
+   "bocadillo",
+   "bocadillos"
+  ],
+  "flags": "MG"
+ },
+ {
+  "id": "donut_chocolate",
+  "name": "Dónut de chocolate",
+  "cat": "hc",
+  "fdc": 174993,
+  "usda": "Doughnuts, cake-type, chocolate, sugared or glazed",
+  "kcal": 417,
+  "p": 4.5,
+  "f": 19.9,
+  "c": 55.2,
+  "fib": 2.2,
+  "alc": 0,
+  "sug": 31.9,
+  "serv": [
+   60,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "donut_relleno",
+  "name": "Dónut relleno de crema",
+  "cat": "hc",
+  "fdc": 172757,
+  "usda": "Doughnuts, yeast-leavened, with creme filling",
+  "kcal": 361,
+  "p": 6.4,
+  "f": 24.5,
+  "c": 29.2,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 14.6,
+  "serv": [
+   85,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "bizcocho_chocolate",
+  "name": "Bizcocho de chocolate",
+  "cat": "hc",
+  "fdc": 174934,
+  "usda": "Cake, chocolate, commercially prepared with chocolate frosting, in-store bakery",
+  "kcal": 389,
+  "p": 3.5,
+  "f": 20,
+  "c": 50.6,
+  "fib": 2.2,
+  "alc": 0,
+  "sug": 40,
+  "serv": [
+   80,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "tarta_manzana",
+  "name": "Tarta de manzana",
+  "cat": "hc",
+  "fdc": 175011,
+  "usda": "Pie, apple, commercially prepared, enriched flour",
+  "kcal": 237,
+  "p": 1.9,
+  "f": 11,
+  "c": 32.4,
+  "fib": 1.6,
+  "alc": 0,
+  "sug": 15.6,
+  "serv": [
+   120,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VG"
+ },
+ {
+  "id": "galletas_avena",
+  "name": "Galletas de avena",
+  "cat": "hc",
+  "fdc": 172725,
+  "usda": "Cookies, oatmeal, commercially prepared, regular",
+  "kcal": 450,
+  "p": 6.2,
+  "f": 18.1,
+  "c": 65.9,
+  "fib": 2.8,
+  "alc": 0,
+  "sug": 24.7,
+  "serv": [
+   30,
+   "galleta",
+   "galletas"
+  ],
+  "flags": "VG"
+ },
+ {
+  "id": "galletas_mantequilla",
+  "name": "Galletas de mantequilla",
+  "cat": "hc",
+  "fdc": 174950,
+  "usda": "Cookies, butter, commercially prepared, enriched",
+  "kcal": 467,
+  "p": 6.1,
+  "f": 18.8,
+  "c": 68.1,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 20.2,
+  "serv": [
+   25,
+   "galleta",
+   "galletas"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "barquitas_fruta",
+  "name": "Rollitos de fruta (snack)",
+  "cat": "hc",
+  "fdc": 167541,
+  "usda": "Snacks, fruit leather, rolls",
+  "kcal": 371,
+  "p": 0.1,
+  "f": 3,
+  "c": 85.8,
+  "fib": 0,
+  "alc": 0,
+  "sug": 49.2,
+  "serv": [
+   20,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "N"
+ },
+ {
+  "id": "magdalena_usda",
+  "name": "Magdalena de arándanos",
+  "cat": "hc",
+  "fdc": 172765,
+  "usda": "Muffins, blueberry, commercially prepared (Includes mini-muffins)",
+  "kcal": 375,
+  "p": 4.5,
+  "f": 16.1,
+  "c": 51.9,
+  "fib": 1.1,
+  "alc": 0,
+  "sug": 31.5,
+  "serv": [
+   70,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "bollo_dulce",
+  "name": "Bollo dulce",
+  "cat": "hc",
+  "fdc": 174107,
+  "usda": "Rolls, dinner, sweet",
+  "kcal": 321,
+  "p": 10,
+  "f": 7.4,
+  "c": 50.5,
+  "fib": 3.1,
+  "alc": 0,
+  "sug": 15.4,
+  "serv": [
+   60,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "brownie_usda",
+  "name": "Brownie de chocolate",
+  "cat": "hc",
+  "fdc": 172713,
+  "usda": "Cookies, brownies, commercially prepared",
+  "kcal": 405,
+  "p": 4.8,
+  "f": 16.3,
+  "c": 61.8,
+  "fib": 2.1,
+  "alc": 0,
+  "sug": 36.6,
+  "serv": [
+   60,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "donut_masa",
+  "name": "Dónut de masa sin glasear",
+  "cat": "hc",
+  "fdc": 174990,
+  "usda": "Doughnuts, cake-type, plain (includes unsugared, old-fashioned)",
+  "kcal": 434,
+  "p": 5.3,
+  "f": 24.9,
+  "c": 45.4,
+  "fib": 1.7,
+  "alc": 0,
+  "sug": 18.2,
+  "serv": [
+   50,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VG"
+ },
+ {
+  "id": "tarta_queso_usda",
+  "name": "Tarta de queso (porción)",
+  "cat": "hc",
+  "fdc": 172711,
+  "usda": "Cake, cheesecake, commercially prepared",
+  "kcal": 321,
+  "p": 5.5,
+  "f": 22.5,
+  "c": 25.1,
+  "fib": 0.4,
+  "alc": 0,
+  "sug": 21.8,
+  "serv": [
+   100,
+   "ración",
+   "raciones"
+  ],
+  "flags": "VGL"
+ },
+ {
+  "id": "natillas_usda2",
+  "name": "Natillas caseras",
+  "cat": "lacteo",
+  "fdc": 168785,
+  "usda": "Puddings, vanilla, dry mix, instant, prepared with whole milk",
+  "kcal": 114,
+  "p": 2.7,
+  "f": 2.9,
+  "c": 19.7,
+  "fib": 0,
+  "alc": 0,
+  "sug": 18,
+  "serv": [
+   125,
+   "unidad",
+   "unidades"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "helado_vainilla_usda",
+  "name": "Helado de vainilla (tarrina)",
+  "cat": "lacteo",
+  "fdc": 167575,
+  "usda": "Ice creams, vanilla",
+  "kcal": 207,
+  "p": 3.5,
+  "f": 11,
+  "c": 22.9,
+  "fib": 0.7,
+  "alc": 0,
+  "sug": 21.2,
+  "serv": [
+   100,
+   "bola",
+   "bolas"
+  ],
+  "flags": "VL"
+ },
+ {
+  "id": "zumo_pomelo",
+  "name": "Zumo de pomelo natural",
+  "cat": "bebida",
+  "fdc": 173039,
+  "usda": "Grapefruit juice, white, raw",
+  "kcal": 39,
+  "p": 0.5,
+  "f": 0.1,
+  "c": 9.1,
+  "fib": 0.1,
+  "alc": 0,
+  "sug": 9.1,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "zumo_arandano",
+  "name": "Zumo de arándanos",
+  "cat": "bebida",
+  "fdc": 168117,
+  "usda": "Cranberry juice, unsweetened",
+  "kcal": 46,
+  "p": 0.4,
+  "f": 0.1,
+  "c": 12.1,
+  "fib": 0.1,
+  "alc": 0,
+  "sug": 12.1,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "zumo_melocoton",
+  "name": "Néctar de melocotón",
+  "cat": "bebida",
+  "fdc": 168185,
+  "usda": "Peach nectar, canned, with added ascorbic acid",
+  "kcal": 50,
+  "p": 0.2,
+  "f": 0.5,
+  "c": 11.8,
+  "fib": 0.1,
+  "alc": 0,
+  "sug": 11.2,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "zumo_pera",
+  "name": "Néctar de pera",
+  "cat": "bebida",
+  "fdc": 169940,
+  "usda": "Pear nectar, canned, without added ascorbic acid",
+  "kcal": 60,
+  "p": 0.1,
+  "f": 0,
+  "c": 15.2,
+  "fib": 0.6,
+  "alc": 0,
+  "sug": 15.2,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "zumo_zanahoria",
+  "name": "Zumo de zanahoria",
+  "cat": "bebida",
+  "fdc": 170491,
+  "usda": "Carrot juice, canned",
+  "kcal": 40,
+  "p": 1,
+  "f": 0.2,
+  "c": 8.5,
+  "fib": 0.8,
+  "alc": 0,
+  "sug": 3.9,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "limonada",
+  "name": "Limonada",
+  "cat": "bebida",
+  "fdc": 174859,
+  "usda": "Lemonade, powder, prepared with water",
+  "kcal": 14,
+  "p": 0,
+  "f": 0,
+  "c": 3.6,
+  "fib": 0,
+  "alc": 0,
+  "sug": 3.5,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "te_verde",
+  "name": "Té verde (sin azúcar)",
+  "cat": "bebida",
+  "fdc": 171917,
+  "usda": "Beverages, tea, green, brewed, regular",
+  "kcal": 1,
+  "p": 0.2,
+  "f": 0,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   250,
+   "taza",
+   "tazas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "te_negro",
+  "name": "Té negro (sin azúcar)",
+  "cat": "bebida",
+  "fdc": 173227,
+  "usda": "Beverages, tea, black, brewed, prepared with tap water",
+  "kcal": 1,
+  "p": 0,
+  "f": 0,
+  "c": 0.3,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   250,
+   "taza",
+   "tazas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "te_verde_desca",
+  "name": "Té verde descafeinado",
+  "cat": "bebida",
+  "fdc": 171910,
+  "usda": "Beverages, tea, green, brewed, decaffeinated",
+  "kcal": 0,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   250,
+   "taza",
+   "tazas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "cafe_americano",
+  "name": "Café americano (sin azúcar)",
+  "cat": "bebida",
+  "fdc": 171890,
+  "usda": "Beverages, coffee, brewed, prepared with tap water",
+  "kcal": 1,
+  "p": 0.1,
+  "f": 0,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   250,
+   "taza",
+   "tazas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "cafe_descafeinado",
+  "name": "Café descafeinado",
+  "cat": "bebida",
+  "fdc": 171889,
+  "usda": "Beverages, coffee, brewed, prepared with tap water, decaffeinated",
+  "kcal": 0,
+  "p": 0.1,
+  "f": 0,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   250,
+   "taza",
+   "tazas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "agua_gas",
+  "name": "Agua con gas",
+  "cat": "bebida",
+  "fdc": 174842,
+  "usda": "Beverages, carbonated, club soda",
+  "kcal": 0,
+  "p": 0,
+  "f": 0,
+  "c": 0,
+  "fib": 0,
+  "alc": 0,
+  "sug": 0,
+  "serv": [
+   330,
+   "botella",
+   "botellas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "tonica",
+  "name": "Tónica",
+  "cat": "bebida",
+  "fdc": 171869,
+  "usda": "Beverages, carbonated, tonic water",
+  "kcal": 34,
+  "p": 0,
+  "f": 0,
+  "c": 8.8,
+  "fib": 0,
+  "alc": 0,
+  "sug": 8.8,
+  "serv": [
+   250,
+   "vaso",
+   "vasos"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "refresco_uva",
+  "name": "Refresco de uva",
+  "cat": "bebida",
+  "fdc": 173203,
+  "usda": "Beverages, carbonated, grape soda",
+  "kcal": 43,
+  "p": 0,
+  "f": 0,
+  "c": 11.2,
+  "fib": 0,
+  "alc": 0,
+  "sug": null,
+  "serv": [
+   330,
+   "lata",
+   "latas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "vino_blanco",
+  "name": "Vino blanco",
+  "cat": "bebida",
+  "fdc": 174837,
+  "usda": "Alcoholic beverage, wine, table, white",
+  "kcal": 82,
+  "p": 0.1,
+  "f": 0,
+  "c": 2.6,
+  "fib": 0,
+  "alc": 10.3,
+  "sug": 1,
+  "serv": [
+   150,
+   "copa",
+   "copas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "vino_chenin",
+  "name": "Vino blanco Chenin Blanc",
+  "cat": "bebida",
+  "fdc": 173195,
+  "usda": "Alcoholic beverage, wine, table, white, Chenin Blanc",
+  "kcal": 80,
+  "p": 0.1,
+  "f": 0,
+  "c": 3.3,
+  "fib": 0,
+  "alc": 9.6,
+  "sug": null,
+  "serv": [
+   150,
+   "copa",
+   "copas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "vino_borgona",
+  "name": "Vino tinto Borgoña",
+  "cat": "bebida",
+  "fdc": 173208,
+  "usda": "Alcoholic Beverage, wine, table, red, Burgundy",
+  "kcal": 86,
+  "p": 0.1,
+  "f": 0,
+  "c": 3.7,
+  "fib": 0,
+  "alc": 10.3,
+  "sug": null,
+  "serv": [
+   150,
+   "copa",
+   "copas"
+  ],
+  "flags": "N ml"
+ },
+ {
+  "id": "whey_isolate",
+  "name": "Proteína whey aislada (polvo)",
+  "cat": "vprot",
+  "fdc": 173177,
+  "usda": "Beverages, Whey protein powder isolate",
+  "kcal": 359,
+  "p": 58.1,
+  "f": 1.2,
+  "c": 29.1,
+  "fib": 0,
+  "alc": 0,
+  "sug": 1.2,
+  "serv": [
+   30,
+   "cacito",
+   "cacitos"
+  ],
+  "flags": "VL"
+ }
+]
