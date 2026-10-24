@@ -263,7 +263,14 @@ const DOW_LARGO = () => [tk('lunes'), tk('martes'), tk('miércoles'), tk('jueves
 // Exportar a CSV (se abre en Excel, Numbers o Google Sheets). Separador «;» y BOM: Excel en español lo abre bien.
 function exportCSV(tipo) {
     if (needPro('trends')) return;
-    const esc2 = v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+    // Excel y Google Sheets tratan como fórmula lo que empieza por = + - @ o un tabulador. Un nombre de
+    // producto puede venir de Open Food Facts (lo edita cualquiera), así que se le pone un apóstrofo
+    // delante: se ve igual, pero se lee como texto y nunca se ejecuta.
+    const esc2 = v => {
+        let t = String(v == null ? '' : v);
+        if (typeof v === 'string' && /^[=+\-@\t\r]/.test(t)) t = "'" + t;
+        return `"${t.replace(/"/g, '""')}"`;
+    };
     const fechas = Object.keys(state.diary || {}).filter(d => (state.diary[d] || []).length).sort();
     let filas = [], nombre = '';
     if (tipo === 'diario') {
