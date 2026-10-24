@@ -14,7 +14,7 @@ const exLabel = e => { const x = e && e.id && getEx(e.id); return x ? tr(x.name)
 const DOW = ['L', 'M', 'X', 'J', 'V', 'S', 'D']; // i18n-ignore (ya no se usa: las iniciales salen de dowLetters())
 const isoOf = d => new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
 let gymDay = 0, gymSaveT;
-function myGym() { const g = state.gym; if (!Array.isArray(g.plan)) g.plan = []; return g; }
+function myGym() { const g = state.gym; if (!Array.isArray(g.plan)) g.plan = []; if (g.beep == null) g.beep = 2; return g; }
 const gymDays = () => myGym().myDays || 0;
 const gymSave = () => { clearTimeout(gymSaveT); gymSaveT = setTimeout(save, 300); };
 const exKey = e => e.id || 'n:' + norm(e.name || e.n || '');
@@ -30,10 +30,32 @@ const kgTxt = kg => fmt(kg, kg % 1 ? 1 : 0);
 // Una serie guardada: { kg, reps } y, si es dropset, drop: [{ kg, reps }, …] con las bajadas que siguen a la primera.
 // Los entrenos antiguos no tienen «drop»: son series normales y se leen igual que siempre.
 const isDrop = s => Array.isArray(s && s.drop) && s.drop.length > 0;
-const setText = (s, x = ' × ') => `${s.kg ? kgTxt(s.kg) + ' kg' + x : ''}${s.reps}${isDrop(s) ? s.drop.map(d => ` ↓ ${d.kg ? kgTxt(d.kg) + x : ''}${d.reps}`).join('') : ''}`;
+// Serie de calentamiento: w = 1. No cuenta para volumen, récords ni progresión (es preparación, no trabajo).
+// Los entrenos antiguos no tienen «w»: siguen siendo series efectivas, como siempre.
+const esCalent = s => !!(s && s.w);
+const efectivas = sets => (sets || []).filter(s => !esCalent(s));
+const setText = (s, x = ' × ') => `${esCalent(s) ? '○ ' : ''}${s.kg ? kgTxt(s.kg) + ' kg' + x : ''}${s.reps}${s.rir != null ? ` @${s.rir}` : ''}${isDrop(s) ? s.drop.map(d => ` ↓ ${d.kg ? kgTxt(d.kg) + x : ''}${d.reps}`).join('') : ''}`;
 const setVol = s => s.kg * s.reps + (isDrop(s) ? s.drop.reduce((a, d) => a + d.kg * d.reps, 0) : 0); // el volumen cuenta todas las bajadas
-const exVol = e => e.sets.reduce((a, s) => a + setVol(s), 0);
+const exVol = e => efectivas(e.sets).reduce((a, s) => a + setVol(s), 0);
 const perfText = sets => sets.slice(0, 4).map(s => setText(s)).join(' · ');
+
+// ----- Objetivo de hoy: progresión doble -----
+// Primero subes repeticiones hasta la parte alta del rango; cuando llegas, subes peso y vuelves abajo.
+// Es la forma más usada y sencilla de progresar, y es lo que más piden en las reseñas de otras apps.
+// El salto de peso es el disco más pequeño realista: 2,5 kg con barra y 1-2 kg en mancuerna o máquina.
+const REPS_TOPE = 12;             // al llegar aquí, toca subir peso
+const saltoKg = kg => kg >= 60 ? 5 : kg >= 20 ? 2.5 : kg >= 10 ? 2 : 1;
+function objetivoHoy(e) {
+    const lp = efectivas(lastPerfOf(e));
+    if (!lp || !lp.length) return null;
+    // La serie de referencia es la mejor del último día (más peso y, a igualdad, más repeticiones)
+    const mejor = lp.reduce((a, b) => (b.kg > a.kg || (b.kg === a.kg && b.reps > a.reps) ? b : a));
+    if (!mejor.reps) return null;
+    if (!mejor.kg) return { reps: mejor.reps + 1, kg: 0, porQue: tr('una repetición más que la última vez') };
+    if (mejor.reps >= REPS_TOPE) return { kg: Math.round((mejor.kg + saltoKg(mejor.kg)) * 10) / 10, reps: Math.max(6, Math.round(mejor.reps * 0.7)), porQue: tr('llegaste a {n} repeticiones: toca subir peso', { n: REPS_TOPE }) };
+    return { kg: mejor.kg, reps: mejor.reps + 1, porQue: tr('una repetición más con el mismo peso') };
+}
+const objetivoTxt = o => o ? (o.kg ? `${kgTxt(o.kg)} kg × ${o.reps}` : `× ${o.reps}`) : '';
 function weekInfo() {
     const now = new Date(todayISO() + 'T12:00:00'), dow = (now.getDay() + 6) % 7;
     const start = new Date(now); start.setDate(now.getDate() - dow);
@@ -72,6 +94,12 @@ function renderGymSettings() {
             <p class="text-[11px] text-neutral-500">${tr('Si los eliges, cada día del plan lleva su día de la semana y al abrir el gym verás el de hoy.')}</p></div>
         <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Descanso entre series')}</div>
             <div class="grid grid-cols-4 gap-2">${[60, 90, 120, 180].map(sec => `<button type="button" onclick="gsDraft.rest=${sec};renderGymSettings()" class="py-2.5 rounded-xl text-xs font-bold border ${d.rest === sec ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800 border-neutral-700 text-neutral-300'}">${fmtDur(sec)}</button>`).join('')}</div></div>
+        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Apuntar el RIR')}</div>
+            <button type="button" onclick="toggleRir()" aria-pressed="${rirOn()}" class="w-full py-2.5 rounded-xl text-xs font-bold border ${rirOn() ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800/60 border-neutral-800 text-neutral-300'}">${rirOn() ? tr('Activado') : tr('Desactivado')}</button>
+            <p class="text-[11px] text-neutral-500">${tr('RIR = repeticiones que te habrían sobrado. Añade una casilla más en cada serie; si no lo usas, no se enseña.')}</p></div>
+        <div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Aviso al acabar el descanso')}</div>
+            <div class="grid grid-cols-3 gap-2">${[[2, tk('Fuerte')], [1, tk('Suave')], [0, tk('Solo vibrar')]].map(([n, l]) => `<button type="button" onclick="setBeep(${n})" aria-pressed="${myGym().beep === n}" class="py-2.5 rounded-xl text-xs font-bold border ${myGym().beep === n ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800/60 border-neutral-800 text-neutral-300'}">${tr(l)}</button>`).join('')}</div>
+            <p class="text-[11px] text-neutral-500">${tr('Tócalo para oírlo. «Fuerte» se oye con el ruido del gimnasio.')}</p></div>
         <button type="button" onclick="gsSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${tr('Guardar ajustes')}</button>
         <p class="text-[11px] text-neutral-500">${tr('Tus ejercicios y tus entrenos guardados no se borran nunca al cambiar los días.')}</p>`;
 }
@@ -97,6 +125,39 @@ function renderTrainCard() {
         <button type="button" onclick="openGymSettings()" class="px-3 py-2 rounded-xl bg-neutral-800 border border-neutral-700 text-xs font-extrabold text-neutral-100 hover:border-mint-500/50 whitespace-nowrap">${N ? tr('Cambiar') : tr('Elegir')}</button></div>`;
 }
 function pickGymDay(i) { gymDay = i; renderGym(); }
+
+// ----- Series por músculo en los últimos 7 días -----
+// Referencia habitual en hipertrofia: 10-20 series semanales por grupo muscular.
+// El músculo principal cuenta 1 serie; el secundario, media (ayuda pero no es el protagonista).
+const SERIES_MIN = 10, SERIES_MAX = 20;
+function volumenSemana() {
+    const desde = shiftISO(todayISO(), -6), por = {};
+    for (const w of state.workouts) {
+        if (w.d < desde) continue;
+        for (const x of w.ex) {
+            const ej = x.id && typeof getEx === 'function' ? getEx(x.id) : null;
+            if (!ej || !ej.group) continue; // los ejercicios que creaste tú no tienen grupo: no se inventa
+            const n = efectivas(x.sets).filter(st => st.reps > 0).length;
+            por[ej.group] = (por[ej.group] || 0) + n;
+            if (ej.sec) for (let g2 of String(ej.sec).split(/\s*(?:y|,)\s*/).filter(Boolean)) { g2 = g2.charAt(0).toUpperCase() + g2.slice(1); por[g2] = (por[g2] || 0) + n / 2; }
+        }
+    }
+    return Object.entries(por).map(([g, n]) => ({ g, n: Math.round(n * 10) / 10 })).sort((a, b) => b.n - a.n);
+}
+function volumenHtml() {
+    const V = volumenSemana();
+    if (!V.length) return '';
+    const max = Math.max(SERIES_MAX, ...V.map(v => v.n));
+    return `<div class="glass-card rounded-3xl p-4 sm:p-6 space-y-3 border border-neutral-800">
+        <div class="flex items-center justify-between gap-3"><h3 class="text-base font-extrabold text-neutral-100">${tr('Series por músculo (7 días)')}</h3><span class="text-xs font-bold text-neutral-400">${tr('{a}-{b} es lo habitual', { a: SERIES_MIN, b: SERIES_MAX })}</span></div>
+        <div class="space-y-2">${V.map(v => {
+            const bajo = v.n < SERIES_MIN, alto = v.n > SERIES_MAX;
+            return `<div class="space-y-1"><div class="flex justify-between text-[11px] font-bold"><span class="text-neutral-300">${tr(v.g)}</span><span class="${alto ? 'text-amber-300' : bajo ? 'text-neutral-400' : 'text-ok-400'}">${fmt(v.n, v.n % 1 ? 1 : 0)} ${tr(v.n === 1 ? 'serie' : 'series')}</span></div>
+            <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full ${alto ? 'bg-amber-500' : bajo ? 'bg-neutral-600' : 'bg-ok-500'}" style="width:${Math.min(100, v.n / max * 100)}%"></div></div></div>`;
+        }).join('')}</div>
+        <p class="text-[11px] text-neutral-500">${tr('El músculo principal del ejercicio cuenta una serie; el secundario, media. Orientativo: lo que te funcione a ti manda.')}</p>
+    </div>`;
+}
 
 function renderGym() {
     const box = $('gym-app'); if (!box) return;
@@ -126,6 +187,8 @@ function renderGym() {
                 ? `<button onclick="openRecords()" class="w-full py-3.5 rounded-2xl bg-ok-500/15 border border-ok-400/40 text-ok-300 font-extrabold text-sm hover:bg-ok-500/25 flex items-center justify-center gap-2"><i class="fa-solid fa-trophy"></i> ${tr('Mis pesos más altos')}</button>`
                 : `<div class="w-full py-3.5 rounded-2xl border border-dashed border-neutral-700 text-neutral-400 font-bold text-sm flex items-center justify-center gap-2"><i class="fa-solid fa-lock"></i> ${tr('Completa tus {k} días para ver tus pesos más altos', { k: N })}</div>`}
         </div>
+
+        ${volumenHtml()}
 
         <div class="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 gym-tabs" role="tablist" aria-label="${tr('Días de entrenamiento')}">${g.plan.slice(0, N).map((p, i) => `<button role="tab" aria-selected="${i === gymDay}" onclick="pickGymDay(${i})" class="shrink-0 px-4 py-2.5 rounded-2xl text-sm font-extrabold border transition ${i === gymDay ? 'bg-mint-600 text-white border-mint-600' : 'bg-neutral-900 text-neutral-300 border-neutral-800 hover:border-mint-500/40'}">${W.doneDi.has(i) ? '<i class="fa-solid fa-check text-xs text-ok-400"></i> ' : ''}${dayName(i)}</button>`).join('')}</div>
 
@@ -184,12 +247,13 @@ function gymExList(ex) {
     return html;
 }
 function gymExHtml(e, k) {
-    const lp = lastPerfOf(e) || [];
+    const lp = lastPerfOf(e) || [], obj = objetivoHoy(e);
     const ex = curDay().ex, canLink = k < ex.length - 1 && !e.ss && !ssSecond(ex, k) && !ex[k + 1].ss;
     return `<div class="rounded-2xl bg-neutral-900 border border-neutral-800 p-3 space-y-2" data-k="${k}">
         <div class="flex items-start justify-between gap-2">
             <button type="button" onclick="renameGymEx(${k})" class="min-w-0 flex-1 text-left" aria-label="${tr('Cambiar el nombre de {n}', { n: esc(exLabel(e)) })}"><div class="text-sm font-extrabold text-mint-300 truncate" title="${esc(exLabel(e))}">${esc(exLabel(e))} <i class="fa-solid fa-pen text-[10px] text-neutral-500" aria-hidden="true"></i></div>
-                ${lp.length ? `<div class="text-[11px] text-neutral-400 truncate">${tr('Última vez:')} ${perfText(lp)}</div>` : ''}</button>
+                ${lp.length ? `<div class="text-[11px] text-neutral-400 truncate">${tr('Última vez:')} ${perfText(lp)}</div>` : ''}
+                ${obj ? `<div class="text-[11px] font-bold text-ok-400 truncate" title="${esc(obj.porQue)}"><i class="fa-solid fa-arrow-trend-up"></i> ${tr('Hoy prueba:')} ${objetivoTxt(obj)}</div>` : ''}</button>
             <div class="flex shrink-0">
                 ${canLink ? `<button onclick="toggleSS(${k})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-mint-300 hover:bg-neutral-800" aria-label="${tr('Hacer superserie de {a} con {b}', { a: esc(exLabel(e)), b: esc(exLabel(ex[k + 1])) })}" title="${tr('Superserie con el siguiente')}"><i class="fa-solid fa-link"></i></button>` : ''}
                 ${k > 0 ? `<button onclick="moveGymEx(${k},-1)" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-neutral-200 hover:bg-neutral-800" aria-label="${tr('Subir {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-arrow-up"></i></button>` : ''}
@@ -197,23 +261,33 @@ function gymExHtml(e, k) {
                 <button onclick="removeGymEx(${k})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(exLabel(e)) })}"><i class="fa-solid fa-trash-can"></i></button>
             </div>
         </div>
-        <div class="gset-grid text-[10px] font-bold uppercase text-neutral-500 px-1"><span class="text-center">${tr('Serie')}</span><span class="text-center">kg</span><span class="text-center">${tr('Reps')}</span><span></span></div>
-        ${e.s.map((s, i) => { const drop = s.t === 'drop', ld = (lp[i] && lp[i].drop) || []; return `<div class="gset-grid items-center">
-            <button type="button" onclick="toggleDrop(${k},${i})" class="nd-settype ${drop ? 'is-drop' : ''}" aria-pressed="${drop}" aria-label="${drop ? tr('Serie {k}: dropset. Pulsa para cambiar a normal', { k: i + 1 }) : tr('Serie {k}: normal. Pulsa para cambiar a dropset', { k: i + 1 })}">${i + 1}${drop ? '<small>D</small>' : ''}</button>
+        <div class="gset-grid${rirOn() ? ' gset-rir' : ''} text-[10px] font-bold uppercase text-neutral-500 px-1"><span class="text-center">${tr('Serie')}</span><span class="text-center">kg</span><span class="text-center">${tr('Reps')}</span>${rirOn() ? '<span class="text-center">RIR</span>' : ''}<span></span></div>
+        ${e.s.map((s, i) => { const drop = s.t === 'drop', warm = s.t === 'warm', ld = (lp[i] && lp[i].drop) || []; return `<div class="gset-grid${rirOn() ? ' gset-rir' : ''} items-center">
+            <button type="button" onclick="cicloSerie(${k},${i})" class="nd-settype ${drop ? 'is-drop' : ''} ${warm ? 'is-warm' : ''}" aria-pressed="${drop || warm}" aria-label="${drop ? tr('Serie {k}: dropset. Pulsa para cambiar a normal', { k: i + 1 }) : tr('Serie {k}: normal. Pulsa para cambiar a dropset', { k: i + 1 })}">${i + 1}${drop ? '<small>D</small>' : ''}</button>
             <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(s.kg))}" placeholder="${lp[i] && lp[i].kg ? lp[i].kg : 0}" oninput="gymSet(${k},${i},'kg',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="${tr('Kilos serie {k}', { k: i + 1 })}">
             <input type="number" inputmode="numeric" min="0" value="${esc(String(s.r))}" placeholder="${lp[i] ? lp[i].reps : 0}" oninput="gymSet(${k},${i},'r',this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-800 text-center font-bold" aria-label="${tr('Repeticiones serie {k}', { k: i + 1 })}">
+            ${rirOn() ? `<input type="number" inputmode="numeric" min="0" max="10" value="${esc(String(s.rir == null ? '' : s.rir))}" placeholder="–" oninput="gymRir(${k},${i},this.value)" class="w-full p-2.5 rounded-xl border border-neutral-800 bg-neutral-950 text-center text-sm font-bold" aria-label="${tr('RIR de la serie {k}', { k: i + 1 })}">` : ''}
             <button onclick="removeGymSet(${k},${i})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="${tr('Quitar serie {k}', { k: i + 1 })}" ${e.s.length < 2 ? 'disabled style="visibility:hidden"' : ''}><i class="fa-solid fa-xmark"></i></button>
-        </div>${drop ? (s.d || []).map((d, j) => `<div class="gset-grid items-center nd-droprow">
+        </div>${drop ? (s.d || []).map((d, j) => `<div class="gset-grid${rirOn() ? ' gset-rir' : ''} items-center nd-droprow">
             <span class="text-center text-xs font-extrabold text-amber-300" aria-hidden="true">↓</span>
             <input type="number" inputmode="decimal" step="0.5" min="0" value="${esc(String(d.kg))}" placeholder="${ld[j] && ld[j].kg ? ld[j].kg : 0}" oninput="gymDrop(${k},${i},${j},'kg',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="${tr('Kilos bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}">
             <input type="number" inputmode="numeric" min="0" value="${esc(String(d.r))}" placeholder="${ld[j] ? ld[j].reps : 0}" oninput="gymDrop(${k},${i},${j},'r',this.value)" class="w-full p-2 rounded-xl border border-amber-400/25 bg-neutral-800/70 text-center font-bold" aria-label="${tr('Repeticiones bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}">
-            <button type="button" onclick="removeDrop(${k},${i},${j})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="${tr('Quitar bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}"><i class="fa-solid fa-xmark"></i></button>
+            ${rirOn() ? '<span></span>' : ''}<button type="button" onclick="removeDrop(${k},${i},${j})" class="w-8 h-8 mx-auto rounded-lg text-neutral-600 hover:text-roseAccent-400" aria-label="${tr('Quitar bajada {j} de la serie {k}', { j: j + 2, k: i + 1 })}"><i class="fa-solid fa-xmark"></i></button>
         </div>`).join('') + `<button type="button" onclick="addDrop(${k},${i})" class="nd-adddrop"><i class="fa-solid fa-plus"></i> ${tr('Bajada')}</button>` : ''}`; }).join('')}
         <button onclick="addGymSet(${k})" class="w-full py-2 rounded-xl bg-neutral-800 text-neutral-200 text-xs font-bold hover:bg-neutral-700"><i class="fa-solid fa-plus"></i> ${tr('Añadir serie')}</button>
-        ${k === 0 ? '<p class="text-[11px] text-neutral-500">' + tr('Toca el número de una serie para hacerla dropset y apuntar cada bajada de peso.') + '</p>' : ''}
+        ${k === 0 ? '<p class="text-[11px] text-neutral-500">' + tr('Toca el número de una serie para marcarla como calentamiento (○) o dropset (↓). Los calentamientos no cuentan para tus récords.') + '</p>' : ''}
     </div>`;
 }
 // Dropsets en el plan del día: s.t = 'drop' y s.d = [{ kg, r }] (las bajadas que siguen a la primera)
+// normal → calentamiento → dropset → normal
+function cicloSerie(k, i) {
+    const s = curDay().ex[k].s[i];
+    if (s.t === 'warm') { s.t = 'drop'; if (!Array.isArray(s.d) || !s.d.length) s.d = [{ kg: '', r: '' }]; }
+    else if (s.t === 'drop') { s.t = ''; }
+    else s.t = 'warm';
+    gymSave(); renderGym();
+}
+function gymRir(k, i, v) { const s = curDay().ex[k].s[i]; const n = Math.round(num(v)); s.rir = v === '' || !isFinite(n) ? '' : Math.max(0, Math.min(10, n)); gymSave(); }
 function toggleDrop(k, i) {
     const s = curDay().ex[k].s[i];
     if (s.t === 'drop') { delete s.t; }
@@ -349,6 +423,9 @@ function saveGymDay() {
     ssFix(d.ex);
     const rows = d.ex.map((e, i) => ({ i, ss: !!e.ss, x: { id: e.id || '', name: e.n, sets: e.s.map(s => {
         const set = kr(s);
+        if (s.t === 'warm') set.w = 1;
+        const rir = Math.round(num(s.rir));
+        if (s.rir !== '' && s.rir != null && isFinite(rir) && rir >= 0 && rir <= 10) set.rir = rir;
         if (s.t === 'drop') { const drop = (s.d || []).map(kr).filter(x => x.reps > 0); if (drop.length) set.drop = drop; }
         return set;
     }).filter(s => s.reps > 0) } })).filter(r => r.x.sets.length);
@@ -363,7 +440,7 @@ function saveGymDay() {
     state.workouts = state.workouts.filter(x => !(x.d === t && x.di === gymDay));
     state.workouts.push(w); track('workout_saved');
     stopSession(true);
-    d.ex.forEach(e => e.s.forEach(s => { s.kg = ''; s.r = ''; if (Array.isArray(s.d)) s.d.forEach(x => { x.kg = ''; x.r = ''; }); }));
+    d.ex.forEach(e => e.s.forEach(s => { s.kg = ''; s.r = ''; s.rir = ''; if (Array.isArray(s.d)) s.d.forEach(x => { x.kg = ''; x.r = ''; }); }));
     const N = gymDays(), W = weekInfo(), g = myGym();
     const justUnlocked = W.done >= N && before < N;
     if (justUnlocked) g.unlocked = true;
@@ -420,7 +497,7 @@ function bestLifts() {
     const best = {};
     state.workouts.forEach(w => w.ex.forEach(e => {
         const k = exKey(e);
-        e.sets.forEach(s => {
+        efectivas(e.sets).forEach(s => {
             const b = best[k];
             if (!b || s.kg > b.s.kg || (s.kg === b.s.kg && s.reps > b.s.reps)) best[k] = { key: k, id: e.id, name: e.name, s, n: e.sets.length, d: w.d };
         });
@@ -564,6 +641,35 @@ function openProgress(key) {
         xLabels: [dl(first.d), pts.length > 1 ? dl(last.d) : ''],
     });
 }
+// ----- Aviso de fin de descanso -----
+// En el gimnasio hay ruido: el aviso tiene que oírse. Se genera el pitido con el propio navegador
+// (Web Audio), así no hace falta ningún archivo de sonido y funciona sin conexión.
+// g.beep = 0 silencio · 1 suave · 2 fuerte (por defecto). Se puede cambiar en los ajustes del gym.
+function pitidoDescanso() {
+    const nivel = myGym().beep;
+    const vol = nivel === 0 ? 0 : nivel === 1 ? 0.25 : 0.9;
+    if (navigator.vibrate) navigator.vibrate(nivel === 1 ? [200, 100, 200] : [300, 120, 300, 120, 300]);
+    if (!vol) return;
+    try {
+        const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+        const ac = new AC();
+        // Tres pitidos cortos y agudos: se distinguen bien de la música del gimnasio
+        [0, 0.28, 0.56].forEach((t, i) => {
+            const osc = ac.createOscillator(), g = ac.createGain();
+            osc.type = 'square'; osc.frequency.value = i === 2 ? 1320 : 880;
+            g.gain.setValueAtTime(0, ac.currentTime + t);
+            g.gain.linearRampToValueAtTime(vol, ac.currentTime + t + 0.01);
+            g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + t + 0.22);
+            osc.connect(g); g.connect(ac.destination);
+            osc.start(ac.currentTime + t); osc.stop(ac.currentTime + t + 0.24);
+        });
+        setTimeout(() => { try { ac.close(); } catch (e) { } }, 1500);
+    } catch (e) { }
+}
+const rirOn = () => !!myGym().rir;
+function toggleRir() { const g = myGym(); g.rir = !g.rir; gymSave(); renderGymSettings(); renderGym(); }
+function setBeep(n) { myGym().beep = n; gymSave(); renderGymSettings(); if (n) pitidoDescanso(); }
+
 // Temporizador de descanso (opcional)
 let restT = null;
 function startRest(sec) {
@@ -575,7 +681,7 @@ function startRest(sec) {
         const left = Math.max(0, Math.round((+bar.dataset.end - Date.now()) / 1000));
         $('rest-time').textContent = fmtDur(left);
         $('rest-prog').style.width = `${Math.min(100, left / +bar.dataset.total * 100)}%`;
-        if (!left) { clearInterval(restT); bar.classList.add('hidden'); if (navigator.vibrate) navigator.vibrate([200, 100, 200]); toast('Descanso terminado: a por la siguiente serie'); }
+        if (!left) { clearInterval(restT); bar.classList.add('hidden'); pitidoDescanso(); toast('Descanso terminado: a por la siguiente serie'); }
     };
     tick(); restT = setInterval(tick, 500);
 }

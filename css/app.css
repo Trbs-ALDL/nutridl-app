@@ -141,6 +141,8 @@ html { scrollbar-color: #4a3b2c #110f0d; } input, textarea { caret-color: #c59a6
 .gym-bar { transition: width .5s var(--ease-out); }
 .gym-tabs { scrollbar-width: none; } .gym-tabs::-webkit-scrollbar { display: none; }
 .gset-grid { display: grid; grid-template-columns: 2.25rem 1fr 1fr 2.25rem; gap: .5rem; }
+/* Con el RIR encendido cabe una casilla mas, mas estrecha */
+.gset-grid.gset-rir { grid-template-columns: 2.25rem 1fr 1fr 3rem 2.25rem; gap: .4rem; }
 @media (min-width: 1024px) { #gym-ex { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; } #gym-ex > * { margin: 0 !important; } #gym-ex > :only-child { grid-column: 1 / -1; } }
 #gym-records:not(.hidden) { animation: nd-fade .2s ease-out; }
 @media (max-width: 639px) { #gym-records:not(.hidden) > div { animation: nd-sheet .4s var(--ease-drawer); } }
@@ -456,6 +458,8 @@ html:not(.nd-ready) [data-panel]:not(.hidden) { animation: none; }
 .nd-settype { position: relative; width: 2.25rem; height: 2.25rem; margin: 0 auto; border-radius: .6rem; border: 1px solid transparent; background: transparent; color: #cfc5b8; font-size: .8rem; font-weight: 800; font-variant-numeric: tabular-nums; transition: background-color .15s ease, border-color .15s ease; }
 @media (hover: hover) and (pointer: fine) { .nd-settype:hover { border-color: var(--nd-line-hi); } }
 .nd-settype.is-drop { background: rgba(245, 158, 11, .12); border-color: rgba(245, 158, 11, .4); color: #fcd34d; }
+/* Serie de calentamiento: se ve distinta y no cuenta para los records */
+.nd-settype.is-warm { background: rgba(148, 163, 184, .14); border-color: rgba(148, 163, 184, .4); color: #cbd5e1; }
 .nd-settype small { position: absolute; right: 2px; bottom: 1px; font-size: 8px; font-weight: 800; line-height: 1; }
 .nd-droprow { margin-top: -.15rem; }
 .nd-adddrop { display: block; width: calc(100% - 2.75rem); margin: 0 0 .25rem 2.75rem; padding: .35rem; border-radius: .6rem; border: 1px dashed rgba(245, 158, 11, .35); color: #fcd34d; font-size: .72rem; font-weight: 700; }

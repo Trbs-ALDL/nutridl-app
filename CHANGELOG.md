@@ -1,5 +1,19 @@
 # Cambios de nutriDL
 
+## 3.23.0 · 25 de octubre de 2026
+
+**Gym: lo que piden en las reseñas de Hevy y Strong**
+
+Leí 640 reseñas de Hevy y 20 de Strong en Google Play España. Esto es lo que salió y ya está hecho:
+
+- **«Hoy prueba: 65 kg × 8».** Debajo de «Última vez», cada ejercicio te dice qué intentar hoy. Subes repeticiones hasta 12 y entonces subes peso (progresión doble). La queja literal en Hevy era: *«le falta incitarte a progresar en peso o repeticiones; si no tienes experiencia o no tienes entrenador, no es tu app»*.
+- **Series de calentamiento.** Toca el número de una serie y pasa por normal → calentamiento (○) → dropset (↓). Los calentamientos **no cuentan** para tus récords, tu volumen ni tu progresión, que es como debe ser.
+- **RIR** (las repeticiones que te habrían sobrado), opcional: se enciende en los ajustes del gym y añade una casilla por serie. Si no lo usas, no ves ningún cambio.
+- **Series por músculo de los últimos 7 días**, con la referencia habitual de 10-20 series. Sale solo: cada ejercicio ya tenía su músculo principal y el secundario (que cuenta media serie).
+- **El aviso de descanso ahora se oye.** Tres pitidos y vibración, con tres niveles (fuerte, suave o solo vibrar) en los ajustes. En Hevy se quejaban: *«lo noto muy suave y no lo escucho con el ruido de fondo»*.
+
+Nada de esto quita ni cambia lo que ya tenías: los entrenos antiguos se leen igual que siempre.
+
 ## 3.22.0 · 25 de octubre de 2026
 
 **Modo PRO: honesto, más útil y sin quitarte nada**
