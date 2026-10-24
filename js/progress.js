@@ -171,10 +171,126 @@ function renderProgress() {
         </div>
     </div>
     ${L.length && !canUse('trends') ? proTeaser('trends') : ''}${L.length && canUse('trends') ? `<div class="nd-card p-5 sm:p-6 space-y-3"><h3 class="text-lg font-extrabold text-neutral-50">${tr('Lo que dicen tus datos')}</h3>${L.slice(0, 5).map(x => `<div class="flex items-start gap-3"><span class="nd-ic">${icon(x.ic)}</span><span class="flex-1 text-sm text-neutral-200">${esc(x.t)}</span>${tagPill(x.k === 'consejo' ? 'rec' : 'dato')}</div>`).join('')}<p class="text-[11px] text-neutral-500">${tr('Interpretación orientativa de tus registros. No es un diagnóstico.')}</p></div>` : ''}`;
+    renderAnalisis();
     checkAchievements(true);
     const A = state.ach || {};
     $('prog-ach').innerHTML = `<div class="flex items-center justify-between gap-3"><h3 class="text-lg font-extrabold text-neutral-50">${tr('Logros')}</h3><span class="text-xs font-bold text-neutral-400">${Object.keys(A).length}/${ACHIEVEMENTS.length}</span></div>
         <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">${ACHIEVEMENTS.map(([id, ic, name, desc]) => `<div class="nd-ach ${A[id] ? 'on' : ''}" title="${esc(tr(desc))}"><span class="nd-ic">${icon(A[id] ? ic : '🔒')}</span><span class="text-xs font-extrabold text-neutral-100 leading-tight">${tr(name)}</span><span class="text-[10px] text-neutral-400 leading-tight">${A[id] ? new Date(A[id] + 'T12:00:00').toLocaleDateString(locale(), { day: 'numeric', month: 'short' }) : esc(tr(desc))}</span></div>`).join('')}</div>`;
+}
+
+// =====================================================================
+//  ANÁLISIS AVANZADO (PRO): medias por periodo, patrón por día de la semana,
+//  macros reales frente al objetivo y exportar el historial a Excel/CSV.
+//  Solo lee lo que ya tienes apuntado: no envía nada a ningún sitio.
+// =====================================================================
+let anaDias = 30; // periodo elegido (7, 30 o 90 días)
+
+// Resumen de los últimos N días: solo cuentan los días en los que apuntaste algo
+function anaResumen(n) {
+    const hoy = todayISO(), dias = [];
+    for (let i = 0; i < n; i++) dias.push(shiftISO(hoy, -i));
+    const conDatos = dias.filter(d => (state.diary[d] || []).length);
+    const t = conDatos.reduce((a, d) => {
+        const x = diaryTotals(d);
+        a.kcal += x.kcal; a.p += x.p; a.c += x.c; a.f += x.f; a.fib += x.fib;
+        if (calc.target && Math.abs(x.kcal - calc.target) <= calc.target * 0.1) a.enObjetivo++;
+        if (calc.prot && x.p >= calc.prot * 0.9) a.protOk++;
+        return a;
+    }, { kcal: 0, p: 0, c: 0, f: 0, fib: 0, enObjetivo: 0, protOk: 0 });
+    const n2 = conDatos.length || 1;
+    return { dias: n, registrados: conDatos.length, kcal: t.kcal / n2, p: t.p / n2, c: t.c / n2, f: t.f / n2, fib: t.fib / n2, enObjetivo: t.enObjetivo, protOk: t.protOk };
+}
+
+// Media de calorías por día de la semana: enseña si los findes se te van
+function anaPorDiaSemana(n) {
+    const hoy = todayISO(), suma = Array(7).fill(0), cuenta = Array(7).fill(0);
+    for (let i = 0; i < n; i++) {
+        const d = shiftISO(hoy, -i);
+        if (!(state.diary[d] || []).length) continue;
+        const dow = (new Date(d + 'T12:00:00').getDay() + 6) % 7; // 0 = lunes
+        suma[dow] += diaryTotals(d).kcal; cuenta[dow]++;
+    }
+    return suma.map((v, i) => ({ dow: i, media: cuenta[i] ? v / cuenta[i] : null, dias: cuenta[i] }));
+}
+
+function anaPeriodo(n) { anaDias = n; renderAnalisis(); }
+
+function renderAnalisis() {
+    const box = $('prog-ana'); if (!box) return;
+    if (!canUse('trends')) { box.innerHTML = ''; return; }
+    const R = anaResumen(anaDias);
+    if (!R.registrados) { box.innerHTML = `<div class="nd-card p-5 space-y-2"><h3 class="text-lg font-extrabold text-neutral-50">${tr('Análisis avanzado')}</h3><p class="text-sm text-neutral-300">${tr('Apunta algunos días y aquí verás tus medias, en qué días te pasas y podrás exportar tu historial.')}</p></div>`; return; }
+    const bot = (n, l) => `<button type="button" onclick="anaPeriodo(${n})" class="px-3 py-1.5 rounded-xl border text-xs font-bold ${n === anaDias ? 'bg-mint-600 border-mint-600 text-white' : 'bg-neutral-800/60 border-neutral-800 text-neutral-300'}">${l}</button>`;
+    const dato = (l, v, s2) => `<div class="p-3 rounded-2xl bg-neutral-800/60 border border-neutral-800"><div class="text-[11px] font-bold uppercase text-neutral-400">${l}</div><div class="text-lg font-extrabold text-neutral-50">${v}</div>${s2 ? `<div class="text-[11px] text-neutral-400">${s2}</div>` : ''}</div>`;
+    // Macros reales frente a tu objetivo
+    const barra = (l, real, obj, col) => {
+        const pct = obj ? Math.min(140, real / obj * 100) : 0;
+        return `<div class="space-y-1"><div class="flex justify-between text-[11px] font-bold"><span class="text-neutral-400">${l}</span><span class="text-neutral-200">${fmt(real)} / ${fmt(obj)} g</span></div>
+            <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full" style="width:${Math.min(100, pct)}%;background:${col}"></div></div></div>`;
+    };
+    const W = anaPorDiaSemana(anaDias).filter(d => d.media != null);
+    const peor = W.length > 1 ? W.reduce((a, b) => (b.media > a.media ? b : a)) : null;
+    const letras = typeof dowShort === 'function' ? dowShort() : ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+    const maxD = W.length ? Math.max(...W.map(d => d.media)) : 1;
+    const semana = W.length > 1 ? `<div class="space-y-2"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400">${tr('Media por día de la semana')}</div>
+        <div class="flex items-end gap-1.5 h-24">${anaPorDiaSemana(anaDias).map(d => `<div class="flex-1 flex flex-col items-center gap-1 justify-end h-full" title="${d.media != null ? fmt(d.media) + ' kcal · ' + tp(d.dias, 'día', 'días') : tr('sin datos')}">
+            <div class="w-full rounded-t ${d.media != null && calc.target && d.media > calc.target ? 'bg-amber-500/70' : 'bg-mint-500/60'}" style="height:${d.media != null ? Math.max(6, d.media / maxD * 100) : 2}%"></div>
+            <span class="text-[10px] font-bold text-neutral-400">${letras[d.dow]}</span></div>`).join('')}</div>
+        ${peor && calc.target && peor.media > calc.target ? `<p class="text-xs text-neutral-300">${tr('Tu día más alto es el {d}: {k} kcal de media, {x} por encima de tu objetivo.', { d: DOW_LARGO()[peor.dow], k: fmt(peor.media), x: fmt(peor.media - calc.target) })}</p>` : ''}</div>` : '';
+
+    box.innerHTML = `<div class="nd-card p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+            <h3 class="text-lg font-extrabold text-neutral-50">${tr('Análisis avanzado')}</h3>
+            <div class="flex gap-1.5">${bot(7, tr('7 días'))}${bot(30, tr('30 días'))}${bot(90, tr('90 días'))}</div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            ${dato(tr('Días apuntados'), `${R.registrados}/${R.dias}`, calc.target ? tr('{k} en tu objetivo', { k: R.enObjetivo }) : '')}
+            ${dato(tr('Media diaria'), `${fmt(R.kcal)} kcal`, calc.target ? tr('objetivo {k}', { k: fmt(calc.target) }) : '')}
+            ${dato(tr('Proteína cumplida'), calc.prot ? `${R.protOk}/${R.registrados}` : '—', calc.prot ? tr('{k} g al día', { k: fmt(R.p) }) : '')}
+            ${dato(tr('Fibra'), `${fmt(R.fib)} g`, tr('al día'))}
+        </div>
+        ${calc.prot ? `<div class="grid grid-cols-1 sm:grid-cols-3 gap-3">${barra(tr('Proteína'), R.p, calc.prot, '#c49a6c')}${barra(tr('Hidratos'), R.c, calc.carbs, '#e6d3b3')}${barra(tr('Grasas'), R.f, calc.fat, '#f59e0b')}</div>` : ''}
+        ${semana}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button onclick="exportCSV('diario')" class="nd-mbtn nd-mbtn-main"><i class="fa-solid fa-file-csv"></i> ${tr('Exportar mi diario (Excel)')}</button>
+            <button onclick="exportCSV('resumen')" class="nd-mbtn"><i class="fa-solid fa-table"></i> ${tr('Exportar resumen por días')}</button>
+        </div>
+        <p class="text-[11px] text-neutral-500">${tr('Medias de los días en los que apuntaste algo. El archivo se crea en tu dispositivo: no se envía a ningún sitio.')}</p>
+    </div>`;
+}
+const DOW_LARGO = () => [tk('lunes'), tk('martes'), tk('miércoles'), tk('jueves'), tk('viernes'), tk('sábado'), tk('domingo')].map(d => tr(d));
+
+// Exportar a CSV (se abre en Excel, Numbers o Google Sheets). Separador «;» y BOM: Excel en español lo abre bien.
+function exportCSV(tipo) {
+    if (needPro('trends')) return;
+    const esc2 = v => `"${String(v == null ? '' : v).replace(/"/g, '""')}"`;
+    const fechas = Object.keys(state.diary || {}).filter(d => (state.diary[d] || []).length).sort();
+    let filas = [], nombre = '';
+    if (tipo === 'diario') {
+        nombre = 'nutridl-diario';
+        filas.push([tr('Fecha'), tr('Comida del día'), tr('Alimento'), tr('Marca'), tr('Cantidad'), tr('Unidad'), 'kcal', tr('Proteína (g)'), tr('Hidratos (g)'), tr('Grasas (g)'), tr('Fibra (g)'), tr('Azúcares (g)')]);
+        for (const d of fechas) for (const e of state.diary[d]) {
+            filas.push([d, tr(SLOT_NAME[e.slot] || e.slot || ''), e.name || '', e.brand || '', round1(e.g || 0), e.ml ? 'ml' : 'g', Math.round(e.kcal || 0), round1(e.p || 0), round1(e.c || 0), round1(e.f || 0), round1(e.fib || 0), e.sug != null ? round1(e.sug) : '']);
+        }
+    } else {
+        nombre = 'nutridl-resumen';
+        filas.push([tr('Fecha'), 'kcal', tr('Proteína (g)'), tr('Hidratos (g)'), tr('Grasas (g)'), tr('Fibra (g)'), tr('Objetivo kcal'), tr('Peso (kg)'), tr('Entrenos')]);
+        const pesos = Object.fromEntries((state.weights || []).map(w => [w.d, w.w]));
+        const entrenos = (state.workouts || []).reduce((a, w) => (a[w.d] = (a[w.d] || 0) + 1, a), {});
+        const todas = [...new Set(fechas.concat(Object.keys(pesos), Object.keys(entrenos)))].sort();
+        for (const d of todas) {
+            const t = (state.diary[d] || []).length ? diaryTotals(d) : null;
+            filas.push([d, t ? Math.round(t.kcal) : '', t ? round1(t.p) : '', t ? round1(t.c) : '', t ? round1(t.f) : '', t ? round1(t.fib) : '', calc.target || '', pesos[d] != null ? pesos[d] : '', entrenos[d] || '']);
+        }
+    }
+    if (filas.length < 2) { toast('Aún no hay nada que exportar'); return; }
+    const csv = '\ufeff' + filas.map(f => f.map(esc2).join(';')).join('\r\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = `${nombre}-${todayISO()}.csv`; // i18n-ignore (nombre de archivo)
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    track('export_csv'); toast('Archivo creado: ábrelo con Excel');
 }
 
 // Semana de calendario (lunes a domingo): lo que llevas de esta semana

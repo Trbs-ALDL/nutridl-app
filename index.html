@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title data-t="nutriDL · Tu entrenador nutricional personal">nutriDL · Tu entrenador nutricional personal</title>
     <link rel="canonical" href="https://trbs-aldl.github.io/nutridl-app/">
-    <meta data-t-co="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 2.200 alimentos, con casi 500 productos Hacendado." name="description" content="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 2.200 alimentos, con casi 500 productos Hacendado.">
+    <meta data-t-co="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 2.900 alimentos, con más de 800 productos Hacendado." name="description" content="Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 2.900 alimentos, con más de 800 productos Hacendado.">
     <!-- Seguridad: solo se cargan archivos propios y solo se conecta con Open Food Facts (escáner) -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self' data:; connect-src 'self' https://world.openfoodfacts.org; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
     <meta name="referrer" content="no-referrer">
@@ -30,8 +30,8 @@
     <link rel="preload" href="fonts/newsreader-600.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="fonts/plus-jakarta-sans-400.woff2" as="font" type="font/woff2" crossorigin>
     <style id="fonts-inline">@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/plus-jakarta-sans-400.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/plus-jakarta-sans-500.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/plus-jakarta-sans-600.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/plus-jakarta-sans-700.woff2) format('woff2')}@font-face{font-family:'Plus Jakarta Sans';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/plus-jakarta-sans-800.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-style:normal;font-weight:500;font-display:swap;src:url(fonts/newsreader-500.woff2) format('woff2')}@font-face{font-family:'Newsreader';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/newsreader-600.woff2) format('woff2')}</style>
-    <link rel="stylesheet" href="css/icons.css?v=722180b942">
-    <link rel="stylesheet" href="css/tailwind.css?v=790a0ffe8d">
+    <link rel="stylesheet" href="css/icons.css?v=bd293f61bd">
+    <link rel="stylesheet" href="css/tailwind.css?v=a72857ed20">
     <link rel="stylesheet" href="css/app.css?v=3baff1afc5">
     <script type="application/ld+json">
     {
@@ -81,7 +81,7 @@
                     <div class="space-y-6">
                         <span class="nd-eyebrow" data-t="Tu entrenador nutricional personal">Tu entrenador nutricional personal</span>
                         <h1 data-t="Cuenta calorías gratis de verdad" class="text-[2.6rem] leading-[1.04] sm:text-6xl font-extrabold tracking-tight text-neutral-50">Cuenta calorías gratis de verdad</h1>
-                        <p data-t="Escáner, macros y todas tus comidas sin pagar ni ver anuncios. Con casi 500 productos Hacendado y tu plan en 2 minutos." class="text-lg sm:text-xl text-neutral-300 max-w-xl">Escáner, macros y todas tus comidas sin pagar ni ver anuncios. Con casi 500 productos Hacendado y tu plan en 2 minutos.</p>
+                        <p data-t="Escáner, macros y todas tus comidas sin pagar ni ver anuncios. Con más de 800 productos Hacendado y tu plan en 2 minutos." class="text-lg sm:text-xl text-neutral-300 max-w-xl">Escáner, macros y todas tus comidas sin pagar ni ver anuncios. Con más de 800 productos Hacendado y tu plan en 2 minutos.</p>
                         <div class="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-3">
                             <button onclick="newProfile()" class="nd-btn-primary"><span data-t="Empezar gratis">Empezar gratis</span> <i class="fa-solid fa-arrow-right"></i></button>
                             <button onclick="importProfiles()" class="nd-btn-ghost"><i class="fa-solid fa-upload"></i> <span data-t="Ya tengo una copia">Ya tengo una copia</span></button>
@@ -139,7 +139,7 @@
 
             <div class="space-y-4 max-w-3xl">
                 <h2 data-t="Preguntas frecuentes" class="text-2xl sm:text-3xl font-extrabold tracking-tight text-neutral-50">Preguntas frecuentes</h2>
-                <details class="nd-faq"><summary><span data-t="¿Es gratis?">¿Es gratis?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, foto, nevera, menú del día y compra inteligente) y puedes probarlo 7 días gratis, sin tarjeta.">Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, foto, nevera, menú del día y compra inteligente) y puedes probarlo 7 días gratis, sin tarjeta.</p><p data-t="Es una promesa: lo que hoy es gratis (escáner, macros, diario, Coach básico, progreso y gym) no pasará a ser de pago.">Es una promesa: lo que hoy es gratis (escáner, macros, diario, Coach básico, progreso y gym) no pasará a ser de pago.</p></details>
+                <details class="nd-faq"><summary><span data-t="¿Es gratis?">¿Es gratis?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, calculadora de plato, nevera, menú del día, compra inteligente y análisis avanzado) y puedes probarlo 7 días gratis, sin tarjeta.">Sí. Calcular tu plan, el diario, el peso y el progreso son gratis siempre. El plan PRO es opcional (voz, calculadora de plato, nevera, menú del día, compra inteligente y análisis avanzado) y puedes probarlo 7 días gratis, sin tarjeta.</p><p data-t="Es una promesa: lo que hoy es gratis (escáner, macros, diario, Coach básico, progreso y gym) no pasará a ser de pago.">Es una promesa: lo que hoy es gratis (escáner, macros, diario, Coach básico, progreso y gym) no pasará a ser de pago.</p></details>
                 <details class="nd-faq"><summary><span data-t="¿Dónde se guardan mis datos?">¿Dónde se guardan mis datos?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="En tu propio dispositivo. No hay cuentas ni servidores con tus datos. Puedes guardar una copia de seguridad o borrarlo todo cuando quieras.">En tu propio dispositivo. No hay cuentas ni servidores con tus datos. Puedes guardar una copia de seguridad o borrarlo todo cuando quieras.</p></details>
                 <details class="nd-faq"><summary><span data-t="¿Cómo se calculan mis calorías?">¿Cómo se calculan mis calorías?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="Con la ecuación de Mifflin-St Jeor (la más precisa en población general), tu nivel de actividad y un ajuste según tu objetivo, sin bajar nunca de un mínimo seguro.">Con la ecuación de Mifflin-St Jeor (la más precisa en población general), tu nivel de actividad y un ajuste según tu objetivo, sin bajar nunca de un mínimo seguro.</p></details>
                 <details class="nd-faq"><summary><span data-t="¿Sustituye a un nutricionista?">¿Sustituye a un nutricionista?</span><i class="fa-solid fa-chevron-down chev"></i></summary><p data-t="No. nutriDL es orientativa y educativa. Si tienes alguna enfermedad, estás embarazada o en lactancia, o tienes antecedentes de trastornos de la conducta alimentaria, consulta a un profesional sanitario.">No. nutriDL es orientativa y educativa. Si tienes alguna enfermedad, estás embarazada o en lactancia, o tienes antecedentes de trastornos de la conducta alimentaria, consulta a un profesional sanitario.</p></details>
@@ -537,6 +537,7 @@
             </details>
         </section>
 
+        <div id="prog-ana" class="space-y-4"></div>
         <section id="prog-ach" class="glass-card rounded-3xl p-6 sm:p-8 space-y-4 border border-neutral-800"></section>
         </div>
 
@@ -687,15 +688,20 @@
         </div>
     </div>
 
-    <script src="js/data/lang-en.js?v=9ac94aef2e" defer></script>
+    <!-- ANALÍTICA (opcional, aún sin activar). Para saber cuánta gente usa la app:
+         1. Entra en dash.cloudflare.com → Web Analytics → «Add a site» con la dirección de la app.
+         2. Te dará una etiqueta <script> con un token. Pégala justo debajo de este comentario, sin quitar nada más.
+         Cloudflare Web Analytics es gratis y NO usa cookies ni guarda datos personales; aun así, al activarla
+         hay que mencionarla en privacidad.html / privacy.html. -->
+    <script src="js/data/lang-en.js?v=cd763ae42c" defer></script>
     <script src="js/data/foods-en.js?v=831aef6157" defer></script>
     <script src="js/i18n.js?v=84fac2b353" defer></script>
-    <script src="js/core.js?v=fb6313924b" defer></script>
+    <script src="js/core.js?v=2e5a03d315" defer></script>
     <script src="js/data/foods.js?v=53ab80d225" defer></script>
     <script src="js/data/exercises.js?v=8e845d8e16" defer></script>
     <script src="js/calc.js?v=8f4284649c" defer></script>
     <script src="js/analytics.js?v=2d9545c625" defer></script>
-    <script src="js/progress.js?v=ae9157e1ae" defer></script>
+    <script src="js/progress.js?v=5fead5e411" defer></script>
     <script src="js/engine.js?v=d37a6aadb6" defer></script>
     <script src="js/parser.js?v=54810e4385" defer></script>
     <script src="js/insights.js?v=294ee539fc" defer></script>
@@ -705,9 +711,9 @@
     <script src="js/diary.js?v=d85dbc3a4d" defer></script>
     <script src="js/profiles.js?v=eb94e03aa8" defer></script>
     <script src="js/dashboard.js?v=1dcc427e44" defer></script>
-    <script src="js/kitchen.js?v=d6e74bd1ad" defer></script>
-    <script src="js/coach.js?v=0f703efe2a" defer></script>
-    <script src="js/plans.js?v=3a40efa8ab" defer></script>
+    <script src="js/kitchen.js?v=f36c0f9830" defer></script>
+    <script src="js/coach.js?v=9aec4f7ca4" defer></script>
+    <script src="js/plans.js?v=a68d93b6d8" defer></script>
     <script src="js/app.js?v=b5a61c41dc" defer></script>
     <script src="js/main.js?v=263104e7ff" defer></script>
 </body>

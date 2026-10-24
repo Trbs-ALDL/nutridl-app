@@ -1,5 +1,32 @@
 # Cambios de nutriDL
 
+## 3.22.0 · 25 de octubre de 2026
+
+**Modo PRO: honesto, más útil y sin quitarte nada**
+
+Revisión a fondo de PRO. Lo que estaba mal, corregido:
+
+- **Ya no se promete nada que no exista.** La tabla tenía un ✓ en «Próximamente: IA conversacional, foto con reconocimiento y sincronización». Ahora va como nota debajo: *en camino, todavía no disponible. No se cobra por lo que aún no existe.*
+- **«Foto del plato» pasa a llamarse «Calculadora de plato».** No reconocía la foto: marcas tú lo que hay. El nombre ahora dice la verdad.
+- **El precio dice lo que de verdad compras.** El código de activación nunca caducaba, así que lo que se vendía era PRO para siempre: ahora aparece como **pago único de 24,99 €**. Mensual y anual quedan marcados como lo que habrá cuando se pueda pagar dentro de la app.
+- **Al acabar la prueba ya no desaparece lo que habías creado.** El último menú del día y la última lista de la compra se quedan para consultarlos, marcarlos y apuntarlos. Lo único que necesita PRO es crear nuevos. Y se dice **antes** de empezar la prueba.
+- Cifras al día: la portada decía «más de 2.200 alimentos y casi 500 Hacendado»; son **más de 2.900 y más de 800**. La FAQ se dejaba fuera el análisis avanzado.
+
+**«Análisis avanzado» ahora vale lo que cuesta:**
+
+- **Exportar tu historial a Excel/CSV**, lo más pedido en las reseñas del sector: el diario completo (alimento a alimento) o un resumen por días con peso y entrenos. El archivo se crea en tu móvil; no se envía a ningún sitio.
+- **Medias de 7, 30 y 90 días**: calorías, proteína, fibra, días apuntados y cuántos estuvieron en tu objetivo.
+- **En qué días de la semana te pasas**, con una gráfica por día y el aviso de cuál es tu día más alto.
+- **Tus macros reales frente a tu objetivo** en el periodo elegido.
+
+**La pantalla PRO convence mejor, sin presionar:**
+
+- Antes de pedirte nada, te enseña **«Esto es lo que verás»** con tus propios números.
+- Un solo botón principal (la prueba, que no pide tarjeta) y el campo del código recogido detrás de «Ya tengo un código».
+- Debajo, en claro: qué pasa cuando acabe la prueba.
+
+También queda preparado, con instrucciones dentro del código, el enlace de pago de Stripe y la analítica sin cookies de Cloudflare: solo hay que pegar un dato cuando Ángel abra esas cuentas.
+
 ## 3.21.0 · 24 de octubre de 2026
 
 **572 alimentos y bebidas nuevos (2.391 → 2.963)**

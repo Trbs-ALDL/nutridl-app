@@ -984,7 +984,9 @@ function renderWte() {
 // =====================================================================
 function renderMenuView() {
     const box = $('cv-menu'); if (!box) return;
-    if (!canUse('menu')) { box.innerHTML = proTeaser('menu'); return; }
+    // Sin PRO: si ya habías generado un menú, se sigue viendo (no se le quita a nadie lo que ya tenía)
+    const proMenu = canUse('menu'), menuGuardado = !!(state.menu && state.menu.meals && state.menu.meals.length);
+    if (!proMenu && !menuGuardado) { box.innerHTML = proTeaser('menu'); return; }
     if (!calc.target) { box.innerHTML = emptyPlan(tk('generar tu menú')); return; }
     const mn = state.menu;
     if (!mn || !mn.meals || !mn.meals.length) {
@@ -996,13 +998,14 @@ function renderMenuView() {
     box.innerHTML = `<div class="nd-card p-5 space-y-4">
             <div class="flex items-end justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Total del menú')}</div><div class="text-3xl font-extrabold text-neutral-50">${fmt(T.kcal)} <span class="text-sm text-neutral-400">/ ${fmt(calc.target)} kcal</span></div></div>${tagPill('rec')}</div>
             <div class="grid grid-cols-3 gap-3">${bar(tr('Proteína'), T.p, calc.prot, '#c49a6c')}${bar(tr('Hidratos'), T.c, calc.carbs, '#e6d3b3')}${bar(tr('Grasas'), T.f, calc.fat, '#f59e0b')}</div>
-            <div class="grid grid-cols-3 gap-2">
-                <button onclick="genMenu()" class="nd-mbtn"><i class="fa-solid fa-rotate"></i> ${tr('Regenerar')}</button>
+            <div class="grid ${proMenu ? 'grid-cols-3' : 'grid-cols-2'} gap-2">
+                ${proMenu ? `<button onclick="genMenu()" class="nd-mbtn"><i class="fa-solid fa-rotate"></i> ${tr('Regenerar')}</button>` : ''}
                 <button onclick="menuAddAll()" class="nd-mbtn nd-mbtn-main"><i class="fa-solid fa-plus"></i> ${tr('Añadir todo')}</button>
                 <button onclick="coachView('shop')" class="nd-mbtn"><i class="fa-solid fa-basket-shopping"></i> ${tr('Compra')}</button>
             </div>
         </div>
-        ${mn.meals.map((ml, i) => mealCard(ml, { key: 'mn' + i + ml.id, slotLabel: tr(SLOT_NAME[ml.slot]), swap: `menuSwap(${i})`, add: `menuAdd(${i})`, added: (mn.added || []).includes(i) })).join('')}
+        ${!proMenu ? `<div class="nd-card p-4 flex items-center gap-3"><span class="nd-ic shrink-0">${icon('👑')}</span><div class="min-w-0"><p class="text-sm text-neutral-200">${tr('Tu último menú se queda aquí para consultarlo y apuntarlo. Para crear uno nuevo necesitas PRO.')}</p><button type="button" onclick="openPaywall('menu')" class="mt-1 text-sm font-extrabold text-mint-300 underline">${tr('Ver nutriDL PRO')}</button></div></div>` : ''}
+        ${mn.meals.map((ml, i) => mealCard(ml, { key: 'mn' + i + ml.id, slotLabel: tr(SLOT_NAME[ml.slot]), swap: proMenu ? `menuSwap(${i})` : '', add: `menuAdd(${i})`, added: (mn.added || []).includes(i) })).join('')}
         <p class="text-[11px] text-neutral-500">${tr('Generado el {d}. Cantidades en crudo salvo que se indique. Calculado con la base de alimentos; las etiquetas pueden variar.', { d: new Date(mn.at || Date.now()).toLocaleDateString(locale(), { day: 'numeric', month: 'long' }) })}</p>`;
 }
 const emptyPlan = what => `<div class="nd-card p-6 text-center space-y-3"><p class="text-sm text-neutral-300">${tr('Completa tu plan para {x}.', { x: tr(what) })}</p><button onclick="${profiles.current ? "showTab('calc')" : 'newProfile()'}" class="nd-btn-primary mx-auto">${tr('Completar mi plan')}</button></div>`;

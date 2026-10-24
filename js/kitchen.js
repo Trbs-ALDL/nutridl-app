@@ -202,6 +202,7 @@ function shopAvoid(ids) {
     return n;
 }
 function shopSwapItem(fid) {
+    if (needPro('shop')) return;
     const f = getFood(fid); if (!f) return;
     openSheet('<i class="fa-solid fa-right-left text-mint-400"></i> ' + esc(tr('Cambiar {x}', { x: foodName(f).toLowerCase() })), `<div class="space-y-3">
         <p class="text-sm text-neutral-300">${tr('Se cambia en todas las comidas de la semana, con cantidades equivalentes.')}</p>
@@ -219,6 +220,7 @@ function shopSwapDo(fid, toId) {
     toast(n || inAdd ? tr('Cambiado por {x}', { x: foodName(getFood(toId)).toLowerCase() }) : 'Cambiado');
 }
 function shopRemoveItem(fid) {
+    if (needPro('shop')) return;
     const S = state.shop;
     if ((S.add || []).some(a => a.fid === fid) && !S.menus.some(mn => mn.meals.some(ml => ml.items.some(it => it.fid === fid)))) S.add = S.add.filter(a => a.fid !== fid);
     else shopAvoid([fid]);
@@ -233,9 +235,12 @@ async function shopReset() { if (await askConfirm('¿Empezar una compra nueva? S
 const dayLabel = (start, i) => { const d = new Date(start + 'T12:00:00'); d.setDate(d.getDate() + i); return d.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'short' }); };
 function renderShopView() {
     const box = $('cv-shop'); if (!box) return;
-    if (!canUse('shop')) { box.innerHTML = proTeaser('shop'); return; }
+    // Sin PRO: la última compra que hiciste se sigue viendo y se puede ir marcando; lo que no se puede es crear otra
+    const proShop = canUse('shop'), compraGuardada = !!(state.shop && state.shop.items && state.shop.items.length);
+    if (!proShop && !compraGuardada) { box.innerHTML = proTeaser('shop'); return; }
     if (!calc.target) { box.innerHTML = emptyPlan(tk('crear tu compra')); return; }
     const S = state.shop;
+    const avisoSinPro = `<div class="nd-card p-4 flex items-center gap-3"><span class="nd-ic shrink-0">${icon('👑')}</span><div class="min-w-0"><p class="text-sm text-neutral-200">${tr('Tu última compra se queda aquí para consultarla y marcarla. Para crear una nueva necesitas PRO.')}</p><button type="button" onclick="openPaywall('shop')" class="mt-1 text-sm font-extrabold text-mint-300 underline">${tr('Ver nutriDL PRO')}</button></div></div>`;
     const ask = `<div class="nd-card p-5 space-y-3">
         <div class="flex items-center justify-between gap-2"><h3 class="text-lg font-extrabold text-neutral-50">${S && S.v === 2 ? tr('Nueva compra') : tr('¿Qué compra quieres?')}</h3>${S && S.v === 2 ? '<button onclick="shopReset()" class="text-xs font-bold text-neutral-400 underline">' + tr('Empezar de cero') + '</button>' : ''}</div>
         <form onsubmit="event.preventDefault(); shopAsk()" class="space-y-2"><textarea id="shop-q" rows="2" maxlength="300" placeholder="${tr('Ej: compra fitness para 7 días, me gusta el salmón y el arroz, sin lactosa')}" class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-semibold text-[15px]" aria-label="${tr('Qué compra quieres')}"></textarea>
@@ -243,14 +248,14 @@ function renderShopView() {
         <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${[tk('Compra fitness para la semana'), tk('Para 3 días'), tk('Económica para la semana'), tk('Vegetariana para 5 días')].map(s => `<button type="button" onclick="shopAsk(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-2 rounded-full bg-neutral-900 border border-neutral-800 text-xs font-bold text-neutral-200 hover:border-mint-500/50">${esc(tr(s))}</button>`).join('')}</div>
         <button type="button" onclick="openFridge()" class="w-full py-2.5 rounded-xl border border-dashed border-neutral-700 text-sm font-bold text-neutral-300 hover:border-mint-500/50"><i class="fa-solid fa-snowflake text-mint-400"></i> ${tr('Marcar lo que ya tengo en la nevera')}</button>
     </div>`;
-    if (!S || !S.items) { box.innerHTML = ask; return; }
+    if (!S || !S.items) { box.innerHTML = proShop ? ask : avisoSinPro; return; }
     const P = pantry(), all = S.items.length + (S.extra || []).length, done = S.items.filter(x => S.done[x.fid]).length + (S.extra || []).filter(x => x.done).length;
     const v2 = S.v === 2, days = S.days || 1;
     const row = x => { const f = getFood(x.fid); if (!f) return ''; const on = !!S.done[x.fid], home = inPantry(x.fid, P); return `<div class="nd-shop ${on ? 'on' : ''}">
         <input type="checkbox" ${on ? 'checked' : ''} onchange="shopTick('${x.fid}',this.checked)" aria-label="${tr('Comprado: {n}', { n: esc(foodName(f)) })}">
         <span class="flex-1 min-w-0"><span class="block leading-snug">${emo(f)} ${esc(foodName(f))}${home ? ' <span class="nd-tag nd-tag-dato" style="margin:0 0 0 4px">' + tr('en casa') + '</span>' : ''}</span>${v2 && days > 1 ? `<span class="block text-[11px] text-neutral-500">${tr('≈ {k} {u} al día', { k: fmt(x.g / days), u: f.ml ? 'ml' : 'g' })}</span>` : ''}</span>
         <span class="text-sm font-bold text-neutral-200 whitespace-nowrap">${shopQty(f, x.g)}</span>
-        ${v2 ? `<button type="button" onclick="shopSwapItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="${tr('Cambiar {x}', { x: esc(foodName(f)) })}"><i class="fa-solid fa-right-left"></i></button><button type="button" onclick="shopRemoveItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(foodName(f)) })}"><i class="fa-solid fa-xmark"></i></button>` : ''}
+        ${v2 && canUse('shop') ? `<button type="button" onclick="shopSwapItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-400 hover:text-mint-300 hover:bg-neutral-800" aria-label="${tr('Cambiar {x}', { x: esc(foodName(f)) })}"><i class="fa-solid fa-right-left"></i></button><button type="button" onclick="shopRemoveItem('${x.fid}')" class="w-8 h-8 shrink-0 rounded-lg text-neutral-500 hover:text-roseAccent-400 hover:bg-neutral-800" aria-label="${tr('Quitar {n}', { n: esc(foodName(f)) })}"><i class="fa-solid fa-xmark"></i></button>` : ''}
     </div>`; };
     const groups = SHOP_GROUPS.map(([g, label, ic]) => { const L = S.items.filter(x => x.group === g); return L.length ? `<div class="space-y-0.5"><div class="text-xs font-extrabold uppercase tracking-wider text-neutral-400 pt-3">${icon(ic, "text-mint-400 mr-1")} ${tr(label)}</div>${L.map(row).join('')}</div>` : ''; }).join('');
     const extra = (S.extra || []).map((x, i) => `<label class="nd-shop ${x.done ? 'on' : ''}"><input type="checkbox" ${x.done ? 'checked' : ''} onchange="shopTickExtra(${i},this.checked)"><span class="flex-1 min-w-0">${esc(x.t)}</span><button type="button" onclick="event.preventDefault();shopDelExtra(${i})" class="w-8 h-8 rounded-lg text-neutral-500 hover:text-roseAccent-400" aria-label="${tr('Quitar {n}', { n: esc(x.t) })}"><i class="fa-solid fa-xmark"></i></button></label>`).join('');
@@ -264,8 +269,8 @@ function renderShopView() {
     box.innerHTML = `<div class="nd-card p-5 space-y-3">
             <div class="flex items-start justify-between gap-3"><div><div class="text-[11px] font-bold uppercase tracking-wider text-neutral-400">${tr('Tu compra')}</div><div class="text-xl font-extrabold text-neutral-50">${days === 1 ? tr('Para hoy') : tr('Para {k} días', { k: days })}</div>${v2 ? `<div class="text-xs text-neutral-400">${tr('≈ {k} kcal y {p} g de proteína al día (objetivo {t} kcal)', { k: fmt(avgK), p: fmt(avgP), t: fmt(calc.target) })}</div>` : ''}</div>${tagPill('rec')}</div>
             ${chips.length ? `<div class="flex flex-wrap gap-1.5">${chips.map(c => `<span class="px-2 py-1 rounded-lg bg-neutral-800 text-[11px] font-bold text-neutral-300">${c}</span>`).join('')}</div>` : ''}
-            ${v2 ? `<form onsubmit="event.preventDefault(); shopEdit()" class="flex gap-2"><input id="shop-edit" autocomplete="off" maxlength="200" placeholder="${tr('Cambia algo: «cambia el salmón por merluza»')}" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="${tr('Cambiar algo de la compra')}"><button class="px-4 rounded-xl bg-mint-600 text-white text-sm font-extrabold" aria-label="${tr('Aplicar cambio')}"><i class="fa-solid fa-arrow-up"></i></button></form>
-            <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1">${[tk('Quita la leche'), tk('Añade 1 plátano al día'), tk('Cambia el pollo por pavo'), tk('Me gusta el atún')].map(s => `<button type="button" onclick="shopEdit(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-[11px] font-bold text-neutral-300 hover:border-mint-500/50">${esc(tr(s))}</button>`).join('')}</div>` : ''}
+            ${v2 && proShop ? `<form onsubmit="event.preventDefault(); shopEdit()" class="flex gap-2"><input id="shop-edit" autocomplete="off" maxlength="200" placeholder="${tr('Cambia algo: «cambia el salmón por merluza»')}" class="flex-1 min-w-0 px-3 py-2.5 rounded-xl bg-neutral-800 border border-neutral-700 text-sm font-semibold" aria-label="${tr('Cambiar algo de la compra')}"><button class="px-4 rounded-xl bg-mint-600 text-white text-sm font-extrabold" aria-label="${tr('Aplicar cambio')}"><i class="fa-solid fa-arrow-up"></i></button></form>
+            <div class="flex gap-2 overflow-x-auto nd-noscroll -mx-1 px-1 ${proShop ? '' : 'hidden'}">${[tk('Quita la leche'), tk('Añade 1 plátano al día'), tk('Cambia el pollo por pavo'), tk('Me gusta el atún')].map(s => `<button type="button" onclick="shopEdit(${esc(JSON.stringify(s))})" class="shrink-0 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-800 text-[11px] font-bold text-neutral-300 hover:border-mint-500/50">${esc(tr(s))}</button>`).join('')}</div>` : ''}
             <div class="flex items-center justify-between gap-3 pt-1"><div class="text-sm font-extrabold text-neutral-100">${tr('{a}/{b} comprados', { a: done, b: all })}</div></div>
             <div class="h-1.5 rounded-full bg-neutral-800 overflow-hidden"><div class="h-full rounded-full bg-ok-500 gym-bar" style="width:${all ? done / all * 100 : 0}%"></div></div>
             ${groups}
@@ -275,7 +280,7 @@ function renderShopView() {
         ${plan}
         <div class="grid grid-cols-2 gap-2"><button onclick="shareShop()" class="nd-mbtn nd-mbtn-main"><i class="fa-solid fa-share-nodes"></i> ${tr('Compartir lista')}</button><button onclick="shopClearDone()" class="nd-mbtn"><i class="fa-solid fa-broom"></i> ${tr('Quitar comprados')}</button></div>
         <p class="text-[11px] text-neutral-500">${tr('Cantidades totales en crudo, redondeadas hacia arriba. Calculado con la base de alimentos.')}</p>
-        ${ask}`;
+        ${proShop ? ask : avisoSinPro}`;
 }
 function shopText() {
     const S = state.shop;

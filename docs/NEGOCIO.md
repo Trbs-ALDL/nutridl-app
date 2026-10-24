@@ -12,7 +12,7 @@
 
 ## Gratis y PRO (`js/plans.js`)
 - **Gratis siempre**: plan (calorías, macros, cómo se calcula), diario, escáner, peso, medidas, progreso básico, Coach básico, gym, sin anuncios.
-- **PRO (4,99 €/mes · 39,99 €/año)**: IA conversacional, foto con reconocimiento, voz, menú y planificación semanal, lista de la compra inteligente, análisis avanzado, sincronización, informes avanzados.
+- **PRO**: voz, calculadora de plato, «Mi nevera», menú del día, compra inteligente y análisis avanzado (medias, patrones y exportar a Excel). **Lo que de verdad se vende hoy es el pago único de 24,99 € «para siempre»**, porque el código de activación no caduca; 4,99 €/mes y 39,99 €/año quedan para cuando se pueda pagar dentro de la app. *IA conversacional, reconocer la foto y sincronizar NO existen todavía: no se cobran ni se anuncian como incluidos.*
 - **Medición**: cada vez que alguien ve la pantalla PRO, prueba PRO o activa un código queda contado en el dispositivo («Informe de errores»).
 - Para cobrar hacen falta: cuentas (Supabase), un proveedor de pago (Stripe; en las tiendas de apps, sus propios pagos), términos de venta, derecho de desistimiento y facturación. **No activar pagos antes.**
 
