@@ -1,5 +1,14 @@
 # Cambios de nutriDL
 
+## 3.24.0 · 26 de octubre de 2026
+
+**+356 productos de marca y +38 ejercicios**
+
+- **3.319 alimentos** (2.405 de marca y 914 genéricos; antes 2.963). La tanda v8 de Open Food Facts terminó de descargarse: lácteos, bollos, sándwiches, frutas, zumos y refrescos de marca. Cada producto pasa el filtro de `off_build8.js`: etiqueta completa, kcal que cuadran con los macros, solo España, nombre en español y la marca escrita como la conoce la gente (Hacendado, Carrefour, Dia, Lidl, Alcampo, Consum, Alesto, Puleva, Gullón…). **2.956 páginas** en `alimentos/`.
+- **133 ejercicios** (antes 95). Lo que más se pedía en las reseñas de otras apps de gym: el mismo movimiento cambia según el agarre o la máquina y hay que seguirlo por separado. Entran variaciones de agarre (jalón supino y ancho, remo supino, dominadas supinas, press cerrado…), de máquina (fondos asistidos, prensa a una pierna, hip thrust, aductores) y tres grupos que faltaban: **trapecio, aductores y antebrazo**. Todos con su técnica explicada y con nombre en inglés.
+
+Nada quitado: los entrenos y las comidas de antes se leen igual.
+
 ## 3.23.0 · 25 de octubre de 2026
 
 **Gym: lo que piden en las reseñas de Hevy y Strong**

@@ -113,6 +113,56 @@ X('puente1', 'Puente de glúteo a una pierna', 'legcurl', 'db', 'iso', 'Isquios 
 X('ext_cuad', 'Extensión de cuádriceps', 'legext', 'g', 'iso', 'Cuádriceps', '', 'Estira la rodilla del todo y baja en 2-3 s.', { easy: 1, ev: 'Es el ejercicio que mejor trabaja el recto femoral, la parte del cuádriceps que las sentadillas apenas hacen crecer.', top: 1 });
 X('sissy', 'Sissy squat asistida', 'legext', 'db', 'iso', 'Cuádriceps', '', 'Agarrado a un apoyo, lleva las rodillas hacia delante inclinando el cuerpo atrás.');
 X('pared', 'Sentadilla isométrica en pared', 'legext', 'db', 'iso', 'Cuádriceps', '', 'Espalda contra la pared y rodillas a 90°.', { easy: 1, time: 1 });
+// ---------- 3.24: variaciones de agarre y de máquina + grupos que faltaban ----------
+// Lo más pedido en las reseñas de otras apps: el mismo movimiento cambia bastante según el agarre
+// o la máquina, y la gente quiere seguirlos por separado porque los pesos no son comparables.
+// ----- Pecho -----
+X('banca_incl_barra', 'Press inclinado con barra', 'hpush', 'g', 'comp', 'Pecho', 'Hombros y tríceps', 'Banco a 30°; baja la barra a la clavícula y sube sin despegar los hombros del banco.');
+X('banca_decl', 'Press declinado con barra', 'hpush', 'g', 'comp', 'Pecho', 'Tríceps', 'Banco inclinado hacia abajo; baja la barra a la parte baja del pecho.');
+X('banca_cerrado', 'Press de banca con agarre cerrado', 'triceps', 'g', 'comp', 'Tríceps', 'Pecho', 'Manos a la anchura de los hombros y codos pegados al cuerpo; así trabaja más el tríceps.');
+X('aperturas_incl', 'Aperturas en banco inclinado', 'fly', 'gd', 'iso', 'Pecho', '', 'Banco a 30°, codos algo flexionados y fijos; abre hasta notar estiramiento, sin bajar de más.');
+X('cruce_polea_baja', 'Cruce de poleas desde abajo', 'fly', 'g', 'iso', 'Pecho', '', 'Poleas abajo; sube las manos juntándolas a la altura del pecho, como un abrazo hacia arriba.');
+// ----- Espalda -----
+X('jalon_supino', 'Jalón con agarre supino (palmas hacia ti)', 'vpull', 'g', 'comp', 'Espalda', 'Bíceps', 'Agarre a la anchura de los hombros con las palmas hacia ti; lleva la barra al pecho sin echar el cuerpo atrás.');
+X('jalon_ancho', 'Jalón con agarre ancho', 'vpull', 'g', 'comp', 'Espalda', 'Bíceps', 'Manos más abiertas que los hombros; piensa en llevar los codos al suelo, no en tirar con las manos.');
+X('remo_barra_supino', 'Remo con barra y agarre supino', 'hpull', 'g', 'comp', 'Espalda', 'Bíceps', 'Palmas hacia delante; la barra va al ombligo y los codos pasan pegados al cuerpo.');
+X('remo_polea_ancho', 'Remo en polea con agarre ancho', 'hpull', 'g', 'comp', 'Espalda', 'Hombros', 'Agarre ancho y codos abiertos a 45°: se nota más en la parte alta de la espalda.');
+X('dominada_supina', 'Dominadas con agarre supino', 'vpull', 'gb', 'comp', 'Espalda', 'Bíceps', 'Palmas hacia ti y manos a la anchura de los hombros; sube hasta pasar la barbilla.');
+X('pullover_polea', 'Pullover en polea alta', 'vpull', 'g', 'iso', 'Espalda', '', 'De pie, brazos casi rectos; baja la barra en arco hasta los muslos sin doblar los codos.');
+X('remo_gironda', 'Remo Gironda (al pecho, sentado)', 'hpull', 'g', 'comp', 'Espalda', 'Bíceps', 'Tira hacia la parte baja del pecho con el torso algo atrás y los codos pegados.');
+// ----- Trapecio -----
+X('shrug_barra', 'Encogimientos con barra', 'reardelt', 'g', 'iso', 'Trapecio', '', 'Sube los hombros hacia las orejas y aguanta arriba un segundo; no gires los hombros.');
+X('shrug_mancuernas', 'Encogimientos con mancuernas', 'reardelt', 'gd', 'iso', 'Trapecio', '', 'Brazos colgando a los lados; sube solo los hombros, sin ayudarte con los codos.');
+X('remo_menton', 'Remo al mentón con barra', 'lateral', 'gd', 'comp', 'Hombros', 'Trapecio', 'Sube los codos por delante hasta la altura del pecho; si molesta el hombro, abre más el agarre.');
+// ----- Hombros -----
+X('press_militar_sent', 'Press militar sentado con barra', 'vpush', 'g', 'comp', 'Hombros', 'Tríceps', 'Sentado con respaldo; baja la barra hasta la barbilla y sube sin arquear la espalda.');
+X('elev_frontal', 'Elevaciones frontales', 'vpush', 'gd', 'iso', 'Hombros', '', 'Sube los brazos por delante hasta la altura de los ojos, sin balancear el cuerpo.');
+X('elev_lat_tumbado', 'Elevación lateral tumbado de lado', 'lateral', 'gd', 'iso', 'Hombros', '', 'Tumbado de lado, sube la mancuerna con el brazo casi recto: el deltoides trabaja desde abajo.');
+X('face_pull_cuerda_alto', 'Face pull con cuerda por encima', 'reardelt', 'g', 'iso', 'Hombros', 'Espalda', 'Polea por encima de la cara; tira hacia la frente abriendo las manos al final.');
+// ----- Bíceps -----
+X('curl_barra_z', 'Curl con barra Z', 'biceps', 'g', 'iso', 'Bíceps', 'Antebrazo', 'La barra en zigzag es más amable con las muñecas; codos quietos pegados al cuerpo.');
+X('curl_concentrado', 'Curl concentrado', 'biceps', 'gd', 'iso', 'Bíceps', '', 'Sentado, el codo apoyado en el muslo; sube despacio y aprieta arriba.');
+X('curl_araña', 'Curl araña (pecho apoyado)', 'biceps', 'gd', 'iso', 'Bíceps', '', 'Pecho apoyado en un banco inclinado y brazos colgando: sin balanceo posible.');
+X('curl_cuerda_neutro', 'Curl en polea con cuerda (agarre neutro)', 'biceps', 'g', 'iso', 'Bíceps', 'Antebrazo', 'Palmas enfrentadas; gira un poco las muñecas hacia fuera al final del recorrido.');
+// ----- Tríceps -----
+X('triceps_cuerda', 'Extensión de tríceps con cuerda', 'triceps', 'g', 'iso', 'Tríceps', '', 'Separa las manos al final del recorrido; codos pegados al cuerpo todo el rato.');
+X('triceps_barra_v', 'Extensión de tríceps con barra V', 'triceps', 'g', 'iso', 'Tríceps', '', 'Agarre en V, codos fijos; baja hasta estirar del todo sin mover los hombros.');
+X('fondos_maquina', 'Fondos en máquina asistida', 'triceps', 'g', 'comp', 'Tríceps', 'Pecho', 'Cuerpo recto y codos cerca del cuerpo; la máquina te ayuda con el peso que elijas.');
+X('press_frances_barra', 'Press francés con barra Z', 'triceps', 'g', 'iso', 'Tríceps', '', 'Tumbado, baja la barra hacia la frente doblando solo los codos.');
+// ----- Pierna -----
+X('sentadilla_frontal', 'Sentadilla frontal', 'squat', 'g', 'comp', 'Cuádriceps', 'Core', 'Barra apoyada delante sobre los hombros, codos altos; el torso va más vertical que en la normal.');
+X('peso_muerto_sumo', 'Peso muerto sumo', 'hinge', 'g', 'comp', 'Isquios y glúteos', 'Cuádriceps', 'Pies muy abiertos y manos por dentro de las rodillas; empuja el suelo con los pies.');
+X('prensa_una_pierna', 'Prensa a una pierna', 'squat', 'g', 'comp', 'Cuádriceps', 'Isquios y glúteos', 'Un pie centrado en la plataforma; baja controlando hasta 90° sin despegar la cadera.');
+X('zancada_caminando', 'Zancadas caminando', 'squat', 'gd', 'comp', 'Cuádriceps', 'Isquios y glúteos', 'Da un paso largo y baja la rodilla de atrás casi al suelo; alterna avanzando.');
+X('aductores', 'Aductores en máquina', 'glute', 'g', 'iso', 'Aductores', '', 'Junta las piernas controlando y vuelve despacio hasta notar el estiramiento.');
+X('peso_muerto_rum_una', 'Peso muerto rumano a una pierna con mancuerna', 'hinge', 'gd', 'comp', 'Isquios y glúteos', 'Core', 'Lleva la cadera atrás con la pierna libre estirada hacia detrás; espalda recta.');
+X('hip_thrust_maquina', 'Hip thrust en máquina', 'glute', 'g', 'comp', 'Isquios y glúteos', '', 'Sube hasta que el cuerpo quede recto y aprieta el glúteo arriba un segundo.');
+// ----- Core y antebrazo -----
+X('rueda_abdominal', 'Rueda abdominal', 'core', 'gd', 'comp', 'Core', 'Espalda', 'De rodillas, rueda hacia delante sin que la espalda baja se arquee; vuelve con el abdomen.');
+X('mountain_climbers', 'Mountain climbers', 'core', 'b', 'comp', 'Core', '', 'En plancha, lleva las rodillas al pecho alternando, sin subir la cadera.', { time: 1 });
+X('russian_twist', 'Giros rusos con peso', 'core', 'gdb', 'iso', 'Core', '', 'Sentado con el torso atrás, gira el peso de lado a lado controlando.');
+X('antebrazo_barra', 'Curl de muñeca con barra', 'biceps', 'gd', 'iso', 'Antebrazo', '', 'Antebrazos apoyados en los muslos; sube y baja solo con las muñecas.');
+
 
 // Plantillas de día: primero los multiarticulares, después aislamiento (el orden es la prioridad).
 // Cada plantilla tiene más huecos de los que se usan: el reparto de series elige cuáles se hacen.

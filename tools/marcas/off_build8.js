@@ -68,15 +68,28 @@ const racion = (p, liquido, nombre) => {
 };
 
 // Razones sociales de la etiqueta → el nombre con el que la gente conoce la marca
-const SOCIEDAD = [[/carrefour/i, 'Carrefour'], [/dia|dia retail/i, 'Dia'], [/consum/i, 'Consum'], [/borges/i, 'Borges'],
-    [/eroski/i, 'Eroski'], [/alcampo|auchan/i, 'Alcampo'], [/mercadona|hacendado/i, 'Hacendado'], [/lidl/i, 'Lidl'], [/alesto/i, 'Alesto']];
+const SOCIEDAD = [[/carrefour/i, 'Carrefour'], [/\bdia\b|dia retail/i, 'Dia'], [/consum/i, 'Consum'], [/borges/i, 'Borges'],
+    [/eroski/i, 'Eroski'], [/alcampo|auchan/i, 'Alcampo'], [/mercadona|hacendado/i, 'Hacendado'], [/\blidl\b/i, 'Lidl'], [/alesto/i, 'Alesto'],
+    [/puleva|lactalis/i, 'Puleva'], [/pascual/i, 'Pascual'], [/kaiku/i, 'Kaiku'], [/central lechera|asturiana/i, 'Central Lechera Asturiana'],
+    [/gull[oó]n/i, 'Gullón'], [/bimbo/i, 'Bimbo'], [/dulcesol/i, 'Dulcesol'], [/mondelez/i, 'Mondelez'], [/milka/i, 'Milka'], [/oreo/i, 'Oreo'],
+    [/sch[aä]r/i, 'Schär'], [/mission/i, 'Mission'], [/milbona/i, 'Milbona'], [/bonpreu/i, 'Bonpreu'], [/bon[àa]rea/i, 'bonÀrea'],
+    [/danone/i, 'Danone'], [/nestl[eé]/i, 'Nestlé'], [/pr[eé]sident/i, 'Président'], [/garc[ií]a baquero/i, 'García Baquero'],
+    [/la bella easo/i, 'La Bella Easo'], [/casa tarradellas/i, 'Casa Tarradellas'], [/el caser[ií]o/i, 'El Caserío'],
+    [/campofr[ií]o/i, 'Campofrío'], [/el ?pozo/i, 'ElPozo'], [/\barla\b/i, 'Arla'], [/alpro/i, 'Alpro'], [/philadelphia/i, 'Philadelphia'],
+    [/coca[ -]?cola/i, 'Coca-Cola'], [/pepsi/i, 'Pepsi'], [/don sim[oó]n/i, 'Don Simón'], [/granini/i, 'Granini'],
+    [/zumosol/i, 'Zumosol'], [/\bhero\b/i, 'Hero'], [/kell?ogg/i, "Kellogg's"], [/calvo/i, 'Calvo'], [/isabel/i, 'Isabel'],
+    [/\bgallo\b/i, 'Gallo'], [/barilla/i, 'Barilla'], [/quaker/i, 'Quaker'], [/heinz/i, 'Heinz'], [/\bhacend/i, 'Hacendado']];
 function nombreDeMarca(x) {
     const m = SOCIEDAD.find(([re]) => re.test(x));
     if (m) return m[1];
-    // «S.A.», «S.L.», «S. COOP. V.»... fuera; y si queda todo en mayúsculas, se escribe normal
-    let n = x.replace(/[,;]?\s*(s\.?\s?a\.?\s?u?\.?|s\.?\s?l\.?\s?u?\.?|s\.?\s?coop\.?(\s?v\.?)?|sociedad|espana|españa)/gi, ' ').replace(/\s{2,}/g, ' ').trim();
-    if (/^[A-ZÁÉÍÓÚÑ0-9 .&-]+$/.test(n) && n.length > 3) n = n.charAt(0) + n.slice(1).toLowerCase();
-    return n || x;
+    // Fuera las formas jurídicas: «S.A.», «S.L.U.», «S. COOP. V.»…
+    let n = String(x).replace(/[,;]?\s*\b(s\.?\s?a\.?\s?u?\.?|s\.?\s?l\.?\s?u?\.?|s\.?\s?coop\.?(\s?v\.?)?|gmbh|srl|sociedad|espana|españa)\b/gi, ' ')
+        .replace(/\s{2,}/g, ' ').trim();
+    // Cada palabra con su mayúscula; las siglas cortas se dejan como están
+    n = n.split(/\s+/).filter(Boolean)
+        .map(w => (w.length <= 3 && w === w.toUpperCase()) ? w : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(' ');
+    return n.trim() || String(x);
 }
 
 const archivos = fs.readdirSync(dir).filter(f => f.startsWith('v8_'));
