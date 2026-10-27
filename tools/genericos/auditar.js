@@ -4,7 +4,7 @@
 const fs = require('fs'), vm = require('vm'), path = require('path');
 const SR = new Map(JSON.parse(fs.readFileSync(process.argv[2], 'utf8')).map(x => [x.d.toLowerCase(), x]));
 const ctx = { console }; vm.createContext(ctx);
-vm.runInContext(fs.readFileSync(path.join(__dirname, '..', '..', 'js', 'data', 'foods.js'), 'utf8') + ';this.FOODS=FOODS', ctx);
+vm.runInContext(fs.readFileSync(path.join(__dirname, '..', '..', 'js', 'data', 'foods.js'), 'utf8') + '\n' + fs.readFileSync(path.join(__dirname, '..', '..', 'js', 'data', 'foods-marcas.js'), 'utf8') + ';this.FOODS=FOODS', ctx);
 const F = new Map(ctx.FOODS.map(f => [f.id, f]));
 // id de la app → descripción USDA equivalente (solo equivalencias claras)
 const EQ = {

@@ -55,6 +55,7 @@ async function openScanner(slot) {
             <div id="sc-result"></div>
             <p class="text-[11px] text-neutral-500">${tr('Lee los códigos de cualquier país (EAN-13, EAN-8 y UPC). Datos de Open Food Facts (licencia ODbL): comprueba siempre la etiqueta.')}</p>
         </div>`, stopScan);
+    cargarMarcas();   // el escáner los necesita para reconocer el producto sin internet
     scan = { slot: slot || (fs && fs.slot) || slotByHour(), stop: false };
     track('scan_open');
     if (!canCam) return;
@@ -213,6 +214,14 @@ function scanNuevo(code, nombre, marca, slot) {
     openFoodSheet(slot);
     fs.cfPre = { name: nombre || '', brand: marca || '', barcode: String(code).replace(/\D/g, '').slice(0, 14) };
     fs.mode = 'create'; fsRender();
+}
+// Los productos de marca se cargan los últimos (así la app abre antes). Cuando llegan, si había
+// un buscador abierto se repite la búsqueda para que salgan también ellos.
+function marcasListas() {
+    try {
+        const sheet = $('food-sheet');
+        if (sheet && !sheet.classList.contains('hidden') && fs && (fs.mode === 'list' || fs.mode === 'quick')) fsRender();
+    } catch (e) { }
 }
 function scanOpenFood(f, slot) { closeSheet(); openFoodSheet(slot); fsOpen(f.id); }
 
@@ -393,6 +402,7 @@ function defaultPortion(f) { const u = defUnit(f); return u ? { unit: u, n: 1, g
 const portionLabel = (u, n, f) => u.key === 'g' ? `${fmt(n)} ${u.label}` : `${fmt(n, n % 1 ? 1 : 0)} ${tr(n === 1 ? u.label : u.plural)} (${fmt(u.g * n)} ${f && f.ml ? 'ml' : 'g'})`;
 
 function openFoodSheet(slot) {
+    cargarMarcas();   // por si aún no habían llegado los productos de marca
     fs.slot = slot || slotByHour(); fs.mode = 'list'; fs.food = null; fs.editId = null; fs.cfEdit = null; fs.cfPre = null; fs.q = '';
     fs.tab = recentFoods().length ? 'recent' : 'all';
     $('fs-slot').innerHTML = DSLOTS.map(([k, n]) => `<option value="${k}">${tr(n)}</option>`).join('');

@@ -10,7 +10,8 @@ const OUT = path.join(root, 'alimentos');
 const TODAY = new Date().toISOString().slice(0, 10);
 
 // La base se ejecuta en una caja aislada (sin acceso a require, process ni archivos): solo devuelve FOODS
-const FOODS = require('vm').runInNewContext(fs.readFileSync(path.join(root, 'js', 'data', 'foods.js'), 'utf8') + '\n;FOODS', Object.create(null), { timeout: 5000 });
+const leerDatos = f => fs.readFileSync(path.join(root, 'js', 'data', f), 'utf8');
+const FOODS = require('vm').runInNewContext(leerDatos('foods.js') + '\n' + leerDatos('foods-marcas.js') + '\n;FOODS', Object.create(null), { timeout: 5000 });
 const kcal100 = f => f.kcal != null ? f.kcal : 4 * f.p + 9 * f.f + 4 * f.c + 2 * f.fib + 7 * (f.alc || 0);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const num = (v, d = 1) => (Math.round(v * 10 ** d) / 10 ** d).toLocaleString('es-ES', { maximumFractionDigits: d });

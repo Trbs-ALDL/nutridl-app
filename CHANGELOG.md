@@ -1,5 +1,15 @@
 # Cambios de nutriDL
 
+## 3.27.0 · 28 de octubre de 2026
+
+**La app abre antes, con los mismos 4.532 alimentos**
+
+- **Los productos de marca se cargan aparte**, en cuanto la primera pantalla está dibujada (o al momento si abres el buscador o el escáner). **No falta ni un alimento**: solo llegan unas décimas más tarde. Al arrancar, la app lee 143 KB en vez de 644 KB.
+- **Las cuatro letras de la primera pantalla se piden desde el principio** (antes el navegador no descubría dos de ellas hasta aplicar el CSS).
+- **Las secciones de la portada que no se ven no se calculan** hasta que llegas a ellas.
+- Resultado medido con Lighthouse (móvil simulado): **primer dibujado 1,7 s → 1,3 s**, **Speed Index 5,2 s → 3,5 s**, bloqueo 210 ms → 110 ms, peso inicial 578 KB → 449 KB. Nota de rendimiento **78 → 80-83**; accesibilidad, buenas prácticas y SEO siguen en **100**.
+- Cifras de la portada al día también en la lista de ventajas (4.500 alimentos, 880 Hacendado).
+
 ## 3.26.0 · 27 de octubre de 2026
 
 **Repaso de seguridad y de lo legal, pensando en abrirla al público**

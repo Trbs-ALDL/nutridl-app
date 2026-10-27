@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.26.0';
+const APP_VERSION = '3.27.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -114,6 +114,27 @@ function load() {
         if (cur) cur.state = state;
     } catch (e) { }
     syncCustomFoods();
+}
+// Los productos de marca (3.618) se cargan aparte y DESPUÉS de que la app esté en pantalla:
+// la primera pantalla aparece antes y no falta ningún alimento. Si abres el buscador o el escáner
+// antes de tiempo, se piden ya mismo; cuando llegan, marcasListas() repite la búsqueda abierta.
+let marcasPedidas = false;
+function cargarMarcas() {
+    if (marcasPedidas || typeof document === 'undefined') return;
+    const meta = document.querySelector('meta[name="nutridl-marcas"]');
+    if (!meta || !meta.content) return;
+    marcasPedidas = true;
+    const sc = document.createElement('script');
+    sc.src = meta.content;
+    sc.onerror = () => {
+        marcasPedidas = false;
+        logErr('No se pudieron cargar los productos de marca'); // i18n-ignore (registro interno)
+    };
+    document.head.appendChild(sc);
+}
+if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    const pedir = () => (window.requestIdleCallback ? requestIdleCallback(cargarMarcas, { timeout: 1500 }) : setTimeout(cargarMarcas, 1));
+    if (document.readyState === 'complete') pedir(); else window.addEventListener('load', pedir, { once: true });
 }
 function registerCustom(cf) {
     if (FOODS.some(f => f.id === cf.id)) return;

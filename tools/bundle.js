@@ -16,6 +16,8 @@ h = h.replace(/[ \t]*<link rel="manifest"[^>]*>\n/, '');
 h = h.replace(/<link rel="stylesheet" href="([^"]+)">/g, (m, href) => `<style>${inlineUrls(read(href), path.dirname(href))}</style>`);
 h = h.replace(/[ \t]*<link rel="preload"[^>]*>\n/g, ''); // las fuentes ya van dentro del CSS
 h = h.replace(/<script src="([^"]+)"(?: defer)?><\/script>/g, (m, src) => `<script>\n${read(src).replace(/<\/script/gi, '<\\/script')}\n</script>`);
+// La base de marcas se carga desde JavaScript (meta nutridl-marcas): en la copia va dentro, como un script más
+h = h.replace(/<meta name="nutridl-marcas" content="([^"]+)">/, (m, src) => `<script>\n${read(src).replace(/<\/script/gi, '<\\/script')}\n</script>`);
 const svg = 'data:image/svg+xml;base64,' + fs.readFileSync(path.join(root, 'icons', 'icon.svg')).toString('base64');
 h = h.replace('href="icons/icon.svg"', `href="${svg}"`).replace('href="icons/apple-touch-icon.png"', `href="${svg}"`);
 fs.writeFileSync(out, h);

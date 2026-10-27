@@ -16,6 +16,9 @@ idx = idx.replace(/(<(?:link rel="stylesheet" href|script src)=")((?:css|js)\/[^
 const fontsCss = fs.readFileSync(path.join(root, 'css', 'fonts.css'), 'utf8').trim().replace(/\.\.\/fonts\//g, 'fonts/');
 idx = idx.replace(/<link rel="stylesheet" href="css\/fonts\.css(?:\?v=[0-9a-f]+)?">|<style id="fonts-inline">[\s\S]*?<\/style>/,
     () => `<style id="fonts-inline">${fontsCss}</style>`);
+// La base de marcas se carga desde JavaScript, así que su versión va en la <meta> que la nombra
+idx = idx.replace(/(<meta name="nutridl-marcas" content=")((?:js)\/[^"?]+)(?:\?v=[0-9a-f]+)?(")/,
+    (m, a, file, b) => `${a}${file}?v=${hashOf(fs.readFileSync(path.join(root, file)))}${b}`);
 fs.writeFileSync(idxPath, idx);
 
 // --- 2. Lista de archivos y versión global ---

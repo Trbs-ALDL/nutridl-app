@@ -50,7 +50,8 @@ if (auto.length !== 143 && !process.argv.includes('--forzar')) {
 }
 // Lo que ya hay en la app (para no repetir): marca|nombre normalizados
 const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9%]+/g, ' ').trim();
-const FOODS = require('vm').runInNewContext(fs.readFileSync(path.join(__dirname, '..', '..', 'js', 'data', 'foods.js'), 'utf8') + '\n;FOODS', Object.create(null));
+const dato = f => fs.readFileSync(path.join(__dirname, '..', '..', 'js', 'data', f), 'utf8');
+const FOODS = require('vm').runInNewContext(dato('foods.js') + '\n' + dato('foods-marcas.js') + '\n;FOODS', Object.create(null));
 // (sin contar los de esta misma tanda, que pueden estar ya dentro si se repite el proceso)
 const mine = new Set(auto.map(m => String(m.off)));
 const have = new Set(FOODS.filter(f => f.brand && !mine.has(String(f.off))).map(f => norm(f.brand) + '|' + norm(f.name)));

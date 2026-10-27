@@ -1,9 +1,9 @@
-// Mete marcas.json (generado por off_build.js) en js/data/foods.js, entre los marcadores // <marcas> y // </marcas>
+// Mete marcas.json (generado por off_build.js) en js/data/foods-marcas.js, entre los marcadores // <marcas> y // </marcas>
 // Uso: node tools/marcas/off_embed.js
 // Proceso completo para añadir productos: off_fetch.js → off_fetch2.js → off_build.js (valida kcal y rangos) → off_embed.js
 // 3.6: azúcares de la etiqueta (campo «sug» de cada lista o, para las listas antiguas, marcas_azucar.json de off_azucar.js)
 const fs = require('fs'), path = require('path');
-const file = path.join(__dirname, '..', '..', 'js', 'data', 'foods.js');
+const file = path.join(__dirname, '..', '..', 'js', 'data', 'foods-marcas.js');
 // marcas.json (la base de siempre) va primero para que sus ids no cambien; detrás, por orden de llegada:
 // marcas_v3.json (3.4), marcas_v4.json (3.5, añadidos a mano y comprobados) , marcas_v5.json (3.6, proteínas y despensa), marcas_v6.json (3.6, bebidas) marcas_v7.json (3.15, los más escaneados en España, revisados a mano) marcas_v8.json (3.21, Mercadona y frutos secos) y marcas_v9.json (3.25, panes, pastas, galletas y bollos)
 const extra = f => fs.existsSync(path.join(__dirname, f)) ? JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')) : [];
@@ -31,6 +31,6 @@ BRAND_FOODS.forEach(([id, name, brand, kcal, p, c, f, fib, serv, em, ml, raw, of
 // </marcas>`;
 let js = fs.readFileSync(file, 'utf8');
 const re = /\/\/ <marcas>[\s\S]*?\/\/ <\/marcas>/;
-if (!re.test(js)) { console.log('No están los marcadores // <marcas> … // </marcas> en js/data/foods.js'); process.exit(1); }
+if (!re.test(js)) { console.log('No están los marcadores // <marcas> … // </marcas> en js/data/foods-marcas.js'); process.exit(1); }
 fs.writeFileSync(file, js.replace(re, () => block));
-console.log(`${rows.length} productos de marca incluidos en js/data/foods.js · ${rows.filter(r => !/,null\]$/.test(r)).length} con azúcares`);
+console.log(`${rows.length} productos de marca incluidos en js/data/foods-marcas.js · ${rows.filter(r => !/,null\]$/.test(r)).length} con azúcares`);
