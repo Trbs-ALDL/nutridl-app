@@ -2194,4 +2194,15 @@ const LANG_EN = {
     "Mountain climbers": "Mountain climbers",
     "Giros rusos con peso": "Weighted Russian twists",
     "Curl de muñeca con barra": "Barbell wrist curl",
+    // ---- 3.25: escaner de codigos de barras ----
+    "Linterna": "Flashlight",
+    "Este navegador no puede usar la cámara. Escribe los números que hay debajo de las barras.": "This browser can't use the camera. Type the numbers printed under the bars.",
+    "Lee los códigos de cualquier país (EAN-13, EAN-8 y UPC). Datos de Open Food Facts (licencia ODbL): comprueba siempre la etiqueta.": "Reads barcodes from any country (EAN-13, EAN-8 and UPC). Data from Open Food Facts (ODbL licence): always check the label.",
+    "Acerca el móvil y que el código quede recto dentro del marco": "Move closer and keep the barcode straight inside the frame",
+    "El servicio de productos no responde ahora. Prueba en un momento o apúntalo con su etiqueta.": "The product service isn't responding right now. Try again in a moment or add it from its label.",
+    "«{n}» está en el catálogo, pero sin la tabla nutricional.": "“{n}” is in the catalogue, but without its nutrition table.",
+    "Ese código ({c}) todavía no está en el catálogo mundial.": "That barcode ({c}) isn't in the worldwide catalogue yet.",
+    "Copia la etiqueta una vez y el producto queda guardado con su código: la próxima vez saldrá solo, incluso sin internet.": "Copy the label once and the product is saved with its barcode: next time it comes up on its own, even offline.",
+    "Apuntarlo con su etiqueta": "Add it from its label",
+    "Se guardará con su código ({c}): la próxima vez que lo escanees saldrá solo.": "It will be saved with its barcode ({c}): next time you scan it, it comes up on its own.",
 };

@@ -9,50 +9,106 @@ let scan = null;
 function stopScan() {
     if (!scan) return;
     scan.stop = true;
+    if (scan.luz && scan.pista) { try { scan.pista.applyConstraints({ advanced: [{ torch: false }] }); } catch (e) { } }
     if (scan.stream) scan.stream.getTracks().forEach(t => t.stop());
     scan = null;
 }
+// Linterna: muchos códigos están en estanterías oscuras o en envases brillantes
+function scanLuz() {
+    if (!scan || !scan.pista) return;
+    scan.luz = !scan.luz;
+    try { scan.pista.applyConstraints({ advanced: [{ torch: scan.luz }] }); } catch (e) { scan.luz = false; }
+    const b = $('sc-luz'); if (b) b.classList.toggle('text-mint-400', scan.luz);
+}
+// Formatos que sepa leer este navegador (los pocos que no, los lee el lector propio de js/barras.js)
+async function scanFormatos() {
+    if (typeof BarcodeDetector !== 'function') return [];
+    try {
+        const sop = await BarcodeDetector.getSupportedFormats();
+        return BARRAS_FORMATOS.filter(f => sop.includes(f));
+    } catch (e) { return ['ean_13', 'ean_8', 'upc_a', 'upc_e']; }
+}
+// Lee el fotograma con el lector propio (funciona en iPhone, Firefox y en cualquier navegador viejo)
+function scanPropio(v) {
+    if (!scan.lienzo) { scan.lienzo = document.createElement('canvas'); scan.ctx = scan.lienzo.getContext('2d', { willReadFrequently: true }); }
+    const w = 480, h = Math.round((v.videoHeight || 480) * w / (v.videoWidth || 640)) || 360;
+    const c = scan.lienzo; c.width = w; c.height = h;
+    scan.ctx.drawImage(v, 0, 0, w, h);
+    const d = scan.ctx.getImageData(0, 0, w, h).data, gris = new Uint8Array(w * h);
+    for (let i = 0, j = 0; j < gris.length; j++, i += 4) gris[j] = (d[i] * 77 + d[i + 1] * 151 + d[i + 2] * 28) >> 8;
+    return barrasLeerGris(gris, w, h, 22);
+}
 async function openScanner(slot) {
-    const canCam = 'BarcodeDetector' in window && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+    const canCam = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
     openSheet('<i class="fa-solid fa-barcode text-mint-400"></i> ' + tr('Escanear producto'), `
         <div class="space-y-4">
             ${canCam ? `<div class="relative rounded-2xl overflow-hidden bg-black aspect-[4/3]">
                 <video id="sc-video" class="w-full h-full object-cover" playsinline muted></video>
                 <div class="absolute inset-x-8 top-1/2 -translate-y-1/2 h-24 rounded-2xl border-2 border-mint-400/80 shadow-[0_0_0_9999px_rgba(0,0,0,.35)]"></div>
+                <button type="button" id="sc-luz" onclick="scanLuz()" class="hidden absolute top-3 right-3 w-10 h-10 rounded-xl bg-black/60 text-white/90" aria-label="${tr('Linterna')}"><i class="fa-solid fa-bolt"></i></button>
                 <div id="sc-status" class="absolute bottom-3 inset-x-3 text-center text-xs font-bold text-white/90">${tr('Apunta al código de barras')}</div>
-            </div>` : `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 text-sm text-neutral-300"><i class="fa-solid fa-camera text-mint-400"></i> ${tr('Este navegador no puede leer códigos con la cámara. Escribe los números que hay debajo de las barras.')}</div>`}
+            </div>` : `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 text-sm text-neutral-300"><i class="fa-solid fa-camera text-mint-400"></i> ${tr('Este navegador no puede usar la cámara. Escribe los números que hay debajo de las barras.')}</div>`}
             <form onsubmit="event.preventDefault(); lookupBarcode($('sc-code').value)" class="flex gap-2">
-                <input id="sc-code" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="${tr('Ej: {x}', { x: '8480000123457' })}" class="flex-1 min-w-0 p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold tracking-wider" aria-label="${tr('Número del código de barras')}">
+                <input id="sc-code" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="${tr('Ej: {x}', { x: '8480000123459' })}" class="flex-1 min-w-0 p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold tracking-wider" aria-label="${tr('Número del código de barras')}">
                 <button class="px-4 rounded-xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold text-sm">${tr('Buscar')}</button>
             </form>
             <div id="sc-result"></div>
-            <p class="text-[11px] text-neutral-500">${tr('Datos de Open Food Facts (licencia ODbL). Comprueba siempre la etiqueta.')}</p>
+            <p class="text-[11px] text-neutral-500">${tr('Lee los códigos de cualquier país (EAN-13, EAN-8 y UPC). Datos de Open Food Facts (licencia ODbL): comprueba siempre la etiqueta.')}</p>
         </div>`, stopScan);
     scan = { slot: slot || (fs && fs.slot) || slotByHour(), stop: false };
     track('scan_open');
     if (!canCam) return;
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        // Se pide la cámara de atrás y la mayor resolución razonable: los códigos pequeños necesitan detalle
+        const stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+        });
         if (!scan || scan.stop) { stream.getTracks().forEach(t => t.stop()); return; }
         scan.stream = stream;
+        scan.pista = stream.getVideoTracks()[0];
         const v = $('sc-video'); v.srcObject = stream; await v.play();
-        const det = new BarcodeDetector({ formats: ['ean_13', 'ean_8', 'upc_a', 'upc_e'] });
+        // Enfoque continuo y linterna, si la cámara los tiene
+        try {
+            const cap = scan.pista.getCapabilities ? scan.pista.getCapabilities() : {};
+            if (cap.focusMode && cap.focusMode.includes('continuous')) await scan.pista.applyConstraints({ advanced: [{ focusMode: 'continuous' }] });
+            if (cap.torch) { const b = $('sc-luz'); if (b) b.classList.remove('hidden'); }
+        } catch (e) { }
+        const formatos = await scanFormatos();
+        const det = formatos.length ? new BarcodeDetector({ formats: formatos }) : null;
+        const st = $('sc-status');
+        if (st && !det) st.textContent = tr('Apunta al código de barras');
+        let vueltas = 0;
+        const encontrado = c => {
+            if (navigator.vibrate) navigator.vibrate(30);
+            const i = $('sc-code'); if (i) i.value = c;
+            lookupBarcode(c);
+        };
         const loop = async () => {
             if (!scan || scan.stop) return;
+            vueltas++;
             try {
-                const codes = await det.detect(v);
-                if (codes.length) { const c = codes[0].rawValue; if (navigator.vibrate) navigator.vibrate(30); $('sc-code').value = c; lookupBarcode(c); return; }
+                if (det) {
+                    const codes = await det.detect(v);
+                    // Algunos códigos (QR de la caja, GS1-128) traen el número dentro: se saca igual
+                    for (const k of codes) {
+                        const n = String(k.rawValue || '').replace(/\D/g, '');
+                        if (n.length >= 8) return encontrado(n.length > 14 ? n.slice(0, 14) : n);
+                    }
+                }
+                // Lector propio: siempre que el navegador no tenga lector, y como refuerzo cada 3 vueltas
+                if (!det || vueltas % 3 === 0) { const c = scanPropio(v); if (c) return encontrado(c); }
             } catch (e) { }
-            setTimeout(loop, 250);
+            if (st && vueltas === 24) st.textContent = tr('Acerca el móvil y que el código quede recto dentro del marco');
+            setTimeout(loop, det ? 250 : 160);
         };
         loop();
     } catch (e) {
         const st = $('sc-status'); if (st) st.textContent = tr('Sin permiso para la cámara: escribe el código abajo');
     }
 }
-// Consultas a Open Food Facts con freno: como mucho 8 por minuto, una a la vez, 8 s de espera máxima
+// Consultas a Open Food Facts con freno: como mucho 20 por minuto, una a la vez, 8 s de espera máxima
 // y memoria de los códigos ya buscados en esta sesión (no se repite la misma consulta)
-const OFF_LIMIT = { per: 60000, max: 8, log: [], busy: false, seen: new Map() };
+const OFF_LIMIT = { per: 60000, max: 20, log: [], busy: false, seen: new Map() };
 async function offProduct(code) {
     if (OFF_LIMIT.seen.has(code)) return OFF_LIMIT.seen.get(code);
     const now = Date.now();
@@ -62,7 +118,7 @@ async function offProduct(code) {
     const ctl = typeof AbortController === 'function' ? new AbortController() : null;
     const timer = ctl && setTimeout(() => ctl.abort(), 8000);
     try {
-        const r = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,product_name_es,brands,nutriments,serving_quantity`, ctl ? { signal: ctl.signal } : {});
+        const r = await fetch(`https://world.openfoodfacts.org/api/v2/product/${code}.json?fields=product_name,product_name_es,product_name_en,brands,nutriments,nutrition_data_per,serving_quantity,quantity`, ctl ? { signal: ctl.signal } : {});
         if (r.status === 404) { OFF_LIMIT.seen.set(code, null); return null; }
         if (!r.ok) throw new Error('HTTP ' + r.status);
         const j = await r.json();
@@ -71,39 +127,92 @@ async function offProduct(code) {
         return p;
     } finally { OFF_LIMIT.busy = false; if (timer) clearTimeout(timer); }
 }
+// El mismo producto puede estar guardado con el código de otra forma (UPC de 12, cero delante, caja de 14):
+// se prueban todas hasta que una responde. Así sale sea de donde sea el producto.
+async function offBuscar(code) {
+    let ultimo = null;
+    for (const v of barrasVariantes(code)) {
+        const p = await offProduct(v);
+        if (p && (p.product_name || p.product_name_es || p.nutriments)) return { p, code: v };
+        if (p) ultimo = { p, code: v };
+    }
+    return ultimo;
+}
+// Los valores de la etiqueta por 100 g. Si la etiqueta solo trae la ración, se pasa a 100 g;
+// si no trae kcal, se calculan con los macros (4·P + 4·HC + 9·G). Devuelve null si no hay nada.
+function offMacros(p) {
+    const n = (p && p.nutriments) || {};
+    const num = v => (v != null && v !== '' && isFinite(+v) ? +v : null);
+    const juego = suf => {
+        const kj = num(n['energy-kj' + suf]) != null ? num(n['energy-kj' + suf]) : num(n['energy' + suf]);
+        const k = num(n['energy-kcal' + suf]);
+        return { kcal: k != null ? k : (kj != null ? kj / 4.184 : null), p: num(n['proteins' + suf]), c: num(n['carbohydrates' + suf]), f: num(n['fat' + suf]), fib: num(n['fiber' + suf]), sug: num(n['sugars' + suf]) };
+    };
+    const algo = x => x.kcal != null || x.p != null || x.c != null || x.f != null;
+    let m = juego('_100g'), escala = 1;
+    if (!algo(m)) {
+        const r = juego('_serving'), q = +p.serving_quantity;
+        if (!algo(r) || !(q > 0 && q < 1000)) return null;
+        m = r; escala = 100 / q;
+    }
+    const o = { kcal: m.kcal, p: m.p || 0, c: m.c || 0, f: m.f || 0, fib: m.fib || 0, sug: m.sug };
+    for (const k of ['p', 'c', 'f', 'fib']) o[k] = o[k] * escala;
+    if (o.sug != null) o.sug = o.sug * escala;
+    o.kcal = o.kcal != null ? o.kcal * escala : 4 * o.p + 4 * o.c + 9 * o.f;
+    return o;
+}
 async function lookupBarcode(raw) {
     const code = String(raw || '').replace(/\D/g, '').slice(0, 14);
     if (code.length < 8) { toast('Escribe un código de 8 a 14 números'); return; }
     if (scan) { scan.stop = true; if (scan.stream) scan.stream.getTracks().forEach(t => t.stop()); }
     const slot = (scan && scan.slot) || slotByHour();
-    const local = FOODS.find(f => f.off === code || f.barcode === code);
+    // Primero lo que ya hay en la app (3.300 productos y los tuyos): va al momento y sin internet
+    const variantes = barrasVariantes(code);
+    const local = FOODS.find(f => variantes.includes(String(f.off)) || variantes.includes(String(f.barcode)));
     if (local) return scanOpenFood(local, slot);
     const box = $('sc-result');
     if (!navigator.onLine) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> ' + tr('Sin conexión: no se puede buscar este producto ahora.') + '</p>'; return; }
     box.innerHTML = '<p class="text-sm text-neutral-400"><i class="fa-solid fa-circle-notch fa-spin"></i> ' + tr('Buscando el producto…') + '</p>';
+    // Seguridad: lo que llega de Internet se guarda como texto limpio (sin < > " ' ` \), igual que las copias importadas
+    const clean = v => String(v || '').replace(/[<>"'`\\]/g, '').trim();
+    let nombreOff = '', marcaOff = '';
     try {
-        const p = await offProduct(code), n = p && p.nutriments;
-        const kcal = n && (n['energy-kcal_100g'] ?? (n.energy_100g ? n.energy_100g / 4.184 : null));
-        if (!p || !n || kcal == null) throw new Error('sin datos'); // i18n-ignore (error interno)
-        const P = +n.proteins_100g || 0, G = +n.fat_100g || 0, C = +n.carbohydrates_100g || 0, Fi = +n.fiber_100g || 0;
-        const Su = n.sugars_100g != null && isFinite(+n.sugars_100g) ? +n.sugars_100g : null;
-        if (kcal < 0 || kcal > 950 || P + G + C > 101) throw new Error('datos raros'); // i18n-ignore (error interno)
-        // Seguridad: lo que llega de Internet se guarda como texto limpio (sin < > " ' ` \), igual que las copias importadas
-        const clean = v => String(v || '').replace(/[<>"'`\\]/g, '').trim();
-        const name = (clean(p.product_name_es) || clean(p.product_name) || tr('Producto {c}', { c: code })).slice(0, 60);
-        const brand = clean(String(p.brands || '').split(',')[0]).slice(0, 30);
-        const food = { id: 'b_' + code, name, brand, cat: 'custom', role: P * 4 >= Math.max(C * 4, G * 9) ? 'protein' : G * 9 > C * 4 ? 'fat' : 'carb', meals: 'BSLD', p: round1(P), f: round1(G), c: round1(C), fib: round1(Fi), kcal: Math.round(kcal), min: 0, max: 0, flags: '', custom: 1, barcode: code, off: code };
-        if (Su != null && Su <= C + 0.5) food.sug = round1(Su);
+        const hit = await offBuscar(code);
+        const p = hit && hit.p;
+        nombreOff = p ? (clean(p.product_name_es) || clean(p.product_name) || clean(p.product_name_en)).slice(0, 60) : '';
+        marcaOff = p ? clean(String(p.brands || '').split(',')[0]).slice(0, 30) : '';
+        const m = p && offMacros(p);
+        if (!m) throw new Error('sin datos'); // i18n-ignore (error interno)
+        if (m.kcal < 0 || m.kcal > 950 || m.p + m.f + m.c > 101 || [m.kcal, m.p, m.f, m.c].some(v => !isFinite(v))) throw new Error('datos raros'); // i18n-ignore (error interno)
+        const codeOk = hit.code;
+        const name = (nombreOff || tr('Producto {c}', { c: codeOk })).slice(0, 60);
+        const food = { id: 'b_' + codeOk, name, brand: marcaOff, cat: 'custom', role: m.p * 4 >= Math.max(m.c * 4, m.f * 9) ? 'protein' : m.f * 9 > m.c * 4 ? 'fat' : 'carb', meals: 'BSLD', p: round1(m.p), f: round1(m.f), c: round1(m.c), fib: round1(m.fib), kcal: Math.round(m.kcal), min: 0, max: 0, flags: '', custom: 1, barcode: codeOk, off: codeOk };
+        if (m.sug != null && m.sug >= 0 && m.sug <= m.c + 0.5) food.sug = round1(m.sug);
         const sq = +p.serving_quantity; if (sq > 0 && sq < 1000) food.serv = [sq, tk('ración'), tk('raciones')];
         if (!FOODS.some(f => f.id === food.id)) { registerCustom(food); state.customFoods.push(food); save(); }
         track('scan_found');
         scanOpenFood(getFood(food.id), slot);
     } catch (e) {
         if (e && e.limit) { box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-hourglass-half"></i> ' + tr('Has buscado muchos productos seguidos. Espera un minuto y vuelve a probar.') + '</p>'; return; }
-        if (e && (e.name === 'AbortError' || /^HTTP|Failed to fetch|NetworkError/.test(e.message))) { logErr('Open Food Facts: ' + (e.name === 'AbortError' ? 'tiempo agotado' : e.message)); box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> ' + tr('El servicio de productos no responde ahora. Prueba en un momento o crea el alimento con su etiqueta.') + '</p>'; return; }
-        box.innerHTML = `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 space-y-3 text-sm text-neutral-300"><p>${tr('No hemos encontrado ese producto ({c}).', { c: esc(code) })}</p>
-            <button onclick="closeSheet(); openFoodSheet('${slot}'); fs.mode='create'; fsRender()" class="w-full py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-plus"></i> ${tr('Crear el alimento con su etiqueta')}</button></div>`;
+        if (e && (e.name === 'AbortError' || /^HTTP|Failed to fetch|NetworkError/.test(e.message))) { logErr('Open Food Facts: ' + (e.name === 'AbortError' ? 'tiempo agotado' : e.message)); box.innerHTML = '<p class="text-sm text-amber-200"><i class="fa-solid fa-wifi"></i> ' + tr('El servicio de productos no responde ahora. Prueba en un momento o apúntalo con su etiqueta.') + '</p>'; return; }
+        // No se ha quedado sin respuesta: el formulario sale con el código (y el nombre, si se sabe) ya puestos,
+        // y al guardarlo el producto queda tuyo: la próxima vez que lo escanees sale solo, también sin internet.
+        scanCrear(code, nombreOff, marcaOff, slot);
     }
+}
+// Crear el alimento con la etiqueta, ya con el código y el nombre que se hayan podido averiguar
+function scanCrear(code, nombre, marca, slot) {
+    const box = $('sc-result');
+    if (box) box.innerHTML = `<div class="p-4 rounded-2xl bg-neutral-800/60 border border-neutral-800 space-y-3 text-sm text-neutral-300">
+        <p>${nombre ? tr('«{n}» está en el catálogo, pero sin la tabla nutricional.', { n: esc(nombre) }) : tr('Ese código ({c}) todavía no está en el catálogo mundial.', { c: esc(code) })}</p>
+        <p class="text-xs text-neutral-400">${tr('Copia la etiqueta una vez y el producto queda guardado con su código: la próxima vez saldrá solo, incluso sin internet.')}</p>
+        <button onclick="scanNuevo('${esc(code)}', '${esc((nombre || '').replace(/'/g, ''))}', '${esc((marca || '').replace(/'/g, ''))}', '${esc(slot)}')" class="w-full py-3 rounded-xl bg-mint-600 text-white font-extrabold"><i class="fa-solid fa-plus"></i> ${tr('Apuntarlo con su etiqueta')}</button></div>`;
+}
+function scanNuevo(code, nombre, marca, slot) {
+    closeSheet();
+    openFoodSheet(slot);
+    fs.cfPre = { name: nombre || '', brand: marca || '', barcode: String(code).replace(/\D/g, '').slice(0, 14) };
+    fs.mode = 'create'; fsRender();
 }
 function scanOpenFood(f, slot) { closeSheet(); openFoodSheet(slot); fsOpen(f.id); }
 
@@ -284,7 +393,7 @@ function defaultPortion(f) { const u = defUnit(f); return u ? { unit: u, n: 1, g
 const portionLabel = (u, n, f) => u.key === 'g' ? `${fmt(n)} ${u.label}` : `${fmt(n, n % 1 ? 1 : 0)} ${tr(n === 1 ? u.label : u.plural)} (${fmt(u.g * n)} ${f && f.ml ? 'ml' : 'g'})`;
 
 function openFoodSheet(slot) {
-    fs.slot = slot || slotByHour(); fs.mode = 'list'; fs.food = null; fs.editId = null; fs.cfEdit = null; fs.q = '';
+    fs.slot = slot || slotByHour(); fs.mode = 'list'; fs.food = null; fs.editId = null; fs.cfEdit = null; fs.cfPre = null; fs.q = '';
     fs.tab = recentFoods().length ? 'recent' : 'all';
     $('fs-slot').innerHTML = DSLOTS.map(([k, n]) => `<option value="${k}">${tr(n)}</option>`).join('');
     $('fs-q').value = '';
@@ -308,7 +417,7 @@ function pendingFoodLink() {
     if (id && profiles.current) setTimeout(() => openFoodFromLink(id), 350);
 }
 function closeFoodSheet() { $('food-sheet').classList.add('hidden'); document.body.style.overflow = ''; }
-function fsBack() { fs.mode = 'list'; fs.food = null; fs.editId = null; fs.cfEdit = null; fsRender(); setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 30); }
+function fsBack() { fs.mode = 'list'; fs.food = null; fs.editId = null; fs.cfEdit = null; fs.cfPre = null; fsRender(); setTimeout(() => { if (!$('food-sheet').classList.contains('hidden')) $('fs-q').focus(); }, 30); }
 function fsRenderTitle() {
     const n = (DSLOTS.find(s => s[0] === fs.slot) || [])[1] || '';
     $('fs-title').innerText = fs.editId ? tr('Editar en') : fs.mode === 'create' ? tr(fs.cfEdit ? 'Editar alimento' : 'Crear alimento') : fs.mode === 'quick' ? tr('Solo calorías en') : tr('Añadir a');
@@ -489,11 +598,12 @@ function fsQuickSave() {
 // Crear un alimento propio con los datos de su etiqueta (queda en «Mis alimentos» y también sirve para el menú)
 function fsRenderCreate() {
     // fs.cfEdit = id de un alimento tuyo que se está editando (mismo formulario, ya relleno)
-    const E = fs.cfEdit && getFood(fs.cfEdit), v = x => E && x != null ? ` value="${esc(String(x))}"` : '';
+    // fs.cfPre = lo que se sabe de un producto escaneado que todavía no estaba (nombre, marca y su código)
+    const E = fs.cfEdit && getFood(fs.cfEdit), YA = E || fs.cfPre, v = x => YA && x != null && x !== '' ? ` value="${esc(String(x))}"` : '';
     const inp = (id, label, extra = '') => `<label class="block"><span class="text-xs font-bold text-neutral-400">${label}</span><input id="${id}" ${extra} class="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-xl font-bold"></label>`;
     $('fs-body').innerHTML = `<div class="space-y-3">
-        ${inp('fc-name', tr('Nombre'), `type="text" maxlength="40" placeholder="${tr('Ej: Wrap de pollo')}"${v(E && E.name)}`)}
-        ${inp('fc-brand', tr('Marca (opcional)'), `type="text" maxlength="30" placeholder="${tr('Ej: {x}', { x: 'Hacendado' })}"${v(E && E.brand)}`)}
+        ${inp('fc-name', tr('Nombre'), `type="text" maxlength="40" placeholder="${tr('Ej: Wrap de pollo')}"${v(YA && YA.name)}`)}
+        ${inp('fc-brand', tr('Marca (opcional)'), `type="text" maxlength="30" placeholder="${tr('Ej: {x}', { x: 'Hacendado' })}"${v(YA && YA.brand)}`)}
         <div class="text-xs font-bold text-neutral-300 pt-1">${tr('Por cada 100 g (tabla nutricional)')}</div>
         <div class="grid grid-cols-2 gap-2">
             ${inp('fc-kcal', tr('Energía (kcal)'), `type="number" inputmode="decimal" min="0" max="950" placeholder="${tr('Opcional')}"${v(E && E.kcal)}`)}
@@ -506,6 +616,7 @@ function fsRenderCreate() {
         ${inp('fc-serv', tr('Peso de una ración (g, opcional)'), `type="number" inputmode="decimal" min="1" max="2000" placeholder="${tr('Ej: {x}', { x: '60' })}"${v(E && E.serv && E.serv[0])}`)}
         <button type="button" onclick="fsCreateSave()" class="w-full py-3.5 rounded-2xl bg-mint-600 hover:bg-mint-700 text-white font-extrabold">${E ? '<i class="fa-solid fa-check"></i> ' + tr('Guardar cambios') : tr('Crear y elegir cantidad')}</button>
         ${E ? `<p class="text-xs text-neutral-400">${tr('Lo que ya apuntaste no cambia: los cambios cuentan desde ahora.')}</p>` : ''}
+        ${!E && fs.cfPre && fs.cfPre.barcode ? `<p class="text-xs text-neutral-400"><i class="fa-solid fa-barcode text-mint-400"></i> ${tr('Se guardará con su código ({c}): la próxima vez que lo escanees saldrá solo.', { c: esc(fs.cfPre.barcode) })}</p>` : ''}
     </div>`;
     setTimeout(() => { const el = $('fc-name'); if (el) el.focus(); }, 30);
 }
@@ -523,6 +634,8 @@ function fsCreateSave() {
     if (kcal != null && kcal > 0) food.kcal = Math.round(kcal); // las kcal de la etiqueta mandan
     if (sug != null) food.sug = sug;
     if (serv && serv > 0) food.serv = [serv, tk('ración'), tk('raciones')];
+    // Si venía de un escaneo, se guarda el código: así el producto se reconoce al momento la próxima vez
+    if (!editId && fs.cfPre && fs.cfPre.barcode) { food.barcode = fs.cfPre.barcode; fs.cfPre = null; }
     if (editId) {
         // Se cambia el mismo objeto (en FOODS y en tus alimentos) para que el buscador y los menús lo vean al momento
         const live = getFood(editId), i = state.customFoods.findIndex(x => x.id === editId);

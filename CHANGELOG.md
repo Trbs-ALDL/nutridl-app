@@ -1,5 +1,15 @@
 # Cambios de nutriDL
 
+## 3.25.0 · 27 de octubre de 2026
+
+**+1.213 panes, pastas, galletas y bollos · y el escáner lee ya cualquier código**
+
+- **4.532 alimentos** (antes 3.319): 3.618 de marca y 914 genéricos. Entran panes y pan de molde, pan tostado y picos, bollos, croissants, magdalenas, bizcochos, galletas de todo tipo, pastas secas, frescas y rellenas, fideos, cereales de desayuno y barritas. De 401 marcas distintas (Hacendado, Carrefour, Dia, Gullón, Lidl, Eroski, Dulcesol, Consum, Alcampo, Bimbo, Gallo, Rana…). **4.163 páginas** en `alimentos/`.
+- **El escáner ya no depende del navegador.** nutriDL trae su propio lector de códigos (`js/barras.js`): lee **EAN-13, EAN-8 y UPC** de cualquier país midiendo las barras de la imagen, así que también funciona en iPhone con Safari, en Firefox y en navegadores viejos, donde antes no había nada. Si el navegador sí trae lector, se le piden todos los formatos que sepa (ITF-14 de las cajas, Code-128, QR…) y el lector propio sigue de refuerzo.
+- **El mismo producto, escrito de varias maneras.** Un código se busca tal cual, como UPC de 12 números, con el cero delante y como ITF-14 de la caja: así salen también los productos de fuera de España.
+- **Siempre te da algo.** Si la etiqueta no trae kcal, se calculan con los macros; si solo trae la ración, se pasa a 100 g. Y si el producto no está en el catálogo mundial, el formulario sale **con su código ya puesto**: copias la etiqueta una vez y el producto queda guardado con ese código, así que la próxima vez que lo escanees sale solo e incluso sin internet.
+- **Linterna** (si la cámara la tiene), enfoque continuo y más resolución para los códigos pequeños.
+
 ## 3.24.0 · 26 de octubre de 2026
 
 **+356 productos de marca y +38 ejercicios**

@@ -72,14 +72,14 @@ test('Registro de errores: sin correos, teléfonos ni lo que escribiste', () => 
     assert.ok(!/gmail|612|secreta/.test(m), m);
 });
 
-test('Open Food Facts: como mucho 8 búsquedas por minuto y no repite la misma', async () => {
+test('Open Food Facts: como mucho 20 búsquedas por minuto y no repite la misma', async () => {
     const { ctx, run } = loadApp();
     let calls = 0;
     ctx.fetch = async () => { calls++; return { ok: true, status: 200, json: async () => ({ product: { product_name: 'X', nutriments: {} } }) }; };
-    for (let i = 0; i < 8; i++) await run(`offProduct('84800000000${i}')`);
-    await run(`offProduct('848000000000')`); // repetido: no vuelve a preguntar
-    assert.equal(calls, 8);
-    await assert.rejects(() => run(`offProduct('8480000000099')`), e => e.limit === true);
+    for (let i = 0; i < 20; i++) await run("offProduct('848000000" + String(1000 + i) + "')");
+    await run("offProduct('8480000001000')"); // repetido: no vuelve a preguntar
+    assert.equal(calls, 20);
+    await assert.rejects(() => run("offProduct('8480000009999')"), e => e.limit === true);
 });
 
 test('Coach: el chat empieza limpio cada día y el diario no se toca', () => {
