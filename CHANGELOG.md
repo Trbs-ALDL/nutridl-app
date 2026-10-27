@@ -1,5 +1,16 @@
 # Cambios de nutriDL
 
+## 3.26.0 · 27 de octubre de 2026
+
+**Repaso de seguridad y de lo legal, pensando en abrirla al público**
+
+- **Términos de uso v2.0**: quién está detrás de la app, condiciones claras de nutriDL PRO (hoy **no se cobra nada**: prueba de 7 días y códigos, sin suscripción ni renovación automática), licencias de los datos (USDA, Open Food Facts con ODbL, información oficial de las cadenas), edad mínima de 18 años, ley aplicable y cómo reclamar.
+- **Privacidad v4.3**: se explica que el código de barras **se lee dentro de tu dispositivo** y que la imagen de la cámara no sale nunca; que los productos que guardas al escanear se quedan en tu móvil con su código; y un apartado claro de cookies: **nutriDL no usa ninguna**, por eso no verás ventanas de consentimiento.
+- **Nadie puede meter nutriDL dentro de su web** (clickjacking): si la app se abre dentro de un marco ajeno, no se carga y ofrece un enlace para abrirla aparte.
+- **`security.txt`**: dirección donde avisar si alguien encuentra un fallo de seguridad.
+- **Dependencia con un fallo conocido arreglada** (solo de construcción): el análisis de dependencias queda limpio.
+- **Cifras de la portada al día**: 4.500+ alimentos y 880+ productos Hacendado, que es lo que hay de verdad.
+
 ## 3.25.0 · 27 de octubre de 2026
 
 **+1.213 panes, pastas, galletas y bollos · y el escáner lee ya cualquier código**

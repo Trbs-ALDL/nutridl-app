@@ -85,7 +85,9 @@ test('Open Food Facts: como mucho 20 búsquedas por minuto y no repite la misma'
 test('Coach: el chat empieza limpio cada día y el diario no se toca', () => {
     const { run, json } = loadApp();
     const id = t => 'm' + t.toString(36) + 'abcd';
-    const ayer = Date.now() - 864e5 * 1.2, hoy = Date.now() - 60000;
+    // Mediodía de hoy y de ayer: así la prueba vale igual a las 23:59 que a las 00:00
+    const medio = new Date(); medio.setHours(12, 0, 0, 0);
+    const hoy = medio.getTime(), ayer = hoy - 864e5;
     run(`state.diary = { x: [1] }; state.chatDay = '2000-01-01'; state.chat = ${JSON.stringify([{ id: id(ayer), r: 'u', t: 'ayer' }, { id: id(hoy), r: 'u', t: 'hoy' }, { r: 'c', html: '<p>sin id</p>' }])}; freshChat();`);
     assert.deepEqual(json('state.chat.map(m => m.t)'), ['hoy']);
     assert.equal(run('state.chatDay'), run('todayISO()'));

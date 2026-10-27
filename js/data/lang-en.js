@@ -2205,4 +2205,7 @@ const LANG_EN = {
     "Copia la etiqueta una vez y el producto queda guardado con su código: la próxima vez saldrá solo, incluso sin internet.": "Copy the label once and the product is saved with its barcode: next time it comes up on its own, even offline.",
     "Apuntarlo con su etiqueta": "Add it from its label",
     "Se guardará con su código ({c}): la próxima vez que lo escanees saldrá solo.": "It will be saved with its barcode ({c}): next time you scan it, it comes up on its own.",
+    // ---- 3.26: cifras de la portada al dia ----
+    "Controla tus calorías, macros, comidas y progreso en un solo lugar. Coach que te dice qué comer, menú del día con gramos exactos, lista de la compra, registro por voz y seguimiento de tu peso. Escáner de código de barras y macros gratis, sin anuncios y sin registro. Más de 4.500 alimentos, con más de 880 productos Hacendado.": "Track your calories, macros, meals and progress in one place. A coach that tells you what to eat, a daily menu with exact grams, a shopping list, voice logging and weight tracking. Barcode scanner and macros for free, with no ads and no sign-up. Over 4,500 foods, including more than 880 Hacendado products.",
+    "Escáner, macros y todas tus comidas sin pagar ni ver anuncios. Con más de 880 productos Hacendado y tu plan en 2 minutos.": "Scanner, macros and all your meals without paying or seeing ads. With more than 880 Hacendado products and your plan in 2 minutes.",
 };

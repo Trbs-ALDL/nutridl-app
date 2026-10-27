@@ -7,7 +7,7 @@
 const KCAL_PER_KG = 7700;
 const STORAGE_KEY = 'nutridl_v2';
 const PROFILES_KEY = 'nutridl_profiles';
-const APP_VERSION = '3.25.0';
+const APP_VERSION = '3.26.0';
 const ERR_KEY = 'nutridl_errors', USAGE_KEY = 'nutridl_usage';
 // Estado de la persona activa (se guarda en su perfil)
 const DEFAULT_STATE = {
@@ -21,6 +21,17 @@ const DEFAULT_STATE = {
 };
 let state = JSON.parse(JSON.stringify(DEFAULT_STATE));
 let calc = {};
+// Seguridad: nadie puede meter nutriDL dentro de su web (clickjacking). GitHub Pages no deja poner
+// cabeceras y «frame-ancestors» no vale dentro de una etiqueta <meta>, así que se comprueba aquí.
+// Las apps de tienda (TWA, Capacitor) no son marcos: no les afecta.
+(function () {
+    try {
+        if (window.top === window.self) return;
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.innerHTML = '<body style="margin:0;background:#110f0d;color:#f5f5f4;font:16px/1.5 system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;text-align:center"><div style="padding:24px"><p><strong>nutriDL</strong> no se puede usar dentro de otra web.<br>nutriDL can’t be used inside another website.</p><p><a href="https://trbs-aldl.github.io/nutridl-app/" target="_blank" rel="noopener" style="color:#5eead4">Abrir nutriDL</a></p></div></body>'; // i18n-ignore (pantalla de emergencia, en los dos idiomas)
+        });
+    } catch (e) { }
+})();
 // Los errores se guardan solo en este dispositivo (últimos 30) para el «Informe de errores»
 // Antes de guardarlo se limpia: sin correos, teléfonos, números largos ni texto entre comillas (podría ser lo que escribiste)
 const scrubLog = m => String(m).replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[correo]').replace(/\+?\d[\d\s-]{7,}\d/g, '[número]') // i18n-ignore (registro interno)

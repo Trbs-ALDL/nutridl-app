@@ -166,7 +166,7 @@ async function lookupBarcode(raw) {
     if (code.length < 8) { toast('Escribe un código de 8 a 14 números'); return; }
     if (scan) { scan.stop = true; if (scan.stream) scan.stream.getTracks().forEach(t => t.stop()); }
     const slot = (scan && scan.slot) || slotByHour();
-    // Primero lo que ya hay en la app (3.300 productos y los tuyos): va al momento y sin internet
+    // Primero lo que ya hay en la app (4.500 alimentos y los tuyos): va al momento y sin internet
     const variantes = barrasVariantes(code);
     const local = FOODS.find(f => variantes.includes(String(f.off)) || variantes.includes(String(f.barcode)));
     if (local) return scanOpenFood(local, slot);
